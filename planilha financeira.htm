@@ -62,7 +62,7 @@
     }
     h1 {
       text-align: center;
-      color: #a875b5;
+      color: #6a4c93;
       margin-bottom: 20px;
       text-transform: lowercase;
     }
@@ -99,8 +99,8 @@
       text-align: center;
     }
     th {
-      background: #fbeaff;
-      color: #6a4c93;
+      background: #e0d4f7;
+      color: #4b3b6b;
     }
     tr:hover {
       background: #fdf6ff;
@@ -123,10 +123,12 @@
       background: #ff8080;
       color: white;
     }
-    #chart-container {
+    #chart-container, #month-chart-container {
       width: 100%;
       max-width: 600px;
       margin: 20px auto;
+    }
+    #chart-container {
       display: none;
     }
   </style>
@@ -185,6 +187,10 @@
 
     <div class="total" id="total-container" style="display: none;">total: r$ <span id="total">0.00</span></div>
 
+    <div id="month-chart-container" style="display: none;">
+      <canvas id="month-chart"></canvas>
+    </div>
+
     <div id="chart-container">
       <canvas id="annual-chart"></canvas>
     </div>
@@ -202,6 +208,8 @@
     const expenseTable = document.getElementById('expense-table');
     const chartContainer = document.getElementById('chart-container');
     const totalContainer = document.getElementById('total-container');
+    const monthChartContainer = document.getElementById('month-chart-container');
+    let monthChart;
 
     let dataByMonth = {};
     let currentMonth = null;
@@ -210,6 +218,8 @@
     function renderExpenses() {
       expenseList.innerHTML = '';
       let total = 0;
+      let categoryTotals = {};
+
       (dataByMonth[currentMonth] || []).forEach((item, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -221,6 +231,7 @@
         `;
         expenseList.appendChild(row);
         total += item.value;
+        categoryTotals[item.category] = (categoryTotals[item.category] || 0) + item.value;
       });
       totalEl.textContent = total.toFixed(2);
 
@@ -230,6 +241,22 @@
           dataByMonth[currentMonth].splice(idx, 1);
           renderExpenses();
         });
+      });
+
+      // gráfico de pizza por categoria
+      const ctx = document.getElementById('month-chart').getContext('2d');
+      if (monthChart) monthChart.destroy();
+      monthChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: Object.keys(categoryTotals),
+          datasets: [{
+            data: Object.values(categoryTotals),
+            backgroundColor: [
+              '#fcbad3', '#a0e7e5', '#b4f8c8', '#ffeeba', '#cdb4db'
+            ]
+          }]
+        }
       });
     }
 
@@ -261,6 +288,7 @@
         form.style.display = 'grid';
         chartContainer.style.display = 'none';
         totalContainer.style.display = 'block';
+        monthChartContainer.style.display = 'block';
         renderExpenses();
       });
     });
@@ -276,6 +304,7 @@
       expenseTable.style.display = 'none';
       form.style.display = 'none';
       totalContainer.style.display = 'none';
+      monthChartContainer.style.display = 'none';
       chartContainer.style.display = 'block';
 
       const monthNames = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
@@ -291,7 +320,9 @@
           datasets: [{
             label: 'gastos (r$)',
             data: totals,
-            backgroundColor: '#fcbad3'
+            backgroundColor: [
+              '#fcbad3','#a0e7e5','#b4f8c8','#ffeeba','#cdb4db','#ffdac1','#e2f0cb','#cddafd','#ffc8dd','#b5ead7','#ffdfba','#c7ceea'
+            ]
           }]
         },
         options: {
