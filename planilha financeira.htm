@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle Financeiro</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #fff8e7, #e7f7ff);
+      color: #444;
+      display: flex;
+      height: 100vh;
+      margin: 0;
+    }
+    .sidebar {
+      width: 200px;
+      background: #fbeaff;
+      padding: 20px;
+      border-right: 2px solid #f0d8ff;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sidebar button {
+      background: #ffd6e8;
+      border: none;
+      border-radius: 10px;
+      padding: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 14px;
+    }
+    .sidebar button:hover,
+    .sidebar button.active {
+      background: #fcbad3;
+      color: white;
+    }
+    .container {
+      flex: 1;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin: 20px;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #a875b5;
+      margin-bottom: 20px;
+    }
+    form {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr 1fr auto;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    input, select, button {
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+    button.add-btn {
+      background: #ffd6e8;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button.add-btn:hover {
+      background: #fcbad3;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      text-align: center;
+    }
+    th {
+      background: #fbeaff;
+      color: #6a4c93;
+    }
+    tr:hover {
+      background: #fdf6ff;
+    }
+    .total {
+      text-align: right;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #444;
+    }
+    .delete-btn {
+      background: #ffb3b3;
+      border: none;
+      border-radius: 8px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .delete-btn:hover {
+      background: #ff8080;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <button class="month-btn active" data-month="Janeiro">Janeiro</button>
+    <button class="month-btn" data-month="Fevereiro">Fevereiro</button>
+    <button class="month-btn" data-month="Março">Março</button>
+    <button class="month-btn" data-month="Abril">Abril</button>
+    <button class="month-btn" data-month="Maio">Maio</button>
+    <button class="month-btn" data-month="Junho">Junho</button>
+    <button class="month-btn" data-month="Julho">Julho</button>
+    <button class="month-btn" data-month="Agosto">Agosto</button>
+    <button class="month-btn" data-month="Setembro">Setembro</button>
+    <button class="month-btn" data-month="Outubro">Outubro</button>
+    <button class="month-btn" data-month="Novembro">Novembro</button>
+    <button class="month-btn" data-month="Dezembro">Dezembro</button>
+  </div>
+
+  <div class="container">
+    <h1 id="month-title">🌸 Controle Financeiro - Janeiro 🌸</h1>
+    <form id="expense-form">
+      <input type="date" id="date" required>
+      <input type="text" id="desc" placeholder="Descrição" required>
+      <select id="category">
+        <option>Alimentação</option>
+        <option>Transporte</option>
+        <option>Moradia</option>
+        <option>Lazer</option>
+        <option>Outros</option>
+      </select>
+      <input type="number" id="value" placeholder="R$" step="0.01" required>
+      <button type="submit" class="add-btn">Adicionar</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Descrição</th>
+          <th>Categoria</th>
+          <th>Valor (R$)</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="expense-list">
+      </tbody>
+    </table>
+
+    <div class="total">Total: R$ <span id="total">0.00</span></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('expense-form');
+    const expenseList = document.getElementById('expense-list');
+    const totalEl = document.getElementById('total');
+    const monthTitle = document.getElementById('month-title');
+    const monthButtons = document.querySelectorAll('.month-btn');
+
+    let dataByMonth = {};
+    let currentMonth = 'Janeiro';
+
+    function renderExpenses() {
+      expenseList.innerHTML = '';
+      let total = 0;
+      (dataByMonth[currentMonth] || []).forEach((item, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.date}</td>
+          <td>${item.desc}</td>
+          <td>${item.category}</td>
+          <td>R$ ${item.value.toFixed(2)}</td>
+          <td><button class="delete-btn" data-index="${index}">Excluir</button></td>
+        `;
+        expenseList.appendChild(row);
+        total += item.value;
+      });
+      totalEl.textContent = total.toFixed(2);
+
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = e.target.getAttribute('data-index');
+          dataByMonth[currentMonth].splice(idx, 1);
+          renderExpenses();
+        });
+      });
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const date = document.getElementById('date').value;
+      const desc = document.getElementById('desc').value;
+      const category = document.getElementById('category').value;
+      const value = parseFloat(document.getElementById('value').value);
+
+      if (!date || !desc || isNaN(value)) return;
+
+      if (!dataByMonth[currentMonth]) dataByMonth[currentMonth] = [];
+      dataByMonth[currentMonth].push({ date, desc, category, value });
+
+      renderExpenses();
+      form.reset();
+    });
+
+    monthButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        monthButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentMonth = btn.dataset.month;
+        monthTitle.textContent = `🌸 Controle Financeiro - ${currentMonth} 🌸`;
+        renderExpenses();
+      });
+    });
+
+    renderExpenses();
+  </script>
+</body>
+</html>
