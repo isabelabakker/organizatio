@@ -1,0 +1,2082 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+  <link rel="icon" type="image/png" href="images/icon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> OrganizatIO</title>
+
+  <style>
+
+    /* ... (estilos existentes) ... */
+    
+    /* ------------------------------------------------ */
+    /* CORREÇÃO PARA O TÍTULO PRINCIPAL */
+    /* ------------------------------------------------ */
+    #mensal-page-title {
+        /* Define a transformação de texto para "nenhuma",
+           permitindo letras maiúsculas/minúsculas normalmente */
+        text-transform: none;
+    }
+    
+    /* ------------------------------------------------ */
+    /* ESTILOS TEMA CLARO (Padrão) - CORES VIVAS */
+    /* ------------------------------------------------ */
+    body {
+      font-family: Arial, sans-serif;
+      background: #F0F2F5; /* Fundo claro e limpo */
+      color: #333; /* Texto escuro padrão */
+      /* display: flex;  REMOVIDO PARA O LAYOUT DE LARGURA TOTAL */
+      height: 100vh;
+      margin: 0;
+      transition: background 0.3s, color 0.3s; /* Transição suave */
+      text-transform: lowercase; /* Força todo o corpo para minúsculas */
+    }
+    
+    /* ESTILOS DO BOTÃO DE TEMA FLUTUANTE */
+    #theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #9E9E9E;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 1001; /* Para ficar acima dos modais */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s, transform 0.2s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    #theme-toggle:hover {
+        transform: scale(1.1);
+    }
+    
+    /* Botões principais (planner, financeiro, listas) */
+    .mensal-sub-toggle {
+        background: #3586ff; /* Azul elétrico para não selecionado */
+        border: none;
+        border-radius: 8px;
+        padding: 8px 15px;
+        cursor: pointer;
+        color: white;
+        transition: 0.2s;
+        text-transform: lowercase;
+    }
+    .mensal-sub-toggle:hover {
+        background: #3d71ff; /* Azul elétrico mais forte no hover */
+    }
+    .mensal-sub-toggle.active-sub {
+        background: #3d71ff; /* Ciano vibrante para botão selecionado */
+        font-weight: bold;
+        color: white;
+    }
+    
+    .container {
+      flex: 1;
+      background: #FFFFFF; /* Container branco */
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin: 20px;
+      padding: 20px;
+      overflow-y: auto;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    h1, h2, h3 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+      text-transform: lowercase;
+      transition: color 0.3s;
+    }
+    
+    /* Layout do formulário financeiro (agora dentro do modal) */
+    form#expense-form {
+      display: grid;
+      /* data, desc, tipo, categoria, valor, grupo de botões (o último slot) */
+      grid-template-columns: 1fr; /* Coluna única para mobile-first */
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    /* Estilo para telas maiores */
+    @media (min-width: 600px) {
+        form#expense-form {
+             grid-template-columns: 1fr 2fr 1fr 1fr 1fr auto;
+        }
+    }
+
+    
+    input, select, button {
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      text-transform: lowercase;
+      transition: background 0.3s, border-color 0.3s, color 0.3s;
+    }
+    
+    /* Estilo para o grupo de botões de Adicionar/Salvar/Cancelar */
+    .add-btn-group {
+        display: flex;
+        gap: 5px;
+    }
+    .add-btn-group button {
+        flex-grow: 1;
+    }
+    
+    /* ALTERAÇÃO 3: Cor do botão "adicionar" mudada para o azul principal */
+    button.add-btn {
+      background: #3586ff; /* NOVO: Azul dos botões principais */
+      border: none;
+      cursor: pointer;
+      color: white;
+      transition: 0.2s;
+    }
+    button.add-btn:hover {
+      background: #3d71ff; /* Azul mais forte no hover */
+    }
+    /* Estilo para o botão "Salvar Edição" */
+    button.add-btn[type="submit"]:not(.add-btn) {
+        background: #4CAF50; /* Verde vibrante para salvar */
+        color: white;
+    }
+    
+    /* Estilo para o botão de gerenciar categorias */
+    #manage-categories-btn {
+        background: #9E9E9E; /* Cinza médio vibrante */
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 10px;
+        cursor: pointer;
+        text-align: center;
+        flex-grow: 1;
+        transition: background 0.2s;
+    }
+    #manage-categories-btn:hover {
+        background: #757575; /* Cinza mais escuro no hover */
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-transform: lowercase;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      text-align: center;
+    }
+    th {
+      background: #E0F2F7; /* Azul claro suave para cabeçalho da tabela */
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+    tr:hover {
+      background: #F5F5F5;
+    }
+    .total {
+      text-align: right;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #333;
+      transition: color 0.3s;
+    }
+    .delete-btn, .edit-btn { /* Estilos para botões da tabela */
+      border: none;
+      border-radius: 8px;
+      padding: 5px 10px;
+      cursor: pointer;
+      color: white;
+      margin: 0 2px;
+    }
+    .delete-btn {
+      background: #FF5252; /* Vermelho vibrante para excluir */
+    }
+    .delete-btn:hover {
+      background: #FF1744; /* Vermelho mais forte */
+    }
+    .edit-btn {
+        background: #4CAF50; /* Verde vibrante para editar */
+        color: white;
+    }
+    .edit-btn:hover {
+        background: #388E3C; /* Verde mais escuro */
+    }
+    
+    #charts-dual-container {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin-top: 30px;
+    }
+    
+    #month-chart-container {
+        width: 100%;
+        max-width: 300px;
+        margin-bottom: 20px;
+    }
+    
+    #annual-chart-container {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    /* ------------------------------------------------ */
+    /* NOVOS ESTILOS - DASHBOARD FINANCEIRO */
+    /* ------------------------------------------------ */
+    .summary-card {
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 12px;
+        text-align: center;
+        flex: 1;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .summary-card h4 {
+        margin: 0 0 10px 0;
+        font-size: 14px;
+        color: #666;
+        text-transform: lowercase;
+    }
+    .summary-card p {
+        margin: 0;
+    }
+    #fab-add-expense {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: #3586ff;
+        color: white;
+        font-size: 28px;
+        line-height: 56px;
+        text-align: center;
+        border: none;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        cursor: pointer;
+        z-index: 1001; /* Para ficar acima de outros elementos */
+        display: none; /* Começa escondido */
+    }
+
+    /* ------------------------------------------------ */
+    /* ESTILOS PARA SUB-SEÇÕES FINANCEIRAS */
+    /* ------------------------------------------------ */
+    .finance-sub-section {
+        display: none;
+    }
+    .finance-sub-section.active-sub {
+        display: block;
+    }
+
+    #financeiro-section h3 {
+        text-align: center;
+        margin-bottom: 20px;
+        text-transform: lowercase;
+    }
+
+
+    /* estilos para gerenciador de listas */
+    .new-list {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      gap: 10px;
+    }
+    .lists-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: flex-start;
+    }
+    .list {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      width: 250px;
+      transition: opacity 0.3s ease, background 0.3s, border-color 0.3s;
+      flex-shrink: 0;
+      border-left: 5px solid transparent; /* Base para a cor de prioridade */
+    }
+    
+    .list-input-group {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+    .list-input-group input {
+        flex-grow: 1; /* Faz o input ocupar o espaço restante */
+        margin-bottom: 0;
+    }
+
+    .list.completed {
+        opacity: 0.6; /* Efeito de apagamento */
+    }
+
+    /* --- ESTILOS DE PRIORIDADE --- */
+    .list-priority-select {
+        width: 100%;
+        padding: 5px;
+        margin: 5px 0 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        font-size: 12px;
+    }
+
+    .list.priority-baixa { border-left-color: #3586ff; }
+    .list.priority-media { border-left-color: #FFC107; }
+    .list.priority-alta { border-left-color: #FF5252; }
+    
+    /* --- NOVOS ESTILOS - ITENS DA LISTA --- */
+    .list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .list li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .list li:last-child {
+      border-bottom: none;
+    }
+
+    .list-item-content {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+    }
+
+    .list-item-content span,
+    .list-item-content input[type="text"] {
+      flex-grow: 1;
+      margin-left: 8px;
+      border: 1px solid transparent;
+      padding: 2px 4px;
+    }
+    
+    .list-item-content input[type="text"] {
+      border-color: #ccc;
+    }
+
+    .list-item-actions button {
+      font-size: 12px;
+      padding: 3px 6px;
+      border-radius: 5px;
+      margin-left: 4px;
+      width: 24px;
+      height: 24px;
+    }
+    .edit-item-btn { background: #4CAF50; color: white; border: none; }
+    .delete-item-btn { background: #FF5252; color: white; border: none; }
+    .save-item-btn { background: #3586ff; color: white; border: none; }
+    .cancel-item-btn { background: #9E9E9E; color: white; border: none; }
+    /* --- FIM DOS NOVOS ESTILOS --- */
+
+
+    .delete-list-circular-btn {
+        background: #FF5252; /* Vermelho vibrante para excluir */
+        border: none;
+        cursor: pointer;
+        color: white;
+        border-radius: 50%; /* Transforma o quadrado em círculo */
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        line-height: 1;
+        flex-shrink: 0;
+        margin-left: 5px;
+        vertical-align: middle; /* Alinha o botão com o texto do h2 */
+        transition: background 0.2s;
+    }
+    .delete-list-circular-btn:hover {
+        background: #FF1744;
+    }
+    
+    /* estilos para o calendário */
+    #calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+    }
+
+    .calendar-day-name {
+      text-align: center;
+      font-weight: bold;
+      padding: 10px 0;
+      background: #E0F2F7; /* Azul claro suave para nomes dos dias */
+      border-radius: 5px;
+      text-transform: lowercase;
+      font-size: 12px;
+      transition: background 0.3s;
+    }
+    
+    .calendar-day {
+      background: #fff;
+      border: 1px solid #e6e5e5; /* NOVO: Cinza para tema claro */
+      border-radius: 5px;
+      padding: 10px 5px;
+      min-height: 80px;
+      text-align: left;
+      vertical-align: top;
+      transition: background 0.2s, border-color 0.3s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .calendar-day:hover:not(.inactive) {
+      background: #E8F0FE; /* Azul claro vibrante no hover do dia */
+    }
+    .calendar-day.inactive {
+      background: #F9F9F9;
+      color: #bbb;
+      border: 1px dashed #eee;
+      cursor: default;
+    }
+    .calendar-day-number {
+      font-size: 18px;
+      font-weight: bold;
+      color: #9C27B0; /* Roxo vibrante para números dos dias */
+      display: block;
+      margin-bottom: 5px;
+      transition: color 0.3s;
+    }
+    .task-indicator {
+      font-size: 10px;
+      color: white;
+      background: #ff8f5b; /* rosa para tarefas */
+      padding: 1px 4px;
+      border-radius: 3px;
+      margin-top: 2px;
+      display: inline-block;
+      max-width: 90%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    /* ---------------- MODAL STYLES ---------------- */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: background 0.3s, border-color 0.3s, color 0.3s;
+    }
+    .close-button {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      text-transform: none;
+    }
+    .close-button:hover, .close-button:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    .task-actions {
+        display: flex;
+        gap: 5px;
+    }
+    
+    .edit-task-btn {
+        background: #4CAF50; /* Verde vibrante */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 8px;
+        cursor: pointer;
+    }
+    .edit-task-btn:hover {
+        background: #388E3C; /* Verde mais escuro */
+    }
+
+    .task-list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      transition: border-color 0.3s;
+    }
+    .task-list-item button { /* Estilo para o botão de remover/padrão */
+      background: #FF5252; /* Vermelho vibrante para remover tarefa */
+      color: white;
+      border: none;
+      padding: 5px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .task-list-item button:hover {
+        background: #FF1744;
+    }
+    
+    .task-icon, .task-icon-indicator {
+        width: 16px;
+        height: 16px;
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+    .task-icon-indicator {
+        width: 12px;
+        height: 12px;
+        margin-right: 4px;
+    }
+    
+    .task-icon-option {
+        width: 40px;
+        height: 40px;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        padding: 5px; /* Adiciona um pouco de espaço interno */
+        background: #f0f0f0; /* Fundo claro */
+    }
+
+    #taskIconPicker .task-icon-option:first-child {
+        font-size: 10px;
+        line-height: 1;
+        text-align: center;
+        font-weight: bold;
+        color: #777;
+    }
+    
+    .task-icon-option.selected {
+        border-color: #3586ff; /* Cor de destaque para seleção */
+        box-shadow: 0 0 5px rgba(53, 134, 255, 0.5);
+        transform: scale(1.05);
+        background: #e8f0fe; /* Fundo levemente azul */
+    }
+
+    .task-icon-option:hover {
+        opacity: 0.8;
+    }
+
+    .task-icon-option img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Garante que a imagem se ajuste */
+    }
+
+
+    #expense-category-list-container div,
+    #revenue-category-list-container div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+    }
+    #expense-category-list-container button,
+    #revenue-category-list-container button {
+        background: #FF5252; /* Vermelho vibrante para remover categoria */
+        padding: 3px 8px;
+        font-size: 12px;
+    }
+    
+    .progress-bar-container {
+        width: 100%;
+        background-color: #f1f1f1;
+        border-radius: 10px;
+        margin-top: 5px;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        height: 20px;
+        background-color: #4CAF50; /* Verde padrão */
+        text-align: center;
+        line-height: 20px;
+        color: white;
+        transition: width 0.4s ease-in-out;
+    }
+
+    /* --- ESTILOS DE INVESTIMENTOS --- */
+    #new-goal-form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    #new-goal-form input {
+      flex-grow: 1;
+    }
+    .investment-goal-card {
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-left: 5px solid; /* A cor será definida via inline style */
+    }
+    .goal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .goal-header h4 {
+      margin: 0;
+      text-align: left;
+    }
+    .goal-header .actions button {
+      font-size: 12px;
+      padding: 3px 8px;
+      margin-left: 5px;
+    }
+    .goal-details p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+    .add-contribution-form {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .add-contribution-form input {
+      flex-grow: 1;
+    }
+    .contribution-history-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #666;
+    }
+    .edit-goal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .edit-goal-form .form-inputs {
+      display: flex;
+      gap: 10px;
+    }
+    .edit-goal-form input {
+      flex-grow: 1;
+    }
+
+
+    /* ------------------------------------------------ */
+    /* ESTILOS TEMA ESCURO - CORES VIVAS */
+    /* ------------------------------------------------ */
+    body.dark-mode {
+      background: #121212;
+      color: #E0E0E0;
+    }
+    
+    body.dark-mode #theme-toggle {
+        background: #616161;
+    }
+
+    body.dark-mode .container,
+    body.dark-mode .calendar-day,
+    body.dark-mode hr {
+      background: #1F1F1F;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      border-color: #444 !important; /* Cor de borda geral */
+    }
+
+    body.dark-mode .list {
+      background: #1F1F1F; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    
+    body.dark-mode .task-icon-option {
+        border: 2px solid #555;
+        background: #282828;
+    }
+    body.dark-mode .task-icon-option.selected {
+        border-color: #6b9aff;
+        box-shadow: 0 0 5px rgba(107, 154, 255, 0.5);
+        background: #1F1F1F;
+    }
+
+
+    body.dark-mode h1,
+    body.dark-mode h2,
+    body.dark-mode h3,
+    body.dark-mode .total,
+    body.dark-mode .close-button {
+      color: #FFFFFF;
+    }
+    
+    body.dark-mode .list.completed {
+        opacity: 0.4;
+    }
+
+    body.dark-mode th {
+      background: #333333;
+      color: #E0E0E0;
+    }
+
+    body.dark-mode tr:hover {
+      background: #282828;
+    }
+    
+    body.dark-mode .task-list-item {
+      border-bottom: 1px solid #333;
+    }
+
+    body.dark-mode input,
+    body.dark-mode select,
+    body.dark-mode .modal-content input,
+    body.dark-mode .modal-content select,
+    body.dark-mode .list input[type="text"],
+    body.dark-mode button:not(.delete-btn):not(.edit-btn):not(#theme-toggle):not(.mensal-sub-toggle):not(.delete-list-circular-btn) { /* Incluindo a nova classe */
+      background: #282828;
+      border: 1px solid #555;
+      color: #E0E0E0;
+    }
+    
+    /* --- ESTILOS DE PRIORIDADE (DARK MODE) --- */
+    body.dark-mode .list-priority-select {
+        background: #282828;
+        border: 1px solid #555;
+        color: #E0E0E0;
+    }
+    body.dark-mode .list.priority-baixa { border-left-color: #6b9aff; }
+    body.dark-mode .list.priority-media { border-left-color: #FFCA28; }
+    body.dark-mode .list.priority-alta { border-left-color: #FF1744; }
+    
+    /* --- NOVOS ESTILOS - ITENS DA LISTA (DARK MODE) --- */
+    body.dark-mode .list li {
+      border-bottom: 1px solid #333;
+    }
+    body.dark-mode .list-item-content input[type="text"] {
+      border-color: #555;
+      background-color: #333;
+      color: #E0E0E0;
+    }
+    body.dark-mode .edit-item-btn { background: #2E7D32; }
+    body.dark-mode .delete-item-btn { background: #D50000; }
+    body.dark-mode .save-item-btn { background: #6b9aff; }
+    body.dark-mode .cancel-item-btn { background: #616161; }
+    /* --- FIM DOS NOVOS ESTILOS (DARK MODE) --- */
+
+
+    body.dark-mode button.add-btn {
+        background: #6b9aff; /* NOVO: Azul dos botões principais em dark mode */
+        color: white;
+    }
+    body.dark-mode button.add-btn:hover {
+        background: #558bff; /* Azul mais forte no hover em dark mode */
+    }
+    
+    body.dark-mode .edit-task-btn {
+        background: #2E7D32; /* Verde escuro para editar em dark mode */
+        color: white;
+    }
+    body.dark-mode .edit-task-btn:hover {
+        background: #1B5E20; /* Verde ainda mais escuro */
+    }
+
+    body.dark-mode .delete-list-circular-btn {
+      background: #D50000; /* Vermelho escuro para dark mode */
+    }
+    body.dark-mode .delete-list-circular-btn:hover {
+      background: #C60000; /* Vermelho mais escuro no hover */
+    }
+
+    body.dark-mode .mensal-sub-toggle {
+        background: #6b9aff; /* Azul escuro vibrante para não selecionado em dark mode */
+        color: white;
+    }
+    body.dark-mode .mensal-sub-toggle.active-sub {
+        background: #558bff; /* Ciano escuro vibrante para selecionado em dark mode */
+        color: white;
+    }
+    
+    body.dark-mode #manage-categories-btn {
+        background: #616161; /* Cinza mais escuro vibrante */
+        color: white;
+    }
+    body.dark-mode #manage-categories-btn:hover {
+        background: #424242; /* Cinza ainda mais escuro */
+    }
+    
+    body.dark-mode .calendar-day-name {
+      background: #333333;
+      color: #E0E0E0;
+    }
+
+    body.dark-mode .calendar-day:hover:not(.inactive) {
+      background: #282828;
+    }
+
+    body.dark-mode .calendar-day.inactive {
+      background: #1A1A1A;
+      color: #666;
+      border: 1px dashed #333;
+      cursor: default;
+    }
+
+    body.dark-mode .calendar-day-number {
+      color: #8d1ce9; /* Roxo mais escuro para números dos dias em dark mode */
+    }
+    
+    body.dark-mode .modal-content {
+        background-color: #1E1E1E;
+        border: 1px solid #333;
+        color: #E0E0E0;
+    }
+    
+    body.dark-mode .edit-btn {
+        background: #2E7D32; /* Verde escuro para editar em dark mode */
+        color: white;
+    }
+    body.dark-mode .edit-btn:hover {
+        background: #1B5E20; /* Verde ainda mais escuro */
+    }
+
+    /* DARK MODE - DASHBOARD FINANCEIRO */
+    body.dark-mode .summary-card {
+        background: #282828;
+        border: 1px solid #333;
+    }
+    body.dark-mode .summary-card h4 {
+        color: #aaa;
+    }
+    body.dark-mode #fab-add-expense {
+        background: #6b9aff;
+    }
+
+    /* DARK MODE - INVESTIMENTOS */
+    body.dark-mode .investment-goal-card {
+      background: #282828;
+    }
+    body.dark-mode .contribution-history-list {
+      color: #aaa;
+    }
+
+
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  
+  <button id="theme-toggle">🌙</button>
+
+  <div class="container">
+    
+    <div id="mensal-page">
+
+        <div id="mensal-controls" style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px;">
+            <select id="calendar-month-select" style="padding: 8px; border-radius: 8px; text-transform: lowercase; font-size: 14px; border-color: #6A8EFE;"></select>
+            
+            <button id="show-planner" class="mensal-sub-toggle active-sub">planner</button>
+            <button id="show-financeiro" class="mensal-sub-toggle">finanças</button>
+            <button id="show-listas" class="mensal-sub-toggle">listas</button>
+        </div>
+        
+        <hr style="border-top: 1px solid #ddd; margin: 30px 0;">
+
+
+        <div id="planner-section" class="mensal-content-section">
+            <div id="calendar-grid">
+                </div>
+        </div>
+        
+
+        <div id="financeiro-section" class="mensal-content-section" style="display: none;">
+            
+            <div id="finance-dashboard">
+                <div id="summary-container" style="display: flex; justify-content: space-around; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+                    <div class="summary-card">
+                        <h4>receitas do mês</h4>
+                        <p id="total-revenue" style="color: #4CAF50; font-size: 24px; font-weight: bold;">R$ 0,00</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>despesas do mês</h4>
+                        <p id="total-expense" style="color: #FF5252; font-size: 24px; font-weight: bold;">R$ 0,00</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>saldo do mês</h4>
+                        <p id="month-balance" style="font-size: 24px; font-weight: bold;">R$ 0,00</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; margin-bottom: 20px; display: flex; justify-content: center; gap: 10px;">
+                    <button id="view-details-btn" class="mensal-sub-toggle">transações</button>
+                    <button id="view-category-spending-btn" class="mensal-sub-toggle">orçamentos</button>
+                    <button id="view-investments-btn" class="mensal-sub-toggle">investimentos</button>
+                </div>
+
+                <div id="charts-dual-container">
+                    <div id="month-chart-container">
+                        <h3 style="text-align: center; margin-top: 0;">gastos por categoria</h3>
+                        <canvas id="month-chart"></canvas>
+                    </div>
+                    
+                    <div id="annual-chart-container">
+                        <h3 style="text-align: center; margin-top: 0;">comparativo anual</h3>
+                        <canvas id="annual-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="listas-section" class="mensal-content-section" style="display: none;">
+            <div class="new-list">
+                <input type="text" id="newListName" placeholder="nome da nova lista">
+                <button id="createListButton">criar lista</button>
+            </div>
+            <div class="lists-container" id="listsContainer"></div>
+        </div>
+
+    </div>
+    </div>
+
+  <div id="taskModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" onclick="closeTaskModal()">&times;</span>
+      
+      <h3>adicionar tarefa</h3>
+      <form id="task-form-modal">
+        
+        <div style="display: grid; grid-template-columns: 1fr 3fr auto; gap: 10px; margin-bottom: 10px; align-items: center;">
+            <input type="time" id="taskTime" value="09:00">
+            <input type="text" id="taskDescription" placeholder="descrição da tarefa" required>
+            <button type="submit" id="add-task-btn">adicionar</button>
+        </div>
+
+        <div id="task-icon-picker-container" style="padding: 5px 0 15px 0;">
+            <div id="taskIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+            <input type="hidden" id="taskIcon" value="">
+        </div>
+
+      </form>
+      <h3>tarefas do dia</h3>
+      <div id="tasksList"></div>
+    </div>
+  </div>
+  
+  <div id="categoryModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" onclick="closeCategoryModal()">&times;</span>
+      
+      <h3>gerenciar categorias</h3>
+      
+      <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
+        <select id="newCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid #ccc;">
+          <option value="despesa">despesa</option>
+          <option value="receita">receita</option>
+        </select>
+        <input type="text" id="newCategoryName" placeholder="nome da nova categoria" style="flex-grow: 1;">
+        <button id="addCategoryButton" class="add-btn">adicionar</button>
+      </div>
+      
+      <h4>categorias de despesa</h4>
+      <div id="expense-category-list-container"></div>
+      
+      <hr style="border-top: 1px solid #ddd; margin: 15px 0;">
+
+      <h4>categorias de receita</h4>
+      <div id="revenue-category-list-container"></div>
+    </div>
+  </div>
+
+
+  <div id="detailsModal" class="modal">
+      <div class="modal-content" style="max-width: 950px; margin: 5% auto;">
+          <span class="close-button" onclick="closeDetailsModal()">&times;</span>
+          <h3>transações do mês</h3>
+          <form id="expense-form">
+              <input type="date" id="date" required>
+              <input type="text" id="desc" placeholder="descrição" required>
+              <select id="type">
+                  <option value="despesa">despesa</option>
+                  <option value="receita">receita</option>
+              </select>
+              <select id="category" placeholder="categoria"></select>
+              <input type="number" id="value" placeholder="r$" step="0.01" required>
+              <div class="add-btn-group">
+                  <button type="submit" class="add-btn" id="submit-expense-btn">adicionar</button>
+                  <button type="button" id="manage-categories-btn">🛠️</button>
+              </div>
+          </form>
+          
+          
+          <table id="expense-table">
+              <thead>
+                  <tr>
+                      <th>data</th>
+                      <th>descrição</th>
+                      <th>categoria</th>
+                      <th>tipo</th>
+                      <th>valor (r$)</th>
+                      <th>ações</th>
+                  </tr>
+              </thead>
+              <tbody id="expense-list"></tbody>
+          </table>
+          <div class="total" id="total-container">
+              saldo total: r$ <span id="total">0.00</span>
+          </div>
+      </div>
+  </div>
+
+  <div id="categorySpendingModal" class="modal">
+      <div class="modal-content">
+          <span class="close-button" onclick="closeCategorySpendingModal()">&times;</span>
+          <h3>orçamentos</h3>
+          <form id="category-limit-form" style="display: flex; gap: 10px; margin-bottom: 20px;">
+              <select id="categoryLimitCategory" required></select>
+              <input type="number" id="categoryLimitValue" placeholder="limite (R$)" step="0.01" required>
+              <button type="submit" class="add-btn">salvar limite</button>
+          </form>
+          <table style="width: 100%;">
+              <thead>
+                  <tr>
+                      <th>categoria</th>
+                      <th>limite (R$)</th>
+                      <th>gasto (R$)</th>
+                      <th>porcentagem</th>
+                  </tr>
+              </thead>
+              <tbody id="category-spending-list"></tbody>
+          </table>
+      </div>
+  </div>
+
+  <div id="investmentsModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeInvestmentsModal()">&times;</span>
+        <h3>investimentos</h3>
+        
+        <form id="new-goal-form">
+          <input type="text" id="newGoalName" placeholder="nome da nova meta" required>
+          <input type="number" id="newGoalTarget" placeholder="valor da meta (r$)" step="0.01" required>
+          <button type="submit" class="add-btn">criar meta</button>
+        </form>
+
+        <hr style="border-top: 1px solid #ddd; margin: 20px 0;">
+
+        <div id="goals-container"></div>
+    </div>
+  </div>
+
+
+  <script>
+    // --- ELEMENTOS DO FORMULÁRIO FINANCEIRO (agora no modal) ---
+    const form = document.getElementById('expense-form');
+    const expenseList = document.getElementById('expense-list');
+    const totalEl = document.getElementById('total');
+    const dateInput = document.getElementById('date');
+    const descInput = document.getElementById('desc');
+    const categoryInput = document.getElementById('category');
+    const typeInput = document.getElementById('type');
+    const valueInput = document.getElementById('value');
+    const submitButton = document.getElementById('submit-expense-btn');
+    const buttonGroup = document.querySelector('.add-btn-group');
+    
+    // --- ELEMENTOS DE GERENCIAMENTO DE CATEGORIAS ---
+    const manageCategoriesBtn = document.getElementById('manage-categories-btn');
+    const categoryModal = document.getElementById('categoryModal');
+    const newCategoryNameInput = document.getElementById('newCategoryName');
+    const addCategoryButton = document.getElementById('addCategoryButton');
+    const newCategoryTypeInput = document.getElementById('newCategoryType');
+    
+    // --- ELEMENTOS DO DASHBOARD E MODAIS FINANCEIROS ---
+    const detailsModal = document.getElementById('detailsModal');
+    const viewDetailsBtn = document.getElementById('view-details-btn');
+    const categorySpendingModal = document.getElementById('categorySpendingModal');
+    const viewCategorySpendingBtn = document.getElementById('view-category-spending-btn');
+    const investmentsModal = document.getElementById('investmentsModal');
+    const viewInvestmentsBtn = document.getElementById('view-investments-btn');
+
+    // --- ELEMENTOS DE INVESTIMENTOS ---
+    const newGoalForm = document.getElementById('new-goal-form');
+    const goalsContainer = document.getElementById('goals-container');
+
+    // --- ELEMENTO DE TEMA ---
+    const themeToggle = document.getElementById('theme-toggle');
+    
+    // --- ELEMENTOS DO CALENDÁRIO ---
+    const calendarGrid = document.getElementById('calendar-grid');
+    const calendarMonthSelect = document.getElementById('calendar-month-select');
+    
+    // --- ELEMENTOS DO MODAL DE TAREFAS ---
+    const taskModal = document.getElementById('taskModal');
+    const tasksList = document.getElementById('tasksList');
+    const taskTimeInput = document.getElementById('taskTime');
+    const taskDescriptionInput = document.getElementById('taskDescription');
+    const taskIconHiddenInput = document.getElementById('taskIcon');
+    const taskIconPicker = document.getElementById('taskIconPicker');
+    const taskFormModal = document.getElementById('task-form-modal');
+    const addTaskBtn = document.getElementById('add-task-btn');
+    
+    // --- ELEMENTOS DE LISTAS ---
+    const listsContainer = document.getElementById("listsContainer");
+    const newListNameInput = document.getElementById("newListName");
+    const createListButton = document.getElementById("createListButton");
+
+    // --- ÍCONES DE TAREFAS ---
+    const taskIcons = {
+         "nenhum": "images/none.png",
+        "médico": "images/doctor.png",
+        "pet": "images/pet.png",
+        "date": "images/date.png",
+        "exercício": "images/gym.png",
+        "meditação": "images/meditation.png",
+        "trabalho": "images/work.png",
+        "salão": "images/hair.png",
+        "comida": "images/food.png",
+        "aniversário": "images/birthday.png",
+        "festa": "images/party.png"
+
+    };
+
+    // --- VARIÁVEIS DE ESTADO ---
+    let monthChart, annualChart;
+    let dataByMonth = {};
+    let revenueCategories = ["salário", "freela", "outros"], expenseCategories = ["alimentação", "transporte", "moradia", "lazer", "saúde", "educação", "outros", "contas"];
+    let investmentGoals = [];
+    let editingGoalId = null;
+    let currentMonth = null;
+    let currentCalendarDate = new Date();
+    let selectedDateKey = null, editingIndex = null;
+    const monthNamesPt = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+    const goalColors = ['#FF5252', '#3F51B5', '#4CAF50', '#FFC107', '#9C27B0', '#00BCD4', '#FF9800'];
+
+
+    let categoryLimits = {};
+
+
+    // ----------------------------------------------------
+    // FUNÇÕES DE UTILIDADE E TEMA
+    // ----------------------------------------------------
+    function formatDateToBRL(dateString) {
+        if (!dateString || dateString.length !== 10) return dateString;
+        const [year, month, day] = dateString.split('-');
+        return `${day}/${month}/${year}`;
+    }
+    
+    function formatCurrency(value) {
+        return `R$ ${parseFloat(value).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
+    }
+
+    function applyTheme(theme) {
+        document.body.classList.toggle('dark-mode', theme === 'dark');
+        themeToggle.innerHTML = theme === 'dark' ? '☀️' : '🌙';
+        localStorage.setItem('theme', theme);
+        if (document.getElementById('financeiro-section').style.display !== 'none') {
+            updateFinanceDisplay();
+        }
+    }
+
+    // ----------------------------------------------------
+    // PERSISTÊNCIA (localStorage)
+    // ----------------------------------------------------
+    function saveFinancialData() {
+        localStorage.setItem('financialData', JSON.stringify(dataByMonth));
+        localStorage.setItem('expenseCategories', JSON.stringify(expenseCategories));
+        localStorage.setItem('revenueCategories', JSON.stringify(revenueCategories));
+        localStorage.setItem('categoryLimits', JSON.stringify(categoryLimits));
+    }
+
+    function loadFinancialData() {
+        dataByMonth = JSON.parse(localStorage.getItem('financialData')) || {};
+        expenseCategories = JSON.parse(localStorage.getItem('expenseCategories')) || expenseCategories;
+        revenueCategories = JSON.parse(localStorage.getItem('revenueCategories')) || revenueCategories;
+        if (!expenseCategories.includes('outros')) expenseCategories.push('outros');
+        if (!revenueCategories.includes('outros')) revenueCategories.push('outros');
+        if (!expenseCategories.includes('contas')) expenseCategories.push('contas');
+        categoryLimits = JSON.parse(localStorage.getItem('categoryLimits')) || {};
+    }
+
+    function saveCalendarTasks() { localStorage.setItem('calendarTasks', JSON.stringify(calendarTasks)); }
+    function loadCalendarTasks() { calendarTasks = JSON.parse(localStorage.getItem('calendarTasks')) || {}; }
+
+    function saveLists() {
+        const lists = Array.from(listsContainer.querySelectorAll('.list')).map(listDiv => {
+            const titleElement = listDiv.querySelector('h2');
+            if (!titleElement) return null;
+            const listName = Array.from(titleElement.childNodes).filter(node => node.nodeType === 3)[0].textContent.trim();
+            const items = Array.from(listDiv.querySelectorAll('ul li')).map(li => ({
+                text: li.querySelector('.list-item-content').children[1].tagName === 'SPAN' 
+                    ? li.querySelector('.list-item-content span').textContent
+                    : li.querySelector('.list-item-content input[type="text"]').value,
+                checked: li.querySelector('input[type="checkbox"]').checked
+            }));
+            const priority = listDiv.querySelector('.list-priority-select').value;
+            return { name: listName, items: items, priority: priority };
+        }).filter(Boolean);
+        localStorage.setItem('todoLists', JSON.stringify(lists));
+    }
+
+    function loadAndRenderLists() {
+        listsContainer.innerHTML = '';
+        const listsData = JSON.parse(localStorage.getItem('todoLists')) || [];
+        listsData.forEach(listData => createList(listData.name, listData.items, listData.priority));
+    }
+
+    function saveInvestmentGoals() { localStorage.setItem('investmentGoals', JSON.stringify(investmentGoals)); }
+    function loadInvestmentGoals() { investmentGoals = JSON.parse(localStorage.getItem('investmentGoals')) || []; }
+
+
+    // ----------------------------------------------------
+    // MODAIS FINANCEIROS
+    // ----------------------------------------------------
+    function openDetailsModal() {
+        detailsModal.style.display = 'block';
+        cancelEdit();
+    }
+    function closeDetailsModal() {
+        detailsModal.style.display = 'none';
+        cancelEdit();
+    }
+    function openCategoryModal() {
+        detailsModal.style.display = 'none';
+        renderCategoryModalList();
+        categoryModal.style.display = 'block';
+    }
+    function closeCategoryModal() {
+        categoryModal.style.display = 'none';
+        detailsModal.style.display = 'block';
+    }
+    function openCategorySpendingModal() {
+        updateCategorySpending();
+        categorySpendingModal.style.display = 'block';
+    }
+    function closeCategorySpendingModal() {
+        categorySpendingModal.style.display = 'none';
+    }
+    function openInvestmentsModal() {
+        editingGoalId = null;
+        renderInvestmentGoals();
+        investmentsModal.style.display = 'block';
+    }
+    function closeInvestmentsModal() {
+        investmentsModal.style.display = 'none';
+    }
+
+    // ----------------------------------------------------
+    // GERENCIAMENTO DE CATEGORIAS
+    // ----------------------------------------------------
+    function renderCategorySelect(isRevenue = false) {
+        const categories = isRevenue ? revenueCategories : expenseCategories;
+        categoryInput.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
+        if (editingIndex !== null && dataByMonth[currentMonth]?.[editingIndex]) {
+            categoryInput.value = dataByMonth[currentMonth][editingIndex].category;
+        }
+    }
+    
+    function renderCategoryLimitSelect() {
+        const categorySelect = document.getElementById('categoryLimitCategory');
+        categorySelect.innerHTML = expenseCategories.map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    function renderCategoryModalList() {
+        const renderList = (categories, container, type) => {
+            container.innerHTML = categories.length === 0 ? `<p style="color: #777;">nenhuma categoria de ${type} cadastrada.</p>` :
+                categories.map(category => `<div><span>${category}</span><button onclick="removeCategory('${category}', '${type}')">remover</button></div>`).join('');
+        };
+        renderList(expenseCategories, document.getElementById('expense-category-list-container'), 'despesa');
+        renderList(revenueCategories, document.getElementById('revenue-category-list-container'), 'receita');
+    }
+
+    window.addCategory = function() {
+        const name = newCategoryNameInput.value.trim().toLowerCase();
+        const type = newCategoryTypeInput.value;
+        if (!name) return alert('o nome da categoria é obrigatório.');
+        let targetArray = type === 'receita' ? revenueCategories : expenseCategories;
+        if (targetArray.includes(name)) return alert('categoria já existe.');
+        targetArray.push(name);
+        newCategoryNameInput.value = '';
+        saveFinancialData();
+        renderCategoryModalList();
+        renderCategorySelect(typeInput.value === 'receita');
+        renderCategoryLimitSelect();
+        updateCategorySpending();
+    }
+
+    window.removeCategory = function(category, type) {
+        if (category === 'outros' || category === 'contas') return alert('as categorias "contas" e "outros" não podem ser removidas.');
+
+        if (confirm(`tem certeza que deseja remover a categoria "${category}" de ${type}?`)) {
+            if (type === 'receita') {
+                revenueCategories = revenueCategories.filter(c => c !== category);
+            } else {
+                expenseCategories = expenseCategories.filter(c => c !== category);
+            }
+            
+            Object.values(dataByMonth).flat().forEach(item => {
+                const itemType = item.type || (item.value >= 0 ? 'receita' : 'despesa');
+                if (item.category === category && itemType === type) item.category = 'outros';
+            });
+            
+            saveFinancialData();
+            renderCategoryModalList();
+            renderCategorySelect(typeInput.value === 'receita');
+            renderCategoryLimitSelect();
+            updateFinanceDisplay();
+        }
+    }
+    
+    // ----------------------------------------------------
+    // LÓGICA DE GASTOS POR CATEGORIA (ORÇAMENTOS)
+    // ----------------------------------------------------
+    
+    function updateCategorySpending() {
+        const tableEl = document.getElementById('category-spending-list');
+        tableEl.innerHTML = '';
+        
+        const allExpenses = (dataByMonth[currentMonth] || []).filter(item => item.value < 0);
+        const totals = {};
+        allExpenses.forEach(item => {
+            const category = item.category;
+            totals[category] = (totals[category] || 0) + Math.abs(item.value);
+        });
+
+        const allExpenseCategories = [...new Set(expenseCategories)];
+        allExpenseCategories.forEach(category => {
+            const limit = categoryLimits[category] || 0;
+            const spent = totals[category] || 0;
+            const percentage = limit > 0 ? (spent / limit) * 100 : 0;
+            const row = document.createElement('tr');
+            const progressBarColor = percentage > 100 ? '#FF5252' : (percentage > 80 ? '#FF9800' : '#4CAF50');
+            row.innerHTML = `
+                <td>${category}</td>
+                <td>${formatCurrency(limit)}</td>
+                <td>${formatCurrency(spent)}</td>
+                <td>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${progressBarColor};">
+                            ${percentage.toFixed(0)}%
+                        </div>
+                    </div>
+                </td>
+            `;
+            tableEl.appendChild(row);
+        });
+        
+    }
+    
+    document.getElementById('category-limit-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const category = document.getElementById('categoryLimitCategory').value;
+        const limit = parseFloat(document.getElementById('categoryLimitValue').value);
+        if (category && !isNaN(limit)) {
+            categoryLimits[category] = limit;
+            saveFinancialData();
+            updateCategorySpending();
+            this.reset();
+        }
+    });
+
+    // ----------------------------------------------------
+    // LÓGICA DE INVESTIMENTOS
+    // ----------------------------------------------------
+    function renderInvestmentGoals() {
+      goalsContainer.innerHTML = '';
+      if (investmentGoals.length === 0 && editingGoalId === null) {
+        goalsContainer.innerHTML = '<p style="text-align: center; color: #777;">nenhuma meta de investimento criada.</p>';
+        return;
+      }
+
+      investmentGoals.forEach(goal => {
+        const card = document.createElement('div');
+        card.className = 'investment-goal-card';
+        card.setAttribute('data-goal-id', goal.id);
+        card.style.borderLeftColor = goal.color;
+        
+        if (goal.id === editingGoalId) {
+            card.innerHTML = `
+                <form class="edit-goal-form">
+                    <div class="form-inputs">
+                        <input type="text" value="${goal.name}" required>
+                        <input type="number" value="${goal.target}" step="0.01" required>
+                    </div>
+                    <div class="actions">
+                        <button type="submit" class="edit-btn">salvar</button>
+                        <button type="button" class="delete-btn">cancelar</button>
+                    </div>
+                </form>
+            `;
+        } else {
+            const totalSaved = Object.values(goal.contributions).reduce((sum, amount) => sum + amount, 0);
+            const percentage = goal.target > 0 ? (totalSaved / goal.target) * 100 : 0;
+            let historyHtml = '';
+            for (const monthYearKey in goal.contributions) {
+                historyHtml += `<li>${monthYearKey.replace('-', '/')}: ${formatCurrency(goal.contributions[monthYearKey])}</li>`;
+            }
+
+            card.innerHTML = `
+              <div class="goal-header">
+                <h4>${goal.name}</h4>
+                <div class="actions">
+                    <button class="edit-btn">editar</button>
+                    <button class="delete-btn">excluir</button>
+                </div>
+              </div>
+              <div class="goal-details">
+                <p><strong>${formatCurrency(totalSaved)}</strong> / ${formatCurrency(goal.target)}</p>
+                <div class="progress-bar-container">
+                  <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${goal.color};">
+                    ${percentage.toFixed(1)}%
+                  </div>
+                </div>
+              </div>
+              <form class="add-contribution-form">
+                <input type="number" placeholder="valor a investir este mês" step="0.01" required>
+                <button type="submit" class="add-btn">adicionar</button>
+              </form>
+              ${historyHtml ? `<h4>histórico de aportes</h4><ul class="contribution-history-list">${historyHtml}</ul>` : ''}
+            `;
+        }
+        goalsContainer.appendChild(card);
+      });
+    }
+
+    newGoalForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('newGoalName').value.trim();
+      const target = parseFloat(document.getElementById('newGoalTarget').value);
+
+      if (name && !isNaN(target) && target > 0) {
+        const color = goalColors[investmentGoals.length % goalColors.length];
+        investmentGoals.push({
+          id: Date.now(),
+          name: name,
+          target: target,
+          color: color,
+          contributions: {}
+        });
+        saveInvestmentGoals();
+        renderInvestmentGoals();
+        newGoalForm.reset();
+      } else {
+        alert('por favor, preencha o nome e um valor válido para a meta.');
+      }
+    });
+    
+    goalsContainer.addEventListener('submit', e => {
+        const card = e.target.closest('.investment-goal-card');
+        if (!card) return;
+        const goalId = Number(card.dataset.goalId);
+
+        if(e.target.classList.contains('add-contribution-form')) {
+            e.preventDefault();
+            const amountInput = e.target.querySelector('input[type="number"]');
+            const amount = parseFloat(amountInput.value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert('por favor, insira um valor válido para o aporte.');
+                return;
+            }
+
+            const goal = investmentGoals.find(g => g.id === goalId);
+            if (goal) {
+                const monthYearKey = `${currentMonth}-${currentCalendarDate.getFullYear()}`;
+                goal.contributions[monthYearKey] = (goal.contributions[monthYearKey] || 0) + amount;
+                saveInvestmentGoals();
+                renderInvestmentGoals();
+            }
+        } else if (e.target.classList.contains('edit-goal-form')) {
+            e.preventDefault();
+            const goal = investmentGoals.find(g => g.id === goalId);
+            const newName = e.target.querySelector('input[type="text"]').value.trim();
+            const newTarget = parseFloat(e.target.querySelector('input[type="number"]').value);
+
+            if (newName && !isNaN(newTarget) && newTarget > 0) {
+                goal.name = newName;
+                goal.target = newTarget;
+                editingGoalId = null;
+                saveInvestmentGoals();
+                renderInvestmentGoals();
+            } else {
+                alert('por favor, preencha o nome e um valor válido para a meta.');
+            }
+        }
+    });
+
+    goalsContainer.addEventListener('click', e => {
+        const card = e.target.closest('.investment-goal-card');
+        if (!card) return;
+        const goalId = Number(card.dataset.goalId);
+        
+        // Botão de Excluir Meta
+        if (e.target.matches('.goal-header .delete-btn')) {
+            if (confirm('tem certeza que deseja excluir esta meta?')) {
+              investmentGoals = investmentGoals.filter(g => g.id !== goalId);
+              saveInvestmentGoals();
+              renderInvestmentGoals();
+            }
+        }
+        // Botão de Editar Meta
+        else if (e.target.matches('.goal-header .edit-btn')) {
+            editingGoalId = goalId;
+            renderInvestmentGoals();
+        }
+        // Botão de Cancelar Edição
+        else if (e.target.matches('.edit-goal-form .delete-btn')) {
+            editingGoalId = null;
+            renderInvestmentGoals();
+        }
+    });
+
+
+    // ----------------------------------------------------
+    // LÓGICA FINANCEIRA CENTRAL
+    // ----------------------------------------------------
+    
+    function updateFinanceDisplay() {
+        updateSummaryCards();
+        renderExpenses();
+        renderAnnualChart();
+        updateCategorySpending();
+        renderCategorySelect(typeInput.value === 'receita');
+        renderCategoryLimitSelect();
+    }
+    
+    function updateSummaryCards() {
+        const monthData = dataByMonth[currentMonth] || [];
+        const totalRevenue = monthData.filter(item => item.value > 0).reduce((acc, item) => acc + item.value, 0);
+        
+        const totalExpenses = monthData.filter(item => item.value < 0).reduce((acc, item) => acc + item.value, 0);
+        const monthBalance = totalRevenue + totalExpenses;
+
+        document.getElementById('total-revenue').textContent = formatCurrency(totalRevenue);
+        document.getElementById('total-expense').textContent = formatCurrency(Math.abs(totalExpenses));
+        const balanceEl = document.getElementById('month-balance');
+        balanceEl.textContent = formatCurrency(monthBalance);
+        balanceEl.style.color = monthBalance >= 0 ? '#4CAF50' : '#FF5252';
+    }
+
+    function renderExpenses() {
+        expenseList.innerHTML = '';
+        let total = 0, categoryTotals = {};
+        (dataByMonth[currentMonth] || []).forEach((item, index) => {
+            const transactionType = item.type || (item.value >= 0 ? 'receita' : 'despesa');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${formatDateToBRL(item.date)}</td><td>${item.desc}</td><td>${item.category}</td>
+                <td style="color: ${transactionType === 'receita' ? '#4CAF50' : '#FF5252'}; font-weight: bold;">${transactionType}</td>
+                <td>${formatCurrency(Math.abs(item.value))}</td>
+                <td><button class="edit-btn" data-index="${index}">editar</button><button class="delete-btn" data-index="${index}">excluir</button></td>
+            `;
+            expenseList.appendChild(row);
+            total += item.value;
+            if (item.value < 0) categoryTotals[item.category] = (categoryTotals[item.category] || 0) + Math.abs(item.value);
+        });
+
+        document.getElementById('total-container').innerHTML = `saldo total: <span id="total" style="color: ${total >= 0 ? '#4CAF50' : '#FF5252'};">${formatCurrency(total)}</span>`;
+
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        const textColor = isDarkMode ? '#E0E0E0' : '#333';
+        const ctx = document.getElementById('month-chart').getContext('2d');
+        if (monthChart) monthChart.destroy();
+        const chartLabels = Object.keys(categoryTotals).filter(key => categoryTotals[key] > 0);
+        const chartData = chartLabels.map(key => categoryTotals[key]);
+        monthChart = new Chart(ctx, {
+            type: 'pie', data: { labels: chartLabels, datasets: [{ data: chartData, backgroundColor: ['#FF5252', '#4CAF50', '#00BCD4', '#9C27B0', '#FFC107', '#FF9800', '#795548'] }] },
+            options: { plugins: { legend: { labels: { color: textColor } } } }
+        });
+    }
+
+    window.deleteExpense = function(index) {
+        if (confirm("tem certeza que deseja excluir esta transação?")) {
+            dataByMonth[currentMonth].splice(index, 1);
+            saveFinancialData();
+            updateFinanceDisplay();
+        }
+    }
+
+    window.editExpense = function(index) {
+        editingIndex = index;
+        const item = dataByMonth[currentMonth][index];
+        dateInput.value = item.date;
+        descInput.value = item.desc;
+        typeInput.value = item.type || (item.value >= 0 ? 'receita' : 'despesa');
+        renderCategorySelect(typeInput.value === 'receita');
+        categoryInput.value = item.category;
+        valueInput.value = Math.abs(item.value);
+        
+        detailsModal.querySelector('h3').textContent = 'editar transação';
+        submitButton.textContent = 'salvar';
+        submitButton.style.background = '#4CAF50';
+
+        if (!document.getElementById('cancel-edit-btn')) {
+            const cancelButton = document.createElement('button');
+            cancelButton.id = 'cancel-edit-btn';
+            cancelButton.type = 'button';
+            cancelButton.textContent = 'cancelar';
+            cancelButton.className = 'add-btn';
+            cancelButton.style.background = '#FF9800';
+            cancelButton.onclick = cancelEdit;
+            buttonGroup.insertBefore(cancelButton, manageCategoriesBtn);
+        }
+    }
+
+    window.cancelEdit = function() {
+        editingIndex = null;
+        form.reset();
+        submitButton.textContent = 'adicionar';
+        submitButton.style.background = '#3586ff';
+        typeInput.value = 'despesa';
+        renderCategorySelect(false);
+        const cancelButton = document.getElementById('cancel-edit-btn');
+        if (cancelButton) cancelButton.remove();
+        detailsModal.querySelector('h3').textContent = 'transações do mês';
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const date = dateInput.value, desc = descInput.value, category = categoryInput.value, type = typeInput.value;
+        let value = parseFloat(valueInput.value);
+        if (!date || !desc || isNaN(value)) return;
+        value = type === 'despesa' ? -Math.abs(value) : Math.abs(value);
+        const expenseMonth = monthNamesPt[new Date(date + 'T12:00:00').getMonth()];
+        const newItem = { date, desc, category, type, value };
+
+        if (editingIndex !== null) {
+            dataByMonth[currentMonth][editingIndex] = newItem;
+        } else {
+            if (!dataByMonth[expenseMonth]) dataByMonth[expenseMonth] = [];
+            dataByMonth[expenseMonth].push(newItem);
+        }
+
+        saveFinancialData();
+        updateFinanceDisplay();
+        
+        if (editingIndex !== null) {
+            cancelEdit();
+        } else {
+            form.reset();
+            const year = currentCalendarDate.getFullYear();
+            const monthString = String(currentCalendarDate.getMonth() + 1).padStart(2, '0');
+            dateInput.value = `${year}-${monthString}-01`;
+        }
+    });
+
+    function renderAnnualChart() {
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+        const textColor = isDarkMode ? '#E0E0E0' : '#333';
+        const monthlyExpenses = monthNamesPt.map(m => {
+            const totalVariable = (dataByMonth[m] || []).filter(item => item.value < 0).reduce((acc, item) => acc + Math.abs(item.value), 0);
+            return totalVariable.toFixed(2);
+        });
+        if (annualChart) annualChart.destroy();
+        const ctx = document.getElementById('annual-chart').getContext('2d');
+        annualChart = new Chart(ctx, {
+            type: 'bar', data: { labels: monthNamesPt, datasets: [{ label: 'total de despesas (r$)', data: monthlyExpenses, backgroundColor: '#FF5252' }] },
+            options: {
+                scales: { y: { beginAtZero: true, ticks: { color: textColor }, grid: { color: gridColor } }, x: { ticks: { color: textColor }, grid: { color: gridColor } } },
+                plugins: { legend: { labels: { color: textColor } } }
+            }
+        });
+    }
+
+    // --- CÓDIGO DO PLANNER, TAREFAS E LISTAS ---
+
+    function initCalendarSelect() {
+        if (calendarMonthSelect.options.length === 0) {
+             monthNamesPt.forEach((month, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = month;
+                calendarMonthSelect.appendChild(option);
+            });
+        }
+    }
+    
+    function renderCalendar(date) {
+        calendarGrid.innerHTML = `<div class="calendar-day-name">dom</div> <div class="calendar-day-name">seg</div><div class="calendar-day-name">ter</div> <div class="calendar-day-name">qua</div><div class="calendar-day-name">qui</div> <div class="calendar-day-name">sex</div><div class="calendar-day-name">sáb</div>`;
+        const year = date.getFullYear(), month = date.getMonth();
+        calendarMonthSelect.value = month;
+        const firstDayOfMonth = new Date(year, month, 1).getDay(), daysInMonth = new Date(year, month + 1, 0).getDate(), daysInPrevMonth = new Date(year, month, 0).getDate();
+        for (let i = firstDayOfMonth; i > 0; i--) {
+            const dayDiv = document.createElement('div'); dayDiv.className = 'calendar-day inactive'; dayDiv.innerHTML = `<span class="calendar-day-number">${daysInPrevMonth - i + 1}</span>`; calendarGrid.appendChild(dayDiv);
+        }
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayDiv = document.createElement('div'); dayDiv.className = 'calendar-day'; dayDiv.innerHTML = `<span class="calendar-day-number">${day}</span>`;
+            const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            dayDiv.addEventListener('click', () => openTaskModal(dateKey, day));
+            const tasks = calendarTasks[dateKey] || [];
+            if (tasks.length > 0) {
+                dayDiv.style.border = '2px solid #a572ff';
+                tasks.slice(0, 2).forEach(task => {
+                    const taskEl = document.createElement('div'); taskEl.className = 'task-indicator';
+                    const iconHtml = task.icon ? `<img src="${task.icon}" class="task-icon-indicator" alt="ícone">` : '';
+                    taskEl.innerHTML = `${iconHtml}${task.time} - ${task.description}`;
+                    dayDiv.appendChild(taskEl);
+                });
+                if (tasks.length > 2) {
+                    const moreEl = document.createElement('div'); moreEl.className = 'task-indicator'; moreEl.style.background = '#FF1744'; moreEl.textContent = `+${tasks.length - 2} mais`; dayDiv.appendChild(moreEl);
+                }
+            }
+            const today = new Date();
+            if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) dayDiv.style.border = '2px solid #e3e3e3';
+            calendarGrid.appendChild(dayDiv);
+        }
+        const totalSlots = Math.ceil((firstDayOfMonth + daysInMonth) / 7) * 7;
+        for (let i = 1; i <= totalSlots - (firstDayOfMonth + daysInMonth); i++) {
+            const dayDiv = document.createElement('div'); dayDiv.className = 'calendar-day inactive'; dayDiv.innerHTML = `<span class="calendar-day-number">${i}</span>`; calendarGrid.appendChild(dayDiv);
+        }
+    }
+
+    function openTaskModal(dateKey, day) {
+        selectedDateKey = dateKey;
+        taskModal.querySelector('h3').textContent = 'adicionar tarefa';
+        taskModal.querySelector('h3').setAttribute('data-date', `${day}/${currentMonth.substring(0, 3)}`);
+        renderDayTasks();
+        taskModal.style.display = 'block';
+        cancelTaskEdit();
+    }
+
+    function cancelTaskEdit() {
+        taskFormModal.removeAttribute('data-editing-id');
+        taskDescriptionInput.value = '';
+        taskTimeInput.value = '09:00';
+        const defaultOption = taskIconPicker.querySelector('.task-icon-option');
+        if (defaultOption) defaultOption.click();
+        addTaskBtn.textContent = 'adicionar';
+        addTaskBtn.classList.remove('save-edit-btn');
+        taskModal.querySelector('h3').textContent = 'adicionar tarefa';
+    }
+
+    window.closeTaskModal = function() { taskModal.style.display = 'none'; cancelTaskEdit(); renderCalendar(currentCalendarDate); }
+
+    window.editTask = function(taskId) {
+        const tasks = calendarTasks[selectedDateKey] || [];
+        const taskToEdit = tasks.find(t => t.id === taskId);
+        if (!taskToEdit) return;
+        taskTimeInput.value = taskToEdit.time;
+        taskDescriptionInput.value = taskToEdit.description;
+        addTaskBtn.textContent = 'salvar';
+        addTaskBtn.classList.add('save-edit-btn');
+        taskFormModal.setAttribute('data-editing-id', taskId);
+        taskModal.querySelector('h3').textContent = 'editar tarefa';
+        taskIconHiddenInput.value = taskToEdit.icon;
+        taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
+            option.classList.toggle('selected', option.getAttribute('data-icon-path') === taskToEdit.icon);
+        });
+        taskDescriptionInput.focus();
+    }
+
+    function renderDayTasks() {
+        tasksList.innerHTML = '';
+        const tasks = calendarTasks[selectedDateKey] || [];
+        tasks.forEach(task => { if (!task.id) task.id = Date.now() + Math.random().toString().substring(2, 6); });
+        tasks.sort((a, b) => (a.time > b.time) ? 1 : -1);
+        if (tasks.length === 0) { tasksList.innerHTML = '<p style="text-align: center; color: #777;">nenhuma tarefa agendada.</p>'; return; }
+        tasks.forEach((task) => {
+            const taskItem = document.createElement('div'); taskItem.className = 'task-list-item';
+            const iconHtml = task.icon ? `<img src="${task.icon}" class="task-icon" alt="ícone da tarefa">` : '';
+            taskItem.innerHTML = `<span>${iconHtml}<strong>${task.time}</strong> - ${task.description}</span><div class="task-actions"><button class="edit-task-btn" onclick="editTask('${task.id}')">editar</button><button onclick="removeTask('${task.id}')">remover</button></div>`;
+            tasksList.appendChild(taskItem);
+        });
+    }
+
+    taskFormModal.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const time = taskTimeInput.value, description = taskDescriptionInput.value.trim(), icon = taskIconHiddenInput.value;
+        if (!time || !description) return alert('Por favor, preencha o horário e a descrição da tarefa.');
+        const editingId = taskFormModal.getAttribute('data-editing-id');
+        if (editingId) {
+            const taskIndex = (calendarTasks[selectedDateKey] || []).findIndex(t => t.id == editingId);
+            if (taskIndex > -1) Object.assign(calendarTasks[selectedDateKey][taskIndex], { time, description, icon });
+            cancelTaskEdit();
+        } else {
+            if (!calendarTasks[selectedDateKey]) calendarTasks[selectedDateKey] = [];
+            const newTaskId = Date.now().toString() + Math.random().toString().substring(2, 6);
+            calendarTasks[selectedDateKey].push({ id: newTaskId, time, description, icon });
+            taskDescriptionInput.value = '';
+            taskTimeInput.value = time;
+        }
+        saveCalendarTasks(); renderDayTasks();
+    });
+
+    window.removeTask = function(taskId) {
+        if (calendarTasks[selectedDateKey]) {
+            calendarTasks[selectedDateKey] = calendarTasks[selectedDateKey].filter(t => t.id !== taskId);
+            if (calendarTasks[selectedDateKey].length === 0) delete calendarTasks[selectedDateKey];
+            saveCalendarTasks(); renderDayTasks();
+        }
+    }
+    
+    function renderIconPicker() {
+        
+        for (const key in taskIcons) {
+            taskIconPicker.innerHTML += `<div class="task-icon-option" data-icon-path="${taskIcons[key]}" title="${key}"><img src="${taskIcons[key]}" alt="${key}"></div>`;
+        }
+        taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
+            option.addEventListener('click', function() {
+                taskIconPicker.querySelector('.selected')?.classList.remove('selected');
+                this.classList.add('selected');
+                taskIconHiddenInput.value = this.getAttribute('data-icon-path');
+            });
+        });
+        taskIconPicker.querySelector('.task-icon-option').click();
+    }
+
+    window.createList = function(initialName, initialItems = [], initialPriority = 'baixa') {
+        let listName = initialName, fromInput = false;
+        if (initialName === undefined) {
+            listName = newListNameInput.value.trim().toLowerCase();
+            if (!listName) return; newListNameInput.value = ""; fromInput = true;
+        }
+        const listDiv = document.createElement("div");
+        listDiv.className = "list priority-" + initialPriority;
+
+        const title = document.createElement("h2");
+        title.textContent = listName + ' ';
+        
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "x";
+        removeBtn.className = "delete-list-circular-btn";
+        removeBtn.onclick = () => { listDiv.remove(); saveLists(); };
+        title.appendChild(removeBtn);
+        
+        const prioritySelect = document.createElement("select");
+        prioritySelect.className = "list-priority-select";
+        prioritySelect.innerHTML = `
+            <option value="baixa">baixa prioridade</option>
+            <option value="media">média prioridade</option>
+            <option value="alta">alta prioridade</option>
+        `;
+        prioritySelect.value = initialPriority;
+        prioritySelect.onchange = () => {
+            listDiv.classList.remove('priority-baixa', 'priority-media', 'priority-alta');
+            listDiv.classList.add('priority-' + prioritySelect.value);
+            saveLists();
+        };
+
+        const inputGroup = document.createElement("div");
+        inputGroup.className = "list-input-group";
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "novo item";
+        const addBtn = document.createElement("button");
+        addBtn.textContent = "adicionar";
+        addBtn.className = "add-btn";
+        const ul = document.createElement("ul");
+        
+        const addItem = (text, checked = false) => {
+            const li = document.createElement("li");
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'list-item-content';
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = checked;
+            checkbox.onchange = () => { checkCompletion(listDiv); saveLists(); };
+            
+            const span = document.createElement("span");
+            span.textContent = text;
+            
+            contentDiv.appendChild(checkbox);
+            contentDiv.appendChild(span);
+
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'list-item-actions';
+
+            const createInitialButtons = () => {
+                actionsDiv.innerHTML = ''; // Limpa botões existentes
+                const editBtn = document.createElement('button');
+                editBtn.className = 'edit-item-btn';
+                editBtn.innerHTML = '✏️';
+                editBtn.onclick = () => toggleEditMode(true);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-item-btn';
+                deleteBtn.innerHTML = '🗑️';
+                deleteBtn.onclick = () => {
+                    li.remove();
+                    checkCompletion(listDiv);
+                    saveLists();
+                };
+                actionsDiv.appendChild(editBtn);
+                actionsDiv.appendChild(deleteBtn);
+            };
+
+            const toggleEditMode = (isEditing) => {
+                if (isEditing) {
+                    const currentText = span.textContent;
+                    const inputField = document.createElement('input');
+                    inputField.type = 'text';
+                    inputField.value = currentText;
+                    
+                    contentDiv.replaceChild(inputField, span);
+                    inputField.focus();
+
+                    actionsDiv.innerHTML = '';
+                    const saveBtn = document.createElement('button');
+                    saveBtn.className = 'save-item-btn';
+                    saveBtn.innerHTML = '✔️';
+                    saveBtn.onclick = () => {
+                        span.textContent = inputField.value;
+                        toggleEditMode(false);
+                        saveLists();
+                    };
+
+                    const cancelBtn = document.createElement('button');
+                    cancelBtn.className = 'cancel-item-btn';
+                    cancelBtn.innerHTML = '❌';
+                    cancelBtn.onclick = () => {
+                        toggleEditMode(false);
+                    };
+
+                    actionsDiv.appendChild(saveBtn);
+                    actionsDiv.appendChild(cancelBtn);
+                } else {
+                    const inputField = contentDiv.querySelector('input[type="text"]');
+                    if (inputField) {
+                       contentDiv.replaceChild(span, inputField);
+                    }
+                    createInitialButtons();
+                }
+            };
+
+            createInitialButtons();
+            li.appendChild(contentDiv);
+            li.appendChild(actionsDiv);
+            ul.appendChild(li);
+        };
+        
+        addBtn.onclick = () => { const text = input.value.trim(); if (!text) return; input.value = ""; addItem(text); checkCompletion(listDiv); saveLists(); };
+        
+        listDiv.appendChild(title);
+        listDiv.appendChild(prioritySelect);
+        inputGroup.appendChild(input);
+        inputGroup.appendChild(addBtn);
+        listDiv.appendChild(inputGroup);
+        listDiv.appendChild(ul);
+        listsContainer.appendChild(listDiv);
+        
+        initialItems.forEach(item => addItem(item.text, item.checked));
+        checkCompletion(listDiv);
+        if (fromInput) saveLists();
+    }
+
+    function checkCompletion(listDiv) {
+        const checkboxes = listDiv.querySelectorAll("ul li input[type='checkbox']");
+        if (checkboxes.length === 0) { listDiv.classList.remove("completed"); return; }
+        const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+        listDiv.classList.toggle("completed", allChecked);
+    }
+    
+    // ----------------------------------------------------
+    // CONEXÃO DOS LISTENERS
+    // ----------------------------------------------------
+    themeToggle.addEventListener('click', () => applyTheme(document.body.classList.contains('dark-mode') ? 'light' : 'dark'));
+    expenseList.addEventListener('click', function(e) {
+        const index = e.target.getAttribute('data-index');
+        if (e.target.classList.contains('edit-btn')) window.editExpense(parseInt(index));
+        else if (e.target.classList.contains('delete-btn')) window.deleteExpense(parseInt(index));
+    });
+    createListButton.addEventListener('click', () => createList());
+    typeInput.addEventListener('change', (e) => renderCategorySelect(e.target.value === 'receita'));
+    document.getElementById('show-planner').addEventListener('click', () => showMensalSection('planner-section'));
+    document.getElementById('show-financeiro').addEventListener('click', () => showMensalSection('financeiro-section'));
+    document.getElementById('show-listas').addEventListener('click', () => showMensalSection('listas-section'));
+    manageCategoriesBtn.addEventListener('click', openCategoryModal);
+    addCategoryButton.addEventListener('click', addCategory);
+    newCategoryNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addCategory(); });
+    calendarMonthSelect.addEventListener('change', (e) => { currentCalendarDate.setMonth(parseInt(e.target.value)); updateMonthlyView(); });
+    
+    viewDetailsBtn.addEventListener('click', openDetailsModal);
+    viewCategorySpendingBtn.addEventListener('click', openCategorySpendingModal);
+    viewInvestmentsBtn.addEventListener('click', openInvestmentsModal);
+    
+    window.onclick = function(event) {
+        if (event.target == taskModal) closeTaskModal();
+        if (event.target == categoryModal) closeCategoryModal();
+        if (event.target == detailsModal) closeDetailsModal();
+        if (event.target == categorySpendingModal) closeCategorySpendingModal();
+        if (event.target == investmentsModal) closeInvestmentsModal();
+    }
+    
+    // ----------------------------------------------------
+    // GERENCIAMENTO DE ABAS PRINCIPAIS
+    // ----------------------------------------------------
+    function showMensalSection(sectionId) {
+        document.querySelectorAll('.mensal-content-section').forEach(section => section.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+        
+        document.querySelectorAll('#mensal-controls .mensal-sub-toggle').forEach(btn => btn.classList.remove('active-sub'));
+        document.getElementById(`show-${sectionId.replace('-section', '')}`).classList.add('active-sub');
+        
+        if (sectionId === 'financeiro-section') {
+            updateFinanceDisplay();
+        }
+        if (sectionId === 'listas-section') loadAndRenderLists();
+        if (sectionId === 'planner-section') renderCalendar(currentCalendarDate);
+    }
+
+    function updateMonthlyView() {
+        currentMonth = monthNamesPt[currentCalendarDate.getMonth()];
+        calendarMonthSelect.value = currentCalendarDate.getMonth();
+        
+        const year = currentCalendarDate.getFullYear();
+        const monthString = String(currentCalendarDate.getMonth() + 1).padStart(2, '0');
+        dateInput.value = `${year}-${monthString}-01`;
+        
+        const activeSectionId = document.querySelector('#mensal-controls .mensal-sub-toggle.active-sub')?.id.replace('show-', '') + '-section' || 'planner-section';
+        showMensalSection(activeSectionId);
+    }
+
+    // ----------------------------------------------------
+    // INICIALIZAÇÃO DA APLICAÇÃO
+    // ----------------------------------------------------
+    function initApp() {
+        loadFinancialData();
+        loadAndRenderLists();
+        loadCalendarTasks();
+        loadInvestmentGoals();
+        applyTheme(localStorage.getItem('theme') || 'light');
+        currentCalendarDate = new Date();
+        initCalendarSelect();
+        renderIconPicker();
+        renderCategorySelect(false);
+        renderCategoryLimitSelect();
+        updateMonthlyView();
+        
+        updateFinanceDisplay();
+    }
+
+    initApp();
+  </script>
+</body>
+</html>
