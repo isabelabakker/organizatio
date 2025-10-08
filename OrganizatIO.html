@@ -1308,7 +1308,8 @@
     const form = document.getElementById('expense-form');
     const expenseList = document.getElementById('expense-list');
     const totalEl = document.getElementById('total');
-    const dateInput = document.getElementById('date');
+    // A LINHA ABAIXO FOI REMOVIDA POIS O ELEMENTO NÃO EXISTE
+    // const dateInput = document.getElementById('date'); 
     const descInput = document.getElementById('desc');
     const categoryInput = document.getElementById('category');
     const typeInput = document.getElementById('type');
@@ -1997,7 +1998,8 @@
     window.editExpense = function(index) {
         editingIndex = index;
         const item = dataByMonth[currentMonth][index];
-        dateInput.value = item.date;
+        // A LINHA ABAIXO FOI REMOVIDA POIS O ELEMENTO 'dateInput' NÃO EXISTE.
+        // dateInput.value = item.date;
         descInput.value = item.desc;
         typeInput.value = item.type || (item.value >= 0 ? 'receita' : 'despesa');
         renderCategorySelect(typeInput.value === 'receita');
@@ -2032,13 +2034,33 @@
         detailsModal.querySelector('h3').textContent = 'transações do mês';
     }
 
+    // ===== BLOCO DE CÓDIGO CORRIGIDO =====
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        const date = dateInput.value, desc = descInput.value, category = categoryInput.value, type = typeInput.value;
+        const desc = descInput.value, category = categoryInput.value, type = typeInput.value;
         let value = parseFloat(valueInput.value);
-        if (!date || !desc || isNaN(value)) return;
+
+        if (!desc || !category || isNaN(value)) {
+            alert('Por favor, preencha a descrição, categoria e valor.');
+            return;
+        }
+        
+        let date;
+        const expenseMonth = currentMonth; // Usa o mês atualmente selecionado
+
+        if (editingIndex !== null) {
+            // Ao editar, mantém a data original da transação
+            date = dataByMonth[currentMonth][editingIndex].date;
+        } else {
+            // Ao adicionar uma nova, cria uma data para o dia de hoje no mês selecionado
+            const today = new Date();
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+            const day = (year === today.getFullYear() && month === today.getMonth()) ? today.getDate() : 1;
+            date = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        }
+
         value = type === 'despesa' ? -Math.abs(value) : Math.abs(value);
-        const expenseMonth = monthNamesPt[new Date(date + 'T12:00:00').getMonth()];
         const newItem = { date, desc, category, type, value };
 
         if (editingIndex !== null) {
@@ -2055,11 +2077,12 @@
             cancelEdit();
         } else {
             form.reset();
-            const year = currentCalendarDate.getFullYear();
-            const monthString = String(currentCalendarDate.getMonth() + 1).padStart(2, '0');
-            dateInput.value = `${year}-${monthString}-01`;
+            typeInput.value = 'despesa'; // Garante que o tipo volte para o padrão
+            renderCategorySelect(false);
         }
     });
+    // ===== FIM DO BLOCO CORRIGIDO =====
+
 
     function renderAnnualChart() {
         const isDarkMode = document.body.classList.contains('dark-mode');
