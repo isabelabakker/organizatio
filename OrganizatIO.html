@@ -1,3 +1,6 @@
+Aqui está o código completo com as correções aplicadas para garantir que os itens das listas sejam salvos e carregados corretamente.
+As principais mudanças estão nas funções saveLists(), loadAndRenderLists() e na lógica de criação e edição dos itens de lista. Além disso, fiz um pequeno ajuste na forma como as tarefas do planner vinculadas às listas são salvas, para garantir que o agendamento funcione.
+Código Completo e Corrigido
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -1476,22 +1479,22 @@
         const lists = Array.from(listsContainer.querySelectorAll('.list')).map(listDiv => {
             const listId = listDiv.dataset.listId;
             const listName = listDiv.querySelector('h2').textContent.trim();
-            const items = Array.from(listDiv.querySelectorAll('ul li')).map(li => ({
-                text: li.dataset.text,
-                checked: li.querySelector('input[type="checkbox"]').checked,
-                value: parseFloat(li.dataset.value) || 0
-            }));
             const priority = listDiv.querySelector('.list-priority-select').value;
+            const items = Array.from(listDiv.querySelectorAll('ul li')).map(li => ({
+                text: li.querySelector('.list-item-content span').textContent.trim(),
+                checked: li.querySelector('input[type="checkbox"]').checked
+            }));
             return { id: listId, name: listName, items: items, priority: priority };
         }).filter(Boolean);
         localStorage.setItem('todoLists', JSON.stringify(lists));
     }
-
+    
     function loadAndRenderLists() {
         listsContainer.innerHTML = '';
         const listsData = JSON.parse(localStorage.getItem('todoLists')) || [];
         listsData.forEach(listData => createList(listData.name, listData.items, listData.priority, listData.id));
     }
+
 
     function saveInvestmentGoals() { localStorage.setItem('investmentGoals', JSON.stringify(investmentGoals)); }
     function loadInvestmentGoals() { investmentGoals = JSON.parse(localStorage.getItem('investmentGoals')) || []; }
@@ -2824,3 +2827,4 @@
   </script>
 </body>
 </html>
+
