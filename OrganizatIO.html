@@ -16,8 +16,6 @@
     /* CORREÇÃO PARA O TÍTULO PRINCIPAL */
     /* ------------------------------------------------ */
     #mensal-page-title {
-        /* Define a transformação de texto para "nenhuma",
-           permitindo letras maiúsculas/minúsculas normalmente */
         text-transform: none;
     }
     
@@ -26,16 +24,26 @@
     /* ------------------------------------------------ */
     body {
       font-family: Arial, sans-serif;
-      background: #F0F2F5; /* Fundo claro e limpo */
-      color: #333; /* Texto escuro padrão */
-      /* display: flex;  REMOVIDO PARA O LAYOUT DE LARGURA TOTAL */
+      background: #F0F2F5;
+      color: #333;
       height: 100vh;
       margin: 0;
-      transition: background 0.3s, color 0.3s; /* Transição suave */
-      text-transform: lowercase; /* Força todo o corpo para minúsculas */
+      transition: background 0.3s, color 0.3s;
+      text-transform: lowercase;
     }
     
-    /* ESTILOS DO BOTÃO DE TEMA FLUTUANTE */
+    #newListForm {
+        display: flex;
+        flex-direction: column;
+        max-width: 500px;
+        margin: 0 auto 30px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 15px;
+        gap: 10px;
+        background: #fdfdfd;
+    }
+
     #theme-toggle {
         position: fixed;
         top: 20px;
@@ -48,7 +56,7 @@
         height: 48px;
         font-size: 24px;
         cursor: pointer;
-        z-index: 1001; /* Para ficar acima dos modais */
+        z-index: 1001;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -59,9 +67,8 @@
         transform: scale(1.1);
     }
     
-    /* Botões principais (planner, financeiro, listas) */
     .mensal-sub-toggle {
-        background: #3586ff; /* Azul elétrico para não selecionado */
+        background: #3586ff;
         border: none;
         border-radius: 8px;
         padding: 8px 15px;
@@ -71,17 +78,17 @@
         text-transform: lowercase;
     }
     .mensal-sub-toggle:hover {
-        background: #3d71ff; /* Azul elétrico mais forte no hover */
+        background: #3d71ff;
     }
     .mensal-sub-toggle.active-sub {
-        background: #3d71ff; /* Ciano vibrante para botão selecionado */
+        background: #3d71ff;
         font-weight: bold;
         color: white;
     }
     
     .container {
       flex: 1;
-      background: #FFFFFF; /* Container branco */
+      background: #FFFFFF;
       border-radius: 20px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       margin: 20px;
@@ -97,22 +104,18 @@
       transition: color 0.3s;
     }
     
-    /* Layout do formulário financeiro (agora dentro do modal) */
     form#expense-form {
       display: grid;
-      /* data, desc, tipo, categoria, valor, grupo de botões (o último slot) */
-      grid-template-columns: 1fr; /* Coluna única para mobile-first */
+      grid-template-columns: 1fr;
       gap: 10px;
       margin-bottom: 20px;
     }
-    /* Estilo para telas maiores */
     @media (min-width: 600px) {
         form#expense-form {
              grid-template-columns: 1fr 2fr 1fr 1fr 1fr auto;
         }
     }
 
-    
     input, select, button {
       padding: 8px;
       border-radius: 10px;
@@ -122,7 +125,6 @@
       transition: background 0.3s, border-color 0.3s, color 0.3s;
     }
     
-    /* Estilo para o grupo de botões de Adicionar/Salvar/Cancelar */
     .add-btn-group {
         display: flex;
         gap: 5px;
@@ -399,6 +401,29 @@
         background: #FF1744;
     }
     
+    .edit-list-btn {
+        background: #4CAF50;
+        border: none;
+        cursor: pointer;
+        color: white;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        line-height: 1;
+        flex-shrink: 0;
+        margin-right: 5px;
+        vertical-align: middle;
+        transition: background 0.2s;
+    }
+    .edit-list-btn:hover {
+        background: #388E3C;
+    }
+
     #calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -446,19 +471,24 @@
       margin-bottom: 5px;
       transition: color 0.3s;
     }
-    .task-indicator {
-      font-size: 10px;
-      color: white;
-      background: #ff8f5b;
-      padding: 1px 4px;
-      border-radius: 3px;
-      margin-top: 2px;
-      display: inline-block;
-      max-width: 90%;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+    
+    .calendar-task-icons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+      margin-top: 5px;
+      justify-content: flex-start;
+      align-items: center;
     }
+    .task-icon-grid-view {
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+      border: 2px solid transparent;
+      padding: 1px;
+      box-sizing: border-box;
+    }
+    .task-icon-grid-view.priority-icon-alta { border-color: #FF5252; }
 
     .modal {
       display: none;
@@ -471,7 +501,7 @@
       overflow: auto;
       background-color: rgba(0,0,0,0.4);
     }
-    #categoryModal {
+    #categoryModal, #listDetailsModal {
       z-index: 1002;
     }
     .modal-content {
@@ -522,7 +552,6 @@
         }
     }
 
-
     .task-actions {
         display: flex;
         gap: 5px;
@@ -544,10 +573,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 0;
+      padding: 8px;
       border-bottom: 1px solid #eee;
       transition: border-color 0.3s;
+      border-left: 4px solid transparent;
     }
+    .task-list-item[data-list-id]:hover {
+        background: #f0f0f0;
+    }
+    .task-list-item.priority-alta { border-left-color: #FF5252; }
+
     .task-list-item button {
       background: #FF5252;
       color: white;
@@ -560,16 +595,11 @@
         background: #FF1744;
     }
     
-    .task-icon, .task-icon-indicator {
+    .task-icon {
         width: 16px;
         height: 16px;
         vertical-align: middle;
         margin-right: 8px;
-    }
-    .task-icon-indicator {
-        width: 12px;
-        height: 12px;
-        margin-right: 4px;
     }
     
     .task-icon-option {
@@ -586,7 +616,8 @@
         background: #f0f0f0;
     }
 
-    #taskIconPicker .task-icon-option:first-child {
+    #taskIconPicker .task-icon-option:first-child,
+    #list-event-icon-picker .task-icon-option:first-child {
         font-size: 10px;
         line-height: 1;
         text-align: center;
@@ -610,7 +641,16 @@
         height: 100%;
         object-fit: contain;
     }
-
+    
+    #listDetailsItems {
+        list-style: none;
+        padding: 0;
+    }
+    #listDetailsItems li {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+        font-size: 16px;
+    }
 
     #expense-category-list-container div,
     #revenue-category-list-container div {
@@ -769,6 +809,11 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.5);
       border-color: #444 !important;
     }
+    
+    body.dark-mode #newListForm {
+        background: #282828;
+        border-color: #444;
+    }
 
     body.dark-mode .list {
       background: #1F1F1F; 
@@ -785,7 +830,10 @@
         background: #1F1F1F;
     }
 
-
+    body.dark-mode #weekly-recurrence-options {
+        border-color: #444;
+    }
+    
     body.dark-mode h1,
     body.dark-mode h2,
     body.dark-mode h3,
@@ -810,6 +858,14 @@
     body.dark-mode .task-list-item {
       border-bottom: 1px solid #333;
     }
+    
+    body.dark-mode .task-list-item[data-list-id]:hover {
+        background: #282828;
+    }
+    
+    body.dark-mode #listDetailsItems li {
+        border-bottom: 1px solid #333;
+    }
 
     body.dark-mode input,
     body.dark-mode select,
@@ -831,6 +887,16 @@
     body.dark-mode .list.priority-media { border-left-color: #FFCA28; }
     body.dark-mode .list.priority-alta { border-left-color: #FF1744; }
     
+    body.dark-mode .task-list-item.priority-alta { border-left-color: #FF1744; }
+    body.dark-mode .task-icon-grid-view.priority-icon-alta { border-color: #FF1744; }
+    
+    body.dark-mode .edit-list-btn {
+        background: #2E7D32;
+    }
+    body.dark-mode .edit-list-btn:hover {
+        background: #1B5E20;
+    }
+
     body.dark-mode .list li {
       border-bottom: 1px solid #333;
     }
@@ -1009,10 +1075,35 @@
         </div>
 
         <div id="listas-section" class="mensal-content-section" style="display: none;">
-            <div class="new-list">
-                <input type="text" id="newListName" placeholder="nome da nova lista">
-                <button id="createListButton">criar lista</button>
-            </div>
+            <form id="newListForm">
+                <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 10px;">
+                     <input type="text" id="newListName" placeholder="nome da nova lista" required>
+                     <select id="newListPriority" style="text-transform: none;">
+                         <option value="baixa">prioridade: baixa</option>
+                         <option value="media">prioridade: média</option>
+                         <option value="alta">prioridade: alta</option>
+                     </select>
+                </div>
+                <div id="link-to-planner-container" style="display: none; align-items: center; gap: 8px; font-size: 14px; padding-left: 5px; cursor: pointer; margin-top: 10px;">
+                    <input type="checkbox" id="link-to-planner-checkbox" style="width: 18px; height: 18px; cursor: pointer;">
+                    <label for="link-to-planner-checkbox" style="cursor: pointer;">agendar esta lista no planner</label>
+                </div>
+                <div id="planner-link-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="date" id="list-event-date">
+                        <input type="time" id="list-event-time" value="10:00">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
+                        <div id="list-event-icon-picker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+                        <input type="hidden" id="list-event-icon">
+                    </div>
+                </div>
+                <button type="submit" style="width: 100%; margin-top: 15px;">criar lista</button>
+            </form>
+
+            <hr style="border-top: 1px solid #ddd; margin: 30px 0;">
+
             <div class="lists-container" id="listsContainer"></div>
         </div>
 
@@ -1026,10 +1117,15 @@
       <h3>adicionar tarefa</h3>
       <form id="task-form-modal">
         
-        <div style="display: grid; grid-template-columns: 1fr 3fr auto; gap: 10px; margin-bottom: 10px; align-items: center;">
+        <div style="display: grid; grid-template-columns: 1fr 3fr auto; gap: 10px; align-items: center;">
             <input type="time" id="taskTime" value="09:00">
             <input type="text" id="taskDescription" placeholder="descrição da tarefa" required>
             <button type="submit" id="add-task-btn">adicionar</button>
+        </div>
+        
+        <div style="margin: 10px 0; display: flex; align-items: center;">
+            <input type="checkbox" id="taskPriority" style="width: 18px; height: 18px; margin-right: 8px; cursor: pointer;">
+            <label for="taskPriority" style="font-size: 14px; font-weight: bold; color: #FF5252; cursor: pointer;">tarefa prioritária</label>
         </div>
 
         <div id="task-icon-picker-container" style="padding: 5px 0 15px 0;">
@@ -1037,6 +1133,27 @@
             <input type="hidden" id="taskIcon" value="">
         </div>
 
+        <div id="recurrence-options" style="margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; align-items: center;">
+            <select id="recurrenceType">
+                <option value="none">não repetir</option>
+                <option value="daily">diariamente</option>
+                <option value="weekly">semanalmente</option>
+            </select>
+            <input type="date" id="recurrenceEndDate" title="data final da recorrência">
+        </div>
+        <div id="weekly-recurrence-options" style="display: none; margin-bottom: 10px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
+            <label style="display: block; margin-bottom: 5px; font-size: 12px; font-weight: bold;">repetir nos dias:</label>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 5px; font-size: 14px;">
+                <label><input type="checkbox" name="weekday" value="0"> dom</label>
+                <label><input type="checkbox" name="weekday" value="1"> seg</label>
+                <label><input type="checkbox" name="weekday" value="2"> ter</label>
+                <label><input type="checkbox" name="weekday" value="3"> qua</label>
+                <label><input type="checkbox" name="weekday" value="4"> qui</label>
+                <label><input type="checkbox" name="weekday" value="5"> sex</label>
+                <label><input type="checkbox" name="weekday" value="6"> sáb</label>
+            </div>
+        </div>
+        
       </form>
       <h3>tarefas do dia</h3>
       <div id="tasksList"></div>
@@ -1161,6 +1278,14 @@
     </div>
   </div>
 
+  <div id="listDetailsModal" class="modal">
+    <div class="modal-content" style="max-width: 450px;">
+        <span class="close-button" onclick="closeListDetailsModal()">&times;</span>
+        <h3 id="listDetailsTitle"></h3>
+        <ul id="listDetailsItems"></ul>
+    </div>
+  </div>
+
 
   <script>
     // --- ELEMENTOS DO FORMULÁRIO FINANCEIRO (agora no modal) ---
@@ -1189,7 +1314,7 @@
     const viewCategorySpendingBtn = document.getElementById('view-category-spending-btn');
     const investmentsModal = document.getElementById('investmentsModal');
     const viewInvestmentsBtn = document.getElementById('view-investments-btn');
-    const descriptionModal = document.getElementById('descriptionModal'); // NOVO
+    const descriptionModal = document.getElementById('descriptionModal'); 
 
     // --- ELEMENTOS DE INVESTIMENTOS ---
     const newGoalForm = document.getElementById('new-goal-form');
@@ -1211,15 +1336,33 @@
     const taskIconPicker = document.getElementById('taskIconPicker');
     const taskFormModal = document.getElementById('task-form-modal');
     const addTaskBtn = document.getElementById('add-task-btn');
+    const taskPriorityInput = document.getElementById('taskPriority'); 
+
+    const recurrenceTypeInput = document.getElementById('recurrenceType');
+    const recurrenceEndDateInput = document.getElementById('recurrenceEndDate');
+    const weeklyRecurrenceOptions = document.getElementById('weekly-recurrence-options');
     
     // --- ELEMENTOS DE LISTAS ---
     const listsContainer = document.getElementById("listsContainer");
+    const newListForm = document.getElementById('newListForm');
     const newListNameInput = document.getElementById("newListName");
-    const createListButton = document.getElementById("createListButton");
+    const newListPriorityInput = document.getElementById("newListPriority");
+    const linkToPlannerContainer = document.getElementById('link-to-planner-container');
+    const linkToPlannerCheckbox = document.getElementById('link-to-planner-checkbox');
+    const plannerLinkOptions = document.getElementById('planner-link-options');
+    const listEventDateInput = document.getElementById('list-event-date');
+    const listEventTimeInput = document.getElementById('list-event-time');
+    const listEventIconPicker = document.getElementById('list-event-icon-picker');
+    const listEventIconHiddenInput = document.getElementById('list-event-icon');
+
+    const listDetailsModal = document.getElementById('listDetailsModal');
+    const listDetailsTitle = document.getElementById('listDetailsTitle');
+    const listDetailsItems = document.getElementById('listDetailsItems');
+
 
     // --- ÍCONES DE TAREFAS ---
     const taskIcons = {
-         "nenhum": "images/none.png",
+        "nenhum": "images/none.png",
         "médico": "images/doctor.png",
         "pet": "images/pet.png",
         "date": "images/date.png",
@@ -1230,7 +1373,6 @@
         "comida": "images/food.png",
         "aniversário": "images/birthday.png",
         "festa": "images/party.png"
-
     };
     
     const USE_EMOJI_ICONS = true;
@@ -1260,6 +1402,7 @@
     let currentMonth = null;
     let currentCalendarDate = new Date();
     let selectedDateKey = null, editingIndex = null;
+    let calendarTasks = {};
     const monthNamesPt = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
     const goalColors = ['#FF5252', '#3F51B5', '#4CAF50', '#FFC107', '#9C27B0', '#00BCD4', '#FF9800'];
 
@@ -1314,9 +1457,8 @@
 
     function saveLists() {
         const lists = Array.from(listsContainer.querySelectorAll('.list')).map(listDiv => {
-            const titleElement = listDiv.querySelector('h2');
-            if (!titleElement) return null;
-            const listName = Array.from(titleElement.childNodes).filter(node => node.nodeType === 3)[0].textContent.trim();
+            const listId = listDiv.dataset.listId;
+            const listName = listDiv.querySelector('h2').textContent.trim();
             const items = Array.from(listDiv.querySelectorAll('ul li')).map(li => ({
                 text: li.querySelector('.list-item-content').children[1].tagName === 'SPAN' 
                     ? li.querySelector('.list-item-content span').textContent
@@ -1324,7 +1466,7 @@
                 checked: li.querySelector('input[type="checkbox"]').checked
             }));
             const priority = listDiv.querySelector('.list-priority-select').value;
-            return { name: listName, items: items, priority: priority };
+            return { id: listId, name: listName, items: items, priority: priority };
         }).filter(Boolean);
         localStorage.setItem('todoLists', JSON.stringify(lists));
     }
@@ -1332,7 +1474,7 @@
     function loadAndRenderLists() {
         listsContainer.innerHTML = '';
         const listsData = JSON.parse(localStorage.getItem('todoLists')) || [];
-        listsData.forEach(listData => createList(listData.name, listData.items, listData.priority));
+        listsData.forEach(listData => createList(listData.name, listData.items, listData.priority, listData.id));
     }
 
     function saveInvestmentGoals() { localStorage.setItem('investmentGoals', JSON.stringify(investmentGoals)); }
@@ -1340,7 +1482,7 @@
 
 
     // ----------------------------------------------------
-    // MODAIS FINANCEIROS
+    // MODAIS
     // ----------------------------------------------------
     function openDetailsModal() {
         detailsModal.style.display = 'block';
@@ -1375,7 +1517,7 @@
     function closeInvestmentsModal() {
         investmentsModal.style.display = 'none';
     }
-    // --- NOVO: Funções para o modal de descrição ---
+    
     function openDescriptionModal(description) {
         const modalText = document.getElementById('modal-description-text');
         modalText.textContent = description;
@@ -1384,6 +1526,36 @@
 
     function closeDescriptionModal() {
         descriptionModal.style.display = 'none';
+    }
+    
+    function openListDetailsModal(listId) {
+        const allLists = JSON.parse(localStorage.getItem('todoLists')) || [];
+        const targetList = allLists.find(list => list.id === listId);
+
+        if (targetList) {
+            listDetailsTitle.textContent = targetList.name;
+            listDetailsItems.innerHTML = '';
+            if (targetList.items.length === 0) {
+                listDetailsItems.innerHTML = '<li>esta lista não tem itens.</li>';
+            } else {
+                targetList.items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item.text;
+                    if (item.checked) {
+                        li.style.textDecoration = 'line-through';
+                        li.style.opacity = '0.6';
+                    }
+                    listDetailsItems.appendChild(li);
+                });
+            }
+            listDetailsModal.style.display = 'block';
+        } else {
+            alert("Erro: não foi possível encontrar a lista vinculada.");
+        }
+    }
+
+    function closeListDetailsModal() {
+        listDetailsModal.style.display = 'none';
     }
 
     // ----------------------------------------------------
@@ -1931,30 +2103,47 @@
         const year = date.getFullYear(), month = date.getMonth();
         calendarMonthSelect.value = month;
         const firstDayOfMonth = new Date(year, month, 1).getDay(), daysInMonth = new Date(year, month + 1, 0).getDate(), daysInPrevMonth = new Date(year, month, 0).getDate();
+        
         for (let i = firstDayOfMonth; i > 0; i--) {
             const dayDiv = document.createElement('div'); dayDiv.className = 'calendar-day inactive'; dayDiv.innerHTML = `<span class="calendar-day-number">${daysInPrevMonth - i + 1}</span>`; calendarGrid.appendChild(dayDiv);
         }
+
         for (let day = 1; day <= daysInMonth; day++) {
-            const dayDiv = document.createElement('div'); dayDiv.className = 'calendar-day'; dayDiv.innerHTML = `<span class="calendar-day-number">${day}</span>`;
+            const dayDiv = document.createElement('div');
+            dayDiv.className = 'calendar-day';
+            dayDiv.innerHTML = `<span class="calendar-day-number">${day}</span>`;
             const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             dayDiv.addEventListener('click', () => openTaskModal(dateKey, day));
+
             const tasks = calendarTasks[dateKey] || [];
             if (tasks.length > 0) {
-                dayDiv.style.border = '2px solid #a572ff';
-                tasks.slice(0, 2).forEach(task => {
-                    const taskEl = document.createElement('div'); taskEl.className = 'task-indicator';
-                    const iconHtml = task.icon ? `<img src="${task.icon}" class="task-icon-indicator" alt="ícone">` : '';
-                    taskEl.innerHTML = `${iconHtml}${task.time} - ${task.description}`;
-                    dayDiv.appendChild(taskEl);
+                dayDiv.style.borderColor = '#a572ff';
+                const iconContainer = document.createElement('div');
+                iconContainer.className = 'calendar-task-icons';
+                
+                tasks.forEach(task => {
+                    if (task.icon && task.icon !== "images/none.png") {
+                        const iconEl = document.createElement('img');
+                        iconEl.src = task.icon;
+                        iconEl.title = task.description;
+                        iconEl.className = 'task-icon-grid-view';
+                        if (task.priority === 'alta') {
+                            iconEl.classList.add('priority-icon-alta');
+                        }
+                        iconContainer.appendChild(iconEl);
+                    }
                 });
-                if (tasks.length > 2) {
-                    const moreEl = document.createElement('div'); moreEl.className = 'task-indicator'; moreEl.style.background = '#FF1744'; moreEl.textContent = `+${tasks.length - 2} mais`; dayDiv.appendChild(moreEl);
-                }
+                dayDiv.appendChild(iconContainer);
             }
+            
             const today = new Date();
-            if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) dayDiv.style.border = '2px solid #e3e3e3';
+            if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                dayDiv.style.borderColor = '#e3e3e3';
+                dayDiv.style.borderWidth = '2px';
+            }
             calendarGrid.appendChild(dayDiv);
         }
+
         const totalSlots = Math.ceil((firstDayOfMonth + daysInMonth) / 7) * 7;
         for (let i = 1; i <= totalSlots - (firstDayOfMonth + daysInMonth); i++) {
             const dayDiv = document.createElement('div'); dayDiv.className = 'calendar-day inactive'; dayDiv.innerHTML = `<span class="calendar-day-number">${i}</span>`; calendarGrid.appendChild(dayDiv);
@@ -1968,17 +2157,29 @@
         renderDayTasks();
         taskModal.style.display = 'block';
         cancelTaskEdit();
+        recurrenceEndDateInput.value = '';
     }
 
     function cancelTaskEdit() {
         taskFormModal.removeAttribute('data-editing-id');
         taskDescriptionInput.value = '';
         taskTimeInput.value = '09:00';
+        taskPriorityInput.checked = false; 
         const defaultOption = taskIconPicker.querySelector('.task-icon-option');
         if (defaultOption) defaultOption.click();
         addTaskBtn.textContent = 'adicionar';
         addTaskBtn.classList.remove('save-edit-btn');
         taskModal.querySelector('h3').textContent = 'adicionar tarefa';
+        
+        recurrenceTypeInput.value = 'none';
+        recurrenceEndDateInput.value = '';
+        recurrenceTypeInput.disabled = false;
+        recurrenceEndDateInput.disabled = false;
+        weeklyRecurrenceOptions.style.display = 'none';
+        weeklyRecurrenceOptions.querySelectorAll('input').forEach(cb => {
+            cb.checked = false;
+            cb.disabled = false;
+        });
     }
 
     window.closeTaskModal = function() { taskModal.style.display = 'none'; cancelTaskEdit(); renderCalendar(currentCalendarDate); }
@@ -1987,27 +2188,55 @@
         const tasks = calendarTasks[selectedDateKey] || [];
         const taskToEdit = tasks.find(t => t.id === taskId);
         if (!taskToEdit) return;
+        
+        if (taskToEdit.linkedListId) {
+            alert("tarefas vinculadas a listas não podem ser editadas diretamente. edite a lista na aba 'listas'.");
+            return;
+        }
+
         taskTimeInput.value = taskToEdit.time;
         taskDescriptionInput.value = taskToEdit.description;
+        taskPriorityInput.checked = taskToEdit.priority === 'alta'; 
+        
         addTaskBtn.textContent = 'salvar';
         addTaskBtn.classList.add('save-edit-btn');
         taskFormModal.setAttribute('data-editing-id', taskId);
         taskModal.querySelector('h3').textContent = 'editar tarefa';
         taskIconHiddenInput.value = taskToEdit.icon;
+        
         taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
             option.classList.toggle('selected', option.getAttribute('data-icon-path') === taskToEdit.icon);
         });
+
+        if (taskToEdit.recurrenceId) {
+            recurrenceTypeInput.value = 'none';
+            recurrenceTypeInput.disabled = true;
+            recurrenceEndDateInput.disabled = true;
+            weeklyRecurrenceOptions.querySelectorAll('input').forEach(cb => cb.disabled = true);
+        }
+        
         taskDescriptionInput.focus();
     }
-
+    
     function renderDayTasks() {
         tasksList.innerHTML = '';
         const tasks = calendarTasks[selectedDateKey] || [];
         tasks.forEach(task => { if (!task.id) task.id = Date.now() + Math.random().toString().substring(2, 6); });
         tasks.sort((a, b) => (a.time > b.time) ? 1 : -1);
         if (tasks.length === 0) { tasksList.innerHTML = '<p style="text-align: center; color: #777;">nenhuma tarefa agendada.</p>'; return; }
+        
         tasks.forEach((task) => {
-            const taskItem = document.createElement('div'); taskItem.className = 'task-list-item';
+            const taskItem = document.createElement('div');
+            taskItem.className = 'task-list-item';
+            if (task.priority === 'alta') {
+                taskItem.classList.add('priority-alta');
+            }
+            if (task.linkedListId) {
+                taskItem.dataset.listId = task.linkedListId;
+                taskItem.title = 'clique para ver os itens da lista';
+                taskItem.style.cursor = 'pointer';
+            }
+
             const iconHtml = task.icon ? `<img src="${task.icon}" class="task-icon" alt="ícone da tarefa">` : '';
             taskItem.innerHTML = `<span>${iconHtml}<strong>${task.time}</strong> - ${task.description}</span><div class="task-actions"><button class="edit-task-btn" onclick="editTask('${task.id}')">editar</button><button onclick="removeTask('${task.id}')">remover</button></div>`;
             tasksList.appendChild(taskItem);
@@ -2016,63 +2245,257 @@
 
     taskFormModal.addEventListener('submit', function(e) {
         e.preventDefault();
-        const time = taskTimeInput.value, description = taskDescriptionInput.value.trim(), icon = taskIconHiddenInput.value;
-        if (!time || !description) return alert('Por favor, preencha o horário e a descrição da tarefa.');
+        const time = taskTimeInput.value;
+        const description = taskDescriptionInput.value.trim();
+        const icon = taskIconHiddenInput.value;
+        const priority = taskPriorityInput.checked ? 'alta' : 'nenhuma';
+        
+        if (!time || !description) return alert('por favor, preencha o horário e a descrição da tarefa.');
+
         const editingId = taskFormModal.getAttribute('data-editing-id');
+        const recurrenceType = recurrenceTypeInput.value;
+
         if (editingId) {
             const taskIndex = (calendarTasks[selectedDateKey] || []).findIndex(t => t.id == editingId);
-            if (taskIndex > -1) Object.assign(calendarTasks[selectedDateKey][taskIndex], { time, description, icon });
-            cancelTaskEdit();
+            if (taskIndex === -1) return;
+
+            const originalTask = calendarTasks[selectedDateKey][taskIndex];
+            const updatedTaskData = { time, description, icon, priority };
+
+            if (originalTask.recurrenceId) {
+                const updateAll = confirm("esta é uma tarefa recorrente. deseja atualizar TODAS as futuras ocorrências?\n\n(clique em 'ok' para atualizar todas, ou 'cancelar' para atualizar apenas esta.)");
+                if (updateAll) {
+                    const taskDate = new Date(`${selectedDateKey}T12:00:00`);
+                    for (const dateKey in calendarTasks) {
+                        const currentDate = new Date(`${dateKey}T12:00:00`);
+                        if (currentDate >= taskDate) {
+                            calendarTasks[dateKey].forEach(task => {
+                                if (task.recurrenceId === originalTask.recurrenceId) {
+                                    Object.assign(task, updatedTaskData);
+                                }
+                            });
+                        }
+                    }
+                } else {
+                    Object.assign(originalTask, updatedTaskData);
+                    originalTask.recurrenceId = null;
+                }
+            } else {
+                Object.assign(originalTask, updatedTaskData);
+            }
         } else {
-            if (!calendarTasks[selectedDateKey]) calendarTasks[selectedDateKey] = [];
-            const newTaskId = Date.now().toString() + Math.random().toString().substring(2, 6);
-            calendarTasks[selectedDateKey].push({ id: newTaskId, time, description, icon });
-            taskDescriptionInput.value = '';
-            taskTimeInput.value = time;
+            if (recurrenceType === 'none') {
+                if (!calendarTasks[selectedDateKey]) calendarTasks[selectedDateKey] = [];
+                calendarTasks[selectedDateKey].push({ id: Date.now().toString(), time, description, icon, priority, recurrenceId: null });
+            } else {
+                const endDateStr = recurrenceEndDateInput.value;
+                if (!endDateStr) return alert('por favor, selecione uma data final para a recorrência.');
+
+                const startDate = new Date(`${selectedDateKey}T12:00:00`);
+                const endDate = new Date(`${endDateStr}T12:00:00`);
+                if (startDate > endDate) return alert('a data final não pode ser anterior à data de início.');
+
+                const recurrenceId = Date.now().toString();
+                let currentDate = new Date(startDate);
+                
+                const selectedWeekdays = recurrenceType === 'weekly' 
+                    ? Array.from(weeklyRecurrenceOptions.querySelectorAll('input:checked')).map(cb => parseInt(cb.value))
+                    : [];
+
+                if (recurrenceType === 'weekly' && selectedWeekdays.length === 0) {
+                    return alert('por favor, selecione pelo menos um dia da semana para a recorrência semanal.');
+                }
+
+                while(currentDate <= endDate) {
+                    const dateKey = currentDate.toISOString().split('T')[0];
+                    let shouldAddTask = false;
+
+                    if (recurrenceType === 'daily') {
+                        shouldAddTask = true;
+                    } else if (recurrenceType === 'weekly') {
+                        if (selectedWeekdays.includes(currentDate.getDay())) {
+                            shouldAddTask = true;
+                        }
+                    }
+                    
+                    if (shouldAddTask) {
+                        if (!calendarTasks[dateKey]) calendarTasks[dateKey] = [];
+                        calendarTasks[dateKey].push({
+                            id: Date.now().toString() + Math.random(),
+                            time,
+                            description,
+                            icon,
+                            priority,
+                            recurrenceId
+                        });
+                    }
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+            }
         }
-        saveCalendarTasks(); renderDayTasks();
+        
+        saveCalendarTasks();
+        renderDayTasks();
+        if (editingId) {
+           cancelTaskEdit();
+        } else {
+           taskDescriptionInput.value = '';
+        }
     });
 
     window.removeTask = function(taskId) {
-        if (calendarTasks[selectedDateKey]) {
+        if (!calendarTasks[selectedDateKey]) return;
+
+        const taskToRemove = calendarTasks[selectedDateKey].find(t => t.id === taskId);
+        if (!taskToRemove) return;
+
+        if (taskToRemove.recurrenceId) {
+            const deleteAll = confirm("esta é uma tarefa recorrente. deseja apagar TODAS as futuras ocorrências?\n\n(clique em 'ok' para apagar todas, ou 'cancelar' para apagar apenas esta.)");
+            
+            if (deleteAll) {
+                const recurrenceId = taskToRemove.recurrenceId;
+                const taskDate = new Date(`${selectedDateKey}T12:00:00`);
+                
+                for (const dateKey in calendarTasks) {
+                    const currentDate = new Date(`${dateKey}T12:00:00`);
+                    if (currentDate >= taskDate) {
+                        calendarTasks[dateKey] = calendarTasks[dateKey].filter(task => task.recurrenceId !== recurrenceId);
+                        if (calendarTasks[dateKey].length === 0) {
+                            delete calendarTasks[dateKey];
+                        }
+                    }
+                }
+            } else {
+                calendarTasks[selectedDateKey] = calendarTasks[selectedDateKey].filter(t => t.id !== taskId);
+            }
+        } else {
             calendarTasks[selectedDateKey] = calendarTasks[selectedDateKey].filter(t => t.id !== taskId);
-            if (calendarTasks[selectedDateKey].length === 0) delete calendarTasks[selectedDateKey];
-            saveCalendarTasks(); renderDayTasks();
+        }
+
+        if (calendarTasks[selectedDateKey] && calendarTasks[selectedDateKey].length === 0) {
+            delete calendarTasks[selectedDateKey];
+        }
+
+        saveCalendarTasks();
+        renderDayTasks();
+    }
+    
+    function renderIconPicker(pickerElement, hiddenInputElement) {
+        if (!pickerElement || !hiddenInputElement) return;
+        pickerElement.innerHTML = '';
+
+        for (const key in taskIcons) {
+            pickerElement.innerHTML += `<div class="task-icon-option" data-icon-path="${taskIcons[key]}" title="${key}"><img src="${taskIcons[key]}" alt="${key}"></div>`;
+        }
+
+        pickerElement.querySelectorAll('.task-icon-option').forEach(option => {
+            option.addEventListener('click', function() {
+                pickerElement.querySelector('.selected')?.classList.remove('selected');
+                this.classList.add('selected');
+                hiddenInputElement.value = this.getAttribute('data-icon-path');
+            });
+        });
+
+        const firstOption = pickerElement.querySelector('.task-icon-option');
+        if (firstOption) {
+            firstOption.click();
         }
     }
     
-    function renderIconPicker() {
+    function restoreOriginalListButtons(listDiv) {
+        const actionsDiv = listDiv.querySelector('.list-title-actions');
+        actionsDiv.innerHTML = '';
         
-        for (const key in taskIcons) {
-            taskIconPicker.innerHTML += `<div class="task-icon-option" data-icon-path="${taskIcons[key]}" title="${key}"><img src="${taskIcons[key]}" alt="${key}"></div>`;
-        }
-        taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-            option.addEventListener('click', function() {
-                taskIconPicker.querySelector('.selected')?.classList.remove('selected');
-                this.classList.add('selected');
-                taskIconHiddenInput.value = this.getAttribute('data-icon-path');
-            });
-        });
-        taskIconPicker.querySelector('.task-icon-option').click();
-    }
-
-    window.createList = function(initialName, initialItems = [], initialPriority = 'baixa') {
-        let listName = initialName, fromInput = false;
-        if (initialName === undefined) {
-            listName = newListNameInput.value.trim().toLowerCase();
-            if (!listName) return; newListNameInput.value = ""; fromInput = true;
-        }
-        const listDiv = document.createElement("div");
-        listDiv.className = "list priority-" + initialPriority;
-
-        const title = document.createElement("h2");
-        title.textContent = listName + ' ';
+        const editBtn = document.createElement("button");
+        editBtn.innerHTML = "✏️";
+        editBtn.className = "edit-list-btn";
+        editBtn.onclick = () => toggleListTitleEdit(listDiv);
         
         const removeBtn = document.createElement("button");
         removeBtn.textContent = "x";
         removeBtn.className = "delete-list-circular-btn";
         removeBtn.onclick = () => { listDiv.remove(); saveLists(); };
-        title.appendChild(removeBtn);
+
+        actionsDiv.appendChild(editBtn);
+        actionsDiv.appendChild(removeBtn);
+    }
+
+    function toggleListTitleEdit(listDiv) {
+        const titleContainer = listDiv.querySelector('.list-title-container');
+        const actionsDiv = listDiv.querySelector('.list-title-actions');
+        const titleElement = titleContainer.querySelector('h2');
+        const originalName = titleElement.textContent.trim();
+
+        const inputField = document.createElement('input');
+        inputField.type = 'text';
+        inputField.value = originalName;
+        inputField.style.flexGrow = 1;
+
+        titleContainer.replaceChild(inputField, titleElement);
+        inputField.focus();
+
+        actionsDiv.innerHTML = '';
+        const saveBtn = document.createElement('button');
+        saveBtn.innerHTML = '✔️';
+        saveBtn.className = 'save-item-btn';
+        saveBtn.onclick = () => {
+            const newName = inputField.value.trim();
+            if (newName) {
+                titleElement.textContent = newName;
+                titleContainer.replaceChild(titleElement, inputField);
+                restoreOriginalListButtons(listDiv);
+                saveLists();
+            }
+        };
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.innerHTML = '❌';
+        cancelBtn.className = 'cancel-item-btn';
+        cancelBtn.onclick = () => {
+            titleContainer.replaceChild(titleElement, inputField);
+            restoreOriginalListButtons(listDiv);
+        };
+
+        actionsDiv.appendChild(saveBtn);
+        actionsDiv.appendChild(cancelBtn);
+    }
+
+    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString()) {
+        if (!listName) return;
+
+        const listDiv = document.createElement("div");
+        listDiv.className = "list priority-" + initialPriority;
+        listDiv.dataset.listId = listId;
+
+        const titleContainer = document.createElement('div');
+        titleContainer.className = 'list-title-container';
+        titleContainer.style.display = 'flex';
+        titleContainer.style.justifyContent = 'space-between';
+        titleContainer.style.alignItems = 'center';
+        titleContainer.style.marginBottom = '10px';
+
+        const title = document.createElement("h2");
+        title.textContent = listName;
+        title.style.margin = 0;
+        title.style.fontSize = '18px';
+
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'list-title-actions';
+        
+        const editBtn = document.createElement("button");
+        editBtn.innerHTML = "✏️";
+        editBtn.className = "edit-list-btn";
+        editBtn.onclick = () => toggleListTitleEdit(listDiv);
+        
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "x";
+        removeBtn.className = "delete-list-circular-btn";
+        removeBtn.onclick = () => { listDiv.remove(); saveLists(); };
+
+        actionsDiv.appendChild(editBtn);
+        actionsDiv.appendChild(removeBtn);
+        titleContainer.appendChild(title);
+        titleContainer.appendChild(actionsDiv);
         
         const prioritySelect = document.createElement("select");
         prioritySelect.className = "list-priority-select";
@@ -2182,7 +2605,7 @@
         
         addBtn.onclick = () => { const text = input.value.trim(); if (!text) return; input.value = ""; addItem(text); checkCompletion(listDiv); saveLists(); };
         
-        listDiv.appendChild(title);
+        listDiv.appendChild(titleContainer);
         listDiv.appendChild(prioritySelect);
         inputGroup.appendChild(input);
         inputGroup.appendChild(addBtn);
@@ -2192,7 +2615,9 @@
         
         initialItems.forEach(item => addItem(item.text, item.checked));
         checkCompletion(listDiv);
-        if (fromInput) saveLists();
+        if (initialItems.length === 0) {
+            saveLists();
+        }
     }
 
     function checkCompletion(listDiv) {
@@ -2208,27 +2633,97 @@
         if (e.target.classList.contains('edit-btn')) window.editExpense(parseInt(index));
         else if (e.target.classList.contains('delete-btn')) window.deleteExpense(parseInt(index));
     });
-    createListButton.addEventListener('click', () => createList());
+
+    newListForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const listName = newListNameInput.value.trim().toLowerCase();
+        if (!listName) return;
+
+        const listPriority = newListPriorityInput.value;
+        const newListId = Date.now().toString();
+        createList(listName, [], listPriority, newListId);
+        
+        if (linkToPlannerCheckbox.checked) {
+            const eventDate = listEventDateInput.value;
+            const eventTime = listEventTimeInput.value;
+            const eventIcon = listEventIconHiddenInput.value;
+
+            if (!eventDate || !eventTime) {
+                alert('Por favor, preencha a data e o horário para agendar a tarefa.');
+                return;
+            }
+
+            const newTask = {
+                id: Date.now().toString() + Math.random(),
+                time: eventTime,
+                description: listName,
+                icon: eventIcon,
+                priority: listPriority === 'alta' ? 'alta' : 'nenhuma',
+                recurrenceId: null,
+                linkedListId: newListId 
+            };
+
+            if (!calendarTasks[eventDate]) calendarTasks[eventDate] = [];
+            
+            calendarTasks[eventDate].push(newTask);
+            saveCalendarTasks();
+        }
+        
+        newListForm.reset();
+        linkToPlannerContainer.style.display = 'none';
+        plannerLinkOptions.style.display = 'none';
+        listEventDateInput.required = false;
+        listEventTimeInput.required = false;
+    });
+
+    newListNameInput.addEventListener('input', () => {
+        linkToPlannerContainer.style.display = newListNameInput.value.trim() ? 'flex' : 'none';
+    });
+
+    linkToPlannerCheckbox.addEventListener('change', () => {
+        const isChecked = linkToPlannerCheckbox.checked;
+        plannerLinkOptions.style.display = isChecked ? 'flex' : 'none';
+        listEventDateInput.required = isChecked;
+        listEventTimeInput.required = isChecked;
+    });
+    
+    tasksList.addEventListener('click', (e) => {
+        const taskItem = e.target.closest('.task-list-item');
+        if (taskItem && taskItem.dataset.listId) {
+            if (e.target.tagName.toLowerCase() === 'button') return;
+            openListDetailsModal(taskItem.dataset.listId);
+        }
+    });
+
+
     typeInput.addEventListener('change', (e) => renderCategorySelect(e.target.value === 'receita'));
     document.getElementById('show-planner').addEventListener('click', () => showMensalSection('planner-section'));
     document.getElementById('show-financeiro').addEventListener('click', () => showMensalSection('financeiro-section'));
     document.getElementById('show-listas').addEventListener('click', () => showMensalSection('listas-section'));
     manageCategoriesBtn.addEventListener('click', openCategoryModal);
     addCategoryButton.addEventListener('click', addCategory);
-    newCategoryNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addCategory(); });
+    newCategoryNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !linkToPlannerCheckbox.checked) newListForm.requestSubmit(); });
     calendarMonthSelect.addEventListener('change', (e) => { currentCalendarDate.setMonth(parseInt(e.target.value)); updateMonthlyView(); });
     
     viewDetailsBtn.addEventListener('click', openDetailsModal);
     viewCategorySpendingBtn.addEventListener('click', openCategorySpendingModal);
     viewInvestmentsBtn.addEventListener('click', openInvestmentsModal);
     
+    recurrenceTypeInput.addEventListener('change', () => {
+        weeklyRecurrenceOptions.style.display = recurrenceTypeInput.value === 'weekly' ? 'block' : 'none';
+        const isRecurrent = recurrenceTypeInput.value !== 'none';
+        recurrenceEndDateInput.style.display = isRecurrent ? 'block' : 'none';
+        recurrenceEndDateInput.required = isRecurrent;
+    });
+
     window.onclick = function(event) {
         if (event.target == taskModal) closeTaskModal();
         if (event.target == categoryModal) closeCategoryModal();
         if (event.target == detailsModal) closeDetailsModal();
         if (event.target == categorySpendingModal) closeCategorySpendingModal();
         if (event.target == investmentsModal) closeInvestmentsModal();
-        if (event.target == descriptionModal) closeDescriptionModal(); // NOVO
+        if (event.target == descriptionModal) closeDescriptionModal();
+        if (event.target == listDetailsModal) closeListDetailsModal();
     }
     
     function showMensalSection(sectionId) {
@@ -2241,7 +2736,9 @@
         if (sectionId === 'financeiro-section') {
             updateFinanceDisplay();
         }
-        if (sectionId === 'listas-section') loadAndRenderLists();
+        if (sectionId === 'listas-section') {
+            loadAndRenderLists();
+        }
         if (sectionId === 'planner-section') renderCalendar(currentCalendarDate);
     }
 
@@ -2265,7 +2762,10 @@
         applyTheme(localStorage.getItem('theme') || 'light');
         currentCalendarDate = new Date();
         initCalendarSelect();
-        renderIconPicker();
+        
+        renderIconPicker(taskIconPicker, taskIconHiddenInput);
+        renderIconPicker(listEventIconPicker, listEventIconHiddenInput);
+
         renderCategorySelect(false);
         renderCategoryLimitSelect();
         updateMonthlyView();
