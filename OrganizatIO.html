@@ -42,6 +42,7 @@
         border-radius: 15px;
         gap: 10px;
         background: #fdfdfd;
+        transition: background 0.3s, border-color 0.3s;
     }
 
     #theme-toggle {
@@ -112,7 +113,7 @@
     }
     @media (min-width: 600px) {
         form#expense-form {
-             grid-template-columns: 1fr 2fr 1fr 1fr 1fr auto;
+             grid-template-columns: 2fr 1fr 1fr 1fr auto;
         }
     }
 
@@ -277,12 +278,6 @@
         text-transform: lowercase;
     }
 
-    .new-list {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-      gap: 10px;
-    }
     .lists-container {
       display: flex;
       flex-wrap: wrap;
@@ -350,12 +345,17 @@
       display: flex;
       align-items: center;
       flex-grow: 1;
+      gap: 8px;
+    }
+    .list-item-value {
+        color: #888;
+        font-size: 12px;
+        margin-left: auto;
     }
 
     .list-item-content span,
     .list-item-content input[type="text"] {
       flex-grow: 1;
-      margin-left: 8px;
       border: 1px solid transparent;
       padding: 2px 4px;
     }
@@ -651,6 +651,12 @@
         border-bottom: 1px solid #eee;
         font-size: 16px;
     }
+    #modal-date-text {
+        font-size: 14px;
+        color: #888;
+        margin-top: 10px;
+        transition: color 0.3s;
+    }
 
     #expense-category-list-container div,
     #revenue-category-list-container div {
@@ -842,6 +848,10 @@
       color: #FFFFFF;
     }
     
+    body.dark-mode #modal-date-text {
+        color: #aaa;
+    }
+    
     body.dark-mode .list.completed {
         opacity: 0.4;
     }
@@ -865,6 +875,10 @@
     
     body.dark-mode #listDetailsItems li {
         border-bottom: 1px solid #333;
+    }
+    
+    body.dark-mode .list-item-value {
+        color: #aaa;
     }
 
     body.dark-mode input,
@@ -1114,6 +1128,11 @@
     <div class="modal-content">
       <span class="close-button" onclick="closeTaskModal()">&times;</span>
       
+      <h3>tarefas do dia</h3>
+      <div id="tasksList"></div>
+
+      <hr style="border-top: 1px solid #ddd; margin: 20px 0;">
+
       <h3>adicionar tarefa</h3>
       <form id="task-form-modal">
         
@@ -1155,8 +1174,6 @@
         </div>
         
       </form>
-      <h3>tarefas do dia</h3>
-      <div id="tasksList"></div>
     </div>
   </div>
   
@@ -1191,7 +1208,6 @@
           <span class="close-button" onclick="closeDetailsModal()">&times;</span>
           <h3>transações do mês</h3>
           <form id="expense-form">
-              <input type="date" id="date" required>
               <input type="text" id="desc" placeholder="descrição" required>
               <select id="type">
                   <option value="despesa">despesa</option>
@@ -1210,7 +1226,6 @@
                   <table id="expense-table">
                       <thead>
                           <tr>
-                              <th>data</th>
                               <th>categoria</th>
                               <th>valor (r$)</th>
                               <th>ações</th>
@@ -1271,10 +1286,11 @@
   </div>
   
   <div id="descriptionModal" class="modal">
-    <div class="modal-content" style="max-width: 450px;">
+    <div class="modal-content" style="max-width: 450px; text-align: center;">
         <span class="close-button" onclick="closeDescriptionModal()">&times;</span>
-        <h3>descrição da transação</h3>
-        <p id="modal-description-text" style="text-align: center; font-size: 16px; margin-top: 20px; line-height: 1.5;"></p>
+        <h3>detalhes</h3>
+        <p id="modal-description-text" style="font-size: 16px; margin-top: 20px; line-height: 1.5;"></p>
+        <p id="modal-date-text"></p>
     </div>
   </div>
 
@@ -1460,10 +1476,9 @@
             const listId = listDiv.dataset.listId;
             const listName = listDiv.querySelector('h2').textContent.trim();
             const items = Array.from(listDiv.querySelectorAll('ul li')).map(li => ({
-                text: li.querySelector('.list-item-content').children[1].tagName === 'SPAN' 
-                    ? li.querySelector('.list-item-content span').textContent
-                    : li.querySelector('.list-item-content input[type="text"]').value,
-                checked: li.querySelector('input[type="checkbox"]').checked
+                text: li.dataset.text,
+                checked: li.querySelector('input[type="checkbox"]').checked,
+                value: parseFloat(li.dataset.value) || 0
             }));
             const priority = listDiv.querySelector('.list-priority-select').value;
             return { id: listId, name: listName, items: items, priority: priority };
@@ -1518,9 +1533,18 @@
         investmentsModal.style.display = 'none';
     }
     
-    function openDescriptionModal(description) {
-        const modalText = document.getElementById('modal-description-text');
-        modalText.textContent = description;
+    function openDescriptionModal(description, date) {
+        const modalDescText = document.getElementById('modal-description-text');
+        const modalDateText = document.getElementById('modal-date-text');
+        
+        modalDescText.textContent = description;
+        if (date) {
+            const [year, month, day] = date.split('-');
+            modalDateText.textContent = `data: ${day}/${month}/${year}`;
+        } else {
+            modalDateText.textContent = '';
+        }
+
         descriptionModal.style.display = 'block';
     }
 
@@ -1932,14 +1956,13 @@
 
             let iconHtml;
             if (USE_EMOJI_ICONS) {
-                iconHtml = `<span title="${item.category}" class="category-icon ${iconColorClass}" onclick="openDescriptionModal('${escapedDesc}')" style="cursor: pointer;">${lookup.emoji}</span>`;
+                iconHtml = `<span title="${item.category}" class="category-icon ${iconColorClass}" onclick="openDescriptionModal('${escapedDesc}', '${item.date}')" style="cursor: pointer;">${lookup.emoji}</span>`;
             } else {
-                iconHtml = `<img src="images/categories/${lookup.iconFile}" title="${item.category}" class="category-icon ${iconColorClass}" alt="${item.category}" onclick="openDescriptionModal('${escapedDesc}')" style="cursor: pointer;">`;
+                iconHtml = `<img src="images/categories/${lookup.iconFile}" title="${item.category}" class="category-icon ${iconColorClass}" alt="${item.category}" onclick="openDescriptionModal('${escapedDesc}', '${item.date}')" style="cursor: pointer;">`;
             }
             
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${formatDateToBRL(item.date)}</td>
                 <td>${iconHtml}</td>
                 <td style="color: ${transactionType === 'receita' ? '#4CAF50' : '#FF5252'}; font-weight: bold;">${formatCurrency(Math.abs(item.value))}</td>
                 <td><button class="edit-btn" data-index="${index}">editar</button><button class="delete-btn" data-index="${index}">excluir</button></td>
@@ -2153,7 +2176,6 @@
     function openTaskModal(dateKey, day) {
         selectedDateKey = dateKey;
         taskModal.querySelector('h3').textContent = 'adicionar tarefa';
-        taskModal.querySelector('h3').setAttribute('data-date', `${day}/${currentMonth.substring(0, 3)}`);
         renderDayTasks();
         taskModal.style.display = 'block';
         cancelTaskEdit();
@@ -2190,7 +2212,7 @@
         if (!taskToEdit) return;
         
         if (taskToEdit.linkedListId) {
-            alert("tarefas vinculadas a listas não podem ser editadas diretamente. edite a lista na aba 'listas'.");
+            alert("Tarefas vinculadas a listas não podem ser editadas diretamente. Edite o nome da lista na aba 'listas'.");
             return;
         }
 
@@ -2667,6 +2689,10 @@
             
             calendarTasks[eventDate].push(newTask);
             saveCalendarTasks();
+            // Força a atualização do calendário se ele estiver visível
+            if (document.getElementById('planner-section').style.display !== 'none') {
+                renderCalendar(currentCalendarDate);
+            }
         }
         
         newListForm.reset();
@@ -2702,7 +2728,6 @@
     document.getElementById('show-listas').addEventListener('click', () => showMensalSection('listas-section'));
     manageCategoriesBtn.addEventListener('click', openCategoryModal);
     addCategoryButton.addEventListener('click', addCategory);
-    newCategoryNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !linkToPlannerCheckbox.checked) newListForm.requestSubmit(); });
     calendarMonthSelect.addEventListener('change', (e) => { currentCalendarDate.setMonth(parseInt(e.target.value)); updateMonthlyView(); });
     
     viewDetailsBtn.addEventListener('click', openDetailsModal);
@@ -2748,7 +2773,6 @@
         
         const year = currentCalendarDate.getFullYear();
         const monthString = String(currentCalendarDate.getMonth() + 1).padStart(2, '0');
-        dateInput.value = `${year}-${monthString}-01`;
         
         const activeSectionId = document.querySelector('#mensal-controls .mensal-sub-toggle.active-sub')?.id.replace('show-', '') + '-section' || 'planner-section';
         showMensalSection(activeSectionId);
