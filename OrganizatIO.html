@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -1376,21 +1375,36 @@
     const listDetailsModal = document.getElementById('listDetailsModal');
     const listDetailsTitle = document.getElementById('listDetailsTitle');
     const listDetailsItems = document.getElementById('listDetailsItems');
+    
 
 
     // --- ÍCONES DE TAREFAS ---
     const taskIcons = {
         "nenhum": "images/none.png",
         "médico": "images/doctor.png",
-        "pet": "images/pet.png",
         "date": "images/date.png",
+        "star": "images/star.png",
+        "pet": "images/pet.png",
         "exercício": "images/gym.png",
         "meditação": "images/meditation.png",
         "trabalho": "images/work.png",
         "salão": "images/hair.png",
         "comida": "images/food.png",
+        "gift": "images/gift.png",
         "aniversário": "images/birthday.png",
-        "festa": "images/party.png"
+        "festa": "images/party.png",
+        "vacation": "images/vacation.png",
+        "trip": "images/trip.png",
+        "meeting": "images/meeting.png",
+        "study": "images/study.png",
+        "house": "images/house.png",
+        "shopping": "images/shopping.png",
+        "buy": "images/buy.png",
+        "person": "images/person.png",
+        "judge": "images/judge.png",
+        "study": "images/study.png",
+        "list": "images/list.png"
+      
     };
     
     const USE_EMOJI_ICONS = true;
@@ -2169,7 +2183,9 @@
                 iconContainer.className = 'calendar-task-icons';
                 
                 tasks.forEach(task => {
-                    if (task.icon && task.icon !== "images/none.png") {
+                    // ===== AQUI ESTÁ A CORREÇÃO =====
+                    // A condição "&& task.icon !== 'images/none.png'" foi removida.
+                    if (task.icon) { 
                         const iconEl = document.createElement('img');
                         iconEl.src = task.icon;
                         iconEl.title = task.description;
@@ -2552,9 +2568,32 @@
         `;
         prioritySelect.value = initialPriority;
         prioritySelect.onchange = () => {
+            // 1. Atualiza o estilo e salva a lista (comportamento antigo)
             listDiv.classList.remove('priority-baixa', 'priority-media', 'priority-alta');
-            listDiv.classList.add('priority-' + prioritySelect.value);
+            const newPriorityValue = prioritySelect.value;
+            listDiv.classList.add('priority-' + newPriorityValue);
             saveLists();
+
+            // 2. Procura a tarefa correspondente no planner e a atualiza
+            const listId = listDiv.dataset.listId;
+            let taskUpdated = false;
+
+            for (const dateKey in calendarTasks) {
+                const taskIndex = calendarTasks[dateKey].findIndex(task => task.linkedListId === listId);
+
+                if (taskIndex !== -1) {
+                    // Atualiza a prioridade da tarefa encontrada
+                    calendarTasks[dateKey][taskIndex].priority = (newPriorityValue === 'alta') ? 'alta' : 'nenhuma';
+                    taskUpdated = true;
+                    break; // Para a busca assim que encontrar a tarefa
+                }
+            }
+
+            // 3. Se a tarefa foi atualizada, salva os dados do calendário e redesenha
+            if (taskUpdated) {
+                saveCalendarTasks();
+                renderCalendar(currentCalendarDate);
+            }
         };
 
         const inputGroup = document.createElement("div");
@@ -2702,21 +2741,19 @@
             const newTask = {
                 id: Date.now().toString() + Math.random(),
                 time: eventTime,
-                description: listName,
+                description: listName, 
                 icon: eventIcon,
                 priority: listPriority === 'alta' ? 'alta' : 'nenhuma',
                 recurrenceId: null,
-                linkedListId: newListId 
+                linkedListId: newListId
             };
 
             if (!calendarTasks[eventDate]) calendarTasks[eventDate] = [];
             
             calendarTasks[eventDate].push(newTask);
             saveCalendarTasks();
-            // Força a atualização do calendário se ele estiver visível
-            if (document.getElementById('planner-section').style.display !== 'none') {
-                renderCalendar(currentCalendarDate);
-            }
+            
+            renderCalendar(currentCalendarDate);
         }
         
         newListForm.reset();
@@ -2823,6 +2860,30 @@
 
     initApp();
   </script>
+
+<div id="scheduleEditorModal" class="modal">
+    <div class="modal-content" style="max-width: 450px;">
+        <span class="close-button" onclick="closeScheduleEditorModal()">&times;</span>
+        <h3>editar agendamento</h3>
+        <form id="schedule-editor-form">
+            <input type="hidden" id="editor-list-id">
+            
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <input type="date" id="editor-event-date" required>
+                    <input type="time" id="editor-event-time" required>
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
+                    <div id="editor-event-icon-picker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+                    <input type="hidden" id="editor-event-icon">
+                </div>
+                <button type="submit" class="add-btn" style="background-color: #4CAF50;">salvar alterações</button>
+            </div>
+        </form>
+    </div>
+  </div>
+
+
 </body>
 </html>
-
