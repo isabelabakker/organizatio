@@ -1610,6 +1610,7 @@
     // ----------------------------------------------------
     function openDetailsModal() {
         detailsModal.style.display = 'block';
+        renderExpenses(); // <-- CORREÇÃO APLICADA
         cancelEdit();
     }
     function closeDetailsModal() {
@@ -3000,6 +3001,7 @@
         
         if (sectionId === 'financeiro-section') {
             updateFinanceDisplay();
+            renderAnnualChart(); // <-- CORREÇÃO APLICADA
         }
         if (sectionId === 'listas-section') {
             loadAndRenderLists();
