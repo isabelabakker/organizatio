@@ -295,6 +295,49 @@
       border-left: 5px solid transparent;
     }
     
+    /* --- NOVOS ESTILOS PARA O CABEÇALHO DA LISTA --- */
+    .list .list-title-container {
+      gap: 10px; /* Espaço entre ícone, título e botões */
+    }
+    .list-title-icon {
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0; /* Previne que o ícone encolha */
+    }
+    .list-title-container h2 {
+        flex-grow: 1; /* Faz o título ocupar o espaço disponível */
+        text-align: left;
+    }
+    .change-list-icon-btn {
+        background: #FFC107; /* Cor Laranja/Amarelo */
+        border: none;
+        cursor: pointer;
+        color: white;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        line-height: 1;
+        flex-shrink: 0;
+        margin-right: 5px;
+        vertical-align: middle;
+        transition: background 0.2s;
+    }
+    .change-list-icon-btn:hover {
+        background: #FFA000;
+    }
+    body.dark-mode .change-list-icon-btn {
+        background: #FFCA28;
+    }
+    body.dark-mode .change-list-icon-btn:hover {
+        background: #FFB300;
+    }
+    /* --- FIM DOS NOVOS ESTILOS --- */
+    
     .list-input-group {
         display: flex;
         gap: 5px;
@@ -501,7 +544,8 @@
       overflow: auto;
       background-color: rgba(0,0,0,0.4);
     }
-    #categoryModal, #listDetailsModal {
+    /* Z-index maior para o novo modal ficar sobre os outros, se necessário */
+    #categoryModal, #listDetailsModal, #listIconModal {
       z-index: 1002;
     }
     .modal-content {
@@ -798,6 +842,32 @@
       border-color: #333;
       transform: scale(1.2);
     }
+
+    /* --- NOVOS ESTILOS PARA ÍCONE DE META --- */
+    .goal-header-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .goal-icon {
+        width: 28px;
+        height: 28px;
+    }
+    .goal-icon-picker {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+        max-height: 120px; /* Limita a altura para não ocupar muito espaço */
+        overflow-y: auto; /* Adiciona scroll se houver muitos ícones */
+        padding: 5px;
+        border-radius: 8px;
+        background-color: rgba(0,0,0,0.05); /* Fundo sutil */
+    }
+    body.dark-mode .goal-icon-picker {
+        background-color: rgba(255,255,255,0.05);
+    }
+    /* --- FIM DOS NOVOS ESTILOS --- */
 
     body.dark-mode {
       background: #121212;
@@ -1259,7 +1329,6 @@
                   <tr>
                       <th>categoria</th>
                       <th>limite (R$)</th>
-                      <th>gasto (R$)</th>
                       <th>porcentagem</th>
                   </tr>
               </thead>
@@ -1299,6 +1368,15 @@
         <span class="close-button" onclick="closeListDetailsModal()">&times;</span>
         <h3 id="listDetailsTitle"></h3>
         <ul id="listDetailsItems"></ul>
+    </div>
+  </div>
+
+  <div id="listIconModal" class="modal">
+    <div class="modal-content" style="max-width: 500px;">
+        <span class="close-button" onclick="closeListIconModal()">&times;</span>
+        <h3>escolha um ícone para a lista</h3>
+        <div id="list-icon-picker-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px; max-height: 300px; overflow-y: auto;">
+            </div>
     </div>
   </div>
 
@@ -1376,6 +1454,9 @@
     const listDetailsTitle = document.getElementById('listDetailsTitle');
     const listDetailsItems = document.getElementById('listDetailsItems');
     
+    // --- NOVOS ELEMENTOS DO MODAL DE ÍCONE DE LISTA ---
+    const listIconModal = document.getElementById('listIconModal');
+    const listIconPickerGrid = document.getElementById('list-icon-picker-grid');
 
 
     // --- ÍCONES DE TAREFAS ---
@@ -1384,6 +1465,7 @@
         "médico": "images/doctor.png",
         "date": "images/date.png",
         "star": "images/star.png",
+        "money": "images/money.png",
         "pet": "images/pet.png",
         "exercício": "images/gym.png",
         "meditação": "images/meditation.png",
@@ -1403,7 +1485,14 @@
         "person": "images/person.png",
         "judge": "images/judge.png",
         "study": "images/study.png",
-        "list": "images/list.png"
+        "list": "images/list.png",
+        "car": "images/car.png",
+        "picture": "images/picture.png",
+        "nails": "images/nails.png",
+        "print": "images/print.png",
+        "art": "images/art.png",
+        "write": "images/write.png",
+        "upload": "images/upload.png",
       
     };
     
@@ -1437,6 +1526,7 @@
     let calendarTasks = {};
     const monthNamesPt = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
     const goalColors = ['#FF5252', '#3F51B5', '#4CAF50', '#FFC107', '#9C27B0', '#00BCD4', '#FF9800'];
+    let currentListIconBeingEdited = null; // Para o novo modal de ícones
 
 
     let categoryLimits = {};
@@ -1492,11 +1582,13 @@
             const listId = listDiv.dataset.listId;
             const listName = listDiv.querySelector('h2').textContent.trim();
             const priority = listDiv.querySelector('.list-priority-select').value;
+            // ALTERAÇÃO AQUI: Salvar o ícone da lista
+            const listIconSrc = listDiv.querySelector('.list-title-icon').src;
             const items = Array.from(listDiv.querySelectorAll('ul li')).map(li => ({
                 text: li.querySelector('.list-item-content span').textContent.trim(),
                 checked: li.querySelector('input[type="checkbox"]').checked
             }));
-            return { id: listId, name: listName, items: items, priority: priority };
+            return { id: listId, name: listName, items: items, priority: priority, icon: listIconSrc };
         }).filter(Boolean);
         localStorage.setItem('todoLists', JSON.stringify(lists));
     }
@@ -1504,7 +1596,8 @@
     function loadAndRenderLists() {
         listsContainer.innerHTML = '';
         const listsData = JSON.parse(localStorage.getItem('todoLists')) || [];
-        listsData.forEach(listData => createList(listData.name, listData.items, listData.priority, listData.id));
+        // ALTERAÇÃO AQUI: Passar o ícone salvo para a função de criação
+        listsData.forEach(listData => createList(listData.name, listData.items, listData.priority, listData.id, listData.icon));
     }
 
 
@@ -1598,6 +1691,39 @@
         listDetailsModal.style.display = 'none';
     }
 
+    // --- NOVAS FUNÇÕES PARA O MODAL DE ÍCONE DE LISTA ---
+    function openListIconModal(listIconElement) {
+        currentListIconBeingEdited = listIconElement;
+        listIconModal.style.display = 'block';
+    }
+
+    function closeListIconModal() {
+        listIconModal.style.display = 'none';
+        currentListIconBeingEdited = null;
+    }
+    
+    function populateListIconModal() {
+        listIconPickerGrid.innerHTML = '';
+        for (const key in taskIcons) {
+            const iconPath = taskIcons[key];
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'task-icon-option'; // Reutilizando a classe
+            optionDiv.dataset.iconPath = iconPath;
+            optionDiv.title = key;
+            optionDiv.innerHTML = `<img src="${iconPath}" alt="${key}">`;
+            
+            optionDiv.addEventListener('click', () => {
+                if (currentListIconBeingEdited) {
+                    currentListIconBeingEdited.src = iconPath;
+                    saveLists(); // Salva a alteração
+                    closeListIconModal();
+                }
+            });
+            listIconPickerGrid.appendChild(optionDiv);
+        }
+    }
+    // --- FIM DAS NOVAS FUNÇÕES ---
+
     // ----------------------------------------------------
     // GERENCIAMENTO DE CATEGORIAS
     // ----------------------------------------------------
@@ -1630,8 +1756,8 @@
                         return `<div>
                                     <span>${category}</span>
                                     <span>
-                                        <button class="edit-btn" onclick="editCategory('${category}', '${type}')">editar</button>
-                                        <button class="delete-btn" onclick="removeCategory('${category}', '${type}')">remover</button>
+                                        <button class="edit-btn" onclick="editCategory('${category}', '${type}')">✏️</button>
+                                        <button class="delete-btn" onclick="removeCategory('${category}', '${type}')">🗑️</button>
                                     </span>
                                 </div>`;
                     }
@@ -1735,10 +1861,14 @@
             const percentage = limit > 0 ? (spent / limit) * 100 : 0;
             const row = document.createElement('tr');
             const progressBarColor = percentage > 100 ? '#FF5252' : (percentage > 80 ? '#FF9800' : '#4CAF50');
+            
+            // Pega o emoji do objeto categoryLookups
+            const lookup = categoryLookups[category] || categoryLookups.default;
+            const categoryDisplay = lookup.emoji;
+            
             row.innerHTML = `
-                <td>${category}</td>
+                <td title="${category}">${categoryDisplay}</td>
                 <td>${formatCurrency(limit)}</td>
-                <td>${formatCurrency(spent)}</td>
                 <td>
                     <div class="progress-bar-container">
                         <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${progressBarColor};">
@@ -1749,8 +1879,8 @@
             `;
             tableEl.appendChild(row);
         });
-        
     }
+
     
     document.getElementById('category-limit-form').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -1767,6 +1897,7 @@
     // ----------------------------------------------------
     // LÓGICA DE INVESTIMENTOS
     // ----------------------------------------------------
+
     function renderInvestmentGoals() {
       goalsContainer.innerHTML = '';
       if (investmentGoals.length === 0 && editingGoalId === null) {
@@ -1791,13 +1922,43 @@
                         <input type="text" value="${goal.name}" required>
                         <input type="number" value="${goal.target}" step="0.01" required>
                     </div>
+                    <label style="font-size: 12px; font-weight: bold; margin-top: 10px; display: block;">cor:</label>
                     <div class="color-picker">${colorPickerHTML}</div>
-                    <div class="actions">
+                    
+                    <label style="font-size: 12px; font-weight: bold; margin-top: 10px; display: block;">ícone:</label>
+                    <div class="goal-icon-picker"></div> 
+                    <input type="hidden" class="editing-goal-icon-input" value="${goal.icon}">
+                    
+                    <div class="actions" style="margin-top: 15px;">
                         <button type="submit" class="edit-btn">salvar</button>
                         <button type="button" class="delete-btn">cancelar</button>
                     </div>
                 </form>
             `;
+
+            const iconPickerContainer = card.querySelector('.goal-icon-picker');
+            const hiddenIconInput = card.querySelector('.editing-goal-icon-input');
+            
+            for (const key in taskIcons) {
+                const iconPath = taskIcons[key];
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'task-icon-option';
+                optionDiv.dataset.iconPath = iconPath;
+                optionDiv.title = key;
+                optionDiv.innerHTML = `<img src="${iconPath}" alt="${key}">`;
+                if (goal.icon === iconPath) {
+                    optionDiv.classList.add('selected');
+                }
+
+                optionDiv.addEventListener('click', () => {
+                    iconPickerContainer.querySelector('.selected')?.classList.remove('selected');
+                    optionDiv.classList.add('selected');
+                    hiddenIconInput.value = iconPath;
+                });
+
+                iconPickerContainer.appendChild(optionDiv);
+            }
+
         } else {
             const totalSaved = Object.values(goal.contributions).reduce((sum, amount) => sum + amount, 0);
             const percentage = goal.target > 0 ? (totalSaved / goal.target) * 100 : 0;
@@ -1805,13 +1966,16 @@
             for (const monthYearKey in goal.contributions) {
                 historyHtml += `<li>${monthYearKey.replace('-', '/')}: ${formatCurrency(goal.contributions[monthYearKey])}</li>`;
             }
-
+            
             card.innerHTML = `
               <div class="goal-header">
-                <h4>${goal.name}</h4>
+                <div class="goal-header-content">
+                    <img src="${goal.icon || taskIcons.money}" class="goal-icon" alt="ícone da meta">
+                    <h4>${goal.name}</h4>
+                </div>
                 <div class="actions">
-                    <button class="edit-btn">editar</button>
-                    <button class="delete-btn">excluir</button>
+                    <button class="edit-btn">✏️</button>
+                    <button class="delete-btn">🗑️</button>
                 </div>
               </div>
               <div class="goal-details">
@@ -1826,7 +1990,7 @@
                 <input type="number" placeholder="valor a investir este mês" step="0.01" required>
                 <button type="submit" class="add-btn">adicionar</button>
               </form>
-              ${historyHtml ? `<h4>histórico de aportes</h4><ul class="contribution-history-list">${historyHtml}</ul>` : ''}
+              ${historyHtml ? `<ul class="contribution-history-list">${historyHtml}</ul>` : ''}
             `;
         }
         goalsContainer.appendChild(card);
@@ -1845,6 +2009,7 @@
           name: name,
           target: target,
           color: color,
+          icon: taskIcons.money,
           contributions: {}
         });
         saveInvestmentGoals();
@@ -1883,6 +2048,7 @@
             const newName = e.target.querySelector('input[type="text"]').value.trim();
             const newTarget = parseFloat(e.target.querySelector('input[type="number"]').value);
             const selectedSwatch = e.target.querySelector('.color-swatch.selected');
+            const newIcon = e.target.querySelector('.editing-goal-icon-input').value;
             
             if (!selectedSwatch) {
                 alert('erro: nenhuma cor selecionada.');
@@ -1894,6 +2060,7 @@
                 goal.name = newName;
                 goal.target = newTarget;
                 goal.color = newColor;
+                goal.icon = newIcon;
                 editingGoalId = null;
                 saveInvestmentGoals();
                 renderInvestmentGoals();
@@ -1981,7 +2148,7 @@
             row.innerHTML = `
                 <td>${iconHtml}</td>
                 <td style="color: ${transactionType === 'receita' ? '#4CAF50' : '#FF5252'}; font-weight: bold;">${formatCurrency(Math.abs(item.value))}</td>
-                <td><button class="edit-btn" data-index="${index}">editar</button><button class="delete-btn" data-index="${index}">excluir</button></td>
+                <td><button class="edit-btn" data-index="${index}">✏️</button><button class="delete-btn" data-index="${index}">🗑️</button></td>
             `;
             expenseList.appendChild(row);
             total += item.value;
@@ -2049,7 +2216,6 @@
         detailsModal.querySelector('h3').textContent = 'transações do mês';
     }
 
-    // ===== BLOCO DE CÓDIGO CORRIGIDO =====
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         const desc = descInput.value, category = categoryInput.value, type = typeInput.value;
@@ -2061,13 +2227,11 @@
         }
         
         let date;
-        const expenseMonth = currentMonth; // Usa o mês atualmente selecionado
+        const expenseMonth = currentMonth;
 
         if (editingIndex !== null) {
-            // Ao editar, mantém a data original da transação
             date = dataByMonth[currentMonth][editingIndex].date;
         } else {
-            // Ao adicionar uma nova, cria uma data para o dia de hoje no mês selecionado
             const today = new Date();
             const year = currentCalendarDate.getFullYear();
             const month = currentCalendarDate.getMonth();
@@ -2092,11 +2256,10 @@
             cancelEdit();
         } else {
             form.reset();
-            typeInput.value = 'despesa'; // Garante que o tipo volte para o padrão
+            typeInput.value = 'despesa';
             renderCategorySelect(false);
         }
     });
-    // ===== FIM DO BLOCO CORRIGIDO =====
 
 
     function renderAnnualChart() {
@@ -2183,8 +2346,6 @@
                 iconContainer.className = 'calendar-task-icons';
                 
                 tasks.forEach(task => {
-                    // ===== AQUI ESTÁ A CORREÇÃO =====
-                    // A condição "&& task.icon !== 'images/none.png'" foi removida.
                     if (task.icon) { 
                         const iconEl = document.createElement('img');
                         iconEl.src = task.icon;
@@ -2300,7 +2461,7 @@
             }
 
             const iconHtml = task.icon ? `<img src="${task.icon}" class="task-icon" alt="ícone da tarefa">` : '';
-            taskItem.innerHTML = `<span>${iconHtml}<strong>${task.time}</strong> - ${task.description}</span><div class="task-actions"><button class="edit-task-btn" onclick="editTask('${task.id}')">editar</button><button onclick="removeTask('${task.id}')">remover</button></div>`;
+            taskItem.innerHTML = `<span>${iconHtml}<strong>${task.time}</strong> - ${task.description}</span><div class="task-actions"><button class="edit-task-btn" onclick="editTask('${task.id}')">✏️</button><button onclick="removeTask('${task.id}')">🗑️</button></div>`;
             tasksList.appendChild(taskItem);
         });
     }
@@ -2466,7 +2627,14 @@
     
     function restoreOriginalListButtons(listDiv) {
         const actionsDiv = listDiv.querySelector('.list-title-actions');
+        // Limpa apenas os botões de salvar/cancelar, mantendo o de ícone
         actionsDiv.innerHTML = '';
+        
+        const changeIconBtn = document.createElement("button");
+        changeIconBtn.innerHTML = "🖼️";
+        changeIconBtn.className = "change-list-icon-btn";
+        changeIconBtn.title = 'alterar ícone';
+        changeIconBtn.onclick = () => openListIconModal(listDiv.querySelector('.list-title-icon'));
         
         const editBtn = document.createElement("button");
         editBtn.innerHTML = "✏️";
@@ -2478,6 +2646,7 @@
         removeBtn.className = "delete-list-circular-btn";
         removeBtn.onclick = () => { listDiv.remove(); saveLists(); };
 
+        actionsDiv.appendChild(changeIconBtn);
         actionsDiv.appendChild(editBtn);
         actionsDiv.appendChild(removeBtn);
     }
@@ -2522,7 +2691,7 @@
         actionsDiv.appendChild(cancelBtn);
     }
 
-    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString()) {
+    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = 'images/list.png') {
         if (!listName) return;
 
         const listDiv = document.createElement("div");
@@ -2535,6 +2704,10 @@
         titleContainer.style.justifyContent = 'space-between';
         titleContainer.style.alignItems = 'center';
         titleContainer.style.marginBottom = '10px';
+        
+        const iconImg = document.createElement('img');
+        iconImg.src = listIcon;
+        iconImg.className = 'list-title-icon';
 
         const title = document.createElement("h2");
         title.textContent = listName;
@@ -2543,6 +2716,12 @@
 
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'list-title-actions';
+        
+        const changeIconBtn = document.createElement("button");
+        changeIconBtn.innerHTML = "🖼️";
+        changeIconBtn.className = "change-list-icon-btn";
+        changeIconBtn.title = 'alterar ícone';
+        changeIconBtn.onclick = () => openListIconModal(iconImg);
         
         const editBtn = document.createElement("button");
         editBtn.innerHTML = "✏️";
@@ -2554,8 +2733,11 @@
         removeBtn.className = "delete-list-circular-btn";
         removeBtn.onclick = () => { listDiv.remove(); saveLists(); };
 
+        actionsDiv.appendChild(changeIconBtn);
         actionsDiv.appendChild(editBtn);
         actionsDiv.appendChild(removeBtn);
+
+        titleContainer.appendChild(iconImg);
         titleContainer.appendChild(title);
         titleContainer.appendChild(actionsDiv);
         
@@ -2568,28 +2750,23 @@
         `;
         prioritySelect.value = initialPriority;
         prioritySelect.onchange = () => {
-            // 1. Atualiza o estilo e salva a lista (comportamento antigo)
             listDiv.classList.remove('priority-baixa', 'priority-media', 'priority-alta');
             const newPriorityValue = prioritySelect.value;
             listDiv.classList.add('priority-' + newPriorityValue);
             saveLists();
 
-            // 2. Procura a tarefa correspondente no planner e a atualiza
             const listId = listDiv.dataset.listId;
             let taskUpdated = false;
 
             for (const dateKey in calendarTasks) {
                 const taskIndex = calendarTasks[dateKey].findIndex(task => task.linkedListId === listId);
-
                 if (taskIndex !== -1) {
-                    // Atualiza a prioridade da tarefa encontrada
                     calendarTasks[dateKey][taskIndex].priority = (newPriorityValue === 'alta') ? 'alta' : 'nenhuma';
                     taskUpdated = true;
-                    break; // Para a busca assim que encontrar a tarefa
+                    break;
                 }
             }
 
-            // 3. Se a tarefa foi atualizada, salva os dados do calendário e redesenha
             if (taskUpdated) {
                 saveCalendarTasks();
                 renderCalendar(currentCalendarDate);
@@ -2726,6 +2903,7 @@
 
         const listPriority = newListPriorityInput.value;
         const newListId = Date.now().toString();
+        // A função createList já salva a nova lista, então não precisamos chamar saveLists() aqui
         createList(listName, [], listPriority, newListId);
         
         if (linkToPlannerCheckbox.checked) {
@@ -2810,6 +2988,7 @@
         if (event.target == investmentsModal) closeInvestmentsModal();
         if (event.target == descriptionModal) closeDescriptionModal();
         if (event.target == listDetailsModal) closeListDetailsModal();
+        if (event.target == listIconModal) closeListIconModal();
     }
     
     function showMensalSection(sectionId) {
@@ -2850,6 +3029,8 @@
         
         renderIconPicker(taskIconPicker, taskIconHiddenInput);
         renderIconPicker(listEventIconPicker, listEventIconHiddenInput);
+        
+        populateListIconModal();
 
         renderCategorySelect(false);
         renderCategoryLimitSelect();
