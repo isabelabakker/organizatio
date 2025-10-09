@@ -184,12 +184,15 @@
         background: #9E9E9E;
         color: white;
         border: none;
-        padding: 8px 15px;
+        padding: 8px;
         border-radius: 10px;
         cursor: pointer;
         text-align: center;
         flex-grow: 1;
         transition: background 0.2s;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
     }
     #manage-categories-btn:hover {
         background: #757575;
@@ -223,10 +226,13 @@
     .delete-btn, .edit-btn {
       border: none;
       border-radius: 8px;
-      padding: 5px 10px;
+      padding: 8px;
       cursor: pointer;
       color: white;
       margin: 0 2px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
     }
     .delete-btn {
       background: #FF5252;
@@ -240,6 +246,14 @@
     }
     .edit-btn:hover {
         background: #388E3C;
+    }
+    
+    .delete-btn img,
+    .edit-btn img,
+    #manage-categories-btn img {
+        width: 16px;
+        height: 16px;
+        filter: brightness(0) invert(1);
     }
     
     #charts-dual-container {
@@ -733,6 +747,10 @@
         object-fit: contain;
     }
     
+    #transactionIconPicker .task-icon-option img {
+        filter: grayscale(100%) brightness(60%); /* cinza escuro */
+    }
+    
     #listDetailsItems {
         list-style: none;
         padding: 0;
@@ -804,7 +822,6 @@
     .category-icon {
         width: 28px;
         height: 28px;
-        border-radius: 50%;
         vertical-align: middle;
         display: inline-flex;
         align-items: center;
@@ -816,12 +833,21 @@
         height: 100%;
         object-fit: contain;
     }
+
     .icon-revenue {
-        background-color: rgba(76, 175, 80, 0.15);
+        /* Filter para verde (#4CAF50) */
+        filter: invert(78%) sepia(12%) saturate(1563%) hue-rotate(76deg) brightness(86%) contrast(84%);
     }
     .icon-expense {
-        background-color: rgba(255, 82, 82, 0.15);
+        /* Filter para vermelho (#FF5252) */
+        filter: invert(53%) sepia(40%) saturate(2256%) hue-rotate(318deg) brightness(101%) contrast(101%);
     }
+
+    /* --- INÍCIO: ALTERAÇÃO - Correção da cor dos ícones de orçamento --- */
+    #category-spending-list .category-icon.icon-expense {
+        filter: invert(35%) sepia(0%) saturate(1%) hue-rotate(148deg) brightness(97%) contrast(89%); /* cinza escuro */
+    }
+    /* --- FIM: ALTERAÇÃO --- */
 
     #new-goal-form {
       display: flex;
@@ -850,7 +876,7 @@
     }
     .goal-header .actions button {
       font-size: 12px;
-      padding: 3px 8px;
+      padding: 8px; /* Ajustado */
       margin-left: 5px;
     }
     .goal-details p {
@@ -967,6 +993,10 @@
         border-color: #6b9aff;
         box-shadow: 0 0 5px rgba(107, 154, 255, 0.5);
         background: #1F1F1F;
+    }
+
+    body.dark-mode #transactionIconPicker .task-icon-option img {
+         filter: grayscale(100%) brightness(150%); /* cinza claro */
     }
 
     body.dark-mode #weekly-recurrence-options {
@@ -1157,12 +1187,11 @@
       border-color: #fff;
     }
     
-    body.dark-mode .icon-revenue {
-        background-color: rgba(76, 175, 80, 0.25);
+    /* --- INÍCIO: ALTERAÇÃO - Correção da cor dos ícones de orçamento (Tema Escuro) --- */
+    body.dark-mode #category-spending-list .category-icon.icon-expense {
+        filter: invert(86%) sepia(0%) saturate(301%) hue-rotate(186deg) brightness(83%) contrast(86%); /* cinza claro */
     }
-    body.dark-mode .icon-expense {
-        background-color: rgba(255, 82, 82, 0.25);
-    }
+    /* --- FIM: ALTERAÇÃO --- */
 
   </style>
   <script src="./js/chart.js"></script>
@@ -1342,24 +1371,12 @@
       <div class="modal-content">
           <span class="close-button" onclick="closeDetailsModal()">&times;</span>
           <h3>transações do mês</h3>
-          <form id="expense-form">
-              <input type="text" id="desc" placeholder="descrição" required>
-              <select id="type">
-                  <option value="despesa">despesa</option>
-                  <option value="receita">receita</option>
-              </select>
-              <select id="category" placeholder="categoria"></select>
-              <input type="number" id="value" placeholder="r$" step="0.01" required>
-              <div class="add-btn-group">
-                  <button type="submit" class="add-btn" id="submit-expense-btn">adicionar</button>
-                  <button type="button" id="manage-categories-btn">🛠️</button>
-              </div>
-          </form>
           
+          <hr style="border-top: 1px solid #ddd; margin: 10px 0 20px 0;">
+
           <div class="details-flex-container">
               <div class="details-table-container">
                   <table id="expense-table">
-                      
                       <tbody id="expense-list"></tbody>
                   </table>
                   <div class="total" id="total-container">
@@ -1371,6 +1388,32 @@
                   <canvas id="month-chart"></canvas>
               </div>
           </div>
+          
+          <button id="show-add-transaction-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar transação</button>
+          
+          <div id="add-transaction-container" style="display: none; margin-top: 20px;">
+              <h3 id="transaction-form-title" style="margin-top: 0;">adicionar transação</h3>
+              <form id="expense-form">
+                  <input type="text" id="desc" placeholder="descrição" required>
+                  <select id="type">
+                      <option value="despesa">despesa</option>
+                      <option value="receita">receita</option>
+                  </select>
+                  <select id="category" placeholder="categoria"></select>
+                  <input type="number" id="value" placeholder="r$" step="0.01" required>
+                  <div class="add-btn-group">
+                      <button type="submit" class="add-btn" id="submit-expense-btn">adicionar</button>
+                      <button type="button" id="manage-categories-btn"><img src="svg/settings.svg" alt="Gerenciar"></button>
+                  </div>
+              </form>
+              
+              <div id="transaction-icon-picker-container" style="padding: 15px 0 10px 0;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
+                  <div id="transactionIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+                  <input type="hidden" id="transactionIcon">
+              </div>
+          </div>
+
       </div>
   </div>
 
@@ -1468,6 +1511,11 @@
     const valueInput = document.getElementById('value');
     const submitButton = document.getElementById('submit-expense-btn');
     const buttonGroup = document.querySelector('.add-btn-group');
+    const transactionIconPicker = document.getElementById('transactionIconPicker');
+    const transactionIconHiddenInput = document.getElementById('transactionIcon');
+    const showAddTransactionBtn = document.getElementById('show-add-transaction-form-btn');
+    const addTransactionContainer = document.getElementById('add-transaction-container');
+    const transactionFormTitle = document.getElementById('transaction-form-title');
     
     // --- ELEMENTOS DE GERENCIAMENTO DE CATEGORIAS ---
     const manageCategoriesBtn = document.getElementById('manage-categories-btn');
@@ -1580,21 +1628,19 @@
         "write": "./images/write.png",
         "upload": "./images/upload.png",
     };
-    
-    const USE_EMOJI_ICONS = true;
 
-    const categoryLookups = {
-        "alimentação": { emoji: "🍔", iconFile: "food.png" },
-        "transporte":  { emoji: "🚗", iconFile: "transport.png" },
-        "moradia":     { emoji: "🏠", iconFile: "home.png" },
-        "lazer":       { emoji: "🎉", iconFile: "leisure.png" },
-        "saúde":       { emoji: "❤️", iconFile: "health.png" },
-        "educação":    { emoji: "🎓", iconFile: "education.png" },
-        "contas":      { emoji: "🧾", iconFile: "bills.png" },
-        "salário":     { emoji: "💰", iconFile: "salary.png" },
-        "freela":      { emoji: "💻", iconFile: "freela.png" },
-        "outros":      { emoji: "❓", iconFile: "other.png" },
-        "default":     { emoji: "❓", iconFile: "other.png" }
+    // --- ÍCONES DE CATEGORIA ---
+    const categoryIcons = {
+        "alimentação": "svg/food.svg",
+        "transporte": "svg/transport.svg",
+        "moradia": "svg/home.svg",
+        "lazer": "svg/leisure.svg",
+        "saúde": "svg/health.svg",
+        "educação": "svg/education.svg",
+        "contas": "svg/bills.svg",
+        "salário": "svg/salary.svg",
+        "freela": "svg/work.svg",
+        "outros": "svg/other.svg"
     };
 
 
@@ -1867,8 +1913,8 @@
                         return `<div>
                                     <span>${category}</span>
                                     <span>
-                                        <button class="edit-btn" onclick="editCategory('${category}', '${type}')">✏️</button>
-                                        <button class="delete-btn" onclick="removeCategory('${category}', '${type}')">🗑️</button>
+                                        <button class="edit-btn" onclick="editCategory('${category}', '${type}')"><img src="svg/pencil.svg" alt="Editar"></button>
+                                        <button class="delete-btn" onclick="removeCategory('${category}', '${type}')"><img src="svg/trash.svg" alt="Remover"></button>
                                     </span>
                                 </div>`;
                     }
@@ -1989,8 +2035,8 @@
             const row = document.createElement('tr');
             const progressBarColor = percentage > 100 ? '#FF5252' : (percentage > 80 ? '#FF9800' : '#4CAF50');
             
-            const lookup = categoryLookups[category] || categoryLookups.default;
-            const categoryDisplay = lookup.emoji;
+            const iconPath = categoryIcons[category] || categoryIcons["outros"];
+            const categoryDisplay = `<img src="${iconPath}" alt="${category}" class="category-icon icon-expense">`;
             
             row.innerHTML = `
                 <td title="${category}" style="width: 10%;">${categoryDisplay}</td>
@@ -2103,8 +2149,8 @@
                     <h4>${goal.name}</h4>
                 </div>
                 <div class="actions">
-                    <button class="edit-btn">✏️</button>
-                    <button class="delete-btn">🗑️</button>
+                    <button class="edit-btn"><img src="svg/pencil.svg" alt="Editar"></button>
+                    <button class="delete-btn"><img src="svg/trash.svg" alt="Remover"></button>
                 </div>
               </div>
               <div class="goal-details">
@@ -2204,14 +2250,14 @@
         if (!card) return;
         const goalId = Number(card.dataset.goalId);
         
-        if (e.target.matches('.goal-header .delete-btn')) {
+        if (e.target.closest('.goal-header .actions .delete-btn')) {
             if (confirm('tem certeza que deseja excluir esta meta?')) {
               investmentGoals = investmentGoals.filter(g => g.id !== goalId);
               saveInvestmentGoals();
               renderInvestmentGoals();
             }
         }
-        else if (e.target.matches('.goal-header .edit-btn')) {
+        else if (e.target.closest('.goal-header .actions .edit-btn')) {
             editingGoalId = goalId;
             renderInvestmentGoals();
         }
@@ -2284,21 +2330,20 @@
         let total = 0, categoryTotals = {};
         (dataByMonth[currentMonth] || []).forEach((item, index) => {
             const transactionType = item.type || (item.value >= 0 ? 'receita' : 'despesa');
-            const lookup = categoryLookups[item.category] || categoryLookups.default;
             const iconColorClass = transactionType === 'receita' ? 'icon-revenue' : 'icon-expense';
             const escapedDesc = item.desc.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
-            let iconHtml;
-            if (USE_EMOJI_ICONS) {
-                iconHtml = `<span title="${item.category}" class="category-icon ${iconColorClass}" onclick="openDescriptionModal('${escapedDesc}', '${item.date}')" style="cursor: pointer;">${lookup.emoji}</span>`;
-            } else {
-                iconHtml = `<img src="images/categories/${lookup.iconFile}" title="${item.category}" class="category-icon ${iconColorClass}" alt="${item.category}" onclick="openDescriptionModal('${escapedDesc}', '${item.date}')" style="cursor: pointer;">`;
-            }
+            
+            const iconPath = item.icon || categoryIcons[item.category] || categoryIcons["outros"];
+            const iconHtml = `<img src="${iconPath}" title="${item.category}" class="category-icon ${iconColorClass}" alt="${item.category}" onclick="openDescriptionModal('${escapedDesc}', '${item.date}')" style="cursor: pointer;">`;
             
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${iconHtml}</td>
                 <td style="color: ${transactionType === 'receita' ? '#4CAF50' : '#FF5252'}; font-weight: bold;">${formatCurrency(Math.abs(item.value))}</td>
-                <td><button class="edit-btn" data-index="${index}">✏️</button><button class="delete-btn" data-index="${index}">🗑️</button></td>
+                <td>
+                    <button class="edit-btn" data-index="${index}"><img src="svg/pencil.svg" alt="Editar"></button>
+                    <button class="delete-btn" data-index="${index}"><img src="svg/trash.svg" alt="Remover"></button>
+                </td>
             `;
             expenseList.appendChild(row);
             total += item.value;
@@ -2350,7 +2395,16 @@
         categoryInput.value = item.category;
         valueInput.value = Math.abs(item.value);
         
-        detailsModal.querySelector('h3').textContent = 'editar transação';
+        const iconToSelect = item.icon || categoryIcons[item.category] || categoryIcons["outros"];
+        transactionIconHiddenInput.value = iconToSelect;
+        transactionIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
+            option.classList.toggle('selected', option.getAttribute('data-icon-path') === iconToSelect);
+        });
+        
+        addTransactionContainer.style.display = 'block';
+        showAddTransactionBtn.style.display = 'none';
+        transactionFormTitle.textContent = 'editar transação';
+
         submitButton.textContent = 'salvar';
         submitButton.style.background = '#4CAF50';
 
@@ -2371,17 +2425,27 @@
         form.reset();
         submitButton.textContent = 'adicionar';
         submitButton.style.background = '#3586ff';
+        transactionFormTitle.textContent = 'adicionar transação';
+
         typeInput.value = 'despesa';
         renderCategorySelect(false);
         const cancelButton = document.getElementById('cancel-edit-btn');
         if (cancelButton) cancelButton.remove();
-        detailsModal.querySelector('h3').textContent = 'transações do mês';
+        
+        const firstIconOption = transactionIconPicker.querySelector('.task-icon-option');
+        if (firstIconOption) {
+            firstIconOption.click();
+        }
+
+        addTransactionContainer.style.display = 'none';
+        showAddTransactionBtn.style.display = 'block';
     }
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         const desc = descInput.value, category = categoryInput.value, type = typeInput.value;
         let value = parseFloat(valueInput.value);
+        const icon = transactionIconHiddenInput.value;
 
         if (!desc || !category || isNaN(value)) {
             alert('Por favor, preencha a descrição, categoria e valor.');
@@ -2402,7 +2466,7 @@
         }
 
         value = type === 'despesa' ? -Math.abs(value) : Math.abs(value);
-        const newItem = { date, desc, category, type, value };
+        const newItem = { date, desc, category, type, value, icon };
 
         if (editingIndex !== null) {
             dataByMonth[currentMonth][editingIndex] = newItem;
@@ -2420,6 +2484,10 @@
             form.reset();
             typeInput.value = 'despesa';
             renderCategorySelect(false);
+            const firstIconOption = transactionIconPicker.querySelector('.task-icon-option');
+            if (firstIconOption) firstIconOption.click();
+            addTransactionContainer.style.display = 'none';
+            showAddTransactionBtn.style.display = 'block';
         }
     });
 
@@ -2799,12 +2867,14 @@
         }
     }
     
-    function renderIconPicker(pickerElement, hiddenInputElement) {
+    function renderIconPicker(pickerElement, hiddenInputElement, iconObject) {
         if (!pickerElement || !hiddenInputElement) return;
         pickerElement.innerHTML = '';
+        const icons = iconObject || taskIcons;
 
-        for (const key in taskIcons) {
-            pickerElement.innerHTML += `<div class="task-icon-option" data-icon-path="${taskIcons[key]}" title="${key}"><img src="${taskIcons[key]}" alt="${key}"></div>`;
+        for (const key in icons) {
+            const path = icons[key];
+            pickerElement.innerHTML += `<div class="task-icon-option" data-icon-path="${path}" title="${key}"><img src="${path}" alt="${key}"></div>`;
         }
 
         pickerElement.querySelectorAll('.task-icon-option').forEach(option => {
@@ -3142,9 +3212,17 @@
 
     themeToggle.addEventListener('click', () => applyTheme(document.body.classList.contains('dark-mode') ? 'light' : 'dark'));
     expenseList.addEventListener('click', function(e) {
-        const index = e.target.getAttribute('data-index');
-        if (e.target.classList.contains('edit-btn')) window.editExpense(parseInt(index));
-        else if (e.target.classList.contains('delete-btn')) window.deleteExpense(parseInt(index));
+        const button = e.target.closest('button');
+        if (!button) return;
+        
+        const index = button.getAttribute('data-index');
+        if (button.classList.contains('edit-btn')) window.editExpense(parseInt(index));
+        else if (button.classList.contains('delete-btn')) window.deleteExpense(parseInt(index));
+    });
+
+    showAddTransactionBtn.addEventListener('click', () => {
+        addTransactionContainer.style.display = 'block';
+        showAddTransactionBtn.style.display = 'none';
     });
 
     newListForm.addEventListener('submit', (e) => {
@@ -3246,13 +3324,27 @@
     tasksList.addEventListener('click', (e) => {
         const taskItem = e.target.closest('.task-list-item');
         if (taskItem && taskItem.dataset.listId) {
-            if (e.target.tagName.toLowerCase() === 'button') return;
+            if (e.target.closest('button')) return;
             openListDetailsModal(taskItem.dataset.listId);
         }
     });
 
 
-    typeInput.addEventListener('change', (e) => renderCategorySelect(e.target.value === 'receita'));
+    typeInput.addEventListener('change', (e) => {
+        renderCategorySelect(e.target.value === 'receita');
+    });
+
+    categoryInput.addEventListener('change', (e) => {
+        const category = e.target.value;
+        const defaultIcon = categoryIcons[category];
+        if (defaultIcon) {
+            transactionIconHiddenInput.value = defaultIcon;
+            transactionIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
+                option.classList.toggle('selected', option.getAttribute('data-icon-path') === defaultIcon);
+            });
+        }
+    });
+
     document.getElementById('show-planner').addEventListener('click', () => showMensalSection('planner-section'));
     document.getElementById('show-financeiro').addEventListener('click', () => showMensalSection('financeiro-section'));
     document.getElementById('show-listas').addEventListener('click', () => showMensalSection('listas-section'));
@@ -3321,9 +3413,10 @@
         currentCalendarDate = new Date();
         initCalendarSelect();
         
-        renderIconPicker(taskIconPicker, taskIconHiddenInput);
-        renderIconPicker(listEventIconPicker, listEventIconHiddenInput);
-        renderIconPicker(editorEventIconPicker, editorEventIconHiddenInput); // Adicionado para o novo modal
+        renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons);
+        renderIconPicker(listEventIconPicker, listEventIconHiddenInput, taskIcons);
+        renderIconPicker(editorEventIconPicker, editorEventIconHiddenInput, taskIcons);
+        renderIconPicker(transactionIconPicker, transactionIconHiddenInput, categoryIcons);
         
         populateListIconModal();
 
