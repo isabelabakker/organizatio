@@ -3,7 +3,7 @@
 
 <head>
 
-  <link rel="icon" type="image/png" href="images/icon.png">
+  <link rel="icon" type="image/png" href="./images/icon.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title> OrganizatIO</title>
@@ -19,6 +19,37 @@
         text-transform: none;
     }
     
+    /* --- NOVO ESTILO PARA O BOTÃO DE EDITAR AGENDAMENTO --- */
+    .edit-schedule-btn {
+        background: #00BCD4; /* Ciano */
+        border: none;
+        cursor: pointer;
+        color: white;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        line-height: 1;
+        flex-shrink: 0;
+        margin-right: 5px;
+        vertical-align: middle;
+        transition: background 0.2s;
+    }
+    .edit-schedule-btn:hover {
+        background: #0097A7;
+    }
+    body.dark-mode .edit-schedule-btn {
+        background: #26C6DA;
+    }
+     body.dark-mode .edit-schedule-btn:hover {
+        background: #00ACC1;
+    }
+    /* --- FIM DO NOVO ESTILO --- */
+
     /* ------------------------------------------------ */
     /* ESTILOS TEMA CLARO (Padrão) - CORES VIVAS */
     /* ------------------------------------------------ */
@@ -545,7 +576,7 @@
       background-color: rgba(0,0,0,0.4);
     }
     /* Z-index maior para o novo modal ficar sobre os outros, se necessário */
-    #categoryModal, #listDetailsModal, #listIconModal {
+    #categoryModal, #listDetailsModal, #listIconModal, #addTaskFormModal, #scheduleEditorModal {
       z-index: 1002;
     }
     .modal-content {
@@ -562,6 +593,9 @@
     #detailsModal .modal-content {
       max-width: 1100px;
       margin: 5% auto;
+    }
+    #categorySpendingModal .modal-content {
+      max-width: 700px; /* Aumentado para a barra de progresso */
     }
     .close-button {
       color: #aaa;
@@ -601,6 +635,19 @@
         gap: 5px;
     }
     
+    .task-actions button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .task-actions button img {
+        width: 14px;
+        height: 14px;
+        filter: brightness(0) invert(0.35); /* cinza escuro para tema claro */
+        transition: filter 0.3s ease;
+    }
+
     .edit-task-btn {
         background: #4CAF50;
         color: white;
@@ -721,22 +768,38 @@
       margin-right: 5px;
     }
     
+    /* --- ESTILOS DA BARRA DE PROGRESSO ATUALIZADOS --- */
     .progress-bar-container {
         width: 100%;
         background-color: #f1f1f1;
         border-radius: 10px;
         margin-top: 5px;
         overflow: hidden;
+        cursor: pointer;
+        position: relative; /* Essencial para o posicionamento do texto */
+        height: 20px; /* Altura fixa */
     }
     
     .progress-bar {
-        height: 20px;
+        height: 100%;
         background-color: #4CAF50;
-        text-align: center;
-        line-height: 20px;
-        color: white;
         transition: width 0.4s ease-in-out;
     }
+
+    .progress-bar-text {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        top: 0;
+        line-height: 20px; /* Igual à altura do container */
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        color: white; /* Cor base para o efeito */
+        mix-blend-mode: difference; /* Mágica acontece aqui */
+        pointer-events: none; /* Permite que o clique passe para o container */
+    }
+    /* --- FIM DOS ESTILOS DA BARRA DE PROGRESSO --- */
     
     .category-icon {
         width: 28px;
@@ -937,6 +1000,10 @@
     
     body.dark-mode .task-list-item {
       border-bottom: 1px solid #333;
+    }
+    
+    body.dark-mode .task-actions button img {
+        filter: brightness(0) invert(0.8); /* cinza claro para tema escuro */
     }
     
     body.dark-mode .task-list-item[data-list-id]:hover {
@@ -1197,31 +1264,30 @@
   <div id="taskModal" class="modal">
     <div class="modal-content">
       <span class="close-button" onclick="closeTaskModal()">&times;</span>
-      
-      <h3>tarefas do dia</h3>
+      <h3 style="text-align: center; margin-top: 0;">tarefas do dia</h3>
       <div id="tasksList"></div>
+      <button id="open-add-task-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar tarefa</button>
+    </div>
+  </div>
 
-      <hr style="border-top: 1px solid #ddd; margin: 20px 0;">
-
-      <h3>adicionar tarefa</h3>
+  <div id="addTaskFormModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" onclick="closeAddTaskFormModal()">&times;</span>
+      <h3 id="task-form-title">adicionar tarefa</h3>
       <form id="task-form-modal">
-        
         <div style="display: grid; grid-template-columns: 1fr 3fr auto; gap: 10px; align-items: center;">
             <input type="time" id="taskTime" value="09:00">
             <input type="text" id="taskDescription" placeholder="descrição da tarefa" required>
             <button type="submit" id="add-task-btn">adicionar</button>
         </div>
-        
         <div style="margin: 10px 0; display: flex; align-items: center;">
             <input type="checkbox" id="taskPriority" style="width: 18px; height: 18px; margin-right: 8px; cursor: pointer;">
             <label for="taskPriority" style="font-size: 14px; font-weight: bold; color: #FF5252; cursor: pointer;">tarefa prioritária</label>
         </div>
-
         <div id="task-icon-picker-container" style="padding: 5px 0 15px 0;">
             <div id="taskIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
             <input type="hidden" id="taskIcon" value="">
         </div>
-
         <div id="recurrence-options" style="margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; align-items: center;">
             <select id="recurrenceType">
                 <option value="none">não repetir</option>
@@ -1242,7 +1308,6 @@
                 <label><input type="checkbox" name="weekday" value="6"> sáb</label>
             </div>
         </div>
-        
       </form>
     </div>
   </div>
@@ -1294,13 +1359,7 @@
           <div class="details-flex-container">
               <div class="details-table-container">
                   <table id="expense-table">
-                      <thead>
-                          <tr>
-                              <th>categoria</th>
-                              <th>valor (r$)</th>
-                              <th>ações</th>
-                          </tr>
-                      </thead>
+                      
                       <tbody id="expense-list"></tbody>
                   </table>
                   <div class="total" id="total-container">
@@ -1325,13 +1384,7 @@
               <button type="submit" class="add-btn">salvar limite</button>
           </form>
           <table style="width: 100%;">
-              <thead>
-                  <tr>
-                      <th>categoria</th>
-                      <th>limite (R$)</th>
-                      <th>porcentagem</th>
-                  </tr>
-              </thead>
+              
               <tbody id="category-spending-list"></tbody>
           </table>
       </div>
@@ -1380,14 +1433,35 @@
     </div>
   </div>
 
+  <div id="scheduleEditorModal" class="modal">
+    <div class="modal-content" style="max-width: 450px;">
+        <span class="close-button" onclick="closeScheduleEditorModal()">&times;</span>
+        <h3>editar agendamento</h3>
+        <form id="schedule-editor-form">
+            <input type="hidden" id="editor-list-id">
+            
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <input type="date" id="editor-event-date" required>
+                    <input type="time" id="editor-event-time" required>
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
+                    <div id="editor-event-icon-picker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+                    <input type="hidden" id="editor-event-icon">
+                </div>
+                <button type="submit" class="add-btn" style="background-color: #4CAF50;">salvar alterações</button>
+            </div>
+        </form>
+    </div>
+  </div>
+
 
   <script>
     // --- ELEMENTOS DO FORMULÁRIO FINANCEIRO (agora no modal) ---
     const form = document.getElementById('expense-form');
     const expenseList = document.getElementById('expense-list');
     const totalEl = document.getElementById('total');
-    // A LINHA ABAIXO FOI REMOVIDA POIS O ELEMENTO NÃO EXISTE
-    // const dateInput = document.getElementById('date'); 
     const descInput = document.getElementById('desc');
     const categoryInput = document.getElementById('category');
     const typeInput = document.getElementById('type');
@@ -1422,14 +1496,18 @@
     const calendarGrid = document.getElementById('calendar-grid');
     const calendarMonthSelect = document.getElementById('calendar-month-select');
     
-    // --- ELEMENTOS DO MODAL DE TAREFAS ---
+    // --- ELEMENTOS DOS MODAIS DE TAREFAS (Refatorado) ---
     const taskModal = document.getElementById('taskModal');
     const tasksList = document.getElementById('tasksList');
+    const openAddTaskFormBtn = document.getElementById('open-add-task-form-btn');
+    
+    const addTaskFormModal = document.getElementById('addTaskFormModal');
+    const taskFormModal = document.getElementById('task-form-modal');
+    const taskFormTitle = document.getElementById('task-form-title');
     const taskTimeInput = document.getElementById('taskTime');
     const taskDescriptionInput = document.getElementById('taskDescription');
     const taskIconHiddenInput = document.getElementById('taskIcon');
     const taskIconPicker = document.getElementById('taskIconPicker');
-    const taskFormModal = document.getElementById('task-form-modal');
     const addTaskBtn = document.getElementById('add-task-btn');
     const taskPriorityInput = document.getElementById('taskPriority'); 
 
@@ -1454,46 +1532,53 @@
     const listDetailsTitle = document.getElementById('listDetailsTitle');
     const listDetailsItems = document.getElementById('listDetailsItems');
     
-    // --- NOVOS ELEMENTOS DO MODAL DE ÍCONE DE LISTA ---
+    // --- ELEMENTOS DO MODAL DE ÍCONE DE LISTA ---
     const listIconModal = document.getElementById('listIconModal');
     const listIconPickerGrid = document.getElementById('list-icon-picker-grid');
+
+    // --- ELEMENTOS DO MODAL DE EDIÇÃO DE AGENDAMENTO ---
+    const scheduleEditorModal = document.getElementById('scheduleEditorModal');
+    const scheduleEditorForm = document.getElementById('schedule-editor-form');
+    const editorListIdInput = document.getElementById('editor-list-id');
+    const editorEventDateInput = document.getElementById('editor-event-date');
+    const editorEventTimeInput = document.getElementById('editor-event-time');
+    const editorEventIconPicker = document.getElementById('editor-event-icon-picker');
+    const editorEventIconHiddenInput = document.getElementById('editor-event-icon');
 
 
     // --- ÍCONES DE TAREFAS ---
     const taskIcons = {
-        "nenhum": "images/none.png",
-        "médico": "images/doctor.png",
-        "date": "images/date.png",
-        "star": "images/star.png",
-        "money": "images/money.png",
-        "pet": "images/pet.png",
-        "exercício": "images/gym.png",
-        "meditação": "images/meditation.png",
-        "trabalho": "images/work.png",
-        "salão": "images/hair.png",
-        "comida": "images/food.png",
-        "gift": "images/gift.png",
-        "aniversário": "images/birthday.png",
-        "festa": "images/party.png",
-        "vacation": "images/vacation.png",
-        "trip": "images/trip.png",
-        "meeting": "images/meeting.png",
-        "study": "images/study.png",
-        "house": "images/house.png",
-        "shopping": "images/shopping.png",
-        "buy": "images/buy.png",
-        "person": "images/person.png",
-        "judge": "images/judge.png",
-        "study": "images/study.png",
-        "list": "images/list.png",
-        "car": "images/car.png",
-        "picture": "images/picture.png",
-        "nails": "images/nails.png",
-        "print": "images/print.png",
-        "art": "images/art.png",
-        "write": "images/write.png",
-        "upload": "images/upload.png",
-      
+        "nenhum": "./images/none.png",
+        "médico": "./images/doctor.png",
+        "date": "./images/date.png",
+        "star": "./images/star.png",
+        "money": "./images/money.png",
+        "pet": "./images/pet.png",
+        "exercício": "./images/gym.png",
+        "meditação": "./images/meditation.png",
+        "trabalho": "./images/work.png",
+        "salão": "./images/hair.png",
+        "comida": "./images/food.png",
+        "gift": "./images/gift.png",
+        "aniversário": "./images/birthday.png",
+        "festa": "./images/party.png",
+        "vacation": "./images/vacation.png",
+        "trip": "./images/trip.png",
+        "meeting": "./images/meeting.png",
+        "study": "./images/study.png",
+        "house": "./images/house.png",
+        "shopping": "./images/shopping.png",
+        "buy": "./images/buy.png",
+        "person": "./images/person.png",
+        "judge": "./images/judge.png",
+        "list": "./images/list.png",
+        "car": "./images/car.png",
+        "picture": "./images/picture.png",
+        "nails": "./images/nails.png",
+        "print": "./images/print.png",
+        "art": "./images/art.png",
+        "write": "./images/write.png",
+        "upload": "./images/upload.png",
     };
     
     const USE_EMOJI_ICONS = true;
@@ -1582,7 +1667,6 @@
             const listId = listDiv.dataset.listId;
             const listName = listDiv.querySelector('h2').textContent.trim();
             const priority = listDiv.querySelector('.list-priority-select').value;
-            // ALTERAÇÃO AQUI: Salvar o ícone da lista
             const listIconSrc = listDiv.querySelector('.list-title-icon').src;
             const items = Array.from(listDiv.querySelectorAll('ul li')).map(li => ({
                 text: li.querySelector('.list-item-content span').textContent.trim(),
@@ -1596,7 +1680,6 @@
     function loadAndRenderLists() {
         listsContainer.innerHTML = '';
         const listsData = JSON.parse(localStorage.getItem('todoLists')) || [];
-        // ALTERAÇÃO AQUI: Passar o ícone salvo para a função de criação
         listsData.forEach(listData => createList(listData.name, listData.items, listData.priority, listData.id, listData.icon));
     }
 
@@ -1610,7 +1693,7 @@
     // ----------------------------------------------------
     function openDetailsModal() {
         detailsModal.style.display = 'block';
-        renderExpenses(); // <-- CORREÇÃO APLICADA
+        renderExpenses(); 
         cancelEdit();
     }
     function closeDetailsModal() {
@@ -1692,7 +1775,6 @@
         listDetailsModal.style.display = 'none';
     }
 
-    // --- NOVAS FUNÇÕES PARA O MODAL DE ÍCONE DE LISTA ---
     function openListIconModal(listIconElement) {
         currentListIconBeingEdited = listIconElement;
         listIconModal.style.display = 'block';
@@ -1708,7 +1790,7 @@
         for (const key in taskIcons) {
             const iconPath = taskIcons[key];
             const optionDiv = document.createElement('div');
-            optionDiv.className = 'task-icon-option'; // Reutilizando a classe
+            optionDiv.className = 'task-icon-option';
             optionDiv.dataset.iconPath = iconPath;
             optionDiv.title = key;
             optionDiv.innerHTML = `<img src="${iconPath}" alt="${key}">`;
@@ -1716,14 +1798,42 @@
             optionDiv.addEventListener('click', () => {
                 if (currentListIconBeingEdited) {
                     currentListIconBeingEdited.src = iconPath;
-                    saveLists(); // Salva a alteração
+                    saveLists();
                     closeListIconModal();
                 }
             });
             listIconPickerGrid.appendChild(optionDiv);
         }
     }
+
+    // --- NOVAS FUNÇÕES PARA O MODAL DE EDIÇÃO DE AGENDAMENTO ---
+    function openScheduleEditorModal(listId) {
+        const linkedTaskInfo = findLinkedTask(listId);
+        if (!linkedTaskInfo) {
+            alert("Erro: não foi possível encontrar o agendamento desta lista no planner.");
+            return;
+        }
+
+        const { task, dateKey } = linkedTaskInfo;
+        
+        editorListIdInput.value = listId;
+        editorEventDateInput.value = dateKey;
+        editorEventTimeInput.value = task.time;
+        editorEventIconHiddenInput.value = task.icon;
+
+        // Seleciona o ícone correto no picker
+        editorEventIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
+            option.classList.toggle('selected', option.getAttribute('data-icon-path') === task.icon);
+        });
+
+        scheduleEditorModal.style.display = 'block';
+    }
+
+    function closeScheduleEditorModal() {
+        scheduleEditorModal.style.display = 'none';
+    }
     // --- FIM DAS NOVAS FUNÇÕES ---
+
 
     // ----------------------------------------------------
     // GERENCIAMENTO DE CATEGORIAS
@@ -1844,6 +1954,22 @@
     // LÓGICA DE GASTOS POR CATEGORIA (ORÇAMENTOS)
     // ----------------------------------------------------
     
+    window.toggleBudgetDisplay = function(container) {
+        const textElement = container.querySelector('.progress-bar-text');
+        const currentState = container.dataset.view || 'percentage';
+
+        if (currentState === 'percentage') {
+            const spent = parseFloat(container.dataset.spent);
+            textElement.textContent = formatCurrency(spent);
+            textElement.style.fontSize = '11px';
+            container.dataset.view = 'currency';
+        } else {
+            textElement.textContent = container.dataset.percentage;
+            textElement.style.fontSize = '';
+            container.dataset.view = 'percentage';
+        }
+    }
+    
     function updateCategorySpending() {
         const tableEl = document.getElementById('category-spending-list');
         tableEl.innerHTML = '';
@@ -1863,18 +1989,20 @@
             const row = document.createElement('tr');
             const progressBarColor = percentage > 100 ? '#FF5252' : (percentage > 80 ? '#FF9800' : '#4CAF50');
             
-            // Pega o emoji do objeto categoryLookups
             const lookup = categoryLookups[category] || categoryLookups.default;
             const categoryDisplay = lookup.emoji;
             
             row.innerHTML = `
-                <td title="${category}">${categoryDisplay}</td>
-                <td>${formatCurrency(limit)}</td>
-                <td>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${progressBarColor};">
-                            ${percentage.toFixed(0)}%
-                        </div>
+                <td title="${category}" style="width: 10%;">${categoryDisplay}</td>
+                <td style="width: 30%;">${formatCurrency(limit)}</td>
+                <td style="width: 60%;">
+                    <div class="progress-bar-container"
+                         data-spent="${spent}"
+                         data-percentage="${percentage.toFixed(0)}%"
+                         onclick="toggleBudgetDisplay(this)"
+                         title="clique para alternar visualização">
+                        <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${progressBarColor};"></div>
+                        <span class="progress-bar-text">${percentage.toFixed(0)}%</span>
                     </div>
                 </td>
             `;
@@ -1981,7 +2109,7 @@
               </div>
               <div class="goal-details">
                 <p><strong>${formatCurrency(totalSaved)}</strong> / ${formatCurrency(goal.target)}</p>
-                <div class="progress-bar-container">
+                <div class="progress-bar-container" style="cursor: default;">
                   <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${goal.color};">
                     ${percentage.toFixed(1)}%
                   </div>
@@ -2102,13 +2230,37 @@
 
 
     // ----------------------------------------------------
-    // LÓGICA FINANCEIRA CENTRAL
+    // LÓGICA FINANCEIRA CENTRAL E GRÁFICOS
     // ----------------------------------------------------
+
+    /**
+     * NOVA FUNÇÃO: Cria ou atualiza um gráfico de forma segura.
+     * Verifica se a biblioteca Chart.js está carregada e destrói instâncias antigas.
+     */
+    function createOrUpdateChart(canvasId, existingChartInstance, chartConfig) {
+        if (typeof Chart === 'undefined') {
+            console.error("A biblioteca Chart.js não foi carregada. Gráficos não podem ser criados.");
+            return null;
+        }
+        
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) {
+            console.error(`Elemento canvas com id "${canvasId}" não encontrado.`);
+            return null;
+        }
+        
+        const ctx = canvas.getContext('2d');
+        if (existingChartInstance) {
+            existingChartInstance.destroy();
+        }
+
+        return new Chart(ctx, chartConfig);
+    }
     
     function updateFinanceDisplay() {
         updateSummaryCards();
         renderExpenses();
-        renderAnnualChart();
+        // A chamada para renderAnnualChart foi movida para showMensalSection
         updateCategorySpending();
         renderCategorySelect(typeInput.value === 'receita');
         renderCategoryLimitSelect();
@@ -2117,7 +2269,6 @@
     function updateSummaryCards() {
         const monthData = dataByMonth[currentMonth] || [];
         const totalRevenue = monthData.filter(item => item.value > 0).reduce((acc, item) => acc + item.value, 0);
-        
         const totalExpenses = monthData.filter(item => item.value < 0).reduce((acc, item) => acc + item.value, 0);
         const monthBalance = totalRevenue + totalExpenses;
 
@@ -2135,9 +2286,7 @@
             const transactionType = item.type || (item.value >= 0 ? 'receita' : 'despesa');
             const lookup = categoryLookups[item.category] || categoryLookups.default;
             const iconColorClass = transactionType === 'receita' ? 'icon-revenue' : 'icon-expense';
-            
             const escapedDesc = item.desc.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
-
             let iconHtml;
             if (USE_EMOJI_ICONS) {
                 iconHtml = `<span title="${item.category}" class="category-icon ${iconColorClass}" onclick="openDescriptionModal('${escapedDesc}', '${item.date}')" style="cursor: pointer;">${lookup.emoji}</span>`;
@@ -2158,16 +2307,30 @@
 
         document.getElementById('total-container').innerHTML = `saldo total: <span id="total" style="color: ${total >= 0 ? '#4CAF50' : '#FF5252'};">${formatCurrency(total)}</span>`;
 
+        // Lógica do Gráfico Mensal
         const isDarkMode = document.body.classList.contains('dark-mode');
         const textColor = isDarkMode ? '#E0E0E0' : '#333';
-        const ctx = document.getElementById('month-chart').getContext('2d');
-        if (monthChart) monthChart.destroy();
         const chartLabels = Object.keys(categoryTotals).filter(key => categoryTotals[key] > 0);
         const chartData = chartLabels.map(key => categoryTotals[key]);
-        monthChart = new Chart(ctx, {
-            type: 'pie', data: { labels: chartLabels, datasets: [{ data: chartData, backgroundColor: ['#FF5252', '#4CAF50', '#00BCD4', '#9C27B0', '#FFC107', '#FF9800', '#795548'] }] },
-            options: { plugins: { legend: { labels: { color: textColor } } } }
-        });
+        
+        const monthChartConfig = {
+            type: 'pie',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    data: chartData,
+                    backgroundColor: ['#FF5252', '#4CAF50', '#00BCD4', '#9C27B0', '#FFC107', '#FF9800', '#795548']
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: { color: textColor }
+                    }
+                }
+            }
+        };
+        monthChart = createOrUpdateChart('month-chart', monthChart, monthChartConfig);
     }
 
     window.deleteExpense = function(index) {
@@ -2181,8 +2344,6 @@
     window.editExpense = function(index) {
         editingIndex = index;
         const item = dataByMonth[currentMonth][index];
-        // A LINHA ABAIXO FOI REMOVIDA POIS O ELEMENTO 'dateInput' NÃO EXISTE.
-        // dateInput.value = item.date;
         descInput.value = item.desc;
         typeInput.value = item.type || (item.value >= 0 ? 'receita' : 'despesa');
         renderCategorySelect(typeInput.value === 'receita');
@@ -2262,7 +2423,6 @@
         }
     });
 
-
     function renderAnnualChart() {
         const isDarkMode = document.body.classList.contains('dark-mode');
         const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
@@ -2282,9 +2442,7 @@
                 .toFixed(2);
         });
 
-        if (annualChart) annualChart.destroy();
-        const ctx = document.getElementById('annual-chart').getContext('2d');
-        annualChart = new Chart(ctx, {
+        const annualChartConfig = {
             type: 'bar',
             data: {
                 labels: monthNamesPt,
@@ -2307,10 +2465,28 @@
                     legend: { labels: { color: textColor } }
                 }
             }
-        });
+        };
+        annualChart = createOrUpdateChart('annual-chart', annualChart, annualChartConfig);
     }
 
-    // --- CÓDIGO DO PLANNER, TAREFAS E LISTAS ---
+    // ----------------------------------------------------
+    // CÓDIGO DO PLANNER, TAREFAS E LISTAS
+    // ----------------------------------------------------
+
+    // --- NOVA FUNÇÃO AUXILIAR ---
+    function findLinkedTask(listId) {
+        for (const dateKey in calendarTasks) {
+            const taskIndex = calendarTasks[dateKey].findIndex(task => task.linkedListId === listId);
+            if (taskIndex > -1) {
+                return {
+                    task: calendarTasks[dateKey][taskIndex],
+                    dateKey: dateKey,
+                    taskIndex: taskIndex
+                };
+            }
+        }
+        return null;
+    }
 
     function initCalendarSelect() {
         if (calendarMonthSelect.options.length === 0) {
@@ -2375,17 +2551,32 @@
         }
     }
 
+    // --- Funções de Modal de Tarefa (Refatorado) ---
     function openTaskModal(dateKey, day) {
         selectedDateKey = dateKey;
-        taskModal.querySelector('h3').textContent = 'adicionar tarefa';
         renderDayTasks();
         taskModal.style.display = 'block';
-        cancelTaskEdit();
-        recurrenceEndDateInput.value = '';
+        cancelTaskEdit(); // Garante que o formulário esteja limpo para a próxima vez que for aberto
     }
+    
+    function closeTaskModal() { 
+        taskModal.style.display = 'none';
+        renderCalendar(currentCalendarDate);
+    }
+    
+    function openAddTaskFormModal() {
+        addTaskFormModal.style.display = 'block';
+    }
+
+    function closeAddTaskFormModal() {
+        addTaskFormModal.style.display = 'none';
+        cancelTaskEdit();
+    }
+    // --- Fim das Funções de Modal ---
 
     function cancelTaskEdit() {
         taskFormModal.removeAttribute('data-editing-id');
+        taskFormTitle.textContent = 'adicionar tarefa';
         taskDescriptionInput.value = '';
         taskTimeInput.value = '09:00';
         taskPriorityInput.checked = false; 
@@ -2393,7 +2584,6 @@
         if (defaultOption) defaultOption.click();
         addTaskBtn.textContent = 'adicionar';
         addTaskBtn.classList.remove('save-edit-btn');
-        taskModal.querySelector('h3').textContent = 'adicionar tarefa';
         
         recurrenceTypeInput.value = 'none';
         recurrenceEndDateInput.value = '';
@@ -2406,15 +2596,13 @@
         });
     }
 
-    window.closeTaskModal = function() { taskModal.style.display = 'none'; cancelTaskEdit(); renderCalendar(currentCalendarDate); }
-
     window.editTask = function(taskId) {
         const tasks = calendarTasks[selectedDateKey] || [];
         const taskToEdit = tasks.find(t => t.id === taskId);
         if (!taskToEdit) return;
         
         if (taskToEdit.linkedListId) {
-            alert("Tarefas vinculadas a listas não podem ser editadas diretamente. Edite o nome da lista na aba 'listas'.");
+            alert("Para editar o agendamento de uma lista, vá para a aba 'listas' e use o botão de calendário (📅) na lista correspondente.");
             return;
         }
 
@@ -2425,7 +2613,7 @@
         addTaskBtn.textContent = 'salvar';
         addTaskBtn.classList.add('save-edit-btn');
         taskFormModal.setAttribute('data-editing-id', taskId);
-        taskModal.querySelector('h3').textContent = 'editar tarefa';
+        taskFormTitle.textContent = 'editar tarefa';
         taskIconHiddenInput.value = taskToEdit.icon;
         
         taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
@@ -2439,7 +2627,7 @@
             weeklyRecurrenceOptions.querySelectorAll('input').forEach(cb => cb.disabled = true);
         }
         
-        taskDescriptionInput.focus();
+        openAddTaskFormModal(); // Abre o modal de formulário para edição
     }
     
     function renderDayTasks() {
@@ -2462,7 +2650,12 @@
             }
 
             const iconHtml = task.icon ? `<img src="${task.icon}" class="task-icon" alt="ícone da tarefa">` : '';
-            taskItem.innerHTML = `<span>${iconHtml}<strong>${task.time}</strong> - ${task.description}</span><div class="task-actions"><button class="edit-task-btn" onclick="editTask('${task.id}')">✏️</button><button onclick="removeTask('${task.id}')">🗑️</button></div>`;
+            taskItem.innerHTML = `
+                <span>${iconHtml}<strong>${task.time}</strong> - ${task.description}</span>
+                <div class="task-actions">
+                    <button class="edit-task-btn" onclick="editTask('${task.id}')"><img src="svg/pencil.svg" alt="Editar"></button>
+                    <button onclick="removeTask('${task.id}')"><img src="svg/trash.svg" alt="Remover"></button>
+                </div>`;
             tasksList.appendChild(taskItem);
         });
     }
@@ -2560,11 +2753,7 @@
         
         saveCalendarTasks();
         renderDayTasks();
-        if (editingId) {
-           cancelTaskEdit();
-        } else {
-           taskDescriptionInput.value = '';
-        }
+        closeAddTaskFormModal();
     });
 
     window.removeTask = function(taskId) {
@@ -2572,6 +2761,8 @@
 
         const taskToRemove = calendarTasks[selectedDateKey].find(t => t.id === taskId);
         if (!taskToRemove) return;
+
+        const linkedListId = taskToRemove.linkedListId;
 
         if (taskToRemove.recurrenceId) {
             const deleteAll = confirm("esta é uma tarefa recorrente. deseja apagar TODAS as futuras ocorrências?\n\n(clique em 'ok' para apagar todas, ou 'cancelar' para apagar apenas esta.)");
@@ -2602,6 +2793,10 @@
 
         saveCalendarTasks();
         renderDayTasks();
+
+        if(linkedListId) {
+            updateListButtons(linkedListId);
+        }
     }
     
     function renderIconPicker(pickerElement, hiddenInputElement) {
@@ -2625,10 +2820,33 @@
             firstOption.click();
         }
     }
+
+    function updateListButtons(listId) {
+        const listDiv = listsContainer.querySelector(`[data-list-id='${listId}']`);
+        if (!listDiv) return;
+        const actionsDiv = listDiv.querySelector('.list-title-actions');
+        if(!actionsDiv) return;
+
+        const existingScheduleBtn = actionsDiv.querySelector('.edit-schedule-btn');
+        const linkedTaskInfo = findLinkedTask(listId);
+
+        if (linkedTaskInfo && !existingScheduleBtn) {
+            const editScheduleBtn = document.createElement("button");
+            editScheduleBtn.innerHTML = "📅";
+            editScheduleBtn.className = "edit-schedule-btn";
+            editScheduleBtn.title = 'editar agendamento';
+            editScheduleBtn.onclick = () => openScheduleEditorModal(listId);
+            
+            const mainEditBtn = actionsDiv.querySelector('.edit-list-btn');
+            actionsDiv.insertBefore(editScheduleBtn, mainEditBtn);
+
+        } else if (!linkedTaskInfo && existingScheduleBtn) {
+            existingScheduleBtn.remove();
+        }
+    }
     
     function restoreOriginalListButtons(listDiv) {
         const actionsDiv = listDiv.querySelector('.list-title-actions');
-        // Limpa apenas os botões de salvar/cancelar, mantendo o de ícone
         actionsDiv.innerHTML = '';
         
         const changeIconBtn = document.createElement("button");
@@ -2645,11 +2863,14 @@
         const removeBtn = document.createElement("button");
         removeBtn.textContent = "x";
         removeBtn.className = "delete-list-circular-btn";
-        removeBtn.onclick = () => { listDiv.remove(); saveLists(); };
+        removeBtn.onclick = () => deleteListAndLinkedTask(listDiv, listDiv.querySelector('h2').textContent.trim());
 
         actionsDiv.appendChild(changeIconBtn);
+        // O botão de agendamento será adicionado por `updateListButtons` se necessário
         actionsDiv.appendChild(editBtn);
         actionsDiv.appendChild(removeBtn);
+        
+        updateListButtons(listDiv.dataset.listId);
     }
 
     function toggleListTitleEdit(listDiv) {
@@ -2677,6 +2898,14 @@
                 titleContainer.replaceChild(titleElement, inputField);
                 restoreOriginalListButtons(listDiv);
                 saveLists();
+                
+                const listId = listDiv.dataset.listId;
+                const linkedTaskInfo = findLinkedTask(listId);
+                if (linkedTaskInfo) {
+                    linkedTaskInfo.task.description = newName;
+                    saveCalendarTasks();
+                    renderCalendar(currentCalendarDate);
+                }
             }
         };
 
@@ -2692,7 +2921,31 @@
         actionsDiv.appendChild(cancelBtn);
     }
 
-    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = 'images/list.png') {
+    function deleteListAndLinkedTask(listDiv, listName) {
+        if (!confirm(`tem certeza que deseja excluir a lista "${listName}"? esta ação também a removerá do planner.`)) {
+            return;
+        }
+
+        const listIdToDelete = listDiv.dataset.listId;
+        if (!listIdToDelete) return;
+
+        const linkedTaskInfo = findLinkedTask(listIdToDelete);
+        if (linkedTaskInfo) {
+            const { dateKey, taskIndex } = linkedTaskInfo;
+            calendarTasks[dateKey].splice(taskIndex, 1);
+            if (calendarTasks[dateKey].length === 0) {
+                delete calendarTasks[dateKey];
+            }
+        }
+        
+        saveCalendarTasks();
+        renderCalendar(currentCalendarDate);
+
+        listDiv.remove();
+        saveLists();
+    }
+
+    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = './images/list.png') {
         if (!listName) return;
 
         const listDiv = document.createElement("div");
@@ -2732,7 +2985,7 @@
         const removeBtn = document.createElement("button");
         removeBtn.textContent = "x";
         removeBtn.className = "delete-list-circular-btn";
-        removeBtn.onclick = () => { listDiv.remove(); saveLists(); };
+        removeBtn.onclick = () => deleteListAndLinkedTask(listDiv, listName);
 
         actionsDiv.appendChild(changeIconBtn);
         actionsDiv.appendChild(editBtn);
@@ -2756,19 +3009,9 @@
             listDiv.classList.add('priority-' + newPriorityValue);
             saveLists();
 
-            const listId = listDiv.dataset.listId;
-            let taskUpdated = false;
-
-            for (const dateKey in calendarTasks) {
-                const taskIndex = calendarTasks[dateKey].findIndex(task => task.linkedListId === listId);
-                if (taskIndex !== -1) {
-                    calendarTasks[dateKey][taskIndex].priority = (newPriorityValue === 'alta') ? 'alta' : 'nenhuma';
-                    taskUpdated = true;
-                    break;
-                }
-            }
-
-            if (taskUpdated) {
+            const linkedTaskInfo = findLinkedTask(listDiv.dataset.listId);
+            if (linkedTaskInfo) {
+                linkedTaskInfo.task.priority = (newPriorityValue === 'alta') ? 'alta' : 'nenhuma';
                 saveCalendarTasks();
                 renderCalendar(currentCalendarDate);
             }
@@ -2878,6 +3121,9 @@
         
         initialItems.forEach(item => addItem(item.text, item.checked));
         checkCompletion(listDiv);
+
+        updateListButtons(listId);
+
         if (initialItems.length === 0) {
             saveLists();
         }
@@ -2890,6 +3136,10 @@
         listDiv.classList.toggle("completed", allChecked);
     }
     
+    // ----------------------------------------------------
+    // INICIALIZAÇÃO E EVENT LISTENERS
+    // ----------------------------------------------------
+
     themeToggle.addEventListener('click', () => applyTheme(document.body.classList.contains('dark-mode') ? 'light' : 'dark'));
     expenseList.addEventListener('click', function(e) {
         const index = e.target.getAttribute('data-index');
@@ -2904,7 +3154,7 @@
 
         const listPriority = newListPriorityInput.value;
         const newListId = Date.now().toString();
-        // A função createList já salva a nova lista, então não precisamos chamar saveLists() aqui
+        
         createList(listName, [], listPriority, newListId);
         
         if (linkToPlannerCheckbox.checked) {
@@ -2931,7 +3181,7 @@
             
             calendarTasks[eventDate].push(newTask);
             saveCalendarTasks();
-            
+            updateListButtons(newListId);
             renderCalendar(currentCalendarDate);
         }
         
@@ -2941,6 +3191,46 @@
         listEventDateInput.required = false;
         listEventTimeInput.required = false;
     });
+
+    scheduleEditorForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const listId = editorListIdInput.value;
+        const newDate = editorEventDateInput.value;
+        const newTime = editorEventTimeInput.value;
+        const newIcon = editorEventIconHiddenInput.value;
+
+        const linkedTaskInfo = findLinkedTask(listId);
+        if (!linkedTaskInfo) {
+            alert('Erro: a tarefa vinculada não foi encontrada. Ela pode ter sido removida.');
+            closeScheduleEditorModal();
+            return;
+        }
+
+        const { task, dateKey: oldDateKey, taskIndex } = linkedTaskInfo;
+
+        // Atualiza a tarefa com os novos valores
+        task.time = newTime;
+        task.icon = newIcon;
+
+        // Se a data mudou, move a tarefa para o novo dia no calendário
+        if (newDate !== oldDateKey) {
+            // 1. Remove do dia antigo
+            calendarTasks[oldDateKey].splice(taskIndex, 1);
+            if (calendarTasks[oldDateKey].length === 0) {
+                delete calendarTasks[oldDateKey];
+            }
+            // 2. Adiciona ao novo dia
+            if (!calendarTasks[newDate]) {
+                calendarTasks[newDate] = [];
+            }
+            calendarTasks[newDate].push(task);
+        }
+
+        saveCalendarTasks();
+        renderCalendar(currentCalendarDate);
+        closeScheduleEditorModal();
+    });
+
 
     newListNameInput.addEventListener('input', () => {
         linkToPlannerContainer.style.display = newListNameInput.value.trim() ? 'flex' : 'none';
@@ -2973,6 +3263,7 @@
     viewDetailsBtn.addEventListener('click', openDetailsModal);
     viewCategorySpendingBtn.addEventListener('click', openCategorySpendingModal);
     viewInvestmentsBtn.addEventListener('click', openInvestmentsModal);
+    openAddTaskFormBtn.addEventListener('click', openAddTaskFormModal);
     
     recurrenceTypeInput.addEventListener('change', () => {
         weeklyRecurrenceOptions.style.display = recurrenceTypeInput.value === 'weekly' ? 'block' : 'none';
@@ -2983,6 +3274,7 @@
 
     window.onclick = function(event) {
         if (event.target == taskModal) closeTaskModal();
+        if (event.target == addTaskFormModal) closeAddTaskFormModal();
         if (event.target == categoryModal) closeCategoryModal();
         if (event.target == detailsModal) closeDetailsModal();
         if (event.target == categorySpendingModal) closeCategorySpendingModal();
@@ -2990,6 +3282,7 @@
         if (event.target == descriptionModal) closeDescriptionModal();
         if (event.target == listDetailsModal) closeListDetailsModal();
         if (event.target == listIconModal) closeListIconModal();
+        if (event.target == scheduleEditorModal) closeScheduleEditorModal();
     }
     
     function showMensalSection(sectionId) {
@@ -3000,21 +3293,20 @@
         document.getElementById(`show-${sectionId.replace('-section', '')}`).classList.add('active-sub');
         
         if (sectionId === 'financeiro-section') {
-            updateFinanceDisplay();
-            renderAnnualChart(); // <-- CORREÇÃO APLICADA
+            updateSummaryCards();
+            renderAnnualChart(); // A renderização agora acontece aqui
         }
         if (sectionId === 'listas-section') {
             loadAndRenderLists();
         }
-        if (sectionId === 'planner-section') renderCalendar(currentCalendarDate);
+        if (sectionId === 'planner-section') {
+            renderCalendar(currentCalendarDate);
+        }
     }
 
     function updateMonthlyView() {
         currentMonth = monthNamesPt[currentCalendarDate.getMonth()];
         calendarMonthSelect.value = currentCalendarDate.getMonth();
-        
-        const year = currentCalendarDate.getFullYear();
-        const monthString = String(currentCalendarDate.getMonth() + 1).padStart(2, '0');
         
         const activeSectionId = document.querySelector('#mensal-controls .mensal-sub-toggle.active-sub')?.id.replace('show-', '') + '-section' || 'planner-section';
         showMensalSection(activeSectionId);
@@ -3022,8 +3314,8 @@
 
     function initApp() {
         loadFinancialData();
-        loadAndRenderLists();
         loadCalendarTasks();
+        loadAndRenderLists();
         loadInvestmentGoals();
         applyTheme(localStorage.getItem('theme') || 'light');
         currentCalendarDate = new Date();
@@ -3031,42 +3323,17 @@
         
         renderIconPicker(taskIconPicker, taskIconHiddenInput);
         renderIconPicker(listEventIconPicker, listEventIconHiddenInput);
+        renderIconPicker(editorEventIconPicker, editorEventIconHiddenInput); // Adicionado para o novo modal
         
         populateListIconModal();
 
         renderCategorySelect(false);
         renderCategoryLimitSelect();
         updateMonthlyView();
-        
-        updateFinanceDisplay();
     }
 
     initApp();
   </script>
-
-<div id="scheduleEditorModal" class="modal">
-    <div class="modal-content" style="max-width: 450px;">
-        <span class="close-button" onclick="closeScheduleEditorModal()">&times;</span>
-        <h3>editar agendamento</h3>
-        <form id="schedule-editor-form">
-            <input type="hidden" id="editor-list-id">
-            
-            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <input type="date" id="editor-event-date" required>
-                    <input type="time" id="editor-event-time" required>
-                </div>
-                <div>
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
-                    <div id="editor-event-icon-picker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
-                    <input type="hidden" id="editor-event-icon">
-                </div>
-                <button type="submit" class="add-btn" style="background-color: #4CAF50;">salvar alterações</button>
-            </div>
-        </form>
-    </div>
-  </div>
-
 
 </body>
 </html>
