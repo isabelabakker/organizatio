@@ -1098,7 +1098,7 @@
     }
 
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="./js/chart.js"></script>
 </head>
 <body>
   
@@ -1386,6 +1386,8 @@
     const form = document.getElementById('expense-form');
     const expenseList = document.getElementById('expense-list');
     const totalEl = document.getElementById('total');
+    // A LINHA ABAIXO FOI REMOVIDA POIS O ELEMENTO NÃO EXISTE
+    // const dateInput = document.getElementById('date'); 
     const descInput = document.getElementById('desc');
     const categoryInput = document.getElementById('category');
     const typeInput = document.getElementById('type');
@@ -1580,6 +1582,7 @@
             const listId = listDiv.dataset.listId;
             const listName = listDiv.querySelector('h2').textContent.trim();
             const priority = listDiv.querySelector('.list-priority-select').value;
+            // ALTERAÇÃO AQUI: Salvar o ícone da lista
             const listIconSrc = listDiv.querySelector('.list-title-icon').src;
             const items = Array.from(listDiv.querySelectorAll('ul li')).map(li => ({
                 text: li.querySelector('.list-item-content span').textContent.trim(),
@@ -1593,6 +1596,7 @@
     function loadAndRenderLists() {
         listsContainer.innerHTML = '';
         const listsData = JSON.parse(localStorage.getItem('todoLists')) || [];
+        // ALTERAÇÃO AQUI: Passar o ícone salvo para a função de criação
         listsData.forEach(listData => createList(listData.name, listData.items, listData.priority, listData.id, listData.icon));
     }
 
@@ -1606,7 +1610,7 @@
     // ----------------------------------------------------
     function openDetailsModal() {
         detailsModal.style.display = 'block';
-        renderExpenses(); 
+        renderExpenses(); // <-- CORREÇÃO APLICADA
         cancelEdit();
     }
     function closeDetailsModal() {
@@ -1688,6 +1692,7 @@
         listDetailsModal.style.display = 'none';
     }
 
+    // --- NOVAS FUNÇÕES PARA O MODAL DE ÍCONE DE LISTA ---
     function openListIconModal(listIconElement) {
         currentListIconBeingEdited = listIconElement;
         listIconModal.style.display = 'block';
@@ -1703,7 +1708,7 @@
         for (const key in taskIcons) {
             const iconPath = taskIcons[key];
             const optionDiv = document.createElement('div');
-            optionDiv.className = 'task-icon-option';
+            optionDiv.className = 'task-icon-option'; // Reutilizando a classe
             optionDiv.dataset.iconPath = iconPath;
             optionDiv.title = key;
             optionDiv.innerHTML = `<img src="${iconPath}" alt="${key}">`;
@@ -1711,13 +1716,14 @@
             optionDiv.addEventListener('click', () => {
                 if (currentListIconBeingEdited) {
                     currentListIconBeingEdited.src = iconPath;
-                    saveLists();
+                    saveLists(); // Salva a alteração
                     closeListIconModal();
                 }
             });
             listIconPickerGrid.appendChild(optionDiv);
         }
     }
+    // --- FIM DAS NOVAS FUNÇÕES ---
 
     // ----------------------------------------------------
     // GERENCIAMENTO DE CATEGORIAS
@@ -1857,6 +1863,7 @@
             const row = document.createElement('tr');
             const progressBarColor = percentage > 100 ? '#FF5252' : (percentage > 80 ? '#FF9800' : '#4CAF50');
             
+            // Pega o emoji do objeto categoryLookups
             const lookup = categoryLookups[category] || categoryLookups.default;
             const categoryDisplay = lookup.emoji;
             
@@ -2095,37 +2102,13 @@
 
 
     // ----------------------------------------------------
-    // LÓGICA FINANCEIRA CENTRAL E GRÁFICOS
+    // LÓGICA FINANCEIRA CENTRAL
     // ----------------------------------------------------
-
-    /**
-     * NOVA FUNÇÃO: Cria ou atualiza um gráfico de forma segura.
-     * Verifica se a biblioteca Chart.js está carregada e destrói instâncias antigas.
-     */
-    function createOrUpdateChart(canvasId, existingChartInstance, chartConfig) {
-        if (typeof Chart === 'undefined') {
-            console.error("A biblioteca Chart.js não foi carregada. Gráficos não podem ser criados.");
-            return null;
-        }
-        
-        const canvas = document.getElementById(canvasId);
-        if (!canvas) {
-            console.error(`Elemento canvas com id "${canvasId}" não encontrado.`);
-            return null;
-        }
-        
-        const ctx = canvas.getContext('2d');
-        if (existingChartInstance) {
-            existingChartInstance.destroy();
-        }
-
-        return new Chart(ctx, chartConfig);
-    }
     
     function updateFinanceDisplay() {
         updateSummaryCards();
         renderExpenses();
-        // A chamada para renderAnnualChart foi movida para showMensalSection
+        renderAnnualChart();
         updateCategorySpending();
         renderCategorySelect(typeInput.value === 'receita');
         renderCategoryLimitSelect();
@@ -2134,6 +2117,7 @@
     function updateSummaryCards() {
         const monthData = dataByMonth[currentMonth] || [];
         const totalRevenue = monthData.filter(item => item.value > 0).reduce((acc, item) => acc + item.value, 0);
+        
         const totalExpenses = monthData.filter(item => item.value < 0).reduce((acc, item) => acc + item.value, 0);
         const monthBalance = totalRevenue + totalExpenses;
 
@@ -2151,7 +2135,9 @@
             const transactionType = item.type || (item.value >= 0 ? 'receita' : 'despesa');
             const lookup = categoryLookups[item.category] || categoryLookups.default;
             const iconColorClass = transactionType === 'receita' ? 'icon-revenue' : 'icon-expense';
+            
             const escapedDesc = item.desc.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+
             let iconHtml;
             if (USE_EMOJI_ICONS) {
                 iconHtml = `<span title="${item.category}" class="category-icon ${iconColorClass}" onclick="openDescriptionModal('${escapedDesc}', '${item.date}')" style="cursor: pointer;">${lookup.emoji}</span>`;
@@ -2172,30 +2158,16 @@
 
         document.getElementById('total-container').innerHTML = `saldo total: <span id="total" style="color: ${total >= 0 ? '#4CAF50' : '#FF5252'};">${formatCurrency(total)}</span>`;
 
-        // Lógica do Gráfico Mensal
         const isDarkMode = document.body.classList.contains('dark-mode');
         const textColor = isDarkMode ? '#E0E0E0' : '#333';
+        const ctx = document.getElementById('month-chart').getContext('2d');
+        if (monthChart) monthChart.destroy();
         const chartLabels = Object.keys(categoryTotals).filter(key => categoryTotals[key] > 0);
         const chartData = chartLabels.map(key => categoryTotals[key]);
-        
-        const monthChartConfig = {
-            type: 'pie',
-            data: {
-                labels: chartLabels,
-                datasets: [{
-                    data: chartData,
-                    backgroundColor: ['#FF5252', '#4CAF50', '#00BCD4', '#9C27B0', '#FFC107', '#FF9800', '#795548']
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        labels: { color: textColor }
-                    }
-                }
-            }
-        };
-        monthChart = createOrUpdateChart('month-chart', monthChart, monthChartConfig);
+        monthChart = new Chart(ctx, {
+            type: 'pie', data: { labels: chartLabels, datasets: [{ data: chartData, backgroundColor: ['#FF5252', '#4CAF50', '#00BCD4', '#9C27B0', '#FFC107', '#FF9800', '#795548'] }] },
+            options: { plugins: { legend: { labels: { color: textColor } } } }
+        });
     }
 
     window.deleteExpense = function(index) {
@@ -2209,6 +2181,8 @@
     window.editExpense = function(index) {
         editingIndex = index;
         const item = dataByMonth[currentMonth][index];
+        // A LINHA ABAIXO FOI REMOVIDA POIS O ELEMENTO 'dateInput' NÃO EXISTE.
+        // dateInput.value = item.date;
         descInput.value = item.desc;
         typeInput.value = item.type || (item.value >= 0 ? 'receita' : 'despesa');
         renderCategorySelect(typeInput.value === 'receita');
@@ -2288,6 +2262,7 @@
         }
     });
 
+
     function renderAnnualChart() {
         const isDarkMode = document.body.classList.contains('dark-mode');
         const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
@@ -2307,7 +2282,9 @@
                 .toFixed(2);
         });
 
-        const annualChartConfig = {
+        if (annualChart) annualChart.destroy();
+        const ctx = document.getElementById('annual-chart').getContext('2d');
+        annualChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: monthNamesPt,
@@ -2330,13 +2307,10 @@
                     legend: { labels: { color: textColor } }
                 }
             }
-        };
-        annualChart = createOrUpdateChart('annual-chart', annualChart, annualChartConfig);
+        });
     }
 
-    // ----------------------------------------------------
-    // CÓDIGO DO PLANNER, TAREFAS E LISTAS
-    // ----------------------------------------------------
+    // --- CÓDIGO DO PLANNER, TAREFAS E LISTAS ---
 
     function initCalendarSelect() {
         if (calendarMonthSelect.options.length === 0) {
@@ -2654,6 +2628,7 @@
     
     function restoreOriginalListButtons(listDiv) {
         const actionsDiv = listDiv.querySelector('.list-title-actions');
+        // Limpa apenas os botões de salvar/cancelar, mantendo o de ícone
         actionsDiv.innerHTML = '';
         
         const changeIconBtn = document.createElement("button");
@@ -2915,10 +2890,6 @@
         listDiv.classList.toggle("completed", allChecked);
     }
     
-    // ----------------------------------------------------
-    // INICIALIZAÇÃO E EVENT LISTENERS
-    // ----------------------------------------------------
-
     themeToggle.addEventListener('click', () => applyTheme(document.body.classList.contains('dark-mode') ? 'light' : 'dark'));
     expenseList.addEventListener('click', function(e) {
         const index = e.target.getAttribute('data-index');
@@ -2933,7 +2904,7 @@
 
         const listPriority = newListPriorityInput.value;
         const newListId = Date.now().toString();
-        
+        // A função createList já salva a nova lista, então não precisamos chamar saveLists() aqui
         createList(listName, [], listPriority, newListId);
         
         if (linkToPlannerCheckbox.checked) {
@@ -3029,20 +3000,21 @@
         document.getElementById(`show-${sectionId.replace('-section', '')}`).classList.add('active-sub');
         
         if (sectionId === 'financeiro-section') {
-            updateSummaryCards();
-            renderAnnualChart(); // A renderização agora acontece aqui
+            updateFinanceDisplay();
+            renderAnnualChart(); // <-- CORREÇÃO APLICADA
         }
         if (sectionId === 'listas-section') {
             loadAndRenderLists();
         }
-        if (sectionId === 'planner-section') {
-            renderCalendar(currentCalendarDate);
-        }
+        if (sectionId === 'planner-section') renderCalendar(currentCalendarDate);
     }
 
     function updateMonthlyView() {
         currentMonth = monthNamesPt[currentCalendarDate.getMonth()];
         calendarMonthSelect.value = currentCalendarDate.getMonth();
+        
+        const year = currentCalendarDate.getFullYear();
+        const monthString = String(currentCalendarDate.getMonth() + 1).padStart(2, '0');
         
         const activeSectionId = document.querySelector('#mensal-controls .mensal-sub-toggle.active-sub')?.id.replace('show-', '') + '-section' || 'planner-section';
         showMensalSection(activeSectionId);
@@ -3065,6 +3037,8 @@
         renderCategorySelect(false);
         renderCategoryLimitSelect();
         updateMonthlyView();
+        
+        updateFinanceDisplay();
     }
 
     initApp();
