@@ -340,21 +340,20 @@
       border-left: 5px solid transparent;
     }
     
-    /* --- NOVOS ESTILOS PARA O CABEÇALHO DA LISTA --- */
     .list .list-title-container {
-      gap: 10px; /* Espaço entre ícone, título e botões */
+      gap: 10px;
     }
     .list-title-icon {
         width: 28px;
         height: 28px;
-        flex-shrink: 0; /* Previne que o ícone encolha */
+        flex-shrink: 0;
     }
     .list-title-container h2 {
-        flex-grow: 1; /* Faz o título ocupar o espaço disponível */
+        flex-grow: 1;
         text-align: left;
     }
     .change-list-icon-btn {
-        background: #FFC107; /* Cor Laranja/Amarelo */
+        background: #FFC107;
         border: none;
         cursor: pointer;
         color: white;
@@ -381,7 +380,6 @@
     body.dark-mode .change-list-icon-btn:hover {
         background: #FFB300;
     }
-    /* --- FIM DOS NOVOS ESTILOS --- */
     
     .list-input-group {
         display: flex;
@@ -589,8 +587,8 @@
       overflow: auto;
       background-color: rgba(0,0,0,0.4);
     }
-    /* Z-index maior para o novo modal ficar sobre os outros, se necessário */
-    #categoryModal, #listDetailsModal, #listIconModal, #addTaskFormModal, #scheduleEditorModal {
+
+    #categoryModal, #listDetailsModal, #listIconModal, #addTaskFormModal, #listEditorModal {
       z-index: 1002;
     }
     .modal-content {
@@ -609,7 +607,7 @@
       margin: 5% auto;
     }
     #categorySpendingModal .modal-content {
-      max-width: 700px; /* Aumentado para a barra de progresso */
+      max-width: 700px;
     }
     .close-button {
       color: #aaa;
@@ -658,7 +656,7 @@
     .task-actions button img {
         width: 14px;
         height: 14px;
-        filter: brightness(0) invert(0.35); /* cinza escuro para tema claro */
+        filter: brightness(0) invert(0.35);
         transition: filter 0.3s ease;
     }
 
@@ -748,7 +746,7 @@
     }
     
     #transactionIconPicker .task-icon-option img {
-        filter: grayscale(100%) brightness(60%); /* cinza escuro */
+        filter: invert(35%) sepia(0%) saturate(1%) hue-rotate(148deg) brightness(97%) contrast(89%); /* cinza escuro */
     }
     
     #listDetailsItems {
@@ -786,7 +784,6 @@
       margin-right: 5px;
     }
     
-    /* --- ESTILOS DA BARRA DE PROGRESSO ATUALIZADOS --- */
     .progress-bar-container {
         width: 100%;
         background-color: #f1f1f1;
@@ -794,8 +791,8 @@
         margin-top: 5px;
         overflow: hidden;
         cursor: pointer;
-        position: relative; /* Essencial para o posicionamento do texto */
-        height: 20px; /* Altura fixa */
+        position: relative;
+        height: 20px;
     }
     
     .progress-bar {
@@ -809,15 +806,14 @@
         width: 100%;
         left: 0;
         top: 0;
-        line-height: 20px; /* Igual à altura do container */
+        line-height: 20px;
         text-align: center;
         font-size: 12px;
         font-weight: bold;
-        color: white; /* Cor base para o efeito */
-        mix-blend-mode: difference; /* Mágica acontece aqui */
-        pointer-events: none; /* Permite que o clique passe para o container */
+        color: white;
+        mix-blend-mode: difference;
+        pointer-events: none;
     }
-    /* --- FIM DOS ESTILOS DA BARRA DE PROGRESSO --- */
     
     .category-icon {
         width: 28px;
@@ -835,19 +831,15 @@
     }
 
     .icon-revenue {
-        /* Filter para verde (#4CAF50) */
         filter: invert(78%) sepia(12%) saturate(1563%) hue-rotate(76deg) brightness(86%) contrast(84%);
     }
     .icon-expense {
-        /* Filter para vermelho (#FF5252) */
         filter: invert(53%) sepia(40%) saturate(2256%) hue-rotate(318deg) brightness(101%) contrast(101%);
     }
 
-    /* --- INÍCIO: ALTERAÇÃO - Correção da cor dos ícones de orçamento --- */
     #category-spending-list .category-icon.icon-expense {
         filter: invert(35%) sepia(0%) saturate(1%) hue-rotate(148deg) brightness(97%) contrast(89%); /* cinza escuro */
     }
-    /* --- FIM: ALTERAÇÃO --- */
 
     #new-goal-form {
       display: flex;
@@ -876,7 +868,7 @@
     }
     .goal-header .actions button {
       font-size: 12px;
-      padding: 8px; /* Ajustado */
+      padding: 8px;
       margin-left: 5px;
     }
     .goal-details p {
@@ -932,7 +924,6 @@
       transform: scale(1.2);
     }
 
-    /* --- NOVOS ESTILOS PARA ÍCONE DE META --- */
     .goal-header-content {
         display: flex;
         align-items: center;
@@ -947,16 +938,15 @@
         gap: 8px;
         margin-top: 10px;
         flex-wrap: wrap;
-        max-height: 120px; /* Limita a altura para não ocupar muito espaço */
-        overflow-y: auto; /* Adiciona scroll se houver muitos ícones */
+        max-height: 120px;
+        overflow-y: auto;
         padding: 5px;
         border-radius: 8px;
-        background-color: rgba(0,0,0,0.05); /* Fundo sutil */
+        background-color: rgba(0,0,0,0.05);
     }
     body.dark-mode .goal-icon-picker {
         background-color: rgba(255,255,255,0.05);
     }
-    /* --- FIM DOS NOVOS ESTILOS --- */
 
     body.dark-mode {
       background: #121212;
@@ -996,7 +986,7 @@
     }
 
     body.dark-mode #transactionIconPicker .task-icon-option img {
-         filter: grayscale(100%) brightness(150%); /* cinza claro */
+         filter: invert(86%) sepia(0%) saturate(301%) hue-rotate(186deg) brightness(83%) contrast(86%); /* cinza claro */
     }
 
     body.dark-mode #weekly-recurrence-options {
@@ -1033,7 +1023,7 @@
     }
     
     body.dark-mode .task-actions button img {
-        filter: brightness(0) invert(0.8); /* cinza claro para tema escuro */
+        filter: brightness(0) invert(0.8);
     }
     
     body.dark-mode .task-list-item[data-list-id]:hover {
@@ -1187,11 +1177,9 @@
       border-color: #fff;
     }
     
-    /* --- INÍCIO: ALTERAÇÃO - Correção da cor dos ícones de orçamento (Tema Escuro) --- */
     body.dark-mode #category-spending-list .category-icon.icon-expense {
         filter: invert(86%) sepia(0%) saturate(301%) hue-rotate(186deg) brightness(83%) contrast(86%); /* cinza claro */
     }
-    /* --- FIM: ALTERAÇÃO --- */
 
   </style>
   <script src="./js/chart.js"></script>
@@ -1272,11 +1260,6 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                         <input type="date" id="list-event-date">
                         <input type="time" id="list-event-time" value="10:00">
-                    </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
-                        <div id="list-event-icon-picker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
-                        <input type="hidden" id="list-event-icon">
                     </div>
                 </div>
                 <button type="submit" style="width: 100%; margin-top: 15px;">criar lista</button>
@@ -1476,30 +1459,42 @@
     </div>
   </div>
 
-  <div id="scheduleEditorModal" class="modal">
+  <div id="listEditorModal" class="modal">
     <div class="modal-content" style="max-width: 450px;">
-        <span class="close-button" onclick="closeScheduleEditorModal()">&times;</span>
-        <h3>editar agendamento</h3>
-        <form id="schedule-editor-form">
-            <input type="hidden" id="editor-list-id">
-            
-            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <input type="date" id="editor-event-date" required>
-                    <input type="time" id="editor-event-time" required>
-                </div>
-                <div>
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
-                    <div id="editor-event-icon-picker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
-                    <input type="hidden" id="editor-event-icon">
-                </div>
-                <button type="submit" class="add-btn" style="background-color: #4CAF50;">salvar alterações</button>
+        <span class="close-button" onclick="closeListEditorModal()">&times;</span>
+        <h3>Editar Lista</h3>
+        <form id="list-editor-form" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+            <input type="hidden" id="editor-list-id-main">
+
+            <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Nome da Lista:</label>
+                <input type="text" id="editor-list-name" required style="width: 100%; box-sizing: border-box;">
             </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Ícone da Lista:</label>
+                <div id="editor-list-icon-picker" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 140px; overflow-y: auto; padding: 5px; border-radius: 8px; background: rgba(0,0,0,0.05);"></div>
+                <input type="hidden" id="editor-list-icon-main">
+            </div>
+
+            <hr>
+
+            <button type="button" id="add-schedule-btn" class="add-btn" style="width: 100%;">Adicionar Agendamento</button>
+
+            <div id="editor-scheduling-section" style="display: none;">
+                <h4 style="margin-top: 0; margin-bottom: 10px;">Agendamento no Planner</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                    <input type="date" id="editor-event-date">
+                    <input type="time" id="editor-event-time">
+                </div>
+                <button type="button" id="remove-schedule-btn" class="delete-btn" style="width: 100%; margin-top: 15px;">Remover Agendamento</button>
+            </div>
+
+            <button type="submit" class="add-btn" style="background-color: #4CAF50; width: 100%; margin-top: 10px;">Salvar Alterações</button>
         </form>
-    </div>
+      </div>
   </div>
-
-
+  
   <script>
     // --- ELEMENTOS DO FORMULÁRIO FINANCEIRO (agora no modal) ---
     const form = document.getElementById('expense-form');
@@ -1573,9 +1568,6 @@
     const plannerLinkOptions = document.getElementById('planner-link-options');
     const listEventDateInput = document.getElementById('list-event-date');
     const listEventTimeInput = document.getElementById('list-event-time');
-    const listEventIconPicker = document.getElementById('list-event-icon-picker');
-    const listEventIconHiddenInput = document.getElementById('list-event-icon');
-
     const listDetailsModal = document.getElementById('listDetailsModal');
     const listDetailsTitle = document.getElementById('listDetailsTitle');
     const listDetailsItems = document.getElementById('listDetailsItems');
@@ -1584,14 +1576,18 @@
     const listIconModal = document.getElementById('listIconModal');
     const listIconPickerGrid = document.getElementById('list-icon-picker-grid');
 
-    // --- ELEMENTOS DO MODAL DE EDIÇÃO DE AGENDAMENTO ---
-    const scheduleEditorModal = document.getElementById('scheduleEditorModal');
-    const scheduleEditorForm = document.getElementById('schedule-editor-form');
-    const editorListIdInput = document.getElementById('editor-list-id');
+    // --- ELEMENTOS DO NOVO MODAL DE EDIÇÃO DE LISTA ---
+    const listEditorModal = document.getElementById('listEditorModal');
+    const listEditorForm = document.getElementById('list-editor-form');
+    const editorListIdInput = document.getElementById('editor-list-id-main');
+    const editorListNameInput = document.getElementById('editor-list-name');
+    const editorListIconPicker = document.getElementById('editor-list-icon-picker');
+    const editorListIconInput = document.getElementById('editor-list-icon-main');
+    const addScheduleBtn = document.getElementById('add-schedule-btn');
+    const editorSchedulingSection = document.getElementById('editor-scheduling-section');
     const editorEventDateInput = document.getElementById('editor-event-date');
     const editorEventTimeInput = document.getElementById('editor-event-time');
-    const editorEventIconPicker = document.getElementById('editor-event-icon-picker');
-    const editorEventIconHiddenInput = document.getElementById('editor-event-icon');
+    const removeScheduleBtn = document.getElementById('remove-schedule-btn');
 
 
     // --- ÍCONES DE TAREFAS ---
@@ -1657,7 +1653,7 @@
     let calendarTasks = {};
     const monthNamesPt = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
     const goalColors = ['#FF5252', '#3F51B5', '#4CAF50', '#FFC107', '#9C27B0', '#00BCD4', '#FF9800'];
-    let currentListIconBeingEdited = null; // Para o novo modal de ícones
+    let currentListIconBeingEdited = null;
 
 
     let categoryLimits = {};
@@ -1821,65 +1817,39 @@
         listDetailsModal.style.display = 'none';
     }
 
-    function openListIconModal(listIconElement) {
-        currentListIconBeingEdited = listIconElement;
-        listIconModal.style.display = 'block';
-    }
+    function openListEditorModal(listId) {
+        const allLists = JSON.parse(localStorage.getItem('todoLists')) || [];
+        const listData = allLists.find(list => list.id === listId);
+        if (!listData) return;
 
-    function closeListIconModal() {
-        listIconModal.style.display = 'none';
-        currentListIconBeingEdited = null;
-    }
-    
-    function populateListIconModal() {
-        listIconPickerGrid.innerHTML = '';
-        for (const key in taskIcons) {
-            const iconPath = taskIcons[key];
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'task-icon-option';
-            optionDiv.dataset.iconPath = iconPath;
-            optionDiv.title = key;
-            optionDiv.innerHTML = `<img src="${iconPath}" alt="${key}">`;
-            
-            optionDiv.addEventListener('click', () => {
-                if (currentListIconBeingEdited) {
-                    currentListIconBeingEdited.src = iconPath;
-                    saveLists();
-                    closeListIconModal();
-                }
-            });
-            listIconPickerGrid.appendChild(optionDiv);
-        }
-    }
-
-    // --- NOVAS FUNÇÕES PARA O MODAL DE EDIÇÃO DE AGENDAMENTO ---
-    function openScheduleEditorModal(listId) {
-        const linkedTaskInfo = findLinkedTask(listId);
-        if (!linkedTaskInfo) {
-            alert("Erro: não foi possível encontrar o agendamento desta lista no planner.");
-            return;
-        }
-
-        const { task, dateKey } = linkedTaskInfo;
-        
         editorListIdInput.value = listId;
-        editorEventDateInput.value = dateKey;
-        editorEventTimeInput.value = task.time;
-        editorEventIconHiddenInput.value = task.icon;
-
-        // Seleciona o ícone correto no picker
-        editorEventIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-            option.classList.toggle('selected', option.getAttribute('data-icon-path') === task.icon);
+        editorListNameInput.value = listData.name;
+        
+        const currentIcon = new URL(listData.icon).pathname;
+        editorListIconInput.value = `.${currentIcon}`;
+        editorListIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
+            option.classList.toggle('selected', option.getAttribute('data-icon-path') === `.${currentIcon}`);
         });
 
-        scheduleEditorModal.style.display = 'block';
+        const linkedTaskInfo = findLinkedTask(listId);
+        if (linkedTaskInfo) {
+            addScheduleBtn.style.display = 'none';
+            editorSchedulingSection.style.display = 'block';
+            editorEventDateInput.value = linkedTaskInfo.dateKey;
+            editorEventTimeInput.value = linkedTaskInfo.task.time;
+        } else {
+            addScheduleBtn.style.display = 'block';
+            editorSchedulingSection.style.display = 'none';
+            editorEventDateInput.value = new Date().toISOString().split('T')[0];
+            editorEventTimeInput.value = "09:00";
+        }
+
+        listEditorModal.style.display = 'block';
     }
 
-    function closeScheduleEditorModal() {
-        scheduleEditorModal.style.display = 'none';
+    function closeListEditorModal() {
+        listEditorModal.style.display = 'none';
     }
-    // --- FIM DAS NOVAS FUNÇÕES ---
-
 
     // ----------------------------------------------------
     // GERENCIAMENTO DE CATEGORIAS
@@ -2279,10 +2249,6 @@
     // LÓGICA FINANCEIRA CENTRAL E GRÁFICOS
     // ----------------------------------------------------
 
-    /**
-     * NOVA FUNÇÃO: Cria ou atualiza um gráfico de forma segura.
-     * Verifica se a biblioteca Chart.js está carregada e destrói instâncias antigas.
-     */
     function createOrUpdateChart(canvasId, existingChartInstance, chartConfig) {
         if (typeof Chart === 'undefined') {
             console.error("A biblioteca Chart.js não foi carregada. Gráficos não podem ser criados.");
@@ -2306,7 +2272,6 @@
     function updateFinanceDisplay() {
         updateSummaryCards();
         renderExpenses();
-        // A chamada para renderAnnualChart foi movida para showMensalSection
         updateCategorySpending();
         renderCategorySelect(typeInput.value === 'receita');
         renderCategoryLimitSelect();
@@ -2352,7 +2317,6 @@
 
         document.getElementById('total-container').innerHTML = `saldo total: <span id="total" style="color: ${total >= 0 ? '#4CAF50' : '#FF5252'};">${formatCurrency(total)}</span>`;
 
-        // Lógica do Gráfico Mensal
         const isDarkMode = document.body.classList.contains('dark-mode');
         const textColor = isDarkMode ? '#E0E0E0' : '#333';
         const chartLabels = Object.keys(categoryTotals).filter(key => categoryTotals[key] > 0);
@@ -2541,7 +2505,6 @@
     // CÓDIGO DO PLANNER, TAREFAS E LISTAS
     // ----------------------------------------------------
 
-    // --- NOVA FUNÇÃO AUXILIAR ---
     function findLinkedTask(listId) {
         for (const dateKey in calendarTasks) {
             const taskIndex = calendarTasks[dateKey].findIndex(task => task.linkedListId === listId);
@@ -2619,12 +2582,11 @@
         }
     }
 
-    // --- Funções de Modal de Tarefa (Refatorado) ---
     function openTaskModal(dateKey, day) {
         selectedDateKey = dateKey;
         renderDayTasks();
         taskModal.style.display = 'block';
-        cancelTaskEdit(); // Garante que o formulário esteja limpo para a próxima vez que for aberto
+        cancelTaskEdit();
     }
     
     function closeTaskModal() { 
@@ -2640,7 +2602,6 @@
         addTaskFormModal.style.display = 'none';
         cancelTaskEdit();
     }
-    // --- Fim das Funções de Modal ---
 
     function cancelTaskEdit() {
         taskFormModal.removeAttribute('data-editing-id');
@@ -2670,7 +2631,7 @@
         if (!taskToEdit) return;
         
         if (taskToEdit.linkedListId) {
-            alert("Para editar o agendamento de uma lista, vá para a aba 'listas' e use o botão de calendário (📅) na lista correspondente.");
+            openListEditorModal(taskToEdit.linkedListId);
             return;
         }
 
@@ -2695,7 +2656,7 @@
             weeklyRecurrenceOptions.querySelectorAll('input').forEach(cb => cb.disabled = true);
         }
         
-        openAddTaskFormModal(); // Abre o modal de formulário para edição
+        openAddTaskFormModal();
     }
     
     function renderDayTasks() {
@@ -2863,7 +2824,7 @@
         renderDayTasks();
 
         if(linkedListId) {
-            updateListButtons(linkedListId);
+            loadAndRenderLists(); 
         }
     }
     
@@ -2890,107 +2851,7 @@
             firstOption.click();
         }
     }
-
-    function updateListButtons(listId) {
-        const listDiv = listsContainer.querySelector(`[data-list-id='${listId}']`);
-        if (!listDiv) return;
-        const actionsDiv = listDiv.querySelector('.list-title-actions');
-        if(!actionsDiv) return;
-
-        const existingScheduleBtn = actionsDiv.querySelector('.edit-schedule-btn');
-        const linkedTaskInfo = findLinkedTask(listId);
-
-        if (linkedTaskInfo && !existingScheduleBtn) {
-            const editScheduleBtn = document.createElement("button");
-            editScheduleBtn.innerHTML = "📅";
-            editScheduleBtn.className = "edit-schedule-btn";
-            editScheduleBtn.title = 'editar agendamento';
-            editScheduleBtn.onclick = () => openScheduleEditorModal(listId);
-            
-            const mainEditBtn = actionsDiv.querySelector('.edit-list-btn');
-            actionsDiv.insertBefore(editScheduleBtn, mainEditBtn);
-
-        } else if (!linkedTaskInfo && existingScheduleBtn) {
-            existingScheduleBtn.remove();
-        }
-    }
     
-    function restoreOriginalListButtons(listDiv) {
-        const actionsDiv = listDiv.querySelector('.list-title-actions');
-        actionsDiv.innerHTML = '';
-        
-        const changeIconBtn = document.createElement("button");
-        changeIconBtn.innerHTML = "🖼️";
-        changeIconBtn.className = "change-list-icon-btn";
-        changeIconBtn.title = 'alterar ícone';
-        changeIconBtn.onclick = () => openListIconModal(listDiv.querySelector('.list-title-icon'));
-        
-        const editBtn = document.createElement("button");
-        editBtn.innerHTML = "✏️";
-        editBtn.className = "edit-list-btn";
-        editBtn.onclick = () => toggleListTitleEdit(listDiv);
-        
-        const removeBtn = document.createElement("button");
-        removeBtn.textContent = "x";
-        removeBtn.className = "delete-list-circular-btn";
-        removeBtn.onclick = () => deleteListAndLinkedTask(listDiv, listDiv.querySelector('h2').textContent.trim());
-
-        actionsDiv.appendChild(changeIconBtn);
-        // O botão de agendamento será adicionado por `updateListButtons` se necessário
-        actionsDiv.appendChild(editBtn);
-        actionsDiv.appendChild(removeBtn);
-        
-        updateListButtons(listDiv.dataset.listId);
-    }
-
-    function toggleListTitleEdit(listDiv) {
-        const titleContainer = listDiv.querySelector('.list-title-container');
-        const actionsDiv = listDiv.querySelector('.list-title-actions');
-        const titleElement = titleContainer.querySelector('h2');
-        const originalName = titleElement.textContent.trim();
-
-        const inputField = document.createElement('input');
-        inputField.type = 'text';
-        inputField.value = originalName;
-        inputField.style.flexGrow = 1;
-
-        titleContainer.replaceChild(inputField, titleElement);
-        inputField.focus();
-
-        actionsDiv.innerHTML = '';
-        const saveBtn = document.createElement('button');
-        saveBtn.innerHTML = '✔️';
-        saveBtn.className = 'save-item-btn';
-        saveBtn.onclick = () => {
-            const newName = inputField.value.trim();
-            if (newName) {
-                titleElement.textContent = newName;
-                titleContainer.replaceChild(titleElement, inputField);
-                restoreOriginalListButtons(listDiv);
-                saveLists();
-                
-                const listId = listDiv.dataset.listId;
-                const linkedTaskInfo = findLinkedTask(listId);
-                if (linkedTaskInfo) {
-                    linkedTaskInfo.task.description = newName;
-                    saveCalendarTasks();
-                    renderCalendar(currentCalendarDate);
-                }
-            }
-        };
-
-        const cancelBtn = document.createElement('button');
-        cancelBtn.innerHTML = '❌';
-        cancelBtn.className = 'cancel-item-btn';
-        cancelBtn.onclick = () => {
-            titleContainer.replaceChild(titleElement, inputField);
-            restoreOriginalListButtons(listDiv);
-        };
-
-        actionsDiv.appendChild(saveBtn);
-        actionsDiv.appendChild(cancelBtn);
-    }
-
     function deleteListAndLinkedTask(listDiv, listName) {
         if (!confirm(`tem certeza que deseja excluir a lista "${listName}"? esta ação também a removerá do planner.`)) {
             return;
@@ -3041,23 +2902,16 @@
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'list-title-actions';
         
-        const changeIconBtn = document.createElement("button");
-        changeIconBtn.innerHTML = "🖼️";
-        changeIconBtn.className = "change-list-icon-btn";
-        changeIconBtn.title = 'alterar ícone';
-        changeIconBtn.onclick = () => openListIconModal(iconImg);
-        
         const editBtn = document.createElement("button");
         editBtn.innerHTML = "✏️";
         editBtn.className = "edit-list-btn";
-        editBtn.onclick = () => toggleListTitleEdit(listDiv);
+        editBtn.onclick = () => openListEditorModal(listId);
         
         const removeBtn = document.createElement("button");
         removeBtn.textContent = "x";
         removeBtn.className = "delete-list-circular-btn";
         removeBtn.onclick = () => deleteListAndLinkedTask(listDiv, listName);
 
-        actionsDiv.appendChild(changeIconBtn);
         actionsDiv.appendChild(editBtn);
         actionsDiv.appendChild(removeBtn);
 
@@ -3192,8 +3046,6 @@
         initialItems.forEach(item => addItem(item.text, item.checked));
         checkCompletion(listDiv);
 
-        updateListButtons(listId);
-
         if (initialItems.length === 0) {
             saveLists();
         }
@@ -3238,7 +3090,6 @@
         if (linkToPlannerCheckbox.checked) {
             const eventDate = listEventDateInput.value;
             const eventTime = listEventTimeInput.value;
-            const eventIcon = listEventIconHiddenInput.value;
 
             if (!eventDate || !eventTime) {
                 alert('Por favor, preencha a data e o horário para agendar a tarefa.');
@@ -3249,7 +3100,7 @@
                 id: Date.now().toString() + Math.random(),
                 time: eventTime,
                 description: listName, 
-                icon: eventIcon,
+                icon: './images/list.png', // Usa o ícone padrão da lista
                 priority: listPriority === 'alta' ? 'alta' : 'nenhuma',
                 recurrenceId: null,
                 linkedListId: newListId
@@ -3259,7 +3110,6 @@
             
             calendarTasks[eventDate].push(newTask);
             saveCalendarTasks();
-            updateListButtons(newListId);
             renderCalendar(currentCalendarDate);
         }
         
@@ -3270,45 +3120,90 @@
         listEventTimeInput.required = false;
     });
 
-    scheduleEditorForm.addEventListener('submit', (e) => {
+    listEditorForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const listId = editorListIdInput.value;
-        const newDate = editorEventDateInput.value;
-        const newTime = editorEventTimeInput.value;
-        const newIcon = editorEventIconHiddenInput.value;
 
-        const linkedTaskInfo = findLinkedTask(listId);
-        if (!linkedTaskInfo) {
-            alert('Erro: a tarefa vinculada não foi encontrada. Ela pode ter sido removida.');
-            closeScheduleEditorModal();
+        const listId = editorListIdInput.value;
+        const newName = editorListNameInput.value.trim();
+        const newListIcon = editorListIconInput.value;
+
+        if (!newName) {
+            alert("O nome da lista não pode ficar em branco.");
             return;
         }
 
-        const { task, dateKey: oldDateKey, taskIndex } = linkedTaskInfo;
+        let allLists = JSON.parse(localStorage.getItem('todoLists')) || [];
+        const listIndex = allLists.findIndex(list => list.id === listId);
+        if (listIndex > -1) {
+            allLists[listIndex].name = newName;
+            allLists[listIndex].icon = newListIcon;
+        }
+        localStorage.setItem('todoLists', JSON.stringify(allLists));
 
-        // Atualiza a tarefa com os novos valores
-        task.time = newTime;
-        task.icon = newIcon;
+        const linkedTaskInfo = findLinkedTask(listId);
+        const isScheduling = editorSchedulingSection.style.display === 'block';
 
-        // Se a data mudou, move a tarefa para o novo dia no calendário
-        if (newDate !== oldDateKey) {
-            // 1. Remove do dia antigo
-            calendarTasks[oldDateKey].splice(taskIndex, 1);
-            if (calendarTasks[oldDateKey].length === 0) {
-                delete calendarTasks[oldDateKey];
+        if (isScheduling) {
+            const newDate = editorEventDateInput.value;
+            const newTime = editorEventTimeInput.value;
+            
+            if (!newDate || !newTime) {
+                alert("Por favor, preencha a data e o horário do agendamento.");
+                return;
             }
-            // 2. Adiciona ao novo dia
-            if (!calendarTasks[newDate]) {
-                calendarTasks[newDate] = [];
+
+            if (linkedTaskInfo) { 
+                const { task, dateKey: oldDateKey, taskIndex } = linkedTaskInfo;
+                task.description = newName;
+                task.icon = newListIcon;
+                task.time = newTime;
+                
+                if (newDate !== oldDateKey) {
+                    calendarTasks[oldDateKey].splice(taskIndex, 1);
+                    if (calendarTasks[oldDateKey].length === 0) delete calendarTasks[oldDateKey];
+                    if (!calendarTasks[newDate]) calendarTasks[newDate] = [];
+                    calendarTasks[newDate].push(task);
+                }
+            } else { // Criando um novo agendamento
+                 const list = allLists[listIndex];
+                 const newTask = {
+                    id: Date.now().toString() + Math.random(),
+                    time: newTime,
+                    description: newName, 
+                    icon: newListIcon,
+                    priority: list.priority === 'alta' ? 'alta' : 'nenhuma',
+                    recurrenceId: null,
+                    linkedListId: listId
+                };
+                if (!calendarTasks[newDate]) calendarTasks[newDate] = [];
+                calendarTasks[newDate].push(newTask);
             }
-            calendarTasks[newDate].push(task);
         }
 
         saveCalendarTasks();
+        loadAndRenderLists();
         renderCalendar(currentCalendarDate);
-        closeScheduleEditorModal();
+        closeListEditorModal();
     });
 
+    addScheduleBtn.addEventListener('click', () => {
+        addScheduleBtn.style.display = 'none';
+        editorSchedulingSection.style.display = 'block';
+    });
+
+    removeScheduleBtn.addEventListener('click', () => {
+        const listId = editorListIdInput.value;
+        const linkedTaskInfo = findLinkedTask(listId);
+        if(linkedTaskInfo && confirm("Tem certeza que deseja remover o agendamento desta lista do planner?")) {
+            const { dateKey, taskIndex } = linkedTaskInfo;
+            calendarTasks[dateKey].splice(taskIndex, 1);
+            if (calendarTasks[dateKey].length === 0) delete calendarTasks[dateKey];
+            saveCalendarTasks();
+            editorSchedulingSection.style.display = 'none';
+            addScheduleBtn.style.display = 'block';
+            renderCalendar(currentCalendarDate);
+        }
+    });
 
     newListNameInput.addEventListener('input', () => {
         linkToPlannerContainer.style.display = newListNameInput.value.trim() ? 'flex' : 'none';
@@ -3374,7 +3269,7 @@
         if (event.target == descriptionModal) closeDescriptionModal();
         if (event.target == listDetailsModal) closeListDetailsModal();
         if (event.target == listIconModal) closeListIconModal();
-        if (event.target == scheduleEditorModal) closeScheduleEditorModal();
+        if (event.target == listEditorModal) closeListEditorModal();
     }
     
     function showMensalSection(sectionId) {
@@ -3386,7 +3281,7 @@
         
         if (sectionId === 'financeiro-section') {
             updateSummaryCards();
-            renderAnnualChart(); // A renderização agora acontece aqui
+            renderAnnualChart();
         }
         if (sectionId === 'listas-section') {
             loadAndRenderLists();
@@ -3414,12 +3309,9 @@
         initCalendarSelect();
         
         renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons);
-        renderIconPicker(listEventIconPicker, listEventIconHiddenInput, taskIcons);
-        renderIconPicker(editorEventIconPicker, editorEventIconHiddenInput, taskIcons);
         renderIconPicker(transactionIconPicker, transactionIconHiddenInput, categoryIcons);
+        renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons);
         
-        populateListIconModal();
-
         renderCategorySelect(false);
         renderCategoryLimitSelect();
         updateMonthlyView();
