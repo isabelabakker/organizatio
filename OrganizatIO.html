@@ -522,7 +522,7 @@
     .close-button,
     .save-item-btn,
     .cancel-item-btn {
-        background: #EEEEEE; /* AJUSTADO: Cinza mais claro */
+        background: #EEEEEE;
         border: none;
         cursor: pointer;
         border-radius: 50%;
@@ -536,7 +536,7 @@
     .close-button:hover,
     .save-item-btn:hover,
     .cancel-item-btn:hover {
-        background: #E0E0E0; /* AJUSTADO: Hover mais claro */
+        background: #E0E0E0;
     }
 
     .close-button {
@@ -792,10 +792,6 @@
         object-fit: contain;
     }
     
-    #transactionIconPicker .task-icon-option img {
-        filter: invert(35%) sepia(0%) saturate(1%) hue-rotate(148deg) brightness(97%) contrast(89%); /* cinza escuro */
-    }
-    
     #listDetailsItems {
         list-style: none;
         padding: 0;
@@ -877,24 +873,11 @@
         object-fit: contain;
     }
 
-    .icon-revenue {
-        filter: invert(78%) sepia(12%) saturate(1563%) hue-rotate(76deg) brightness(86%) contrast(84%);
-    }
-    .icon-expense {
-        filter: invert(53%) sepia(40%) saturate(2256%) hue-rotate(318deg) brightness(101%) contrast(101%);
-    }
-
-    #category-spending-list .category-icon.icon-expense {
-        filter: invert(35%) sepia(0%) saturate(1%) hue-rotate(148deg) brightness(97%) contrast(89%); /* cinza escuro */
-    }
-
     #new-goal-form {
       display: flex;
+      flex-direction: column;
       gap: 10px;
       margin-bottom: 20px;
-    }
-    #new-goal-form input {
-      flex-grow: 1;
     }
     .investment-goal-card {
       background: #f9f9f9;
@@ -936,18 +919,40 @@
       margin-top: 10px;
       font-size: 12px;
       color: #666;
+      max-height: 100px;
+      overflow-y: auto;
     }
+    .contribution-history-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 0;
+    }
+    .contribution-history-list li span {
+        flex-grow: 1;
+    }
+    .contribution-history-list li input {
+        width: 80px;
+        font-size: 12px;
+        padding: 2px 4px;
+        margin: 0 5px;
+    }
+     .contribution-history-list li button {
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        margin-left: 3px;
+     }
+
     .edit-goal-form {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
     .edit-goal-form .form-inputs {
-      display: flex;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
       gap: 10px;
-    }
-    .edit-goal-form input {
-      flex-grow: 1;
     }
     .color-picker {
       display: flex;
@@ -1029,9 +1034,6 @@
         background: #1F1F1F;
     }
 
-    body.dark-mode #transactionIconPicker .task-icon-option img {
-         filter: invert(86%) sepia(0%) saturate(301%) hue-rotate(186deg) brightness(83%) contrast(86%); /* cinza claro */
-    }
 
     body.dark-mode #weekly-recurrence-options {
         border-color: #444;
@@ -1128,10 +1130,6 @@
     body.dark-mode button.add-btn:hover {
         background: #558bff;
     }
-    
-    body.dark-mode .edit-task-btn {
-        /* background: #2E7D32; */
-    }
 
     body.dark-mode .mensal-sub-toggle {
         background: #6b9aff;
@@ -1175,10 +1173,6 @@
         border: 1px solid #333;
         color: #E0E0E0;
     }
-    
-    body.dark-mode .edit-btn {
-        /* background: #2E7D32; */
-    }
 
     body.dark-mode .summary-card {
         background: #282828;
@@ -1199,10 +1193,6 @@
     }
     body.dark-mode .color-swatch.selected {
       border-color: #fff;
-    }
-    
-    body.dark-mode #category-spending-list .category-icon.icon-expense {
-        filter: invert(86%) sepia(0%) saturate(301%) hue-rotate(186deg) brightness(83%) contrast(86%); /* cinza claro */
     }
     
     body.dark-mode .close-button,
@@ -1461,10 +1451,20 @@
         <button class="close-button" onclick="closeInvestmentsModal()"><img src="svg/close.svg" alt="Fechar"></button>
         <h3>investimentos</h3>
         
-        <form id="new-goal-form">
-          <input type="text" id="newGoalName" placeholder="nome da nova meta" required>
-          <input type="number" id="newGoalTarget" placeholder="valor da meta (r$)" step="0.01" required>
-          <button type="submit" class="add-btn">criar meta</button>
+        <form id="new-goal-form" style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+                <input type="text" id="newGoalName" placeholder="nome da nova meta" required>
+                <input type="number" id="newGoalTarget" placeholder="valor da meta (r$)" step="0.01" required>
+            </div>
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: center;">
+                 <input type="number" id="newGoalInterestRate" placeholder="juros mensais (%)" step="0.01">
+                <div style="text-align: right;">
+                    <input type="checkbox" id="newGoalHasDeadline" style="width: auto; vertical-align: middle;">
+                    <label for="newGoalHasDeadline" style="font-size: 12px; vertical-align: middle; cursor: pointer;">definir prazo</label>
+                </div>
+            </div>
+            <input type="date" id="newGoalDeadline" style="display: none;">
+            <button type="submit" class="add-btn">criar meta</button>
         </form>
 
         <hr style="border-top: 1px solid #ddd; margin: 20px 0;">
@@ -1571,6 +1571,8 @@
     // --- ELEMENTOS DE INVESTIMENTOS ---
     const newGoalForm = document.getElementById('new-goal-form');
     const goalsContainer = document.getElementById('goals-container');
+    const newGoalHasDeadlineCheckbox = document.getElementById('newGoalHasDeadline');
+    const newGoalDeadlineInput = document.getElementById('newGoalDeadline');
 
     // --- ELEMENTO DE TEMA ---
     const themeToggle = document.getElementById('theme-toggle');
@@ -1632,51 +1634,91 @@
 
     // --- ÍCONES DE TAREFAS ---
     const taskIcons = {
-        "nenhum": "./images/none.png",
-        "médico": "./images/doctor.png",
-        "date": "./images/date.png",
-        "star": "./images/star.png",
-        "money": "./images/money.png",
-        "pet": "./images/pet.png",
-        "exercício": "./images/gym.png",
-        "meditação": "./images/meditation.png",
-        "trabalho": "./images/work.png",
-        "salão": "./images/hair.png",
-        "comida": "./images/food.png",
-        "gift": "./images/gift.png",
-        "aniversário": "./images/birthday.png",
-        "festa": "./images/party.png",
-        "vacation": "./images/vacation.png",
-        "trip": "./images/trip.png",
-        "meeting": "./images/meeting.png",
-        "study": "./images/study.png",
-        "house": "./images/house.png",
-        "shopping": "./images/shopping.png",
-        "buy": "./images/buy.png",
-        "person": "./images/person.png",
-        "judge": "./images/judge.png",
-        "list": "./images/list.png",
-        "car": "./images/car.png",
-        "picture": "./images/picture.png",
-        "nails": "./images/nails.png",
-        "print": "./images/print.png",
-        "art": "./images/art.png",
-        "write": "./images/write.png",
-        "upload": "./images/upload.png",
+        "nenhum": "./images/none.svg",
+        "médico": "./images/health.svg",
+        "star": "./images/star.svg",
+        "money": "./images/money.svg",
+        "heart": "./images/heart.svg",
+        "pet": "./images/pet.svg",
+        "exercício": "./images/gym.svg",
+        "meditação": "./images/meditation.svg",
+        "trabalho": "./images/work.svg",
+        "salão": "./images/hair.svg",
+        "comida": "./images/food.svg",
+        "gift": "./images/gift.svg",
+        "aniversário": "./images/birthday.svg",
+        "festa": "./images/party.svg",
+        "vacation": "./images/vacation.svg",
+        "trip": "./images/trip.svg",
+        "meeting": "./images/meeting.svg",
+        "phone": "./images/phone.svg",
+        "study": "./images/study.svg",
+        "house": "./images/house.svg",
+        "shopping": "./images/shopping.svg",
+        "buy": "./images/buy.svg",
+        "date": "./images/date.svg",
+        "person": "./images/person.svg",
+        "judge": "./images/judge.svg",
+        "list": "./images/list.svg",
+        "car": "./images/car.svg",
+        "picture": "./images/picture.svg",
+        "nails": "./images/nails.svg",
+        "lotion": "./images/lotion.svg",
+        "toothbrush": "./images/toothbrush.svg",
+        "write": "./images/write.svg",
+        "art": "./images/art.svg",
+        "gardening": "./images/gardening.svg"
+        
     };
 
-    // --- ÍCONES DE CATEGORIA ---
+    // --- ÍCONES DE CATEGORIA (CORRIGIDO E COMPLETO) ---
     const categoryIcons = {
-        "alimentação": "svg/food.svg",
-        "transporte": "svg/transport.svg",
-        "moradia": "svg/home.svg",
-        "lazer": "svg/leisure.svg",
-        "saúde": "svg/health.svg",
-        "educação": "svg/education.svg",
-        "contas": "svg/bills.svg",
-        "salário": "svg/salary.svg",
-        "freela": "svg/work.svg",
-        "outros": "svg/other.svg"
+        // Mapeamentos para suas categorias de despesa
+        "alimentação": "./images/food.svg",
+        "transporte": "./images/car.svg",
+        "moradia": "./images/house.svg",
+        "lazer": "./images/party.svg",
+        "saúde": "./images/health.svg",
+        "educação": "./images/study.svg",
+        "contas": "./images/money.svg",
+        "compras": "./images/shopping.svg",
+        "outros": "./images/list.svg",
+
+        // Mapeamentos antigos (mantidos para outros usos)
+        "nenhum": "./images/none.svg",
+        "médico": "./images/health.svg",
+        "star": "./images/star.svg",
+        "money": "./images/money.svg",
+        "heart": "./images/heart.svg",
+        "pet": "./images/pet.svg",
+        "exercício": "./images/gym.svg",
+        "meditação": "./images/meditation.svg",
+        "trabalho": "./images/work.svg",
+        "salão": "./images/hair.svg",
+        "comida": "./images/food.svg",
+        "gift": "./images/gift.svg",
+        "aniversário": "./images/birthday.svg",
+        "festa": "./images/party.svg",
+        "vacation": "./images/vacation.svg",
+        "trip": "./images/trip.svg",
+        "meeting": "./images/meeting.svg",
+        "phone": "./images/phone.svg",
+        "study": "./images/study.svg",
+        "house": "./images/house.svg",
+        "shopping": "./images/shopping.svg",
+        "buy": "./images/buy.svg",
+        "date": "./images/date.svg",
+        "person": "./images/person.svg",
+        "judge": "./images/judge.svg",
+        "list": "./images/list.svg",
+        "car": "./images/car.svg",
+        "picture": "./images/picture.svg",
+        "nails": "./images/nails.svg",
+        "lotion": "./images/lotion.svg",
+        "toothbrush": "./images/toothbrush.svg",
+        "write": "./images/write.svg",
+        "art": "./images/art.svg",
+        "gardening": "./images/gardening.svg"
     };
 
 
@@ -1686,6 +1728,7 @@
     let revenueCategories = ["salário", "freela", "outros"], expenseCategories = ["alimentação", "transporte", "moradia", "lazer", "saúde", "educação", "outros", "contas"];
     let investmentGoals = [];
     let editingGoalId = null;
+    let editingContributionKey = null;
     let editingCategoryId = null;
     let currentMonth = null;
     let currentCalendarDate = new Date();
@@ -1702,6 +1745,12 @@
     // ----------------------------------------------------
     // FUNÇÕES DE UTILIDADE E TEMA
     // ----------------------------------------------------
+    function parseMonthYear(monthYearString) {
+        const [monthName, year] = monthYearString.split('-');
+        const monthIndex = monthNamesPt.indexOf(monthName.toLowerCase());
+        return { year: parseInt(year), month: monthIndex };
+    }
+
     function formatDateToBRL(dateString) {
         if (!dateString || dateString.length !== 10) return dateString;
         const [year, month, day] = dateString.split('-');
@@ -2045,8 +2094,9 @@
             const row = document.createElement('tr');
             const progressBarColor = percentage > 100 ? '#FF5252' : (percentage > 80 ? '#FF9800' : '#4CAF50');
             
+            // Lógica corrigida para buscar o ícone
             const iconPath = categoryIcons[category] || categoryIcons["outros"];
-            const categoryDisplay = `<img src="${iconPath}" alt="${category}" class="category-icon icon-expense">`;
+            const categoryDisplay = `<img src="${iconPath}" alt="${category}" class="category-icon">`;
             
             row.innerHTML = `
                 <td title="${category}" style="width: 10%;">${categoryDisplay}</td>
@@ -2083,6 +2133,45 @@
     // LÓGICA DE INVESTIMENTOS
     // ----------------------------------------------------
 
+    window.editContribution = (goalId, monthYearKey) => {
+        editingContributionKey = `${goalId}-${monthYearKey}`;
+        renderInvestmentGoals();
+    };
+
+    window.cancelContributionEdit = () => {
+        editingContributionKey = null;
+        renderInvestmentGoals();
+    };
+
+    window.saveContributionEdit = (goalId, monthYearKey) => {
+        const input = document.getElementById(`contribution-input-${goalId}-${monthYearKey}`);
+        const newValue = parseFloat(input.value);
+        if (isNaN(newValue) || newValue < 0) {
+            alert("Por favor, insira um valor válido.");
+            return;
+        }
+        
+        const goal = investmentGoals.find(g => g.id === goalId);
+        if (goal) {
+            goal.contributions[monthYearKey] = newValue;
+            saveInvestmentGoals();
+            editingContributionKey = null;
+            renderInvestmentGoals();
+        }
+    };
+
+    window.deleteContribution = (goalId, monthYearKey) => {
+        if (confirm(`Tem certeza que deseja remover o aporte de ${monthYearKey.replace('-', '/')}?`)) {
+            const goal = investmentGoals.find(g => g.id === goalId);
+            if (goal) {
+                delete goal.contributions[monthYearKey];
+                saveInvestmentGoals();
+                renderInvestmentGoals();
+            }
+        }
+    };
+
+
     function renderInvestmentGoals() {
       goalsContainer.innerHTML = '';
       if (investmentGoals.length === 0 && editingGoalId === null) {
@@ -2106,6 +2195,14 @@
                     <div class="form-inputs">
                         <input type="text" value="${goal.name}" required>
                         <input type="number" value="${goal.target}" step="0.01" required>
+                    </div>
+                    <div class="form-inputs">
+                         <input type="number" class="editing-goal-interest" value="${goal.interestRate || 0}" step="0.01" placeholder="juros mensais (%)">
+                         <input type="date" class="editing-goal-deadline" value="${goal.deadline || ''}" style="${goal.deadline ? '' : 'display:none;'}">
+                    </div>
+                    <div style="text-align: right;">
+                        <input type="checkbox" class="editing-goal-has-deadline" id="deadline-check-${goal.id}" ${goal.deadline ? 'checked' : ''} style="width:auto; vertical-align: middle;">
+                        <label for="deadline-check-${goal.id}" style="font-size:12px; vertical-align: middle; cursor: pointer;">definir prazo</label>
                     </div>
                     <label style="font-size: 12px; font-weight: bold; margin-top: 10px; display: block;">cor:</label>
                     <div class="color-picker">${colorPickerHTML}</div>
@@ -2145,12 +2242,65 @@
             }
 
         } else {
-            const totalSaved = Object.values(goal.contributions).reduce((sum, amount) => sum + amount, 0);
-            const percentage = goal.target > 0 ? (totalSaved / goal.target) * 100 : 0;
+            
+            const monthlyInterestRate = (goal.interestRate || 0) / 100;
+            let totalAccumulated = 0;
             let historyHtml = '';
-            for (const monthYearKey in goal.contributions) {
-                historyHtml += `<li>${monthYearKey.replace('-', '/')}: ${formatCurrency(goal.contributions[monthYearKey])}</li>`;
+            let lastDate;
+
+            if (Object.keys(goal.contributions).length > 0) {
+                const contributionEntries = Object.entries(goal.contributions).map(([monthYear, amount]) => {
+                    const { year, month } = parseMonthYear(monthYear);
+                    return { year, month, amount, date: new Date(year, month), key: monthYear };
+                }).sort((a, b) => a.date - b.date);
+
+                lastDate = new Date(contributionEntries[0].year, contributionEntries[0].month);
+
+                contributionEntries.forEach(entry => {
+                    const currentDate = entry.date;
+                    let monthsPassed = (currentDate.getFullYear() - lastDate.getFullYear()) * 12 + (currentDate.getMonth() - lastDate.getMonth());
+                    
+                    if (monthsPassed > 0) {
+                        totalAccumulated *= Math.pow(1 + monthlyInterestRate, monthsPassed);
+                    }
+                    
+                    totalAccumulated += entry.amount;
+                    lastDate = currentDate;
+                });
+                
+                const today = new Date();
+                const startOfCurrentMonth = new Date(today.getFullYear(), today.getMonth(), 1); 
+                let finalMonthsPassed = (startOfCurrentMonth.getFullYear() - lastDate.getFullYear()) * 12 + (startOfCurrentMonth.getMonth() - lastDate.getMonth());
+
+                if (finalMonthsPassed > 0) {
+                    totalAccumulated *= Math.pow(1 + monthlyInterestRate, finalMonthsPassed);
+                }
+
+                contributionEntries.forEach(entry => {
+                    const currentKey = `${goal.id}-${entry.key}`;
+                    if (editingContributionKey === currentKey) {
+                         historyHtml += `
+                            <li>
+                                <span>${entry.key.replace('-', '/')}: </span>
+                                <input id="contribution-input-${currentKey}" type="number" value="${entry.amount}" step="0.01">
+                                <button class="save-item-btn" onclick="saveContributionEdit(${goal.id}, '${entry.key}')"><img src="svg/ok.svg" alt="Salvar"></button>
+                                <button class="cancel-item-btn" onclick="cancelContributionEdit()"><img src="svg/close.svg" alt="Cancelar"></button>
+                            </li>`;
+                    } else {
+                         historyHtml += `
+                            <li>
+                                <span>${entry.key.replace('-', '/')}: ${formatCurrency(entry.amount)}</span>
+                                <span>
+                                    <button class="edit-btn" onclick="editContribution(${goal.id}, '${entry.key}')"><img src="svg/pencil.svg" alt="Editar"></button>
+                                    <button class="delete-btn" onclick="deleteContribution(${goal.id}, '${entry.key}')"><img src="svg/trash.svg" alt="Remover"></button>
+                                </span>
+                            </li>`;
+                    }
+                });
             }
+            
+            const totalSaved = totalAccumulated;
+            const percentage = goal.target > 0 ? (totalSaved / goal.target) * 100 : 0;
             
             card.innerHTML = `
               <div class="goal-header">
@@ -2166,10 +2316,12 @@
               <div class="goal-details">
                 <p><strong>${formatCurrency(totalSaved)}</strong> / ${formatCurrency(goal.target)}</p>
                 <div class="progress-bar-container" style="cursor: default;">
-                  <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${goal.color};">
-                    ${percentage.toFixed(1)}%
-                  </div>
+                  <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${goal.color};"></div>
+                   <span class="progress-bar-text">${percentage.toFixed(1)}%</span>
                 </div>
+                 <p style="font-size: 12px; color: #888; margin-top: 8px; margin-bottom: 0;">
+                    juros: ${goal.interestRate || 0}% a.m. | prazo: ${goal.deadline ? new Date(goal.deadline + 'T12:00:00').toLocaleDateString('pt-BR') : 'indefinido'}
+                </p>
               </div>
               <form class="add-contribution-form">
                 <input type="number" placeholder="valor a investir este mês" step="0.01" required>
@@ -2186,6 +2338,9 @@
       e.preventDefault();
       const name = document.getElementById('newGoalName').value.trim();
       const target = parseFloat(document.getElementById('newGoalTarget').value);
+      const interestRate = parseFloat(document.getElementById('newGoalInterestRate').value) || 0;
+      const deadline = newGoalHasDeadlineCheckbox.checked ? newGoalDeadlineInput.value : null;
+
 
       if (name && !isNaN(target) && target > 0) {
         const color = goalColors[investmentGoals.length % goalColors.length];
@@ -2195,11 +2350,14 @@
           target: target,
           color: color,
           icon: taskIcons.money,
-          contributions: {}
+          contributions: {},
+          interestRate: interestRate,
+          deadline: deadline
         });
         saveInvestmentGoals();
         renderInvestmentGoals();
         newGoalForm.reset();
+        newGoalDeadlineInput.style.display = 'none';
       } else {
         alert('por favor, preencha o nome e um valor válido para a meta.');
       }
@@ -2222,7 +2380,7 @@
 
             const goal = investmentGoals.find(g => g.id === goalId);
             if (goal) {
-                const monthYearKey = `${currentMonth}-${currentCalendarDate.getFullYear()}`;
+                const monthYearKey = `${monthNamesPt[currentCalendarDate.getMonth()]}-${currentCalendarDate.getFullYear()}`;
                 goal.contributions[monthYearKey] = (goal.contributions[monthYearKey] || 0) + amount;
                 saveInvestmentGoals();
                 renderInvestmentGoals();
@@ -2232,6 +2390,10 @@
             const goal = investmentGoals.find(g => g.id === goalId);
             const newName = e.target.querySelector('input[type="text"]').value.trim();
             const newTarget = parseFloat(e.target.querySelector('input[type="number"]').value);
+            const newInterest = parseFloat(e.target.querySelector('.editing-goal-interest').value) || 0;
+            const hasDeadline = e.target.querySelector('.editing-goal-has-deadline').checked;
+            const newDeadline = hasDeadline ? e.target.querySelector('.editing-goal-deadline').value : null;
+
             const selectedSwatch = e.target.querySelector('.color-swatch.selected');
             const newIcon = e.target.querySelector('.editing-goal-icon-input').value;
             
@@ -2246,6 +2408,9 @@
                 goal.target = newTarget;
                 goal.color = newColor;
                 goal.icon = newIcon;
+                goal.interestRate = newInterest;
+                goal.deadline = newDeadline;
+
                 editingGoalId = null;
                 saveInvestmentGoals();
                 renderInvestmentGoals();
@@ -2281,6 +2446,10 @@
                 currentSelected.classList.remove('selected');
             }
             e.target.classList.add('selected');
+        }
+        else if (e.target.matches('.editing-goal-has-deadline')) {
+            const deadlineInput = card.querySelector('.editing-goal-deadline');
+            deadlineInput.style.display = e.target.checked ? 'block' : 'none';
         }
     });
 
@@ -2571,7 +2740,7 @@
     }
     
     function renderCalendar(date) {
-        calendarGrid.innerHTML = `<div class="calendar-day-name">dom</div> <div class="calendar-day-name">seg</div><div class="calendar-day-name">ter</div> <div class="calendar-day-name">qua</div><div class="calendar-day-name">qui</div> <div class="calendar-day-name">sex</div><div class="calendar-day-name">sáb</div>`;
+        calendarGrid.innerHTML = `<div class="calendar-day-name">dom</div> <div class="calendar-day-name">seg</div><div class="calendar-day-name">ter</div> <div class="calendar-day-name">qua</div><div class="calendar-day-name">qui</div><div class="calendar-day-name">sex</div><div class="calendar-day-name">sáb</div>`;
         const year = date.getFullYear(), month = date.getMonth();
         calendarMonthSelect.value = month;
         const firstDayOfMonth = new Date(year, month, 1).getDay(), daysInMonth = new Date(year, month + 1, 0).getDate(), daysInPrevMonth = new Date(year, month, 0).getDate();
@@ -2916,7 +3085,7 @@
         saveLists();
     }
 
-    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = './images/list.png') {
+    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = './images/list.svg') {
         if (!listName) return;
 
         const listDiv = document.createElement("div");
@@ -3102,6 +3271,10 @@
     // INICIALIZAÇÃO E EVENT LISTENERS
     // ----------------------------------------------------
 
+    newGoalHasDeadlineCheckbox.addEventListener('change', () => {
+        newGoalDeadlineInput.style.display = newGoalHasDeadlineCheckbox.checked ? 'block' : 'none';
+    });
+
     themeToggle.addEventListener('click', () => applyTheme(document.body.classList.contains('dark-mode') ? 'light' : 'dark'));
     expenseList.addEventListener('click', function(e) {
         const button = e.target.closest('button');
@@ -3140,7 +3313,7 @@
                 id: Date.now().toString() + Math.random(),
                 time: eventTime,
                 description: listName, 
-                icon: './images/list.png', // Usa o ícone padrão da lista
+                icon: './images/list.svg', // Usa o ícone padrão da lista
                 priority: listPriority === 'alta' ? 'alta' : 'nenhuma',
                 recurrenceId: null,
                 linkedListId: newListId
@@ -3348,6 +3521,8 @@
         currentCalendarDate = new Date();
         initCalendarSelect();
         
+        openAddTaskFormBtn.addEventListener('click', openAddTaskFormModal);
+
         renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons);
         renderIconPicker(transactionIconPicker, transactionIconHiddenInput, categoryIcons);
         renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons);
