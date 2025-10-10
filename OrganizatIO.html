@@ -50,6 +50,22 @@
     }
     /* --- FIM DO NOVO ESTILO --- */
 
+    /* --- NOVO ESTILO PARA ÍCONES NOS BOTÕES DE LISTAS --- */
+    .delete-list-circular-btn img {
+        width: 14px;
+        height: 14px;
+        filter: brightness(0) invert(1);
+    }
+
+    .edit-item-btn img,
+    .delete-item-btn img,
+    .edit-list-btn img {
+        width: 14px;
+        height: 14px;
+        filter: brightness(0) invert(0.35);
+        transition: filter 0.3s ease;
+    }
+
     /* ------------------------------------------------ */
     /* ESTILOS TEMA CLARO (Padrão) - CORES VIVAS */
     /* ------------------------------------------------ */
@@ -62,6 +78,53 @@
       transition: background 0.3s, color 0.3s;
       text-transform: lowercase;
     }
+    
+    /* ---------------------------------------------------- */
+    /* --- PADRONIZAÇÃO DOS BOTÕES DE EDITAR E EXCLUIR --- */
+    /* ---------------------------------------------------- */
+
+    /* ESTILO BASE PARA TEMA CLARO (BOTÕES QUADRADOS E REDONDO DE EDITAR LISTA) */
+    .edit-btn, .delete-btn,
+    .edit-task-btn, .task-list-item button,
+    .edit-item-btn, .delete-item-btn,
+    .edit-list-btn {
+     background-color: #f5f5f5; 
+     border: 1px solid #BDBDBD;
+     transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    /* EFEITO HOVER PARA TEMA CLARO (BOTÕES QUADRADOS E REDONDO DE EDITAR LISTA) */
+    .edit-btn:hover, .delete-btn:hover,
+    .edit-task-btn:hover, .task-list-item button:hover,
+    .edit-item-btn:hover, .delete-item-btn:hover,
+    .edit-list-btn:hover {
+        background-color: #e5e5e5;
+        border-color: #9E9E9E;
+    }
+
+    /* ÍCONE ESCURO PARA TEMA CLARO */
+    .edit-task-btn img, .task-list-item button img {
+        filter: invert(25%);
+    }
+
+    /* TEMA ESCURO: Botões quadrados com fundo da página e borda clara */
+    body.dark-mode .edit-btn, body.dark-mode .delete-btn,
+    body.dark-mode .edit-task-btn, body.dark-mode .task-list-item button,
+    body.dark-mode .edit-item-btn, body.dark-mode .delete-item-btn,
+    body.dark-mode .edit-list-btn {
+    background-color: #1F1F1F; 
+    border: 1px solid #9E9E9E; 
+    }
+    
+    body.dark-mode .edit-btn:hover, body.dark-mode .delete-btn:hover,
+    body.dark-mode .edit-task-btn:hover, body.dark-mode .task-list-item button:hover,
+    body.dark-mode .edit-item-btn:hover, body.dark-mode .delete-item-btn:hover,
+    body.dark-mode .edit-list-btn:hover {
+    background-color: #282828; 
+    border-color: #E0E0E0;   
+    }
+
+    
     
     #newListForm {
         display: flex;
@@ -224,36 +287,25 @@
       transition: color 0.3s;
     }
     .delete-btn, .edit-btn {
-      border: none;
-      border-radius: 8px;
-      padding: 8px;
       cursor: pointer;
-      color: white;
       margin: 0 2px;
       display: inline-flex;
       justify-content: center;
       align-items: center;
     }
-    .delete-btn {
-      background: #FF5252;
-    }
-    .delete-btn:hover {
-      background: #FF1744;
-    }
-    .edit-btn {
-        background: #4CAF50;
-        color: white;
-    }
-    .edit-btn:hover {
-        background: #388E3C;
-    }
-    
-    .delete-btn img,
-    .edit-btn img,
+
     #manage-categories-btn img {
         width: 16px;
         height: 16px;
         filter: brightness(0) invert(1);
+    }
+    
+    .edit-btn img,
+    .delete-btn img {
+        width: 16px;
+        height: 16px;
+        filter: brightness(0) invert(0.35);
+        transition: filter 0.3s ease;
     }
     
     #charts-dual-container {
@@ -452,63 +504,80 @@
 
     .list-item-actions button {
       font-size: 12px;
-      padding: 3px 6px;
-      border-radius: 5px;
       margin-left: 4px;
-      width: 24px;
-      height: 24px;
-    }
-    .edit-item-btn { background: #4CAF50; color: white; border: none; }
-    .delete-item-btn { background: #FF5252; color: white; border: none; }
-    .save-item-btn { background: #3586ff; color: white; border: none; }
-    .cancel-item-btn { background: #9E9E9E; color: white; border: none; }
-
-
-    .delete-list-circular-btn {
-        background: #FF5252;
-        border: none;
-        cursor: pointer;
-        color: white;
-        border-radius: 50%;
-        width: 24px;
-        height: 24px;
-        padding: 0;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 14px;
-        line-height: 1;
-        flex-shrink: 0;
-        margin-left: 5px;
-        vertical-align: middle;
-        transition: background 0.2s;
-    }
-    .delete-list-circular-btn:hover {
-        background: #FF1744;
     }
     
     .edit-list-btn {
-        background: #4CAF50;
-        border: none;
-        cursor: pointer;
-        color: white;
-        border-radius: 50%;
         width: 24px;
         height: 24px;
+        padding: 0;
+        border-radius: 50%;
+        margin-right: 5px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* --- ESTILO PADRÃO PARA BOTÕES REDONDOS COM ÍCONE --- */
+    .close-button,
+    .delete-list-circular-btn,
+    .save-item-btn,
+    .cancel-item-btn {
+        background: #757575; /* Cinza escuro */
+        border: none;
+        cursor: pointer;
+        border-radius: 50%;
         padding: 0;
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        font-size: 14px;
-        line-height: 1;
-        flex-shrink: 0;
-        margin-right: 5px;
-        vertical-align: middle;
         transition: background 0.2s;
     }
-    .edit-list-btn:hover {
-        background: #388E3C;
+
+    .close-button:hover,
+    .delete-list-circular-btn:hover,
+    .save-item-btn:hover,
+    .cancel-item-btn:hover {
+        background: #616161; /* Cinza um pouco mais escuro no hover */
     }
+
+    .close-button {
+        width: 32px;
+        height: 32px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    .delete-list-circular-btn,
+    .save-item-btn,
+    .cancel-item-btn {
+        width: 24px;
+        height: 24px;
+    }
+
+    .close-button img,
+    .delete-list-circular-btn img,
+    .cancel-item-btn img {
+        filter: invert(41%) sepia(97%) saturate(1451%) hue-rotate(325deg) brightness(99%) contrast(106%); /* Vermelho #FF5252 */
+    }
+
+    .save-item-btn img {
+        filter: invert(48%) sepia(71%) saturate(415%) hue-rotate(75deg) brightness(95%) contrast(84%); /* Verde #4CAF50 */
+    }
+    
+    .close-button img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .delete-list-circular-btn img,
+    .save-item-btn img,
+    .cancel-item-btn img {
+        width: 14px;
+        height: 14px;
+    }
+
 
     #calendar-grid {
       display: grid;
@@ -601,6 +670,7 @@
       border-radius: 15px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       transition: background 0.3s, border-color 0.3s, color 0.3s;
+      position: relative;
     }
     #detailsModal .modal-content {
       max-width: 1100px;
@@ -608,18 +678,6 @@
     }
     #categorySpendingModal .modal-content {
       max-width: 700px;
-    }
-    .close-button {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      text-transform: none;
-    }
-    .close-button:hover, .close-button:focus {
-      color: #000;
-      text-decoration: none;
-      cursor: pointer;
     }
     
     .details-flex-container {
@@ -661,15 +719,8 @@
     }
 
     .edit-task-btn {
-        background: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
         padding: 5px 8px;
         cursor: pointer;
-    }
-    .edit-task-btn:hover {
-        background: #388E3C;
     }
 
     .task-list-item {
@@ -687,15 +738,8 @@
     .task-list-item.priority-alta { border-left-color: #FF5252; }
 
     .task-list-item button {
-      background: #FF5252;
-      color: white;
-      border: none;
       padding: 5px 8px;
-      border-radius: 5px;
       cursor: pointer;
-    }
-    .task-list-item button:hover {
-        background: #FF1744;
     }
     
     .task-icon {
@@ -944,9 +988,6 @@
         border-radius: 8px;
         background-color: rgba(0,0,0,0.05);
     }
-    body.dark-mode .goal-icon-picker {
-        background-color: rgba(255,255,255,0.05);
-    }
 
     body.dark-mode {
       background: #121212;
@@ -996,8 +1037,7 @@
     body.dark-mode h1,
     body.dark-mode h2,
     body.dark-mode h3,
-    body.dark-mode .total,
-    body.dark-mode .close-button {
+    body.dark-mode .total {
       color: #FFFFFF;
     }
     
@@ -1025,6 +1065,14 @@
     body.dark-mode .task-actions button img {
         filter: brightness(0) invert(0.8);
     }
+
+    body.dark-mode .edit-item-btn img,
+    body.dark-mode .delete-item-btn img,
+    body.dark-mode .edit-btn img,
+    body.dark-mode .delete-btn img,
+    body.dark-mode .edit-list-btn img {
+        filter: brightness(0) invert(0.8);
+    }
     
     body.dark-mode .task-list-item[data-list-id]:hover {
         background: #282828;
@@ -1043,7 +1091,7 @@
     body.dark-mode .modal-content input,
     body.dark-mode .modal-content select,
     body.dark-mode .list input[type="text"],
-    body.dark-mode button:not(.delete-btn):not(.edit-btn):not(#theme-toggle):not(.mensal-sub-toggle):not(.delete-list-circular-btn) {
+    body.dark-mode button:not(.add-btn):not(.delete-btn):not(.edit-btn):not(#theme-toggle):not(.mensal-sub-toggle):not(.delete-list-circular-btn):not(.edit-task-btn):not(.task-list-item button):not(.edit-item-btn):not(.delete-item-btn):not(.edit-list-btn):not(.save-item-btn):not(.cancel-item-btn):not(.close-button) {
       background: #282828;
       border: 1px solid #555;
       color: #E0E0E0;
@@ -1060,13 +1108,6 @@
     
     body.dark-mode .task-list-item.priority-alta { border-left-color: #FF1744; }
     body.dark-mode .task-icon-grid-view.priority-icon-alta { border-color: #FF1744; }
-    
-    body.dark-mode .edit-list-btn {
-        background: #2E7D32;
-    }
-    body.dark-mode .edit-list-btn:hover {
-        background: #1B5E20;
-    }
 
     body.dark-mode .list li {
       border-bottom: 1px solid #333;
@@ -1076,12 +1117,7 @@
       background-color: #333;
       color: #E0E0E0;
     }
-    body.dark-mode .edit-item-btn { background: #2E7D32; }
-    body.dark-mode .delete-item-btn { background: #D50000; }
-    body.dark-mode .save-item-btn { background: #6b9aff; }
-    body.dark-mode .cancel-item-btn { background: #616161; }
-
-
+    
     body.dark-mode button.add-btn {
         background: #6b9aff;
         color: white;
@@ -1091,11 +1127,7 @@
     }
     
     body.dark-mode .edit-task-btn {
-        background: #2E7D32;
-        color: white;
-    }
-    body.dark-mode .edit-task-btn:hover {
-        background: #1B5E20;
+        /* background: #2E7D32; */
     }
 
     body.dark-mode .delete-list-circular-btn {
@@ -1149,11 +1181,7 @@
     }
     
     body.dark-mode .edit-btn {
-        background: #2E7D32;
-        color: white;
-    }
-    body.dark-mode .edit-btn:hover {
-        background: #1B5E20;
+        /* background: #2E7D32; */
     }
 
     body.dark-mode .summary-card {
@@ -1179,6 +1207,19 @@
     
     body.dark-mode #category-spending-list .category-icon.icon-expense {
         filter: invert(86%) sepia(0%) saturate(301%) hue-rotate(186deg) brightness(83%) contrast(86%); /* cinza claro */
+    }
+    
+    body.dark-mode .close-button,
+    body.dark-mode .delete-list-circular-btn,
+    body.dark-mode .save-item-btn,
+    body.dark-mode .cancel-item-btn {
+        background: #424242;
+    }
+    body.dark-mode .close-button:hover,
+    body.dark-mode .delete-list-circular-btn:hover,
+    body.dark-mode .save-item-btn:hover,
+    body.dark-mode .cancel-item-btn:hover {
+        background: #616161;
     }
 
   </style>
@@ -1275,7 +1316,7 @@
 
   <div id="taskModal" class="modal">
     <div class="modal-content">
-      <span class="close-button" onclick="closeTaskModal()">&times;</span>
+      <button class="close-button" onclick="closeTaskModal()"><img src="svg/close.svg" alt="Fechar"></button>
       <h3 style="text-align: center; margin-top: 0;">tarefas do dia</h3>
       <div id="tasksList"></div>
       <button id="open-add-task-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar tarefa</button>
@@ -1284,7 +1325,7 @@
 
   <div id="addTaskFormModal" class="modal">
     <div class="modal-content">
-      <span class="close-button" onclick="closeAddTaskFormModal()">&times;</span>
+      <button class="close-button" onclick="closeAddTaskFormModal()"><img src="svg/close.svg" alt="Fechar"></button>
       <h3 id="task-form-title">adicionar tarefa</h3>
       <form id="task-form-modal">
         <div style="display: grid; grid-template-columns: 1fr 3fr auto; gap: 10px; align-items: center;">
@@ -1326,7 +1367,7 @@
   
   <div id="categoryModal" class="modal">
     <div class="modal-content">
-      <span class="close-button" onclick="closeCategoryModal()">&times;</span>
+      <button class="close-button" onclick="closeCategoryModal()"><img src="svg/close.svg" alt="Fechar"></button>
       
       <h3>gerenciar categorias</h3>
       
@@ -1352,7 +1393,7 @@
 
   <div id="detailsModal" class="modal">
       <div class="modal-content">
-          <span class="close-button" onclick="closeDetailsModal()">&times;</span>
+          <button class="close-button" onclick="closeDetailsModal()"><img src="svg/close.svg" alt="Fechar"></button>
           <h3>transações do mês</h3>
           
           <hr style="border-top: 1px solid #ddd; margin: 10px 0 20px 0;">
@@ -1402,7 +1443,7 @@
 
   <div id="categorySpendingModal" class="modal">
       <div class="modal-content">
-          <span class="close-button" onclick="closeCategorySpendingModal()">&times;</span>
+          <button class="close-button" onclick="closeCategorySpendingModal()"><img src="svg/close.svg" alt="Fechar"></button>
           <h3>orçamentos</h3>
           <form id="category-limit-form" style="display: flex; gap: 10px; margin-bottom: 20px;">
               <select id="categoryLimitCategory" required></select>
@@ -1418,7 +1459,7 @@
 
   <div id="investmentsModal" class="modal">
     <div class="modal-content">
-        <span class="close-button" onclick="closeInvestmentsModal()">&times;</span>
+        <button class="close-button" onclick="closeInvestmentsModal()"><img src="svg/close.svg" alt="Fechar"></button>
         <h3>investimentos</h3>
         
         <form id="new-goal-form">
@@ -1435,7 +1476,7 @@
   
   <div id="descriptionModal" class="modal">
     <div class="modal-content" style="max-width: 450px; text-align: center;">
-        <span class="close-button" onclick="closeDescriptionModal()">&times;</span>
+        <button class="close-button" onclick="closeDescriptionModal()"><img src="svg/close.svg" alt="Fechar"></button>
         <h3>detalhes</h3>
         <p id="modal-description-text" style="font-size: 16px; margin-top: 20px; line-height: 1.5;"></p>
         <p id="modal-date-text"></p>
@@ -1444,7 +1485,7 @@
 
   <div id="listDetailsModal" class="modal">
     <div class="modal-content" style="max-width: 450px;">
-        <span class="close-button" onclick="closeListDetailsModal()">&times;</span>
+        <button class="close-button" onclick="closeListDetailsModal()"><img src="svg/close.svg" alt="Fechar"></button>
         <h3 id="listDetailsTitle"></h3>
         <ul id="listDetailsItems"></ul>
     </div>
@@ -1452,7 +1493,7 @@
 
   <div id="listIconModal" class="modal">
     <div class="modal-content" style="max-width: 500px;">
-        <span class="close-button" onclick="closeListIconModal()">&times;</span>
+        <button class="close-button" onclick="closeListIconModal()"><img src="svg/close.svg" alt="Fechar"></button>
         <h3>escolha um ícone para a lista</h3>
         <div id="list-icon-picker-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px; max-height: 300px; overflow-y: auto;">
             </div>
@@ -1461,7 +1502,7 @@
 
   <div id="listEditorModal" class="modal">
     <div class="modal-content" style="max-width: 450px;">
-        <span class="close-button" onclick="closeListEditorModal()">&times;</span>
+        <button class="close-button" onclick="closeListEditorModal()"><img src="svg/close.svg" alt="Fechar"></button>
         <h3>Editar Lista</h3>
         <form id="list-editor-form" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
             <input type="hidden" id="editor-list-id-main">
@@ -1825,10 +1866,10 @@
         editorListIdInput.value = listId;
         editorListNameInput.value = listData.name;
         
-        const currentIcon = new URL(listData.icon).pathname;
-        editorListIconInput.value = `.${currentIcon}`;
+        const currentIconPath = listData.icon;
+        editorListIconInput.value = currentIconPath;
         editorListIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-            option.classList.toggle('selected', option.getAttribute('data-icon-path') === `.${currentIcon}`);
+            option.classList.toggle('selected', option.getAttribute('data-icon-path') === currentIconPath);
         });
 
         const linkedTaskInfo = findLinkedTask(listId);
@@ -2903,12 +2944,12 @@
         actionsDiv.className = 'list-title-actions';
         
         const editBtn = document.createElement("button");
-        editBtn.innerHTML = "✏️";
+        editBtn.innerHTML = '<img src="svg/pencil.svg" alt="Editar">';
         editBtn.className = "edit-list-btn";
         editBtn.onclick = () => openListEditorModal(listId);
         
         const removeBtn = document.createElement("button");
-        removeBtn.textContent = "x";
+        removeBtn.innerHTML = '<img src="svg/close.svg" alt="Remover Lista">';
         removeBtn.className = "delete-list-circular-btn";
         removeBtn.onclick = () => deleteListAndLinkedTask(listDiv, listName);
 
@@ -2974,12 +3015,12 @@
                 actionsDiv.innerHTML = '';
                 const editBtn = document.createElement('button');
                 editBtn.className = 'edit-item-btn';
-                editBtn.innerHTML = '✏️';
+                editBtn.innerHTML = '<img src="svg/pencil.svg" alt="Editar">';
                 editBtn.onclick = () => toggleEditMode(true);
 
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'delete-item-btn';
-                deleteBtn.innerHTML = '🗑️';
+                deleteBtn.innerHTML = '<img src="svg/trash.svg" alt="Remover">';
                 deleteBtn.onclick = () => {
                     li.remove();
                     checkCompletion(listDiv);
@@ -3002,7 +3043,7 @@
                     actionsDiv.innerHTML = '';
                     const saveBtn = document.createElement('button');
                     saveBtn.className = 'save-item-btn';
-                    saveBtn.innerHTML = '✔️';
+                    saveBtn.innerHTML = '<img src="svg/ok.svg" alt="Salvar">';
                     saveBtn.onclick = () => {
                         span.textContent = inputField.value;
                         toggleEditMode(false);
@@ -3011,7 +3052,7 @@
 
                     const cancelBtn = document.createElement('button');
                     cancelBtn.className = 'cancel-item-btn';
-                    cancelBtn.innerHTML = '❌';
+                    cancelBtn.innerHTML = '<img src="svg/close.svg" alt="Cancelar">';
                     cancelBtn.onclick = () => {
                         toggleEditMode(false);
                     };
