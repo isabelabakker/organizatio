@@ -1266,26 +1266,25 @@
   }
 }
 
-/* ======================================================= */
-/* === AJUSTE DE MODAIS PARA VISUALIZAÇÃO EM TELA CHEIA === */
-/* ======================================================= */
+/* ================================================================ */
+/* === CORREÇÃO: MODAIS EM TELA CHEIA (COM MAIOR ESPECIFICIDADE) === */
+/* ================================================================ */
 @media (max-width: 768px) {
   
-  /* Transforma o conteúdo do modal para ocupar a tela inteira */
   .modal-content {
-    width: 100%;
-    height: 100%;
-    max-width: unset; /* Remove a largura máxima definida para desktop */
-    margin: 0;        /* Remove as margens automáticas */
-    border: none;     /* Remove a borda da janela */
-    border-radius: 0; /* Remove os cantos arredondados para um visual de tela cheia */
-    box-shadow: none; /* Opcional: remove a sombra projetada */
-    
-    /* Garante que o conteúdo possa ser rolado se exceder a altura da tela */
+    /* Usamos !important para forçar a sobreposição sobre regras mais específicas (com IDs) */
+    width: 100vw !important;   /* Ocupa 100% da largura da tela (viewport width) */
+    height: 100vh !important;  /* Ocupa 100% da altura da tela (viewport height) */
+    max-width: none !important; /* Remove qualquer limite de largura máxima */
+    margin: 0 !important;       /* Remove todas as margens */
+
+    /* Estas regras não precisam de !important, pois não conflitam */
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
     overflow-y: auto;
   }
 
-  /* Reposiciona o botão de fechar para o novo layout de tela cheia */
   .modal-content .close-button {
     top: 15px;
     right: 15px;
