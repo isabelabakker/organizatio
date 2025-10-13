@@ -1275,6 +1275,49 @@
       }
     }
 
+/* ================================================================ */
+/* === ESTILOS PARA BOTÕES DE AGENDAMENTO NO EDITOR DE LISTAS === */
+/* ================================================================ */
+
+/* --- Estilo para o botão "Adicionar Agendamento" --- */
+#add-schedule-btn {
+    background: transparent;
+    border: 1px solid #3586ff; /* Cor azul do tema */
+    color: #3586ff;
+    font-weight: bold;
+}
+#add-schedule-btn:hover {
+    background: rgba(53, 134, 255, 0.05); /* Fundo azul bem claro no hover */
+    color: #3d71ff;
+}
+
+/* --- Estilo para o botão "Remover Agendamento" --- */
+#remove-schedule-btn {
+    background: transparent;
+    color: #BDBDBD; /* Cor da borda definida pela classe .delete-btn */
+}
+#remove-schedule-btn:hover {
+    color: #9E9E9E; /* Cor da borda no hover definida por .delete-btn:hover */
+}
+
+
+/* --- Ajustes para o Tema Escuro --- */
+body.dark-mode #add-schedule-btn {
+    border-color: #6b9aff;
+    color: #6b9aff;
+}
+body.dark-mode #add-schedule-btn:hover {
+    background: rgba(107, 154, 255, 0.1); /* Fundo azul bem claro no hover */
+    color: #558bff;
+}
+
+body.dark-mode #remove-schedule-btn {
+    color: #9E9E9E; /* Cor da borda no dark mode definida por .delete-btn */
+}
+body.dark-mode #remove-schedule-btn:hover {
+    color: #E0E0E0; /* Cor da borda no hover do dark mode */
+}
+
   </style>
   <script src="./js/chart.js"></script>
 </head>
