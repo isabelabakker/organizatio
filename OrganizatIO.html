@@ -1211,85 +1211,74 @@
         color: #9E9E9E; /* Cor do texto igual à da borda */
     }
 
-/* ================================================= */
-/* === AJUSTES PARA VISUALIZAÇÃO MOBILE DO PLANNER === */
-/* ================================================= */
-@media (max-width: 768px) {
-  
-  /* Ajusta o contêiner principal para ter menos margem em telas pequenas */
-  .container {
-    margin: 10px;
-    padding: 15px;
-  }
-  
-  /* Ajusta os dias do calendário */
-  .calendar-day {
-    /* Remove a altura mínima fixa que causa o alongamento vertical */
-    min-height: unset;
+    /* ================================================================ */
+    /* === BLOCO DE ESTILOS PARA DISPOSITIVOS MÓVEIS (RESPONSIVO) === */
+    /* ================================================================ */
+    @media (max-width: 768px) {
     
-    /* A "mágica" acontece aqui: força o dia a ter uma proporção.
-      Use "1 / 1" para um QUADRADO perfeito.
-      Use "4 / 3" para um retângulo em formato paisagem.
-    */
-    aspect-ratio: 1 / 1; 
-    
-    /* Reduz o preenchimento interno para dar mais espaço ao conteúdo */
-    padding: 5px;
+      /* Ajusta o contêiner principal para ter menos margem em telas pequenas */
+      .container {
+        margin: 10px;
+        padding: 15px;
+      }
+      
+      /* Ajusta os dias do calendário */
+      .calendar-day {
+        min-height: unset;
+        aspect-ratio: 1 / 1; 
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
 
-    /* Melhora o alinhamento do conteúdo interno */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
+      /* Diminui o tamanho da fonte do número do dia */
+      .calendar-day-number {
+        font-size: 14px;
+        margin-bottom: 3px;
+      }
+      
+      /* Diminui o tamanho dos ícones de tarefas para caberem melhor */
+      .task-icon-grid-view {
+        width: 16px;
+        height: 16px;
+      }
+      
+      /* Reduz o espaço entre os ícones */
+      .calendar-task-icons {
+         gap: 2px;
+      }
 
-  /* Diminui o tamanho da fonte do número do dia */
-  .calendar-day-number {
-    font-size: 14px;
-    margin-bottom: 3px; /* Reduz o espaço abaixo do número */
-  }
-  
-  /* Diminui o tamanho dos ícones de tarefas para caberem melhor */
-  .task-icon-grid-view {
-    width: 16px;
-    height: 16px;
-  }
-  
-  /* Reduz o espaço entre os ícones */
-  .calendar-task-icons {
-     gap: 2px;
-  }
+      /* Reduz o texto dos dias da semana para economizar espaço */
+      .calendar-day-name {
+        font-size: 11px;
+        padding: 8px 2px;
+      }
 
-  /* Opcional: Reduz o texto dos dias da semana para economizar espaço */
-  .calendar-day-name {
-    font-size: 11px;
-    padding: 8px 2px;
-  }
-}
+      /* Transforma os modais em tela cheia */
+      .modal-content {
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: none !important;
+        margin: 0 !important;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        overflow-y: auto;
+      }
 
-/* ================================================================ */
-/* === CORREÇÃO: MODAIS EM TELA CHEIA (COM MAIOR ESPECIFICIDADE) === */
-/* ================================================================ */
-@media (max-width: 768px) {
-  
-  .modal-content {
-    /* Usamos !important para forçar a sobreposição sobre regras mais específicas (com IDs) */
-    width: 100vw !important;   /* Ocupa 100% da largura da tela (viewport width) */
-    height: 100vh !important;  /* Ocupa 100% da altura da tela (viewport height) */
-    max-width: none !important; /* Remove qualquer limite de largura máxima */
-    margin: 0 !important;       /* Remove todas as margens */
-
-    /* Estas regras não precisam de !important, pois não conflitam */
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
-    overflow-y: auto;
-  }
-
-  .modal-content .close-button {
-    top: 15px;
-    right: 15px;
-  }
-}
+      /* Reposiciona o botão de fechar dos modais */
+      .modal-content .close-button {
+        top: 15px;
+        right: 15px;
+      }
+      
+      /* Move o botão de tema para a esquerda */
+      #theme-toggle {
+        right: unset;
+        left: 20px;
+      }
+    }
 
   </style>
   <script src="./js/chart.js"></script>
@@ -1734,12 +1723,12 @@
         "trip": "./images/trip.svg",
         "meeting": "./images/meeting.svg",
         "meeting": "./images/computer.svg",
-        "phone": "./images/phone.svg",
-        "movie": "./images/movie.svg",
+        "phone": "./images/movie.svg",
         "study": "./images/study.svg",
         "house": "./images/house.svg",
         "shopping": "./images/shopping.svg",
         "buy": "./images/buy.svg",
+        "date": "./images/date.svg",
         "person": "./images/person.svg",
         "list": "./images/list.svg",
         "car": "./images/car.svg",
@@ -1777,12 +1766,12 @@
         "trip": "./images/trip.svg",
         "meeting": "./images/meeting.svg",
         "meeting": "./images/computer.svg",
-        "phone": "./images/phone.svg",
-        "movie": "./images/movie.svg",
+        "phone": "./images/movie.svg",
         "study": "./images/study.svg",
         "house": "./images/house.svg",
         "shopping": "./images/shopping.svg",
         "buy": "./images/buy.svg",
+        "date": "./images/date.svg",
         "person": "./images/person.svg",
         "list": "./images/list.svg",
         "car": "./images/car.svg",
