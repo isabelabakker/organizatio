@@ -1622,7 +1622,7 @@ body.dark-mode #remove-schedule-btn:hover {
             </div>
             
             <div id="finance-details-container">
-                <div id="transactions-view" style="display: none; position: relative;">
+                <div id="transactions-view" style="display: none; position: relative; padding-top: 15px;">
                     <button class="close-button" id="close-transactions-view"><img src="svg/close.svg" alt="Fechar"></button>
                     
                     <div id="transaction-list-view">
@@ -1672,7 +1672,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     </div>
                 </div>
     
-                <div id="budgets-view" style="display: none; position: relative;">
+                <div id="budgets-view" style="display: none; position: relative; padding-top: 15px;">
                     <button class="close-button" id="close-budgets-view"><img src="svg/close.svg" alt="Fechar"></button>
                     <h3 style="margin-top:0;">orçamentos</h3>
                     <form id="category-limit-form" style="display: flex; gap: 10px; margin-bottom: 20px;">
@@ -1692,7 +1692,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     </table>
                 </div>
     
-                <div id="investments-view" style="display: none; position: relative;">
+                <div id="investments-view" style="display: none; position: relative; padding-top: 15px;">
                     <button class="close-button" id="close-investments-view"><img src="svg/close.svg" alt="Fechar"></button>
                     <h3 style="margin-top:0;">investimentos</h3>
                     <form id="new-goal-form" style="display: flex; flex-direction: column; gap: 10px;">
@@ -4208,7 +4208,9 @@ body.dark-mode #remove-schedule-btn:hover {
     });
 
     viewDetailsBtn.addEventListener('click', () => {
-        renderExpenses();
+        renderExpenses(); 
+        transactionListView.style.display = 'block';
+        addTransactionContainer.style.display = 'none';
         budgetsView.style.display = 'none';
         investmentsView.style.display = 'none';
         transactionsView.style.display = 'block';
@@ -4314,9 +4316,14 @@ body.dark-mode #remove-schedule-btn:hover {
         
         // Esconde todas as sub-views ao trocar de aba principal
         plannerDetailsContainer.style.display = 'none';
-        document.getElementById('finance-details-container').querySelectorAll('.back-button').forEach(btn => btn.parentElement.style.display = 'none');
-        
+        document.getElementById('finance-details-container').style.display = 'none';
+
         if (sectionId === 'financeiro-section') {
+            document.getElementById('finance-details-container').style.display = 'block'; // Make sure container is visible
+            // Hide all detail views within the container
+            transactionsView.style.display = 'none';
+            budgetsView.style.display = 'none';
+            investmentsView.style.display = 'none';
             updateFinanceDisplay();
         }
         if (sectionId === 'listas-section') {
