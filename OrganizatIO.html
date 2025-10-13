@@ -1211,6 +1211,61 @@
         color: #9E9E9E; /* Cor do texto igual à da borda */
     }
 
+/* ================================================= */
+/* === AJUSTES PARA VISUALIZAÇÃO MOBILE DO PLANNER === */
+/* ================================================= */
+@media (max-width: 768px) {
+  
+  /* Ajusta o contêiner principal para ter menos margem em telas pequenas */
+  .container {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  /* Ajusta os dias do calendário */
+  .calendar-day {
+    /* Remove a altura mínima fixa que causa o alongamento vertical */
+    min-height: unset;
+    
+    /* A "mágica" acontece aqui: força o dia a ter uma proporção.
+      Use "1 / 1" para um QUADRADO perfeito.
+      Use "4 / 3" para um retângulo em formato paisagem.
+    */
+    aspect-ratio: 1 / 1; 
+    
+    /* Reduz o preenchimento interno para dar mais espaço ao conteúdo */
+    padding: 5px;
+
+    /* Melhora o alinhamento do conteúdo interno */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  /* Diminui o tamanho da fonte do número do dia */
+  .calendar-day-number {
+    font-size: 14px;
+    margin-bottom: 3px; /* Reduz o espaço abaixo do número */
+  }
+  
+  /* Diminui o tamanho dos ícones de tarefas para caberem melhor */
+  .task-icon-grid-view {
+    width: 16px;
+    height: 16px;
+  }
+  
+  /* Reduz o espaço entre os ícones */
+  .calendar-task-icons {
+     gap: 2px;
+  }
+
+  /* Opcional: Reduz o texto dos dias da semana para economizar espaço */
+  .calendar-day-name {
+    font-size: 11px;
+    padding: 8px 2px;
+  }
+}
+
   </style>
   <script src="./js/chart.js"></script>
 </head>
@@ -1636,6 +1691,8 @@
     const taskIcons = {
         "nenhum": "./images/none.svg",
         "médico": "./images/health.svg",
+        "medicação": "./images/pills.svg",    
+        "dentista": "./images/tooth.svg",    
         "star": "./images/star.svg",
         "money": "./images/money.svg",
         "heart": "./images/heart.svg",
@@ -1651,42 +1708,34 @@
         "vacation": "./images/vacation.svg",
         "trip": "./images/trip.svg",
         "meeting": "./images/meeting.svg",
+        "meeting": "./images/computer.svg",
         "phone": "./images/phone.svg",
+        "movie": "./images/movie.svg",
         "study": "./images/study.svg",
         "house": "./images/house.svg",
         "shopping": "./images/shopping.svg",
         "buy": "./images/buy.svg",
-        "date": "./images/date.svg",
         "person": "./images/person.svg",
-        "judge": "./images/judge.svg",
         "list": "./images/list.svg",
         "car": "./images/car.svg",
         "picture": "./images/picture.svg",
         "nails": "./images/nails.svg",
         "lotion": "./images/lotion.svg",
-        "toothbrush": "./images/toothbrush.svg",
         "write": "./images/write.svg",
         "art": "./images/art.svg",
-        "gardening": "./images/gardening.svg"
+        "flower": "./images/flower.svg",
+        "plant": "./images/plant.svg"
         
     };
 
     // --- ÍCONES DE CATEGORIA (CORRIGIDO E COMPLETO) ---
     const categoryIcons = {
-        // Mapeamentos para suas categorias de despesa
-        "alimentação": "./images/food.svg",
-        "transporte": "./images/car.svg",
-        "moradia": "./images/house.svg",
-        "lazer": "./images/party.svg",
-        "saúde": "./images/health.svg",
-        "educação": "./images/study.svg",
-        "contas": "./images/money.svg",
-        "compras": "./images/shopping.svg",
-        "outros": "./images/list.svg",
+        // Mapeamentos para suas categorias de despesa e receita
 
-        // Mapeamentos antigos (mantidos para outros usos)
         "nenhum": "./images/none.svg",
         "médico": "./images/health.svg",
+        "medicação": "./images/pills.svg",    
+        "dentista": "./images/tooth.svg",    
         "star": "./images/star.svg",
         "money": "./images/money.svg",
         "heart": "./images/heart.svg",
@@ -1702,23 +1751,23 @@
         "vacation": "./images/vacation.svg",
         "trip": "./images/trip.svg",
         "meeting": "./images/meeting.svg",
+        "meeting": "./images/computer.svg",
         "phone": "./images/phone.svg",
+        "movie": "./images/movie.svg",
         "study": "./images/study.svg",
         "house": "./images/house.svg",
         "shopping": "./images/shopping.svg",
         "buy": "./images/buy.svg",
-        "date": "./images/date.svg",
         "person": "./images/person.svg",
-        "judge": "./images/judge.svg",
         "list": "./images/list.svg",
         "car": "./images/car.svg",
         "picture": "./images/picture.svg",
         "nails": "./images/nails.svg",
         "lotion": "./images/lotion.svg",
-        "toothbrush": "./images/toothbrush.svg",
         "write": "./images/write.svg",
         "art": "./images/art.svg",
-        "gardening": "./images/gardening.svg"
+        "flower": "./images/flower.svg",
+        "plant": "./images/plant.svg"
     };
 
 
