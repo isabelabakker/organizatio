@@ -1266,6 +1266,32 @@
   }
 }
 
+/* ======================================================= */
+/* === AJUSTE DE MODAIS PARA VISUALIZAÇÃO EM TELA CHEIA === */
+/* ======================================================= */
+@media (max-width: 768px) {
+  
+  /* Transforma o conteúdo do modal para ocupar a tela inteira */
+  .modal-content {
+    width: 100%;
+    height: 100%;
+    max-width: unset; /* Remove a largura máxima definida para desktop */
+    margin: 0;        /* Remove as margens automáticas */
+    border: none;     /* Remove a borda da janela */
+    border-radius: 0; /* Remove os cantos arredondados para um visual de tela cheia */
+    box-shadow: none; /* Opcional: remove a sombra projetada */
+    
+    /* Garante que o conteúdo possa ser rolado se exceder a altura da tela */
+    overflow-y: auto;
+  }
+
+  /* Reposiciona o botão de fechar para o novo layout de tela cheia */
+  .modal-content .close-button {
+    top: 15px;
+    right: 15px;
+  }
+}
+
   </style>
   <script src="./js/chart.js"></script>
 </head>
