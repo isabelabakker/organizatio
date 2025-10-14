@@ -160,7 +160,7 @@
         transform: scale(1.1);
     }
     
-    .mensal-sub-toggle, .back-button {
+    .mensal-sub-toggle {
         background: #3586ff;
         border: none;
         border-radius: 8px;
@@ -170,7 +170,7 @@
         transition: 0.2s;
         text-transform: lowercase;
     }
-    .mensal-sub-toggle:hover, .back-button:hover {
+    .mensal-sub-toggle:hover {
         background: #3d71ff;
     }
     .mensal-sub-toggle.active-sub {
@@ -179,13 +179,7 @@
         color: white;
     }
     
-    .back-button {
-        background: #6c757d;
-        margin-bottom: 20px;
-    }
-     .back-button:hover {
-        background: #5a6268;
-    }
+    /* back-button styling is handled separately to keep it icon-only */
 
     .container {
       flex: 1;
@@ -587,6 +581,24 @@
         height: 16px;
     }
 
+    /* Back button in top-left of container with theme-aware icon color */
+    .back-button {
+        position: absolute !important;
+        left: 15px !important;
+        top: 15px !important;
+        right: auto !important;
+        z-index: 1100;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+    }
+    .back-button img {
+        filter: invert(25%);
+    }
+    body.dark-mode .back-button img {
+        filter: brightness(0) invert(0.8);
+    }
+
     .save-item-btn img,
     .cancel-item-btn img,
     .delete-list-circular-btn img {
@@ -679,7 +691,7 @@
       background-color: rgba(0,0,0,0.4);
     }
 
-    #categoryModal, #listDetailsModal, #listIconModal, #listEditorModal {
+    #categoryModal, #listIconModal, #listEditorModal {
       z-index: 1002;
     }
     .modal-content {
@@ -1268,6 +1280,18 @@
         color: #9E9E9E; /* Cor do texto igual à da borda */
     }
     
+    /* Dark mode styling for inline list details */
+    body.dark-mode #listDetailsModal {
+        background: #2d2d2d;
+        border-color: #444;
+    }
+    
+    /* Dark mode styling for inline description details */
+    body.dark-mode #descriptionModal {
+        background: #2d2d2d;
+        border-color: #444;
+    }
+    
     /* ================================================================ */
     /* === ESTILOS PARA NOVOS BOTÕES DE ÍCONE (LISTAS) === */
     /* ================================================================ */
@@ -1543,7 +1567,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 </div>
 
                 <div id="task-form-view" style="display: none; position: relative;">
-                    <button class="close-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="svg/back.svg" alt="Voltar"></button>
+                    <button class="close-button back-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="svg/back.svg" alt="Voltar"></button>
                     <h3 id="task-form-title">adicionar tarefa</h3>
                     <form id="task-form-modal">
                         <div style="display: grid; grid-template-columns: 1fr 3fr auto; gap: 10px; align-items: center; margin-top: 30px;">
@@ -1649,7 +1673,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     </div>
     
                     <div id="add-transaction-container" style="display: none; position: relative;">
-                        <button class="close-button" id="back-to-transactions-list-btn"><img src="svg/back.svg" alt="Voltar"></button>
+                        <button class="close-button back-button" id="back-to-transactions-list-btn"><img src="svg/back.svg" alt="Voltar"></button>
                         <h3 id="transaction-form-title" style="margin-top: 0;">adicionar transação</h3>
                         <form id="expense-form" style="margin-top: 30px;">
                             <input type="text" id="desc" placeholder="descrição" required>
@@ -1790,46 +1814,39 @@ body.dark-mode #remove-schedule-btn:hover {
     </div>
     </div>
 
-  <div id="categoryModal" class="modal">
-    <div class="modal-content">
-      <button class="close-button" onclick="closeCategoryModal()"><img src="svg/close.svg" alt="Fechar"></button>
-      
-      <h3>gerenciar categorias</h3>
-      
-      <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
-        <select id="newCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid #ccc;">
-          <option value="despesa">despesa</option>
-          <option value="receita">receita</option>
-        </select>
-        <input type="text" id="newCategoryName" placeholder="nome da nova categoria" style="flex-grow: 1;">
-        <button id="addCategoryButton" class="add-btn">adicionar</button>
-      </div>
-      
-      <h4>categorias de despesa</h4>
-      <div id="expense-category-list-container"></div>
-      
-      <hr style="border-top: 1px solid #ddd; margin: 15px 0;">
+  <div id="categoryModal" style="display: none; position: relative; padding-top: 15px;">
+    <button class="close-button back-button" onclick="closeCategoryModal()"><img src="svg/back.svg" alt="Voltar"></button>
+    <h3 style="margin-top:0;">gerenciar categorias</h3>
 
-      <h4>categorias de receita</h4>
-      <div id="revenue-category-list-container"></div>
+    <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
+      <select id="newCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid #ccc;">
+        <option value="despesa">despesa</option>
+        <option value="receita">receita</option>
+      </select>
+      <input type="text" id="newCategoryName" placeholder="nome da nova categoria" style="flex-grow: 1;">
+      <button id="addCategoryButton" class="add-btn">adicionar</button>
     </div>
+
+    <h4>categorias de despesa</h4>
+    <div id="expense-category-list-container"></div>
+
+    <hr style="border-top: 1px solid #ddd; margin: 15px 0;">
+
+    <h4>categorias de receita</h4>
+    <div id="revenue-category-list-container"></div>
   </div>
   
-  <div id="descriptionModal" class="modal">
-    <div class="modal-content" style="max-width: 450px; text-align: center;">
-        <button class="close-button" onclick="closeDescriptionModal()"><img src="svg/close.svg" alt="Fechar"></button>
-        <h3>detalhes</h3>
-        <p id="modal-description-text" style="font-size: 16px; margin-top: 20px; line-height: 1.5;"></p>
-        <p id="modal-date-text"></p>
-    </div>
+  <div id="descriptionModal" style="display: none; margin-top: 10px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef; text-align: center;">
+    <button class="close-button back-button" onclick="closeDescriptionModal()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="svg/back.svg" alt="Voltar"></button>
+    <h3 style="margin-top: 0;">detalhes</h3>
+    <p id="modal-description-text" style="font-size: 16px; margin-top: 20px; line-height: 1.5;"></p>
+    <p id="modal-date-text"></p>
   </div>
 
-  <div id="listDetailsModal" class="modal">
-    <div class="modal-content" style="max-width: 450px;">
-        <button class="close-button" onclick="closeListDetailsModal()"><img src="svg/close.svg" alt="Fechar"></button>
-        <h3 id="listDetailsTitle"></h3>
-        <ul id="listDetailsItems"></ul>
-    </div>
+  <div id="listDetailsModal" style="display: none; margin-top: 10px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+    <button class="close-button back-button" onclick="closeListDetailsModal()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="svg/back.svg" alt="Voltar"></button>
+    <h3 id="listDetailsTitle" style="margin-top: 0;"></h3>
+    <ul id="listDetailsItems"></ul>
   </div>
 
   <div id="listIconModal" class="modal">
@@ -2203,12 +2220,19 @@ body.dark-mode #remove-schedule-btn:hover {
     // MODAIS (APENAS PARA LISTAS E PARTES DE FINANÇAS)
     // ----------------------------------------------------
     function openCategoryModal() {
+        // show inline category manager and hide the add-transaction view for focused navigation
+        const addTransactionContainer = document.getElementById('add-transaction-container');
+        if (addTransactionContainer) addTransactionContainer.style.display = 'none';
+
         editingCategoryId = null;
         renderCategoryModalList();
         categoryModal.style.display = 'block';
     }
     function closeCategoryModal() {
         categoryModal.style.display = 'none';
+        // return to add-transaction view for continuity
+        const addTransactionContainer = document.getElementById('add-transaction-container');
+        if (addTransactionContainer) addTransactionContainer.style.display = 'block';
     }
     
     function openDescriptionModal(description, date) {
@@ -2223,11 +2247,27 @@ body.dark-mode #remove-schedule-btn:hover {
             modalDateText.textContent = '';
         }
 
-        descriptionModal.style.display = 'block';
+        // Insert the details section after the clicked icon
+        const clickedIcon = event.target;
+        if (clickedIcon) {
+            // Remove any existing details section first
+            const existingDetails = clickedIcon.parentNode.nextElementSibling;
+            if (existingDetails && existingDetails.id === 'descriptionModal') {
+                existingDetails.remove();
+            }
+            
+            // Insert the details section after the icon's parent element
+            clickedIcon.parentNode.parentNode.insertBefore(descriptionModal, clickedIcon.parentNode.nextSibling);
+            descriptionModal.style.display = 'block';
+        }
     }
 
     function closeDescriptionModal() {
         descriptionModal.style.display = 'none';
+        // Remove the details section from the DOM when closing
+        if (descriptionModal.parentNode) {
+            descriptionModal.parentNode.removeChild(descriptionModal);
+        }
     }
     
     function openListDetailsModal(listId) {
@@ -2250,7 +2290,20 @@ body.dark-mode #remove-schedule-btn:hover {
                     listDetailsItems.appendChild(li);
                 });
             }
-            listDetailsModal.style.display = 'block';
+            
+            // Insert the details section after the clicked task item
+            const clickedTaskItem = document.querySelector(`[data-list-id="${listId}"]`);
+            if (clickedTaskItem) {
+                // Remove any existing details section first
+                const existingDetails = clickedTaskItem.nextElementSibling;
+                if (existingDetails && existingDetails.id === 'listDetailsModal') {
+                    existingDetails.remove();
+                }
+                
+                // Insert the details section after the task item
+                clickedTaskItem.parentNode.insertBefore(listDetailsModal, clickedTaskItem.nextSibling);
+                listDetailsModal.style.display = 'block';
+            }
         } else {
             alert("Erro: não foi possível encontrar a lista vinculada.");
         }
@@ -2258,6 +2311,10 @@ body.dark-mode #remove-schedule-btn:hover {
 
     function closeListDetailsModal() {
         listDetailsModal.style.display = 'none';
+        // Remove the details section from the DOM when closing
+        if (listDetailsModal.parentNode) {
+            listDetailsModal.parentNode.removeChild(listDetailsModal);
+        }
     }
 
     function openListIconModal(listId) {
@@ -3960,6 +4017,7 @@ body.dark-mode #remove-schedule-btn:hover {
         const isRoutine = linkAsRoutineCheckbox.checked;
         
         createList(listName, [], listPriority, newListId, taskIcons.lista, isShopping, false, isRoutine);
+        saveLists(); // Save the new list to localStorage
         
         if (linkToPlannerCheckbox.checked) {
             const eventDateStr = listEventDateInput.value;
@@ -4227,6 +4285,7 @@ body.dark-mode #remove-schedule-btn:hover {
         investmentsView.style.display = 'none';
         budgetsView.style.display = 'block';
         budgetsView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        closeCategoryModal(); // Close category modal when switching to budgets
     });
 
     closeBudgetsViewBtn.addEventListener('click', () => {
@@ -4239,6 +4298,7 @@ body.dark-mode #remove-schedule-btn:hover {
         budgetsView.style.display = 'none';
         investmentsView.style.display = 'block';
         investmentsView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        closeCategoryModal(); // Close category modal when switching to investments
     });
 
     closeInvestmentsViewBtn.addEventListener('click', () => {
@@ -4313,6 +4373,9 @@ body.dark-mode #remove-schedule-btn:hover {
         
         document.querySelectorAll('#mensal-controls .mensal-sub-toggle').forEach(btn => btn.classList.remove('active-sub'));
         document.getElementById(`show-${sectionId.replace('-section', '')}`).classList.add('active-sub');
+        
+        // Close category modal when switching sections
+        closeCategoryModal();
         
         // Esconde todas as sub-views ao trocar de aba principal
         plannerDetailsContainer.style.display = 'none';
