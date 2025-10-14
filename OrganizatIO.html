@@ -160,6 +160,13 @@
         transform: scale(1.1);
     }
     
+    #theme-toggle img {
+        width: 24px;
+        height: 24px;
+        filter: invert(1);
+        transition: filter 0.3s;
+    }
+    
     .mensal-sub-toggle {
         background: #3586ff;
         border: none;
@@ -679,33 +686,7 @@
     }
     .task-icon-grid-view.priority-icon-alta { border-color: #FF5252; }
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.4);
-    }
-
-    #categoryModal, #listIconModal, #listEditorModal {
-      z-index: 1002;
-    }
-    .modal-content {
-      background-color: #fefefe;
-      margin: 10% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 90%;
-      max-width: 600px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      transition: background 0.3s, border-color 0.3s, color 0.3s;
-      position: relative;
-    }
+    /* Modal styles removed - now using sections instead */
     
     .details-flex-container {
         display: flex;
@@ -1153,8 +1134,7 @@
 
     body.dark-mode input,
     body.dark-mode select,
-    body.dark-mode .modal-content input,
-    body.dark-mode .modal-content select,
+    /* Removed modal-content styles */
     body.dark-mode .list input[type="text"],
     body.dark-mode .list-item-value-input,
     body.dark-mode button:not(.add-btn):not(.delete-btn):not(.edit-btn):not(#theme-toggle):not(.mensal-sub-toggle):not(.back-button):not(.delete-list-circular-btn):not(.edit-task-btn):not(.task-list-item button):not(.edit-item-btn):not(.delete-item-btn):not(.edit-list-btn):not(.save-item-btn):not(.cancel-item-btn):not(.close-button) {
@@ -1237,11 +1217,7 @@
       color: #8d1ce9;
     }
     
-    body.dark-mode .modal-content {
-        background-color: #1E1E1E;
-        border: 1px solid #333;
-        color: #E0E0E0;
-    }
+    /* Removed modal-content dark mode styles */
 
     body.dark-mode .summary-card {
         background: #282828;
@@ -1280,17 +1256,7 @@
         color: #9E9E9E; /* Cor do texto igual à da borda */
     }
     
-    /* Dark mode styling for inline list details */
-    body.dark-mode #listDetailsModal {
-        background: #2d2d2d;
-        border-color: #444;
-    }
-    
-    /* Dark mode styling for inline description details */
-    body.dark-mode #descriptionModal {
-        background: #2d2d2d;
-        border-color: #444;
-    }
+    /* Removed modal dark mode styles - now using sections */
     
     /* ================================================================ */
     /* === ESTILOS PARA NOVOS BOTÕES DE ÍCONE (LISTAS) === */
@@ -1469,24 +1435,7 @@
         padding: 8px 2px;
       }
 
-      /* Transforma os modais em tela cheia e corrige overflow */
-      .modal-content {
-        width: 100% !important;
-        height: 100% !important;
-        max-width: none !important;
-        margin: 0 !important;
-        border-radius: 0;
-        border: none;
-        box-shadow: none;
-        overflow-y: auto;
-        box-sizing: border-box;
-      }
-
-      /* Reposiciona o botão de fechar dos modais */
-      .modal-content .close-button {
-        top: 15px;
-        right: 15px;
-      }
+      /* Removed mobile modal styles - now using sections */
     }
 
 /* ================================================================ */
@@ -1537,7 +1486,7 @@ body.dark-mode #remove-schedule-btn:hover {
 </head>
 <body>
   
-  <button id="theme-toggle">🌙</button>
+  <button id="theme-toggle"><img src="svg/moon.svg" alt="Modo escuro" id="theme-icon"></button>
 
   <div class="container">
     
@@ -1814,53 +1763,64 @@ body.dark-mode #remove-schedule-btn:hover {
     </div>
     </div>
 
-  <div id="categoryModal" style="display: none; position: relative; padding-top: 15px;">
-    <button class="close-button back-button" onclick="closeCategoryModal()"><img src="svg/back.svg" alt="Voltar"></button>
-    <h3 style="margin-top:0;">gerenciar categorias</h3>
+  <!-- Seção de Gerenciamento de Categorias -->
+  <div id="category-section" class="mensal-content-section" style="display: none;">
+    <div style="padding: 20px;">
+      <button class="close-button back-button" onclick="closeCategorySection()"><img src="svg/back.svg" alt="Voltar"></button>
+      <h3 style="margin-top:0;">gerenciar categorias</h3>
 
-    <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
-      <select id="newCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid #ccc;">
-        <option value="despesa">despesa</option>
-        <option value="receita">receita</option>
-      </select>
-      <input type="text" id="newCategoryName" placeholder="nome da nova categoria" style="flex-grow: 1;">
-      <button id="addCategoryButton" class="add-btn">adicionar</button>
+      <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
+        <select id="newCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid #ccc;">
+          <option value="despesa">despesa</option>
+          <option value="receita">receita</option>
+        </select>
+        <input type="text" id="newCategoryName" placeholder="nome da nova categoria" style="flex-grow: 1;">
+        <button id="addCategoryButton" class="add-btn">adicionar</button>
+      </div>
+
+      <h4>categorias de despesa</h4>
+      <div id="expense-category-list-container"></div>
+
+      <hr style="border-top: 1px solid #ddd; margin: 15px 0;">
+
+      <h4>categorias de receita</h4>
+      <div id="revenue-category-list-container"></div>
     </div>
-
-    <h4>categorias de despesa</h4>
-    <div id="expense-category-list-container"></div>
-
-    <hr style="border-top: 1px solid #ddd; margin: 15px 0;">
-
-    <h4>categorias de receita</h4>
-    <div id="revenue-category-list-container"></div>
   </div>
   
-  <div id="descriptionModal" style="display: none; margin-top: 10px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef; text-align: center;">
-    <button class="close-button back-button" onclick="closeDescriptionModal()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="svg/back.svg" alt="Voltar"></button>
-    <h3 style="margin-top: 0;">detalhes</h3>
-    <p id="modal-description-text" style="font-size: 16px; margin-top: 20px; line-height: 1.5;"></p>
-    <p id="modal-date-text"></p>
+  <!-- Seção de Detalhes de Tarefa -->
+  <div id="description-section" class="mensal-content-section" style="display: none;">
+    <div style="padding: 20px; text-align: center;">
+      <button class="close-button back-button" onclick="closeDescriptionSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="svg/back.svg" alt="Voltar"></button>
+      <h3 style="margin-top: 0;">detalhes</h3>
+      <p id="modal-description-text" style="font-size: 16px; margin-top: 20px; line-height: 1.5;"></p>
+      <p id="modal-date-text"></p>
+    </div>
   </div>
 
-  <div id="listDetailsModal" style="display: none; margin-top: 10px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
-    <button class="close-button back-button" onclick="closeListDetailsModal()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="svg/back.svg" alt="Voltar"></button>
-    <h3 id="listDetailsTitle" style="margin-top: 0;"></h3>
-    <ul id="listDetailsItems"></ul>
+  <!-- Seção de Detalhes de Lista -->
+  <div id="list-details-section" class="mensal-content-section" style="display: none;">
+    <div style="padding: 20px;">
+      <button class="close-button back-button" onclick="closeListDetailsSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="svg/back.svg" alt="Voltar"></button>
+      <h3 id="listDetailsTitle" style="margin-top: 0;"></h3>
+      <ul id="listDetailsItems"></ul>
+    </div>
   </div>
 
-  <div id="listIconModal" class="modal">
-    <div class="modal-content" style="max-width: 500px;">
-        <button class="close-button" onclick="closeListIconModal()"><img src="svg/close.svg" alt="Fechar"></button>
+  <!-- Seção de Escolha de Ícone da Lista -->
+  <div id="list-icon-section" class="mensal-content-section" style="display: none;">
+    <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
+        <button class="close-button back-button" onclick="closeListIconSection()"><img src="svg/back.svg" alt="Voltar"></button>
         <h3>escolha um ícone para a lista</h3>
         <div id="list-icon-picker-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px; max-height: 300px; overflow-y: auto;">
             </div>
     </div>
   </div>
 
-  <div id="listEditorModal" class="modal">
-    <div class="modal-content" style="max-width: 450px;">
-        <button class="close-button" onclick="closeListEditorModal()"><img src="svg/close.svg" alt="Fechar"></button>
+  <!-- Seção de Editor de Lista -->
+  <div id="list-editor-section" class="mensal-content-section" style="display: none;">
+    <div style="padding: 20px; max-width: 450px; margin: 0 auto;">
+        <button class="close-button back-button" onclick="closeListEditorSection()"><img src="svg/back.svg" alt="Voltar"></button>
         <h3>Editar Lista</h3>
         <form id="list-editor-form" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
             <input type="hidden" id="editor-list-id-main">
@@ -1915,7 +1875,7 @@ body.dark-mode #remove-schedule-btn:hover {
 
             <button type="submit" class="add-btn" style="background-color: #4CAF50; width: 100%; margin-top: 10px;">Salvar Alterações</button>
         </form>
-      </div>
+    </div>
   </div>
   
   <script>
@@ -1939,7 +1899,7 @@ body.dark-mode #remove-schedule-btn:hover {
     
     // --- ELEMENTOS DE GERENCIAMENTO DE CATEGORIAS ---
     const manageCategoriesBtn = document.getElementById('manage-categories-btn');
-    const categoryModal = document.getElementById('categoryModal');
+    const categorySection = document.getElementById('category-section');
     const newCategoryNameInput = document.getElementById('newCategoryName');
     const addCategoryButton = document.getElementById('addCategoryButton');
     const newCategoryTypeInput = document.getElementById('newCategoryType');
@@ -1951,7 +1911,7 @@ body.dark-mode #remove-schedule-btn:hover {
     const viewDetailsBtn = document.getElementById('view-details-btn');
     const viewCategorySpendingBtn = document.getElementById('view-category-spending-btn');
     const viewInvestmentsBtn = document.getElementById('view-investments-btn');
-    const descriptionModal = document.getElementById('descriptionModal'); 
+    const descriptionSection = document.getElementById('description-section'); 
 
     // --- ELEMENTOS DE ORÇAMENTOS (BUDGETS) ---
     const categoryLimitForm = document.getElementById('category-limit-form');
@@ -2012,17 +1972,17 @@ body.dark-mode #remove-schedule-btn:hover {
     const listRecurrenceTypeInput = document.getElementById('list-recurrence-type');
     const listRecurrenceEndDateInput = document.getElementById('list-recurrence-end-date');
     const listWeeklyRecurrenceOptions = document.getElementById('list-weekly-recurrence-options');
-    const listDetailsModal = document.getElementById('listDetailsModal');
+    const listDetailsSection = document.getElementById('list-details-section');
     const listDetailsTitle = document.getElementById('listDetailsTitle');
     const listDetailsItems = document.getElementById('listDetailsItems');
     const shoppingListCheckbox = document.getElementById('shopping-list-checkbox');
     
     // --- ELEMENTOS DO MODAL DE ÍCONE DE LISTA ---
-    const listIconModal = document.getElementById('listIconModal');
+    const listIconSection = document.getElementById('list-icon-section');
     const listIconPickerGrid = document.getElementById('list-icon-picker-grid');
 
     // --- ELEMENTOS DO NOVO MODAL DE EDIÇÃO DE LISTA ---
-    const listEditorModal = document.getElementById('listEditorModal');
+    const listEditorSection = document.getElementById('list-editor-section');
     const listEditorForm = document.getElementById('list-editor-form');
     const editorListIdInput = document.getElementById('editor-list-id-main');
     const editorListNameInput = document.getElementById('editor-list-name');
@@ -2074,6 +2034,9 @@ body.dark-mode #remove-schedule-btn:hover {
     let investmentGoals = [];
     let editingGoalId = null;
     let editingContributionKey = null;
+    
+    // --- NAVEGAÇÃO ENTRE SEÇÕES ---
+    let previousSection = 'planner-section'; // Seção padrão
     let editingCategoryId = null;
     let currentMonth = null;
     let currentCalendarDate = new Date();
@@ -2106,7 +2069,9 @@ body.dark-mode #remove-schedule-btn:hover {
 
     function applyTheme(theme) {
         document.body.classList.toggle('dark-mode', theme === 'dark');
-        themeToggle.innerHTML = theme === 'dark' ? '☀️' : '🌙';
+        const themeIcon = document.getElementById('theme-icon');
+        themeIcon.src = theme === 'dark' ? 'svg/sun.svg' : 'svg/moon.svg';
+        themeIcon.alt = theme === 'dark' ? 'Modo claro' : 'Modo escuro';
         localStorage.setItem('theme', theme);
         if (document.getElementById('financeiro-section').style.display !== 'none') {
             updateFinanceDisplay();
@@ -2219,23 +2184,40 @@ body.dark-mode #remove-schedule-btn:hover {
     // ----------------------------------------------------
     // MODAIS (APENAS PARA LISTAS E PARTES DE FINANÇAS)
     // ----------------------------------------------------
-    function openCategoryModal() {
-        // show inline category manager and hide the add-transaction view for focused navigation
-        const addTransactionContainer = document.getElementById('add-transaction-container');
-        if (addTransactionContainer) addTransactionContainer.style.display = 'none';
-
+    function openCategorySection() {
+        // Track current section as previous
+        const currentActiveSection = document.querySelector('.mensal-content-section[style*="block"]');
+        if (currentActiveSection) {
+            previousSection = currentActiveSection.id;
+        }
+        
+        // Hide all other sections first
+        document.querySelectorAll('.mensal-content-section').forEach(section => section.style.display = 'none');
+        
+        // Show category section
+        categorySection.style.display = 'block';
+        
         editingCategoryId = null;
         renderCategoryModalList();
-        categoryModal.style.display = 'block';
     }
-    function closeCategoryModal() {
-        categoryModal.style.display = 'none';
-        // return to add-transaction view for continuity
-        const addTransactionContainer = document.getElementById('add-transaction-container');
-        if (addTransactionContainer) addTransactionContainer.style.display = 'block';
+    function closeCategorySection() {
+        categorySection.style.display = 'none';
+        // Return to the previous section
+        if (previousSection) {
+            document.getElementById(previousSection).style.display = 'block';
+        }
     }
     
-    function openDescriptionModal(description, date) {
+    function openDescriptionSection(description, date) {
+        // Track current section as previous
+        const currentActiveSection = document.querySelector('.mensal-content-section[style*="block"]');
+        if (currentActiveSection) {
+            previousSection = currentActiveSection.id;
+        }
+        
+        // Hide all other sections first
+        document.querySelectorAll('.mensal-content-section').forEach(section => section.style.display = 'none');
+        
         const modalDescText = document.getElementById('modal-description-text');
         const modalDateText = document.getElementById('modal-date-text');
         
@@ -2247,30 +2229,28 @@ body.dark-mode #remove-schedule-btn:hover {
             modalDateText.textContent = '';
         }
 
-        // Insert the details section after the clicked icon
-        const clickedIcon = event.target;
-        if (clickedIcon) {
-            // Remove any existing details section first
-            const existingDetails = clickedIcon.parentNode.nextElementSibling;
-            if (existingDetails && existingDetails.id === 'descriptionModal') {
-                existingDetails.remove();
-            }
-            
-            // Insert the details section after the icon's parent element
-            clickedIcon.parentNode.parentNode.insertBefore(descriptionModal, clickedIcon.parentNode.nextSibling);
-            descriptionModal.style.display = 'block';
-        }
+        // Show description section
+        descriptionSection.style.display = 'block';
     }
 
-    function closeDescriptionModal() {
-        descriptionModal.style.display = 'none';
-        // Remove the details section from the DOM when closing
-        if (descriptionModal.parentNode) {
-            descriptionModal.parentNode.removeChild(descriptionModal);
+    function closeDescriptionSection() {
+        descriptionSection.style.display = 'none';
+        // Return to the previous section
+        if (previousSection) {
+            document.getElementById(previousSection).style.display = 'block';
         }
     }
     
-    function openListDetailsModal(listId) {
+    function openListDetailsSection(listId) {
+        // Track current section as previous
+        const currentActiveSection = document.querySelector('.mensal-content-section[style*="block"]');
+        if (currentActiveSection) {
+            previousSection = currentActiveSection.id;
+        }
+        
+        // Hide all other sections first
+        document.querySelectorAll('.mensal-content-section').forEach(section => section.style.display = 'none');
+        
         const allLists = JSON.parse(localStorage.getItem('todoLists')) || [];
         const targetList = allLists.find(list => list.id === listId);
 
@@ -2291,39 +2271,41 @@ body.dark-mode #remove-schedule-btn:hover {
                 });
             }
             
-            // Insert the details section after the clicked task item
-            const clickedTaskItem = document.querySelector(`[data-list-id="${listId}"]`);
-            if (clickedTaskItem) {
-                // Remove any existing details section first
-                const existingDetails = clickedTaskItem.nextElementSibling;
-                if (existingDetails && existingDetails.id === 'listDetailsModal') {
-                    existingDetails.remove();
-                }
-                
-                // Insert the details section after the task item
-                clickedTaskItem.parentNode.insertBefore(listDetailsModal, clickedTaskItem.nextSibling);
-                listDetailsModal.style.display = 'block';
-            }
+            // Show list details section
+            listDetailsSection.style.display = 'block';
         } else {
             alert("Erro: não foi possível encontrar a lista vinculada.");
         }
     }
 
-    function closeListDetailsModal() {
-        listDetailsModal.style.display = 'none';
-        // Remove the details section from the DOM when closing
-        if (listDetailsModal.parentNode) {
-            listDetailsModal.parentNode.removeChild(listDetailsModal);
+    function closeListDetailsSection() {
+        listDetailsSection.style.display = 'none';
+        // Return to the previous section
+        if (previousSection) {
+            document.getElementById(previousSection).style.display = 'block';
         }
     }
 
-    function openListIconModal(listId) {
+    function openListIconSection(listId) {
+        // Track current section as previous
+        const currentActiveSection = document.querySelector('.mensal-content-section[style*="block"]');
+        if (currentActiveSection) {
+            previousSection = currentActiveSection.id;
+        }
+        
+        // Hide all other sections first
+        document.querySelectorAll('.mensal-content-section').forEach(section => section.style.display = 'none');
+        
         currentListIconBeingEdited = listId;
-        listIconModal.style.display = 'block';
+        listIconSection.style.display = 'block';
     }
 
-    function closeListIconModal() {
-        listIconModal.style.display = 'none';
+    function closeListIconSection() {
+        listIconSection.style.display = 'none';
+        // Return to the previous section
+        if (previousSection) {
+            document.getElementById(previousSection).style.display = 'block';
+        }
     }
 
     function selectListIcon(iconPath) {
@@ -2334,11 +2316,20 @@ body.dark-mode #remove-schedule-btn:hover {
                 saveLists();
             }
         }
-        closeListIconModal();
+        closeListIconSection();
     }
 
 
-    function openListEditorModal(listId) {
+    function openListEditorSection(listId) {
+        // Track current section as previous
+        const currentActiveSection = document.querySelector('.mensal-content-section[style*="block"]');
+        if (currentActiveSection) {
+            previousSection = currentActiveSection.id;
+        }
+        
+        // Hide all other sections first
+        document.querySelectorAll('.mensal-content-section').forEach(section => section.style.display = 'none');
+        
         currentListIconBeingEdited = null; 
         const allLists = JSON.parse(localStorage.getItem('todoLists')) || [];
         const listData = allLists.find(list => list.id === listId);
@@ -2412,11 +2403,15 @@ body.dark-mode #remove-schedule-btn:hover {
             editorEventTimeInput.value = "09:00";
         }
 
-        listEditorModal.style.display = 'block';
+        listEditorSection.style.display = 'block';
     }
 
-    function closeListEditorModal() {
-        listEditorModal.style.display = 'none';
+    function closeListEditorSection() {
+        listEditorSection.style.display = 'none';
+        // Return to the previous section
+        if (previousSection) {
+            document.getElementById(previousSection).style.display = 'block';
+        }
     }
 
     // ----------------------------------------------------
@@ -3020,7 +3015,7 @@ body.dark-mode #remove-schedule-btn:hover {
             const escapedDesc = (item.desc || '').replace(/'/g, "&apos;").replace(/"/g, "&quot;");
             
             const iconPath = item.icon || categoryIcons[item.category] || categoryIcons["outros"];
-            const iconHtml = `<img src="${iconPath}" title="${item.category}" class="category-icon ${iconColorClass}" alt="${item.category}" onclick="openDescriptionModal('${escapedDesc}', '${item.date}')" style="cursor: pointer;">`;
+            const iconHtml = `<img src="${iconPath}" title="${item.category}" class="category-icon ${iconColorClass}" alt="${item.category}" onclick="openDescriptionSection('${escapedDesc}', '${item.date}')" style="cursor: pointer;">`;
             
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -3324,7 +3319,7 @@ body.dark-mode #remove-schedule-btn:hover {
         if (!taskToEdit) return;
         
         if (taskToEdit.linkedListId) {
-            openListEditorModal(taskToEdit.linkedListId);
+            openListEditorSection(taskToEdit.linkedListId);
             return;
         }
 
@@ -3721,7 +3716,7 @@ body.dark-mode #remove-schedule-btn:hover {
         const iconImg = document.createElement('img');
         iconImg.src = isShoppingList ? (listIcon === taskIcons.lista ? taskIcons.compras : listIcon) : listIcon;
         iconImg.className = 'list-title-icon';
-        iconImg.onclick = () => openListIconModal(listId);
+        iconImg.onclick = () => openListIconSection(listId);
         const title = document.createElement("h2");
         title.textContent = listName;
         title.style.margin = 0;
@@ -3731,7 +3726,7 @@ body.dark-mode #remove-schedule-btn:hover {
         const editBtn = document.createElement("button");
         editBtn.innerHTML = '<img src="svg/pencil.svg" alt="Editar">';
         editBtn.className = "edit-list-btn";
-        editBtn.onclick = () => openListEditorModal(listId);
+        editBtn.onclick = () => openListEditorSection(listId);
         const removeBtn = document.createElement("button");
         removeBtn.innerHTML = '<img src="svg/closelist.svg" alt="Remover Lista">';
         removeBtn.className = "delete-list-circular-btn";
@@ -4187,7 +4182,7 @@ body.dark-mode #remove-schedule-btn:hover {
         saveCalendarTasks();
         loadAndRenderLists();
         renderCalendar(currentCalendarDate);
-        closeListEditorModal();
+        closeListEditorSection();
     });
 
     addScheduleBtn.addEventListener('click', () => {
@@ -4245,7 +4240,7 @@ body.dark-mode #remove-schedule-btn:hover {
         const taskItem = e.target.closest('.task-list-item');
         if (taskItem && taskItem.dataset.listId) {
             if (e.target.closest('button')) return;
-            openListDetailsModal(taskItem.dataset.listId);
+            openListDetailsSection(taskItem.dataset.listId);
         }
     });
 
@@ -4285,7 +4280,7 @@ body.dark-mode #remove-schedule-btn:hover {
         investmentsView.style.display = 'none';
         budgetsView.style.display = 'block';
         budgetsView.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        closeCategoryModal(); // Close category modal when switching to budgets
+        closeCategorySection(); // Close category section when switching to budgets
     });
 
     closeBudgetsViewBtn.addEventListener('click', () => {
@@ -4298,7 +4293,7 @@ body.dark-mode #remove-schedule-btn:hover {
         budgetsView.style.display = 'none';
         investmentsView.style.display = 'block';
         investmentsView.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        closeCategoryModal(); // Close category modal when switching to investments
+        closeCategorySection(); // Close category section when switching to investments
     });
 
     closeInvestmentsViewBtn.addEventListener('click', () => {
@@ -4323,7 +4318,7 @@ body.dark-mode #remove-schedule-btn:hover {
     document.getElementById('show-planner').addEventListener('click', () => showMensalSection('planner-section'));
     document.getElementById('show-financeiro').addEventListener('click', () => showMensalSection('financeiro-section'));
     document.getElementById('show-listas').addEventListener('click', () => showMensalSection('listas-section'));
-    manageCategoriesBtn.addEventListener('click', openCategoryModal);
+    manageCategoriesBtn.addEventListener('click', openCategorySection);
     addCategoryButton.addEventListener('click', addCategory);
     calendarMonthSelect.addEventListener('change', (e) => { 
         currentCalendarDate.setMonth(parseInt(e.target.value));
@@ -4359,23 +4354,20 @@ body.dark-mode #remove-schedule-btn:hover {
     });
 
 
-    window.onclick = function(event) {
-        if (event.target == categoryModal) closeCategoryModal();
-        if (event.target == descriptionModal) closeDescriptionModal();
-        if (event.target == listDetailsModal) closeListDetailsModal();
-        if (event.target == listIconModal) closeListIconModal();
-        if (event.target == listEditorModal) closeListEditorModal();
-    }
+    // Removed window.onclick modal handlers since we're using sections now
     
     function showMensalSection(sectionId) {
+        // Update previous section tracking
+        const currentActiveSection = document.querySelector('.mensal-content-section[style*="block"]');
+        if (currentActiveSection && currentActiveSection.id !== sectionId) {
+            previousSection = currentActiveSection.id;
+        }
+        
         document.querySelectorAll('.mensal-content-section').forEach(section => section.style.display = 'none');
         document.getElementById(sectionId).style.display = 'block';
         
         document.querySelectorAll('#mensal-controls .mensal-sub-toggle').forEach(btn => btn.classList.remove('active-sub'));
         document.getElementById(`show-${sectionId.replace('-section', '')}`).classList.add('active-sub');
-        
-        // Close category modal when switching sections
-        closeCategoryModal();
         
         // Esconde todas as sub-views ao trocar de aba principal
         plannerDetailsContainer.style.display = 'none';
