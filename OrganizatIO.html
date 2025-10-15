@@ -372,10 +372,12 @@
     }
 
     .lists-container {
-      display: flex;
+      display: none; /* Inicialmente escondido, será mostrado apenas na aba de listas */
       flex-wrap: wrap;
       gap: 20px;
       justify-content: flex-start;
+      position: relative;
+      z-index: 10;
     }
     .list {
       background: #fff;
@@ -783,6 +785,12 @@
         background: #e8f0fe;
     }
 
+    .color-option.selected {
+        border-color: #333 !important;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        transform: scale(1.1);
+    }
+
     .task-icon-option:hover {
         opacity: 0.8;
     }
@@ -886,6 +894,7 @@
       padding: 15px;
       margin-bottom: 15px;
       border-left: 5px solid;
+      transition: border-left-color 0.3s ease;
     }
     .goal-header {
       display: flex;
@@ -927,10 +936,12 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 4px 0;
+        padding: 2px 0;
+        gap: 8px;
     }
     .contribution-history-list li span {
         flex-grow: 1;
+        min-width: 0;
     }
     .contribution-history-list li input {
         width: 80px;
@@ -1233,6 +1244,18 @@
     body.dark-mode .investment-goal-card {
       background: #282828;
     }
+    
+    /* Garantir que apenas uma seção mensal esteja visível por vez */
+    .mensal-content-section {
+        display: none !important;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Garantir que a seção ativa seja visível */
+    .mensal-content-section[style*="display: block"] {
+        display: block !important;
+    }
     body.dark-mode .contribution-history-list {
       color: #aaa;
     }
@@ -1486,7 +1509,7 @@ body.dark-mode #remove-schedule-btn:hover {
 </head>
 <body>
   
-  <button id="theme-toggle"><img src="svg/moon.svg" alt="Modo escuro" id="theme-icon"></button>
+  <button id="theme-toggle"><img src="images/buttons/moon.svg" alt="Modo escuro" id="theme-icon"></button>
 
   <div class="container">
     
@@ -1509,14 +1532,14 @@ body.dark-mode #remove-schedule-btn:hover {
             <div id="planner-details-container" style="display: none;">
                 
                 <div id="day-view-section" style="display: none; position: relative;">
-                    <button class="close-button" id="close-day-view-btn" style="top: 0; right: 0;"><img src="svg/close.svg" alt="Fechar"></button>
+                    <button class="close-button" id="close-day-view-btn" style="top: 0; right: 0;"><img src="images/buttons/close.svg" alt="Fechar"></button>
                     <h3 id="day-view-title" style="text-align: center; margin-top: 0;"></h3>
                     <div id="tasksList"></div>
                     <button id="open-add-task-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar tarefa</button>
                 </div>
 
                 <div id="task-form-view" style="display: none; position: relative;">
-                    <button class="close-button back-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="svg/back.svg" alt="Voltar"></button>
+                    <button class="close-button back-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
                     <h3 id="task-form-title">adicionar tarefa</h3>
                     <form id="task-form-modal">
                         <div style="display: grid; grid-template-columns: 1fr 3fr auto; gap: 10px; align-items: center; margin-top: 30px;">
@@ -1529,8 +1552,23 @@ body.dark-mode #remove-schedule-btn:hover {
                             <label for="taskPriority" style="font-size: 14px; font-weight: bold; color: #FF5252; cursor: pointer;">tarefa prioritária</label>
                         </div>
                         <div id="task-icon-picker-container" style="padding: 5px 0 15px 0;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
                             <div id="taskIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
                             <input type="hidden" id="taskIcon" value="">
+                            
+                            <div id="task-color-picker-container" style="margin-top: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">cor:</label>
+                                <div id="taskColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <div class="color-option" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #ccc; cursor: pointer;" title="azul"></div>
+                                    <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;" title="amarelo"></div>
+                                    <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;" title="vermelho"></div>
+                                    <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;" title="verde"></div>
+                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;" title="rosa"></div>
+                                    <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;" title="roxo"></div>
+                                    <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;" title="laranja"></div>
+                                </div>
+                                <input type="hidden" id="taskIconColor" value="blue">
+                            </div>
                         </div>
                         <div id="recurrence-options" style="margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; align-items: center;">
                             <select id="recurrenceType">
@@ -1595,22 +1633,14 @@ body.dark-mode #remove-schedule-btn:hover {
             </div>
             
             <div id="finance-details-container">
-                <div id="transactions-view" style="display: none; position: relative; padding-top: 15px;">
-                    <button class="close-button" id="close-transactions-view"><img src="svg/close.svg" alt="Fechar"></button>
+                <div id="transactions-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
+                    <button class="close-button" id="close-transactions-view"><img src="images/buttons/close.svg" alt="Fechar"></button>
                     
                     <div id="transaction-list-view">
                         <h3 style="margin-top:0;">transações do mês</h3>
                         <div class="details-flex-container">
                             <div class="details-table-container">
                                 <table id="expense-table">
-                                  <thead>
-                                    <tr>
-                                      <th>Cat.</th>
-                                      <th>Descrição</th>
-                                      <th>Valor</th>
-                                      <th>Ações</th>
-                                    </tr>
-                                  </thead>
                                   <tbody id="expense-list"></tbody>
                                 </table>
                                 <div class="total" id="total-container">
@@ -1621,8 +1651,8 @@ body.dark-mode #remove-schedule-btn:hover {
                         <button id="show-add-transaction-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar transação</button>
                     </div>
     
-                    <div id="add-transaction-container" style="display: none; position: relative;">
-                        <button class="close-button back-button" id="back-to-transactions-list-btn"><img src="svg/back.svg" alt="Voltar"></button>
+                    <div id="add-transaction-container" style="display: none; position: relative; z-index: 5;">
+                        <button class="close-button back-button" id="back-to-transactions-list-btn"><img src="images/buttons/back.svg" alt="Voltar"></button>
                         <h3 id="transaction-form-title" style="margin-top: 0;">adicionar transação</h3>
                         <form id="expense-form" style="margin-top: 30px;">
                             <input type="text" id="desc" placeholder="descrição" required>
@@ -1634,19 +1664,33 @@ body.dark-mode #remove-schedule-btn:hover {
                             <input type="number" id="value" placeholder="r$" step="0.01" required>
                             <div class="add-btn-group">
                                 <button type="submit" class="add-btn" id="submit-expense-btn">adicionar</button>
-                                <button type="button" id="manage-categories-btn"><img src="svg/settings.svg" alt="Gerenciar"></button>
+                                <button type="button" id="manage-categories-btn"><img src="images/buttons/settings.svg" alt="Gerenciar"></button>
                             </div>
                         </form>
                         <div id="transaction-icon-picker-container" style="padding: 15px 0 10px 0;">
                             <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
                             <div id="transactionIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
                             <input type="hidden" id="transactionIcon">
+                            
+                            <div id="transaction-color-picker-container" style="margin-top: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">cor:</label>
+                                <div id="transactionColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <div class="color-option" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #ccc; cursor: pointer;" title="azul"></div>
+                                    <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;" title="amarelo"></div>
+                                    <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;" title="vermelho"></div>
+                                    <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;" title="verde"></div>
+                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;" title="rosa"></div>
+                                    <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;" title="roxo"></div>
+                                    <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;" title="laranja"></div>
+                                </div>
+                                <input type="hidden" id="transactionIconColor" value="blue">
+                            </div>
                         </div>
                     </div>
                 </div>
     
-                <div id="budgets-view" style="display: none; position: relative; padding-top: 15px;">
-                    <button class="close-button" id="close-budgets-view"><img src="svg/close.svg" alt="Fechar"></button>
+                <div id="budgets-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
+                    <button class="close-button" id="close-budgets-view"><img src="images/buttons/close.svg" alt="Fechar"></button>
                     <h3 style="margin-top:0;">orçamentos</h3>
                     <form id="category-limit-form" style="display: flex; gap: 10px; margin-bottom: 20px;">
                         <select id="categoryLimitCategory" required></select>
@@ -1654,24 +1698,50 @@ body.dark-mode #remove-schedule-btn:hover {
                         <button type="submit" class="add-btn">salvar limite</button>
                     </form>
                     <table style="width: 100%;">
-                        <thead>
-                          <tr>
-                              <th>Cat.</th>
-                              <th>Limite</th>
-                              <th>Gasto</th>
-                          </tr>
-                        </thead>
                         <tbody id="category-spending-list"></tbody>
                     </table>
                 </div>
     
-                <div id="investments-view" style="display: none; position: relative; padding-top: 15px;">
-                    <button class="close-button" id="close-investments-view"><img src="svg/close.svg" alt="Fechar"></button>
+                <div id="investments-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
+                    <button class="close-button" id="close-investments-view"><img src="images/buttons/close.svg" alt="Fechar"></button>
                     <h3 style="margin-top:0;">investimentos</h3>
-                    <form id="new-goal-form" style="display: flex; flex-direction: column; gap: 10px;">
+                    
+                    <!-- Lista de metas existentes -->
+                    <div id="goals-container"></div>
+                    
+                    <!-- Botão para adicionar nova meta -->
+                    <button id="open-add-investment-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar investimento</button>
+                    
+                    <!-- Formulário de nova meta (escondido inicialmente) -->
+                    <div id="investment-form-view" style="display: none; position: relative;">
+                        <button class="close-button back-button" id="back-to-investments-list-btn" style="right: auto; left: 15px; top: 15px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
+                        <h3 id="investment-form-title" style="margin-top: 0;">adicionar meta de investimento</h3>
+                        
+                        <form id="new-goal-form" style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
                         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
                             <input type="text" id="newGoalName" placeholder="nome da nova meta" required>
                             <input type="number" id="newGoalTarget" placeholder="valor da meta (r$)" step="0.01" required>
+                        </div>
+                        
+                        <!-- Seletor de Ícone e Cor (igual ao planner) -->
+                        <div id="goal-icon-picker-container" style="padding: 5px 0 15px 0;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
+                            <div id="goalIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+                            <input type="hidden" id="goalIcon" value="">
+                            
+                            <div id="goal-color-picker-container" style="margin-top: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">cor:</label>
+                                <div id="goalColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <div class="color-option" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #ccc; cursor: pointer;" title="azul"></div>
+                                    <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;" title="amarelo"></div>
+                                    <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;" title="vermelho"></div>
+                                    <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;" title="verde"></div>
+                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;" title="rosa"></div>
+                                    <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;" title="roxo"></div>
+                                    <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;" title="laranja"></div>
+                                </div>
+                                <input type="hidden" id="goalIconColor" value="blue">
+                            </div>
                         </div>
                         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: center;">
                              <input type="number" id="newGoalInterestRate" placeholder="juros mensais (%)" step="0.01">
@@ -1682,9 +1752,8 @@ body.dark-mode #remove-schedule-btn:hover {
                         </div>
                         <input type="date" id="newGoalDeadline" style="display: none;">
                         <button type="submit" class="add-btn">criar meta</button>
-                    </form>
-                    <hr style="border-top: 1px solid #ddd; margin: 20px 0;">
-                    <div id="goals-container"></div>
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -1703,14 +1772,14 @@ body.dark-mode #remove-schedule-btn:hover {
                     <div id="shopping-list-container" title="Marcar como lista de compras">
                         <input type="checkbox" id="shopping-list-checkbox">
                         <label for="shopping-list-checkbox" class="icon-toggle-button">
-                            <img src="svg/lists/compras.svg" alt="Lista de Compras">
+                            <img src="images/buttons/lists/compras.svg" alt="Lista de Compras">
                         </label>
                     </div>
                     
                     <div id="link-to-planner-container" title="Agendar no planner">
                         <input type="checkbox" id="link-to-planner-checkbox">
                         <label for="link-to-planner-checkbox" class="icon-toggle-button">
-                            <img src="svg/lists/agendar.svg" alt="Agendar no Planner">
+                            <img src="images/buttons/lists/agendar.svg" alt="Agendar no Planner">
                         </label>
                     </div>
                 </div>
@@ -1725,7 +1794,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div id="routine-container" title="Marcar como rotina" style="display: none;">
                              <input type="checkbox" id="link-as-routine-checkbox">
                              <label for="link-as-routine-checkbox" class="icon-toggle-button">
-                                 <img src="svg/lists/rotina.svg" alt="Marcar como Rotina">
+                                 <img src="images/buttons/lists/rotina.svg" alt="Marcar como Rotina">
                              </label>
                         </div>
                     </div>
@@ -1766,7 +1835,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Gerenciamento de Categorias -->
   <div id="category-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px;">
-      <button class="close-button back-button" onclick="closeCategorySection()"><img src="svg/back.svg" alt="Voltar"></button>
+      <button class="close-button back-button" onclick="closeCategorySection()"><img src="images/buttons/back.svg" alt="Voltar"></button>
       <h3 style="margin-top:0;">gerenciar categorias</h3>
 
       <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
@@ -1791,7 +1860,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Detalhes de Tarefa -->
   <div id="description-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px; text-align: center;">
-      <button class="close-button back-button" onclick="closeDescriptionSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="svg/back.svg" alt="Voltar"></button>
+      <button class="close-button back-button" onclick="closeDescriptionSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
       <h3 style="margin-top: 0;">detalhes</h3>
       <p id="modal-description-text" style="font-size: 16px; margin-top: 20px; line-height: 1.5;"></p>
       <p id="modal-date-text"></p>
@@ -1801,7 +1870,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Detalhes de Lista -->
   <div id="list-details-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px;">
-      <button class="close-button back-button" onclick="closeListDetailsSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="svg/back.svg" alt="Voltar"></button>
+      <button class="close-button back-button" onclick="closeListDetailsSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
       <h3 id="listDetailsTitle" style="margin-top: 0;"></h3>
       <ul id="listDetailsItems"></ul>
     </div>
@@ -1810,7 +1879,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Escolha de Ícone da Lista -->
   <div id="list-icon-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
-        <button class="close-button back-button" onclick="closeListIconSection()"><img src="svg/back.svg" alt="Voltar"></button>
+        <button class="close-button back-button" onclick="closeListIconSection()"><img src="images/buttons/back.svg" alt="Voltar"></button>
         <h3>escolha um ícone para a lista</h3>
         <div id="list-icon-picker-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px; max-height: 300px; overflow-y: auto;">
             </div>
@@ -1820,7 +1889,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Editor de Lista -->
   <div id="list-editor-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px; max-width: 450px; margin: 0 auto;">
-        <button class="close-button back-button" onclick="closeListEditorSection()"><img src="svg/back.svg" alt="Voltar"></button>
+        <button class="close-button back-button" onclick="closeListEditorSection()"><img src="images/buttons/back.svg" alt="Voltar"></button>
         <h3>Editar Lista</h3>
         <form id="list-editor-form" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
             <input type="hidden" id="editor-list-id-main">
@@ -1834,6 +1903,20 @@ body.dark-mode #remove-schedule-btn:hover {
                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">Ícone da Lista:</label>
                 <div id="editor-list-icon-picker" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 140px; overflow-y: auto; padding: 5px; border-radius: 8px; background: rgba(0,0,0,0.05);"></div>
                 <input type="hidden" id="editor-list-icon-main">
+                
+                <div id="editor-list-color-picker-container" style="margin-top: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">cor:</label>
+                    <div id="editorListColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <div class="color-option" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #ccc; cursor: pointer;" title="azul"></div>
+                        <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;" title="amarelo"></div>
+                        <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;" title="vermelho"></div>
+                        <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;" title="verde"></div>
+                        <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;" title="rosa"></div>
+                        <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;" title="roxo"></div>
+                        <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;" title="laranja"></div>
+                    </div>
+                    <input type="hidden" id="editorListIconColor" value="blue">
+                </div>
             </div>
 
             <hr>
@@ -1891,6 +1974,8 @@ body.dark-mode #remove-schedule-btn:hover {
     const buttonGroup = document.querySelector('.add-btn-group');
     const transactionIconPicker = document.getElementById('transactionIconPicker');
     const transactionIconHiddenInput = document.getElementById('transactionIcon');
+    const transactionIconColorInput = document.getElementById('transactionIconColor');
+    const transactionColorPicker = document.getElementById('transactionColorPicker');
     const showAddTransactionBtn = document.getElementById('show-add-transaction-form-btn');
     const addTransactionContainer = document.getElementById('add-transaction-container');
     const transactionFormTitle = document.getElementById('transaction-form-title');
@@ -1925,6 +2010,14 @@ body.dark-mode #remove-schedule-btn:hover {
     const newGoalDeadlineInput = document.getElementById('newGoalDeadline');
     const investmentsView = document.getElementById('investments-view');
     const closeInvestmentsViewBtn = document.getElementById('close-investments-view');
+    const goalIconPicker = document.getElementById('goalIconPicker');
+    const goalIconHiddenInput = document.getElementById('goalIcon');
+    const goalIconColorInput = document.getElementById('goalIconColor');
+    const goalColorPicker = document.getElementById('goalColorPicker');
+    const openAddInvestmentFormBtn = document.getElementById('open-add-investment-form-btn');
+    const investmentFormView = document.getElementById('investment-form-view');
+    const backToInvestmentsListBtn = document.getElementById('back-to-investments-list-btn');
+    const investmentFormTitle = document.getElementById('investment-form-title');
 
 
     // --- ELEMENTO DE TEMA ---
@@ -1949,6 +2042,8 @@ body.dark-mode #remove-schedule-btn:hover {
     const taskDescriptionInput = document.getElementById('taskDescription');
     const taskIconHiddenInput = document.getElementById('taskIcon');
     const taskIconPicker = document.getElementById('taskIconPicker');
+    const taskIconColorInput = document.getElementById('taskIconColor');
+    const taskColorPicker = document.getElementById('taskColorPicker');
     const addTaskBtn = document.getElementById('add-task-btn');
     const taskPriorityInput = document.getElementById('taskPriority'); 
     const recurrenceTypeInput = document.getElementById('recurrenceType');
@@ -1988,6 +2083,8 @@ body.dark-mode #remove-schedule-btn:hover {
     const editorListNameInput = document.getElementById('editor-list-name');
     const editorListIconPicker = document.getElementById('editor-list-icon-picker');
     const editorListIconInput = document.getElementById('editor-list-icon-main');
+    const editorListIconColorInput = document.getElementById('editorListIconColor');
+    const editorListColorPicker = document.getElementById('editorListColorPicker');
     const addScheduleBtn = document.getElementById('add-schedule-btn');
     const editorSchedulingSection = document.getElementById('editor-scheduling-section');
     const editorEventDateInput = document.getElementById('editor-event-date');
@@ -2003,26 +2100,30 @@ body.dark-mode #remove-schedule-btn:hover {
 
     // --- ÍCONES DE TAREFAS (USADOS TAMBÉM PARA LISTAS) ---
     const taskIcons = {
-        "nenhum": "./images/none.svg", "lista": "./images/list.svg", "compras": "./images/shopping.svg",
-        "médico": "./images/health.svg", "medicação": "./images/pills.svg", "dentista": "./images/tooth.svg",    
-        "dinheiro": "./images/money.svg", "coração": "./images/heart.svg", "pet": "./images/pet.svg",
-        "exercício": "./images/gym.svg", "meditação": "./images/meditation.svg", "trabalho": "./images/work.svg",
-        "beleza": "./images/hair.svg", "comida": "./images/food.svg", "presente": "./images/gift.svg",
-        "aniversário": "./images/birthday.svg", "festa": "./images/party.svg", "férias": "./images/vacation.svg",
-        "viagem": "./images/trip.svg", "reunião": "./images/meeting.svg", "computador": "./images/computer.svg",
-        "filme": "./images/movie.svg", "estudo": "./images/study.svg", "casa": "./images/house.svg",
-         "carro": "./images/car.svg", "câmera": "./images/picture.svg",
-        "unhas": "./images/nails.svg", "pele": "./images/lotion.svg", "escrever": "./images/write.svg",
-        "arte": "./images/art.svg", "flor": "./images/flower.svg", "planta": "./images/plant.svg"
+        "nenhum": "./images/colored/blue/none.svg", "lista": "./images/colored/blue/list.svg", "compras": "./images/colored/blue/shopping.svg",
+        "médico": "./images/colored/blue/health.svg", "medicação": "./images/colored/blue/pills.svg", "dentista": "./images/colored/blue/tooth.svg",    
+        "dinheiro": "./images/colored/blue/money.svg", "coração": "./images/colored/blue/heart.svg", "pet": "./images/colored/blue/pet.svg",
+        "exercício": "./images/colored/blue/gym.svg", "meditação": "./images/colored/blue/meditation.svg", "trabalho": "./images/colored/blue/work.svg",
+        "beleza": "./images/colored/blue/hair.svg", "comida": "./images/colored/blue/food.svg", "presente": "./images/colored/blue/gift.svg",
+        "aniversário": "./images/colored/blue/birthday.svg", "festa": "./images/colored/blue/party.svg", "férias": "./images/colored/blue/vacation.svg",
+        "viagem": "./images/colored/blue/trip.svg", "reunião": "./images/colored/blue/meeting.svg", "computador": "./images/colored/blue/computer.svg",
+        "filme": "./images/colored/blue/movie.svg", "estudo": "./images/colored/blue/study.svg", "casa": "./images/colored/blue/house.svg",
+         "carro": "./images/colored/blue/car.svg", "câmera": "./images/colored/blue/picture.svg",
+        "unhas": "./images/colored/blue/nails.svg", "pele": "./images/colored/blue/lotion.svg", "escrever": "./images/colored/blue/write.svg",
+        "arte": "./images/colored/blue/art.svg", "flor": "./images/colored/blue/flower.svg", "planta": "./images/colored/blue/plant.svg",
+        "maçã": "./images/colored/blue/apple.svg", "caixa": "./images/colored/blue/box.svg", "cérebro": "./images/colored/blue/brain.svg",
+        "comprar": "./images/colored/blue/buy.svg", "cenoura": "./images/colored/blue/carrot.svg", "cigarro": "./images/colored/blue/cigarette.svg",
+        "data": "./images/colored/blue/date.svg", "sorvete": "./images/colored/blue/icecream.svg", "pessoa": "./images/colored/blue/person.svg",
+        "telefone": "./images/colored/blue/phone.svg", "pipoca": "./images/colored/blue/popcorn.svg", "camisa": "./images/colored/blue/shirt.svg"
     };
 
     // --- ÍCONES DE CATEGORIA (MAPEAMENTO NOME -> CAMINHO) ---
     const categoryIcons = {
-        "comida": "./images/food.svg", "transporte": "./images/car.svg", "moradia": "./images/house.svg",
-        "lazer": "./images/movie.svg", "saúde": "./images/health.svg", "educação": "./images/study.svg",
-        "compras": "./images/shopping.svg", "contas": "./images/money.svg", "pet": "./images/pet.svg",
-        "beleza": "./images/hair.svg", "presente": "./images/gift.svg", "salário": "./images/money.svg",
-        "freela": "./images/work.svg", "outros": "./images/star.svg"
+        "comida": "./images/colored/blue/food.svg", "transporte": "./images/colored/blue/car.svg", "moradia": "./images/colored/blue/house.svg",
+        "lazer": "./images/colored/blue/movie.svg", "saúde": "./images/colored/blue/health.svg", "educação": "./images/colored/blue/study.svg",
+        "compras": "./images/colored/blue/shopping.svg", "contas": "./images/colored/blue/money.svg", "pet": "./images/colored/blue/pet.svg",
+        "beleza": "./images/colored/blue/hair.svg", "presente": "./images/colored/blue/gift.svg", "salário": "./images/colored/blue/money.svg",
+        "freela": "./images/colored/blue/work.svg", "outros": "./images/colored/blue/star.svg"
     };
 
 
@@ -2070,7 +2171,7 @@ body.dark-mode #remove-schedule-btn:hover {
     function applyTheme(theme) {
         document.body.classList.toggle('dark-mode', theme === 'dark');
         const themeIcon = document.getElementById('theme-icon');
-        themeIcon.src = theme === 'dark' ? 'svg/sun.svg' : 'svg/moon.svg';
+        themeIcon.src = theme === 'dark' ? 'images/buttons/sun.svg' : 'images/buttons/moon.svg';
         themeIcon.alt = theme === 'dark' ? 'Modo claro' : 'Modo escuro';
         localStorage.setItem('theme', theme);
         if (document.getElementById('financeiro-section').style.display !== 'none') {
@@ -2202,10 +2303,8 @@ body.dark-mode #remove-schedule-btn:hover {
     }
     function closeCategorySection() {
         categorySection.style.display = 'none';
-        // Return to the previous section
-        if (previousSection) {
-            document.getElementById(previousSection).style.display = 'block';
-        }
+        // Não volta para seção anterior para evitar conflitos com navegação principal
+        // A navegação principal já gerencia qual seção deve estar visível
     }
     
     function openDescriptionSection(description, date) {
@@ -2235,10 +2334,8 @@ body.dark-mode #remove-schedule-btn:hover {
 
     function closeDescriptionSection() {
         descriptionSection.style.display = 'none';
-        // Return to the previous section
-        if (previousSection) {
-            document.getElementById(previousSection).style.display = 'block';
-        }
+        // Não volta para seção anterior para evitar conflitos com navegação principal
+        // A navegação principal já gerencia qual seção deve estar visível
     }
     
     function openListDetailsSection(listId) {
@@ -2280,10 +2377,8 @@ body.dark-mode #remove-schedule-btn:hover {
 
     function closeListDetailsSection() {
         listDetailsSection.style.display = 'none';
-        // Return to the previous section
-        if (previousSection) {
-            document.getElementById(previousSection).style.display = 'block';
-        }
+        // Não volta para seção anterior para evitar conflitos com navegação principal
+        // A navegação principal já gerencia qual seção deve estar visível
     }
 
     function openListIconSection(listId) {
@@ -2302,10 +2397,8 @@ body.dark-mode #remove-schedule-btn:hover {
 
     function closeListIconSection() {
         listIconSection.style.display = 'none';
-        // Return to the previous section
-        if (previousSection) {
-            document.getElementById(previousSection).style.display = 'block';
-        }
+        // Não volta para seção anterior para evitar conflitos com navegação principal
+        // A navegação principal já gerencia qual seção deve estar visível
     }
 
     function selectListIcon(iconPath) {
@@ -2408,10 +2501,8 @@ body.dark-mode #remove-schedule-btn:hover {
 
     function closeListEditorSection() {
         listEditorSection.style.display = 'none';
-        // Return to the previous section
-        if (previousSection) {
-            document.getElementById(previousSection).style.display = 'block';
-        }
+        // Não volta para seção anterior para evitar conflitos com navegação principal
+        // A navegação principal já gerencia qual seção deve estar visível
     }
 
     // ----------------------------------------------------
@@ -2446,8 +2537,8 @@ body.dark-mode #remove-schedule-btn:hover {
                         return `<div>
                                     <span>${category}</span>
                                     <span>
-                                        <button class="edit-btn" onclick="editCategory('${category}', '${type}')"><img src="svg/pencil.svg" alt="Editar"></button>
-                                        <button class="delete-btn" onclick="removeCategory('${category}', '${type}')"><img src="svg/trash.svg" alt="Remover"></button>
+                                        <button class="edit-btn" onclick="editCategory('${category}', '${type}')"><img src="images/buttons/pencil.svg" alt="Editar"></button>
+                                        <button class="delete-btn" onclick="removeCategory('${category}', '${type}')"><img src="images/buttons/trash.svg" alt="Remover"></button>
                                     </span>
                                 </div>`;
                     }
@@ -2542,6 +2633,11 @@ body.dark-mode #remove-schedule-btn:hover {
             textElement.textContent = formatCurrency(spent);
             textElement.style.fontSize = '11px';
             container.dataset.view = 'currency';
+        } else if (currentState === 'currency') {
+            const limit = parseFloat(container.dataset.limit);
+            textElement.textContent = formatCurrency(limit);
+            textElement.style.fontSize = '11px';
+            container.dataset.view = 'limit';
         } else {
             textElement.textContent = container.dataset.percentage;
             textElement.style.fontSize = '';
@@ -2572,12 +2668,12 @@ body.dark-mode #remove-schedule-btn:hover {
             const categoryDisplay = `<img src="${iconPath}" alt="${category}" class="category-icon">`;
             
             row.innerHTML = `
-                <td title="${category}" style="width: 10%; text-align: center;">${categoryDisplay}</td>
-                <td style="width: 30%;">${formatCurrency(limit)}</td>
-                <td style="width: 60%;">
+                <td title="${category}" style="width: 15%; text-align: center;">${categoryDisplay}</td>
+                <td style="width: 85%;">
                     <div class="progress-bar-container"
                          data-spent="${spent}"
                          data-percentage="${percentage.toFixed(0)}%"
+                         data-limit="${limit}"
                          onclick="toggleBudgetDisplay(this)"
                          title="clique para alternar visualização">
                         <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${progressBarColor};"></div>
@@ -2644,8 +2740,56 @@ body.dark-mode #remove-schedule-btn:hover {
         }
     };
 
+    window.toggleContributions = (goalId) => {
+        const contributionsSection = document.getElementById(`contributions-${goalId}`);
+        const button = contributionsSection.previousElementSibling;
+        
+        if (contributionsSection.style.display === 'none') {
+            contributionsSection.style.display = 'block';
+            button.textContent = `ocultar aportes (${Object.keys(investmentGoals.find(g => g.id === goalId).contributions).length})`;
+        } else {
+            contributionsSection.style.display = 'none';
+            button.textContent = `ver aportes (${Object.keys(investmentGoals.find(g => g.id === goalId).contributions).length})`;
+        }
+    };
+
+
+    function resetGoalIconsToBlue() {
+        // Reset da cor para azul (igual ao planner)
+        goalColorPicker.querySelectorAll('.color-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        const blueOption = goalColorPicker.querySelector('[data-color="blue"]');
+        if (blueOption) blueOption.classList.add('selected');
+        goalIconColorInput.value = 'blue';
+        
+        // Reset dos ícones para azul (igual ao planner)
+        goalIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
+            const iconName = option.dataset.iconName;
+            const bluePath = getColoredIcons(iconName, 'blue');
+            option.querySelector('img').src = bluePath;
+        });
+        
+        const defaultOption = goalIconPicker.querySelector('.task-icon-option');
+        if (defaultOption) defaultOption.click();
+    }
+
+    function cancelEditGoal() {
+        editingGoalId = null;
+        renderInvestmentGoals();
+    }
+
+    function renderGoalIconPicker() {
+        // Usa exatamente a mesma lógica do planner
+        renderColoredIconPicker(goalIconPicker, goalIconHiddenInput, goalIconColorInput);
+    }
 
     function renderInvestmentGoals() {
+      if (!goalsContainer) {
+          console.error('goalsContainer não encontrado');
+          return;
+      }
+      
       goalsContainer.innerHTML = '';
       if (investmentGoals.length === 0 && editingGoalId === null) {
         goalsContainer.innerHTML = '<p style="text-align: center; color: #777;">nenhuma meta de investimento criada.</p>';
@@ -2659,11 +2803,26 @@ body.dark-mode #remove-schedule-btn:hover {
         card.style.borderLeftColor = goal.color;
         
         if (goal.id === editingGoalId) {
-            let colorPickerHTML = goalColors.map(color => 
-                `<div class="color-swatch ${goal.color === color ? 'selected' : ''}" style="background-color: ${color};" data-color="${color}"></div>`
+            // Nova paleta de cores
+            const newColorPalette = [
+                { name: 'blue', color: '#42a5f5' },
+                { name: 'green', color: '#7ed957' },
+                { name: 'red', color: '#ff5252' },
+                { name: 'yellow', color: '#ffeb3b' },
+                { name: 'pink', color: '#ff69b4' },
+                { name: 'purple', color: '#9c27b0' },
+                { name: 'orange', color: '#ff9800' }
+            ];
+            
+            let colorPickerHTML = newColorPalette.map(colorOption => 
+                `<div class="color-option ${goal.color === colorOption.color ? 'selected' : ''}" style="width: 30px; height: 30px; border-radius: 50%; background-color: ${colorOption.color}; border: 2px solid ${goal.color === colorOption.color ? '#333' : '#ccc'}; cursor: pointer;" data-color="${colorOption.name}" data-hex="${colorOption.color}" title="${colorOption.name}"></div>`
             ).join('');
 
             card.innerHTML = `
+                <div style="position: relative;">
+                    <button class="close-button back-button" onclick="cancelEditGoal()" style="right: auto; left: 15px; top: 15px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
+                    <h4 style="margin-top: 0; text-align: center; padding-top: 10px;">editar meta de investimento</h4>
+                </div>
                 <form class="edit-goal-form">
                     <div class="form-inputs">
                         <input type="text" value="${goal.name}" required>
@@ -2681,7 +2840,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     <div class="color-picker">${colorPickerHTML}</div>
                     
                     <label style="font-size: 12px; font-weight: bold; margin-top: 10px; display: block;">ícone:</label>
-                    <div class="goal-icon-picker"></div> 
+                    <div class="goal-icon-picker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div> 
                     <input type="hidden" class="editing-goal-icon-input" value="${goal.icon}">
                     
                     <div class="actions" style="margin-top: 15px;">
@@ -2713,6 +2872,60 @@ body.dark-mode #remove-schedule-btn:hover {
 
                 iconPickerContainer.appendChild(optionDiv);
             }
+
+            // Inicializa os ícones com a cor atual da meta
+            const currentColor = goal.color;
+            const colorMap = {
+                '#42a5f5': 'blue',
+                '#7ed957': 'green',
+                '#ff5252': 'red',
+                '#ffeb3b': 'yellow',
+                '#ff69b4': 'pink',
+                '#9c27b0': 'purple',
+                '#ff9800': 'orange'
+            };
+            const currentColorName = colorMap[currentColor] || 'blue';
+            
+            // Atualiza todos os ícones com a cor atual
+            const allIconOptions = iconPickerContainer.querySelectorAll('.task-icon-option');
+            allIconOptions.forEach(iconOption => {
+                const iconName = iconOption.dataset.iconName;
+                const coloredPath = getColoredIcons(iconName, currentColorName);
+                iconOption.querySelector('img').src = coloredPath;
+            });
+
+            // Event listeners para o seletor de cores na edição
+            const colorOptions = card.querySelectorAll('.color-option');
+            colorOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    // Remove seleção anterior
+                    colorOptions.forEach(opt => {
+                        opt.style.border = '2px solid #ccc';
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Seleciona a nova cor
+                    option.style.border = '3px solid #333';
+                    option.classList.add('selected');
+                    
+                    // Atualiza TODOS os ícones com a nova cor
+                    const selectedColor = option.dataset.color;
+                    const allIconOptions = iconPickerContainer.querySelectorAll('.task-icon-option');
+                    allIconOptions.forEach(iconOption => {
+                        const iconName = iconOption.dataset.iconName;
+                        const coloredPath = getColoredIcons(iconName, selectedColor);
+                        iconOption.querySelector('img').src = coloredPath;
+                    });
+                    
+                    // Atualiza o ícone selecionado no input hidden
+                    const selectedIcon = iconPickerContainer.querySelector('.selected');
+                    if (selectedIcon) {
+                        const iconName = selectedIcon.dataset.iconName;
+                        const coloredPath = getColoredIcons(iconName, selectedColor);
+                        hiddenIconInput.value = coloredPath;
+                    }
+                });
+            });
 
         } else {
             
@@ -2756,16 +2969,16 @@ body.dark-mode #remove-schedule-btn:hover {
                             <li>
                                 <span>${entry.key.replace('-', '/')}: </span>
                                 <input id="contribution-input-${currentKey}" type="number" value="${entry.amount}" step="0.01">
-                                <button class="save-item-btn" onclick="saveContributionEdit(${goal.id}, '${entry.key}')"><img src="svg/ok.svg" alt="Salvar"></button>
-                                <button class="cancel-item-btn" onclick="cancelContributionEdit()"><img src="svg/close.svg" alt="Cancelar"></button>
+                                <button class="save-item-btn" onclick="saveContributionEdit(${goal.id}, '${entry.key}')"><img src="images/buttons/ok.svg" alt="Salvar"></button>
+                                <button class="cancel-item-btn" onclick="cancelContributionEdit()"><img src="images/buttons/close.svg" alt="Cancelar"></button>
                             </li>`;
                     } else {
                          historyHtml += `
                             <li>
                                 <span>${entry.key.replace('-', '/')}: ${formatCurrency(entry.amount)}</span>
                                 <span>
-                                    <button class="edit-btn" onclick="editContribution(${goal.id}, '${entry.key}')"><img src="svg/pencil.svg" alt="Editar"></button>
-                                    <button class="delete-btn" onclick="deleteContribution(${goal.id}, '${entry.key}')"><img src="svg/trash.svg" alt="Remover"></button>
+                                    <button class="edit-btn" onclick="editContribution(${goal.id}, '${entry.key}')"><img src="images/buttons/pencil.svg" alt="Editar"></button>
+                                    <button class="delete-btn" onclick="deleteContribution(${goal.id}, '${entry.key}')"><img src="images/buttons/trash.svg" alt="Remover"></button>
                                 </span>
                             </li>`;
                     }
@@ -2782,8 +2995,8 @@ body.dark-mode #remove-schedule-btn:hover {
                     <h4>${goal.name}</h4>
                 </div>
                 <div class="actions">
-                    <button class="edit-btn"><img src="svg/pencil.svg" alt="Editar"></button>
-                    <button class="delete-btn"><img src="svg/trash.svg" alt="Remover"></button>
+                    <button class="edit-btn"><img src="images/buttons/pencil.svg" alt="Editar"></button>
+                    <button class="delete-btn"><img src="images/buttons/trash.svg" alt="Remover"></button>
                 </div>
               </div>
               <div class="goal-details">
@@ -2800,7 +3013,14 @@ body.dark-mode #remove-schedule-btn:hover {
                 <input type="number" placeholder="valor a investir este mês" step="0.01" required>
                 <button type="submit" class="add-btn">adicionar</button>
               </form>
-              ${historyHtml ? `<ul class="contribution-history-list">${historyHtml}</ul>` : ''}
+              ${historyHtml ? `
+                <button class="show-contributions-btn" onclick="toggleContributions(${goal.id})" style="width: 100%; margin-top: 10px; padding: 8px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                  ver aportes (${Object.keys(goal.contributions).length})
+                </button>
+                <div class="contributions-section" id="contributions-${goal.id}" style="display: none;">
+                  <ul class="contribution-history-list">${historyHtml}</ul>
+                </div>
+              ` : ''}
             `;
         }
         goalsContainer.appendChild(card);
@@ -2813,16 +3033,28 @@ body.dark-mode #remove-schedule-btn:hover {
       const target = parseFloat(document.getElementById('newGoalTarget').value);
       const interestRate = parseFloat(document.getElementById('newGoalInterestRate').value) || 0;
       const deadline = newGoalHasDeadlineCheckbox.checked ? newGoalDeadlineInput.value : null;
-
+      const iconPath = goalIconHiddenInput.value;
+      const iconColor = goalIconColorInput.value;
 
       if (name && !isNaN(target) && target > 0) {
-        const color = goalColors[investmentGoals.length % goalColors.length];
+        // Usa a cor selecionada pelo usuário (mesmas cores do planner)
+        const colorMap = {
+          'blue': '#3586ff',
+          'green': '#4caf50', 
+          'red': '#f44336',
+          'yellow': '#ffeb3b',
+          'pink': '#ff69b4',
+          'purple': '#9c27b0',
+          'orange': '#ff9800'
+        };
+        const color = colorMap[iconColor] || goalColors[investmentGoals.length % goalColors.length];
+        
         investmentGoals.push({
           id: Date.now(),
           name: name,
           target: target,
           color: color,
-          icon: taskIcons.money,
+          icon: iconPath,
           contributions: {},
           interestRate: interestRate,
           deadline: deadline
@@ -2831,6 +3063,14 @@ body.dark-mode #remove-schedule-btn:hover {
         renderInvestmentGoals();
         newGoalForm.reset();
         newGoalDeadlineInput.style.display = 'none';
+        
+        // Volta para a lista de metas
+        investmentFormView.style.display = 'none';
+        goalsContainer.style.display = 'block';
+        openAddInvestmentFormBtn.style.display = 'block';
+        
+        // Reseta os ícones para azul
+        resetGoalIconsToBlue();
       } else {
         alert('por favor, preencha o nome e um valor válido para a meta.');
       }
@@ -2867,14 +3107,14 @@ body.dark-mode #remove-schedule-btn:hover {
             const hasDeadline = e.target.querySelector('.editing-goal-has-deadline').checked;
             const newDeadline = hasDeadline ? e.target.querySelector('.editing-goal-deadline').value : null;
 
-            const selectedSwatch = e.target.querySelector('.color-swatch.selected');
+            const selectedColorOption = e.target.querySelector('.color-option.selected');
             const newIcon = e.target.querySelector('.editing-goal-icon-input').value;
             
-            if (!selectedSwatch) {
+            if (!selectedColorOption) {
                 alert('erro: nenhuma cor selecionada.');
                 return;
             }
-            const newColor = selectedSwatch.dataset.color;
+            const newColor = selectedColorOption.dataset.hex;
 
             if (newName && !isNaN(newTarget) && newTarget > 0) {
                 goal.name = newName;
@@ -3023,8 +3263,8 @@ body.dark-mode #remove-schedule-btn:hover {
                 <td>${item.desc}</td>
                 <td style="color: ${transactionType === 'receita' ? '#4CAF50' : '#FF5252'}; font-weight: bold; text-align:right;">${formatCurrency(Math.abs(item.value))}</td>
                 <td style="text-align:center;">
-                    <button class="edit-btn" data-index="${index}"><img src="svg/pencil.svg" alt="Editar"></button>
-                    <button class="delete-btn" data-index="${index}"><img src="svg/trash.svg" alt="Remover"></button>
+                    <button class="edit-btn" data-index="${index}"><img src="images/buttons/pencil.svg" alt="Editar"></button>
+                    <button class="delete-btn" data-index="${index}"><img src="images/buttons/trash.svg" alt="Remover"></button>
                 </td>
             `;
             expenseList.appendChild(row);
@@ -3280,8 +3520,7 @@ body.dark-mode #remove-schedule-btn:hover {
     // NOVA LÓGICA DE NAVEGAÇÃO DO PLANNER
     function openDayView(dateKey) {
         selectedDateKey = dateKey;
-        const day = dateKey.split('-')[2];
-        dayViewTitle.textContent = `tarefas do dia ${day}`;
+        dayViewTitle.textContent = `tarefas do dia`;
         renderDayTasks();
         
         plannerDetailsContainer.style.display = 'block';
@@ -3296,8 +3535,25 @@ body.dark-mode #remove-schedule-btn:hover {
         taskDescriptionInput.value = '';
         taskTimeInput.value = '09:00';
         taskPriorityInput.checked = false; 
+        
+        // Reset da cor para azul
+        taskColorPicker.querySelectorAll('.color-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        const blueOption = taskColorPicker.querySelector('[data-color="blue"]');
+        if (blueOption) blueOption.classList.add('selected');
+        taskIconColorInput.value = 'blue';
+        
+        // Reset dos ícones para azul
+        taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
+            const iconName = option.dataset.iconName;
+            const bluePath = getColoredIcons(iconName, 'blue');
+            option.querySelector('img').src = bluePath;
+        });
+        
         const defaultOption = taskIconPicker.querySelector('.task-icon-option');
         if (defaultOption) defaultOption.click();
+        
         addTaskBtn.textContent = 'adicionar';
         addTaskBtn.classList.remove('save-edit-btn');
         
@@ -3319,7 +3575,8 @@ body.dark-mode #remove-schedule-btn:hover {
         if (!taskToEdit) return;
         
         if (taskToEdit.linkedListId) {
-            openListEditorSection(taskToEdit.linkedListId);
+            // Listas agendadas só podem ser editadas na aba listas
+            alert('Esta é uma lista agendada. Para editá-la, vá para a aba "listas".');
             return;
         }
 
@@ -3333,9 +3590,52 @@ body.dark-mode #remove-schedule-btn:hover {
         taskFormTitle.textContent = 'editar tarefa';
         taskIconHiddenInput.value = taskToEdit.icon;
         
+        // Determina a cor e o ícone base do ícone salvo
+        const iconPath = taskToEdit.icon;
+        let iconName = 'lista'; // padrão
+        let iconColor = 'blue'; // padrão
+        
+        // Extrai o nome do ícone e a cor do caminho
+        if (iconPath.includes('/colored/')) {
+            const pathParts = iconPath.split('/');
+            const fileName = pathParts[pathParts.length - 1];
+            iconName = fileName.replace('.svg', '');
+            const colorPart = pathParts[pathParts.length - 2];
+            iconColor = colorPart;
+        } else {
+            // Para ícones antigos que não usam a pasta colored, tenta encontrar o nome
+            const iconKey = Object.keys(taskIcons).find(key => taskIcons[key] === iconPath);
+            if (iconKey) {
+                iconName = iconKey;
+                iconColor = 'blue'; // assume azul para ícones antigos
+            }
+        }
+        
+        // Reset todos os ícones para azul primeiro
         taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-            option.classList.toggle('selected', option.getAttribute('data-icon-path') === taskToEdit.icon);
+            const optionIconName = option.dataset.iconName;
+            const bluePath = getColoredIcons(optionIconName, 'blue');
+            option.querySelector('img').src = bluePath;
         });
+        
+        // Seleciona o ícone correto
+        taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
+            option.classList.toggle('selected', option.dataset.iconName === iconName);
+        });
+        
+        // Seleciona a cor correta
+        taskColorPicker.querySelectorAll('.color-option').forEach(option => {
+            option.classList.toggle('selected', option.dataset.color === iconColor);
+        });
+        taskIconColorInput.value = iconColor;
+        
+        // Aplica a cor selecionada ao ícone escolhido
+        const selectedIconOption = taskIconPicker.querySelector('.task-icon-option.selected');
+        if (selectedIconOption) {
+            const selectedIconName = selectedIconOption.dataset.iconName;
+            const coloredPath = getColoredIcons(selectedIconName, iconColor);
+            selectedIconOption.querySelector('img').src = coloredPath;
+        }
 
         if (taskToEdit.recurrenceId) {
             recurrenceTypeInput.value = 'none';
@@ -3370,11 +3670,15 @@ body.dark-mode #remove-schedule-btn:hover {
             }
 
             const iconHtml = task.icon ? `<img src="${task.icon}" class="task-icon" alt="ícone da tarefa">` : '';
+            
+            // Para listas agendadas, não mostra o botão de editar
+            const editButton = task.linkedListId ? '' : `<button class="edit-task-btn" onclick="editTask('${task.id}')"><img src="images/buttons/pencil.svg" alt="Editar"></button>`;
+            
             taskItem.innerHTML = `
                 <span>${iconHtml}<strong>${task.time}</strong> - ${task.description}</span>
                 <div class="task-actions">
-                    <button class="edit-task-btn" onclick="editTask('${task.id}')"><img src="svg/pencil.svg" alt="Editar"></button>
-                    <button onclick="removeTask('${task.id}')"><img src="svg/trash.svg" alt="Remover"></button>
+                    ${editButton}
+                    <button onclick="removeTask('${task.id}')"><img src="images/buttons/trash.svg" alt="Remover"></button>
                 </div>`;
             tasksList.appendChild(taskItem);
         });
@@ -3520,10 +3824,142 @@ body.dark-mode #remove-schedule-btn:hover {
         renderCalendar(currentCalendarDate); // Atualiza os ícones no calendário
 
         if(linkedListId) {
-            loadAndRenderLists(); 
+            // Só renderiza listas se a aba de listas estiver ativa
+            const listasSection = document.getElementById('listas-section');
+            if (listasSection && listasSection.style.display === 'block') {
+                loadAndRenderLists(); 
+            }
         }
     }
     
+    function getAllAvailableIcons() {
+        // Combina todos os ícones disponíveis: taskIcons, categoryIcons e ícones adicionais
+        const allIcons = {};
+        
+        // Adiciona ícones de tarefas
+        Object.assign(allIcons, taskIcons);
+        
+        // Adiciona ícones de categoria
+        Object.assign(allIcons, categoryIcons);
+        
+        // Adiciona ícones adicionais que podem não estar nos outros objetos
+        const additionalIcons = {
+            "futebol": "./images/colored/blue/fute.svg",
+            "ping pong": "./images/colored/blue/ping.svg",
+            "vôlei": "./images/colored/blue/voleyball.svg",
+            "dna": "./images/colored/blue/dna.svg",
+            "olho": "./images/colored/blue/eye.svg",
+            "injeção": "./images/colored/blue/injection.svg",
+            "juiz": "./images/colored/blue/judge.svg",
+            "folha": "./images/colored/blue/leaf.svg",
+            "pílulas": "./images/colored/blue/pills.svg",
+            "lesma": "./images/colored/blue/slug.svg",
+            "estrela": "./images/colored/blue/star.svg",
+            "dente": "./images/colored/blue/tooth.svg",
+            "escova de dente": "./images/colored/blue/toothbrush.svg"
+        };
+        
+        Object.assign(allIcons, additionalIcons);
+        
+        return allIcons;
+    }
+
+    function getColoredIcons(iconName, color = 'blue') {
+        // Mapeamento dos nomes do código para os nomes dos arquivos
+        const iconNameMap = {
+            "nenhum": "none",
+            "lista": "list", 
+            "compras": "shopping",
+            "médico": "health",
+            "medicação": "pills",
+            "dentista": "tooth",
+            "dinheiro": "money",
+            "coração": "heart",
+            "pet": "pet",
+            "exercício": "gym",
+            "meditação": "meditation",
+            "trabalho": "work",
+            "beleza": "hair",
+            "comida": "food",
+            "presente": "gift",
+            "aniversário": "birthday",
+            "festa": "party",
+            "férias": "vacation",
+            "viagem": "trip",
+            "reunião": "meeting",
+            "computador": "computer",
+            "filme": "movie",
+            "estudo": "study",
+            "casa": "house",
+            "carro": "car",
+            "câmera": "picture",
+            "unhas": "nails",
+            "pele": "lotion",
+            "escrever": "write",
+            "arte": "art",
+            "flor": "flower",
+            "planta": "plant",
+            "maçã": "apple",
+            "caixa": "box",
+            "cérebro": "brain",
+            "comprar": "buy",
+            "cenoura": "carrot",
+            "cigarro": "cigarette",
+            "data": "date",
+            "sorvete": "icecream",
+            "pessoa": "person",
+            "telefone": "phone",
+            "pipoca": "popcorn",
+            "camisa": "shirt",
+            "futebol": "fute",
+            "ping pong": "ping",
+            "vôlei": "voleyball",
+            "dna": "dna",
+            "olho": "eye",
+            "injeção": "injection",
+            "juiz": "judge",
+            "folha": "leaf",
+            "pílulas": "pills",
+            "lesma": "slug",
+            "estrela": "star",
+            "dente": "tooth",
+            "escova de dente": "toothbrush"
+        };
+        
+        const colorMap = {
+            'blue': 'blue',
+            'yellow': 'yellow', 
+            'red': 'red',
+            'green': 'green',
+            'pink': 'pink',
+            'purple': 'purple',
+            'orange': 'orange'
+        };
+        
+        const colorFolder = colorMap[color] || 'blue';
+        const fileName = iconNameMap[iconName] || iconName;
+        
+        return `./images/colored/${colorFolder}/${fileName}.svg`;
+    }
+
+    function getAllColoredIcons() {
+        // Retorna todos os ícones em todas as cores disponíveis
+        const coloredIcons = {};
+        const colors = ['blue', 'yellow', 'red', 'green', 'pink', 'purple', 'orange'];
+        
+        // Para cada ícone base, cria versões coloridas
+        Object.keys(taskIcons).forEach(iconName => {
+            if (iconName !== 'nenhum') {
+                colors.forEach(color => {
+                    const coloredKey = `${iconName}_${color}`;
+                    coloredIcons[coloredKey] = getColoredIcons(iconName, color);
+                });
+            }
+        });
+        
+        return coloredIcons;
+    }
+
     function renderIconPicker(pickerElement, hiddenInputElement, iconObject, onSelectCallback = null) {
         if (!pickerElement) return;
         pickerElement.innerHTML = '';
@@ -3556,6 +3992,57 @@ body.dark-mode #remove-schedule-btn:hover {
                 firstOption.click();
             }
         }
+    }
+
+    function renderColoredIconPicker(pickerElement, hiddenInputElement, colorInputElement) {
+        if (!pickerElement) return;
+        pickerElement.innerHTML = '';
+        
+        console.log('renderColoredIconPicker chamada para:', pickerElement.id);
+        
+        // Usa os nomes em inglês diretamente (como no planner)
+        const iconNames = [
+            "list", "shopping", "health", "pills", "tooth", "money", "heart", "pet", "gym", "meditation", "work", "hair", "food", "gift", "birthday", "party", "vacation", "trip", "meeting", "computer", "movie", "study", "house", "car", "picture", "nails", "lotion", "write", "art", "flower", "plant", "apple", "box", "brain", "buy", "carrot", "cigarette", "date", "icecream", "person", "phone", "popcorn", "shirt", "fute", "ping", "voleyball", "dna", "eye", "injection", "judge", "leaf", "slug", "star", "toothbrush"
+        ];
+        
+        console.log('Ícones disponíveis:', iconNames);
+        
+        // Renderiza os ícones usando nomes em inglês
+        iconNames.forEach(iconName => {
+            const option = document.createElement('div');
+            option.className = 'task-icon-option';
+            option.dataset.iconName = iconName;
+            option.title = iconName;
+            
+            // Usa o ícone azul da pasta colored como padrão
+            const defaultPath = `./images/colored/blue/${iconName}.svg`;
+            console.log(`Ícone ${iconName} -> ${defaultPath}`);
+            option.innerHTML = `<img src="${defaultPath}" alt="${iconName}">`;
+            
+            option.addEventListener('click', function() {
+                pickerElement.querySelector('.selected')?.classList.remove('selected');
+                this.classList.add('selected');
+                
+                // Atualiza o ícone com a cor selecionada
+                const selectedColor = colorInputElement.value;
+                const coloredPath = `./images/colored/${selectedColor}/${iconName}.svg`;
+                hiddenInputElement.value = coloredPath;
+                
+                // Atualiza a imagem exibida
+                this.querySelector('img').src = coloredPath;
+            });
+            
+            pickerElement.appendChild(option);
+        });
+
+        // Seleciona o primeiro ícone por padrão
+        const firstOption = pickerElement.querySelector('.task-icon-option');
+        if (firstOption) {
+            firstOption.click();
+        }
+        
+        // Garante que a cor padrão seja azul
+        colorInputElement.value = 'blue';
     }
     
     function deleteListAndLinkedTask(listDiv, listName) {
@@ -3716,7 +4203,6 @@ body.dark-mode #remove-schedule-btn:hover {
         const iconImg = document.createElement('img');
         iconImg.src = isShoppingList ? (listIcon === taskIcons.lista ? taskIcons.compras : listIcon) : listIcon;
         iconImg.className = 'list-title-icon';
-        iconImg.onclick = () => openListIconSection(listId);
         const title = document.createElement("h2");
         title.textContent = listName;
         title.style.margin = 0;
@@ -3724,11 +4210,11 @@ body.dark-mode #remove-schedule-btn:hover {
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'list-title-actions';
         const editBtn = document.createElement("button");
-        editBtn.innerHTML = '<img src="svg/pencil.svg" alt="Editar">';
+        editBtn.innerHTML = '<img src="images/buttons/pencil.svg" alt="Editar">';
         editBtn.className = "edit-list-btn";
         editBtn.onclick = () => openListEditorSection(listId);
         const removeBtn = document.createElement("button");
-        removeBtn.innerHTML = '<img src="svg/closelist.svg" alt="Remover Lista">';
+        removeBtn.innerHTML = '<img src="images/buttons/closelist.svg" alt="Remover Lista">';
         removeBtn.className = "delete-list-circular-btn";
         removeBtn.onclick = () => deleteListAndLinkedTask(listDiv, listName);
         actionsDiv.appendChild(editBtn);
@@ -3823,12 +4309,12 @@ body.dark-mode #remove-schedule-btn:hover {
                 actionsDiv.innerHTML = '';
                 const editBtnItem = document.createElement('button');
                 editBtnItem.className = 'edit-item-btn';
-                editBtnItem.innerHTML = '<img src="svg/pencil.svg" alt="Editar">';
+                editBtnItem.innerHTML = '<img src="images/buttons/pencil.svg" alt="Editar">';
                 editBtnItem.onclick = () => toggleEditMode(true, li);
 
                 const deleteBtnItem = document.createElement('button');
                 deleteBtnItem.className = 'delete-item-btn';
-                deleteBtnItem.innerHTML = '<img src="svg/trash.svg" alt="Remover">';
+                deleteBtnItem.innerHTML = '<img src="images/buttons/trash.svg" alt="Remover">';
                 deleteBtnItem.onclick = () => {
                     li.remove();
                     if(isShoppingList) updateShoppingListTotal(listDiv);
@@ -3861,7 +4347,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     actionsDiv.innerHTML = '';
                     const saveBtn = document.createElement('button');
                     saveBtn.className = 'save-item-btn';
-                    saveBtn.innerHTML = '<img src="svg/ok.svg" alt="Salvar">';
+                    saveBtn.innerHTML = '<img src="images/buttons/ok.svg" alt="Salvar">';
                     saveBtn.onclick = () => {
                         span.textContent = textInputField.value;
                         if(isShoppingList){
@@ -3876,7 +4362,7 @@ body.dark-mode #remove-schedule-btn:hover {
 
                     const cancelBtn = document.createElement('button');
                     cancelBtn.className = 'cancel-item-btn';
-                    cancelBtn.innerHTML = '<img src="svg/close.svg" alt="Cancelar">';
+                    cancelBtn.innerHTML = '<img src="images/buttons/close.svg" alt="Cancelar">';
                     cancelBtn.onclick = () => toggleEditMode(false, currentLi);
 
                     actionsDiv.appendChild(saveBtn);
@@ -4180,7 +4666,11 @@ body.dark-mode #remove-schedule-btn:hover {
         }
 
         saveCalendarTasks();
-        loadAndRenderLists();
+        // Só renderiza listas se a aba de listas estiver ativa
+        const listasSection = document.getElementById('listas-section');
+        if (listasSection && listasSection.style.display === 'block') {
+            loadAndRenderLists();
+        }
         renderCalendar(currentCalendarDate);
         closeListEditorSection();
     });
@@ -4289,6 +4779,7 @@ body.dark-mode #remove-schedule-btn:hover {
     
     viewInvestmentsBtn.addEventListener('click', () => {
         renderInvestmentGoals();
+        renderGoalIconPicker(); // Renderiza o seletor de ícones
         transactionsView.style.display = 'none';
         budgetsView.style.display = 'none';
         investmentsView.style.display = 'block';
@@ -4298,6 +4789,72 @@ body.dark-mode #remove-schedule-btn:hover {
 
     closeInvestmentsViewBtn.addEventListener('click', () => {
         investmentsView.style.display = 'none';
+    });
+
+    // Event listeners para navegação entre lista e formulário de investimentos
+    if (openAddInvestmentFormBtn) {
+        openAddInvestmentFormBtn.addEventListener('click', () => {
+            if (!goalsContainer || !investmentFormView) {
+                console.error('Elementos necessários não encontrados para abrir formulário');
+                return;
+            }
+            goalsContainer.style.display = 'none';
+            openAddInvestmentFormBtn.style.display = 'none';
+            investmentFormView.style.display = 'block';
+            renderGoalIconPicker(); // Renderiza o seletor de ícones
+        });
+    } else {
+        console.error('openAddInvestmentFormBtn não encontrado');
+    }
+
+    if (backToInvestmentsListBtn) {
+        backToInvestmentsListBtn.addEventListener('click', () => {
+            if (!investmentFormView || !goalsContainer || !openAddInvestmentFormBtn) {
+                console.error('Elementos necessários não encontrados para voltar à lista');
+                return;
+            }
+            investmentFormView.style.display = 'none';
+            goalsContainer.style.display = 'block';
+            openAddInvestmentFormBtn.style.display = 'block';
+            newGoalForm.reset(); // Limpa o formulário
+            newGoalDeadlineInput.style.display = 'none';
+            
+            // Reseta os ícones para azul
+            resetGoalIconsToBlue();
+        });
+    } else {
+        console.error('backToInvestmentsListBtn não encontrado');
+    }
+
+    // Event listeners para o seletor de cores das metas de investimento (igual ao planner)
+    goalColorPicker.addEventListener('click', (e) => {
+        const colorOption = e.target.closest('.color-option');
+        if (colorOption) {
+            // Remove seleção anterior
+            goalColorPicker.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Seleciona nova cor
+            colorOption.classList.add('selected');
+            const selectedColor = colorOption.dataset.color;
+            goalIconColorInput.value = selectedColor;
+            
+            // Atualiza TODOS os ícones com a nova cor (igual ao planner)
+            goalIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
+                const iconName = iconOption.dataset.iconName;
+                const coloredPath = getColoredIcons(iconName, selectedColor);
+                iconOption.querySelector('img').src = coloredPath;
+            });
+            
+            // Atualiza o valor do ícone selecionado
+            const selectedIcon = goalIconPicker.querySelector('.task-icon-option.selected');
+            if (selectedIcon) {
+                const iconName = selectedIcon.dataset.iconName;
+                const coloredPath = getColoredIcons(iconName, selectedColor);
+                goalIconHiddenInput.value = coloredPath;
+            }
+        }
     });
 
     typeInput.addEventListener('change', (e) => {
@@ -4332,6 +4889,99 @@ body.dark-mode #remove-schedule-btn:hover {
         recurrenceEndDateInput.required = isRecurrent;
         weeklyRecurrenceOptions.style.display = recurrenceTypeInput.value === 'weekly' ? 'block' : 'none';
     });
+
+    // Event listeners para o seletor de cores
+    taskColorPicker.addEventListener('click', (e) => {
+        const colorOption = e.target.closest('.color-option');
+        if (colorOption) {
+            // Remove seleção anterior
+            taskColorPicker.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Seleciona nova cor
+            colorOption.classList.add('selected');
+            const selectedColor = colorOption.dataset.color;
+            taskIconColorInput.value = selectedColor;
+            
+            // Atualiza TODOS os ícones com a nova cor
+            taskIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
+                const iconName = iconOption.dataset.iconName;
+                const coloredPath = getColoredIcons(iconName, selectedColor);
+                iconOption.querySelector('img').src = coloredPath;
+            });
+            
+            // Atualiza o valor do ícone selecionado
+            const selectedIcon = taskIconPicker.querySelector('.task-icon-option.selected');
+            if (selectedIcon) {
+                const iconName = selectedIcon.dataset.iconName;
+                const coloredPath = getColoredIcons(iconName, selectedColor);
+                taskIconHiddenInput.value = coloredPath;
+            }
+        }
+    });
+
+    // Event listeners para o seletor de cores das transações
+    transactionColorPicker.addEventListener('click', (e) => {
+        const colorOption = e.target.closest('.color-option');
+        if (colorOption) {
+            // Remove seleção anterior
+            transactionColorPicker.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Seleciona nova cor
+            colorOption.classList.add('selected');
+            const selectedColor = colorOption.dataset.color;
+            transactionIconColorInput.value = selectedColor;
+            
+            // Atualiza TODOS os ícones com a nova cor
+            transactionIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
+                const iconName = iconOption.dataset.iconName;
+                const coloredPath = getColoredIcons(iconName, selectedColor);
+                iconOption.querySelector('img').src = coloredPath;
+            });
+            
+            // Atualiza o valor do ícone selecionado
+            const selectedIcon = transactionIconPicker.querySelector('.task-icon-option.selected');
+            if (selectedIcon) {
+                const iconName = selectedIcon.dataset.iconName;
+                const coloredPath = getColoredIcons(iconName, selectedColor);
+                transactionIconHiddenInput.value = coloredPath;
+            }
+        }
+    });
+
+    // Event listeners para o seletor de cores do editor de listas
+    editorListColorPicker.addEventListener('click', (e) => {
+        const colorOption = e.target.closest('.color-option');
+        if (colorOption) {
+            // Remove seleção anterior
+            editorListColorPicker.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Seleciona nova cor
+            colorOption.classList.add('selected');
+            const selectedColor = colorOption.dataset.color;
+            editorListIconColorInput.value = selectedColor;
+            
+            // Atualiza TODOS os ícones com a nova cor
+            editorListIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
+                const iconName = iconOption.dataset.iconName;
+                const coloredPath = getColoredIcons(iconName, selectedColor);
+                iconOption.querySelector('img').src = coloredPath;
+            });
+            
+            // Atualiza o valor do ícone selecionado
+            const selectedIcon = editorListIconPicker.querySelector('.task-icon-option.selected');
+            if (selectedIcon) {
+                const iconName = selectedIcon.dataset.iconName;
+                const coloredPath = getColoredIcons(iconName, selectedColor);
+                editorListIconInput.value = coloredPath;
+            }
+        }
+    });
     
     listRecurrenceTypeInput.addEventListener('change', () => {
         const isRecurrent = listRecurrenceTypeInput.value !== 'none';
@@ -4363,8 +5013,18 @@ body.dark-mode #remove-schedule-btn:hover {
             previousSection = currentActiveSection.id;
         }
         
-        document.querySelectorAll('.mensal-content-section').forEach(section => section.style.display = 'none');
-        document.getElementById(sectionId).style.display = 'block';
+        // Esconde TODAS as seções mensais com !important para garantir
+        document.querySelectorAll('.mensal-content-section').forEach(section => {
+            section.style.display = 'none';
+            section.style.setProperty('display', 'none', 'important');
+        });
+        
+        // Mostra apenas a seção selecionada
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+            targetSection.style.display = 'block';
+            targetSection.style.setProperty('display', 'block', 'important');
+        }
         
         document.querySelectorAll('#mensal-controls .mensal-sub-toggle').forEach(btn => btn.classList.remove('active-sub'));
         document.getElementById(`show-${sectionId.replace('-section', '')}`).classList.add('active-sub');
@@ -4372,6 +5032,12 @@ body.dark-mode #remove-schedule-btn:hover {
         // Esconde todas as sub-views ao trocar de aba principal
         plannerDetailsContainer.style.display = 'none';
         document.getElementById('finance-details-container').style.display = 'none';
+
+        // Esconde as listas e o formulário quando não estiver na aba de listas
+        if (sectionId !== 'listas-section') {
+            listsContainer.style.display = 'none';
+            newListForm.style.display = 'none';
+        }
 
         if (sectionId === 'financeiro-section') {
             document.getElementById('finance-details-container').style.display = 'block'; // Make sure container is visible
@@ -4382,6 +5048,8 @@ body.dark-mode #remove-schedule-btn:hover {
             updateFinanceDisplay();
         }
         if (sectionId === 'listas-section') {
+            listsContainer.style.display = 'flex'; // Mostra o container das listas
+            newListForm.style.display = 'flex'; // Mostra o formulário de adicionar lista
             loadAndRenderLists();
         }
         if (sectionId === 'planner-section') {
@@ -4403,16 +5071,32 @@ body.dark-mode #remove-schedule-btn:hover {
     function initApp() {
         loadFinancialData();
         loadCalendarTasks();
-        loadAndRenderLists();
         loadInvestmentGoals();
         applyTheme(localStorage.getItem('theme') || 'light');
         currentCalendarDate = new Date();
         initCalendarSelect();
         
-        renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons);
-        renderIconPicker(transactionIconPicker, transactionIconHiddenInput, categoryIcons);
-        renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons);
+        renderColoredIconPicker(taskIconPicker, taskIconHiddenInput, taskIconColorInput);
+        renderColoredIconPicker(transactionIconPicker, transactionIconHiddenInput, transactionIconColorInput);
+        renderColoredIconPicker(editorListIconPicker, editorListIconInput, editorListIconColorInput);
+        renderColoredIconPicker(goalIconPicker, goalIconHiddenInput, goalIconColorInput);
         renderIconPicker(listIconPickerGrid, null, taskIcons, selectListIcon);
+        
+        // Inicializa o seletor de cores das metas de investimento
+        if (goalIconColorInput) {
+            goalIconColorInput.value = 'blue';
+        }
+        
+        // Verifica se todos os elementos de investimento estão disponíveis
+        if (openAddInvestmentFormBtn && investmentFormView && backToInvestmentsListBtn) {
+            console.log('Elementos de investimento carregados corretamente');
+        } else {
+            console.error('Alguns elementos de investimento não foram encontrados:', {
+                openAddInvestmentFormBtn: !!openAddInvestmentFormBtn,
+                investmentFormView: !!investmentFormView,
+                backToInvestmentsListBtn: !!backToInvestmentsListBtn
+            });
+        }
         
         renderCategorySelect(false);
         renderCategoryLimitSelect();
