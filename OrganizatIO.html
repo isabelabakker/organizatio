@@ -785,11 +785,6 @@
         background: #e8f0fe;
     }
 
-    .color-option.selected {
-        border-color: #333 !important;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        transform: scale(1.1);
-    }
 
     .task-icon-option:hover {
         opacity: 0.8;
@@ -982,10 +977,6 @@
     }
     .color-swatch:hover {
       transform: scale(1.1);
-    }
-    .color-swatch.selected {
-      border-color: #333;
-      transform: scale(1.2);
     }
 
     .goal-header-content {
@@ -1556,19 +1547,6 @@ body.dark-mode #remove-schedule-btn:hover {
                             <div id="taskIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
                             <input type="hidden" id="taskIcon" value="">
                             
-                            <div id="task-color-picker-container" style="margin-top: 15px;">
-                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">cor:</label>
-                                <div id="taskColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                    <div class="color-option" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #ccc; cursor: pointer;" title="azul"></div>
-                                    <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;" title="amarelo"></div>
-                                    <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;" title="vermelho"></div>
-                                    <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;" title="verde"></div>
-                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;" title="rosa"></div>
-                                    <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;" title="roxo"></div>
-                                    <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;" title="laranja"></div>
-                                </div>
-                                <input type="hidden" id="taskIconColor" value="blue">
-                            </div>
                         </div>
                         <div id="recurrence-options" style="margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; align-items: center;">
                             <select id="recurrenceType">
@@ -1672,19 +1650,6 @@ body.dark-mode #remove-schedule-btn:hover {
                             <div id="transactionIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
                             <input type="hidden" id="transactionIcon">
                             
-                            <div id="transaction-color-picker-container" style="margin-top: 15px;">
-                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">cor:</label>
-                                <div id="transactionColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                    <div class="color-option" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #ccc; cursor: pointer;" title="azul"></div>
-                                    <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;" title="amarelo"></div>
-                                    <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;" title="vermelho"></div>
-                                    <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;" title="verde"></div>
-                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;" title="rosa"></div>
-                                    <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;" title="roxo"></div>
-                                    <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;" title="laranja"></div>
-                                </div>
-                                <input type="hidden" id="transactionIconColor" value="blue">
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1729,19 +1694,6 @@ body.dark-mode #remove-schedule-btn:hover {
                             <div id="goalIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
                             <input type="hidden" id="goalIcon" value="">
                             
-                            <div id="goal-color-picker-container" style="margin-top: 15px;">
-                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">cor:</label>
-                                <div id="goalColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                    <div class="color-option" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #ccc; cursor: pointer;" title="azul"></div>
-                                    <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;" title="amarelo"></div>
-                                    <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;" title="vermelho"></div>
-                                    <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;" title="verde"></div>
-                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;" title="rosa"></div>
-                                    <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;" title="roxo"></div>
-                                    <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;" title="laranja"></div>
-                                </div>
-                                <input type="hidden" id="goalIconColor" value="blue">
-                            </div>
                         </div>
                         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: center;">
                              <input type="number" id="newGoalInterestRate" placeholder="juros mensais (%)" step="0.01">
@@ -1904,19 +1856,6 @@ body.dark-mode #remove-schedule-btn:hover {
                 <div id="editor-list-icon-picker" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 140px; overflow-y: auto; padding: 5px; border-radius: 8px; background: rgba(0,0,0,0.05);"></div>
                 <input type="hidden" id="editor-list-icon-main">
                 
-                <div id="editor-list-color-picker-container" style="margin-top: 15px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">cor:</label>
-                    <div id="editorListColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <div class="color-option" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #ccc; cursor: pointer;" title="azul"></div>
-                        <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;" title="amarelo"></div>
-                        <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;" title="vermelho"></div>
-                        <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;" title="verde"></div>
-                        <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;" title="rosa"></div>
-                        <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;" title="roxo"></div>
-                        <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;" title="laranja"></div>
-                    </div>
-                    <input type="hidden" id="editorListIconColor" value="blue">
-                </div>
             </div>
 
             <hr>
@@ -1974,8 +1913,6 @@ body.dark-mode #remove-schedule-btn:hover {
     const buttonGroup = document.querySelector('.add-btn-group');
     const transactionIconPicker = document.getElementById('transactionIconPicker');
     const transactionIconHiddenInput = document.getElementById('transactionIcon');
-    const transactionIconColorInput = document.getElementById('transactionIconColor');
-    const transactionColorPicker = document.getElementById('transactionColorPicker');
     const showAddTransactionBtn = document.getElementById('show-add-transaction-form-btn');
     const addTransactionContainer = document.getElementById('add-transaction-container');
     const transactionFormTitle = document.getElementById('transaction-form-title');
@@ -2012,8 +1949,6 @@ body.dark-mode #remove-schedule-btn:hover {
     const closeInvestmentsViewBtn = document.getElementById('close-investments-view');
     const goalIconPicker = document.getElementById('goalIconPicker');
     const goalIconHiddenInput = document.getElementById('goalIcon');
-    const goalIconColorInput = document.getElementById('goalIconColor');
-    const goalColorPicker = document.getElementById('goalColorPicker');
     const openAddInvestmentFormBtn = document.getElementById('open-add-investment-form-btn');
     const investmentFormView = document.getElementById('investment-form-view');
     const backToInvestmentsListBtn = document.getElementById('back-to-investments-list-btn');
@@ -2042,8 +1977,6 @@ body.dark-mode #remove-schedule-btn:hover {
     const taskDescriptionInput = document.getElementById('taskDescription');
     const taskIconHiddenInput = document.getElementById('taskIcon');
     const taskIconPicker = document.getElementById('taskIconPicker');
-    const taskIconColorInput = document.getElementById('taskIconColor');
-    const taskColorPicker = document.getElementById('taskColorPicker');
     const addTaskBtn = document.getElementById('add-task-btn');
     const taskPriorityInput = document.getElementById('taskPriority'); 
     const recurrenceTypeInput = document.getElementById('recurrenceType');
@@ -2083,8 +2016,6 @@ body.dark-mode #remove-schedule-btn:hover {
     const editorListNameInput = document.getElementById('editor-list-name');
     const editorListIconPicker = document.getElementById('editor-list-icon-picker');
     const editorListIconInput = document.getElementById('editor-list-icon-main');
-    const editorListIconColorInput = document.getElementById('editorListIconColor');
-    const editorListColorPicker = document.getElementById('editorListColorPicker');
     const addScheduleBtn = document.getElementById('add-schedule-btn');
     const editorSchedulingSection = document.getElementById('editor-scheduling-section');
     const editorEventDateInput = document.getElementById('editor-event-date');
@@ -2201,7 +2132,39 @@ body.dark-mode #remove-schedule-btn:hover {
     }
 
     function saveCalendarTasks() { localStorage.setItem('calendarTasks', JSON.stringify(calendarTasks)); }
-    function loadCalendarTasks() { calendarTasks = JSON.parse(localStorage.getItem('calendarTasks')) || {}; }
+    
+    function fixIconPathsInCalendarTasks() {
+        // Função para corrigir caminhos de ícones antigos para usar sempre ícones azuis
+        let needsSave = false;
+        
+        for (const dateKey in calendarTasks) {
+            const tasks = calendarTasks[dateKey];
+            if (Array.isArray(tasks)) {
+                tasks.forEach(task => {
+                    if (task.icon && task.icon.includes('images/colored/')) {
+                        // Extrai o nome do arquivo do caminho atual
+                        const fileName = task.icon.split('/').pop();
+                        // Define o novo caminho sempre para ícones azuis
+                        const newIconPath = `./images/colored/blue/${fileName}`;
+                        if (task.icon !== newIconPath) {
+                            task.icon = newIconPath;
+                            needsSave = true;
+                        }
+                    }
+                });
+            }
+        }
+        
+        if (needsSave) {
+            saveCalendarTasks();
+        }
+    }
+    
+    function loadCalendarTasks() { 
+        calendarTasks = JSON.parse(localStorage.getItem('calendarTasks')) || {}; 
+        // Corrige caminhos de ícones antigos para usar sempre ícones azuis
+        fixIconPathsInCalendarTasks();
+    }
 
     function saveLists() {
         const lists = Array.from(listsContainer.querySelectorAll('.list')).map(listDiv => {
@@ -2754,25 +2717,6 @@ body.dark-mode #remove-schedule-btn:hover {
     };
 
 
-    function resetGoalIconsToBlue() {
-        // Reset da cor para azul (igual ao planner)
-        goalColorPicker.querySelectorAll('.color-option').forEach(option => {
-            option.classList.remove('selected');
-        });
-        const blueOption = goalColorPicker.querySelector('[data-color="blue"]');
-        if (blueOption) blueOption.classList.add('selected');
-        goalIconColorInput.value = 'blue';
-        
-        // Reset dos ícones para azul (igual ao planner)
-        goalIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-            const iconName = option.dataset.iconName;
-            const bluePath = getColoredIcons(iconName, 'blue');
-            option.querySelector('img').src = bluePath;
-        });
-        
-        const defaultOption = goalIconPicker.querySelector('.task-icon-option');
-        if (defaultOption) defaultOption.click();
-    }
 
     function cancelEditGoal() {
         editingGoalId = null;
@@ -2780,8 +2724,8 @@ body.dark-mode #remove-schedule-btn:hover {
     }
 
     function renderGoalIconPicker() {
-        // Usa exatamente a mesma lógica do planner
-        renderColoredIconPicker(goalIconPicker, goalIconHiddenInput, goalIconColorInput);
+        // Usa apenas ícones azuis
+        renderIconPicker(goalIconPicker, goalIconHiddenInput, taskIcons);
     }
 
     function renderInvestmentGoals() {
@@ -2814,9 +2758,6 @@ body.dark-mode #remove-schedule-btn:hover {
                 { name: 'orange', color: '#ff9800' }
             ];
             
-            let colorPickerHTML = newColorPalette.map(colorOption => 
-                `<div class="color-option ${goal.color === colorOption.color ? 'selected' : ''}" style="width: 30px; height: 30px; border-radius: 50%; background-color: ${colorOption.color}; border: 2px solid ${goal.color === colorOption.color ? '#333' : '#ccc'}; cursor: pointer;" data-color="${colorOption.name}" data-hex="${colorOption.color}" title="${colorOption.name}"></div>`
-            ).join('');
 
             card.innerHTML = `
                 <div style="position: relative;">
@@ -2836,8 +2777,6 @@ body.dark-mode #remove-schedule-btn:hover {
                         <input type="checkbox" class="editing-goal-has-deadline" id="deadline-check-${goal.id}" ${goal.deadline ? 'checked' : ''} style="width:auto; vertical-align: middle;">
                         <label for="deadline-check-${goal.id}" style="font-size:12px; vertical-align: middle; cursor: pointer;">definir prazo</label>
                     </div>
-                    <label style="font-size: 12px; font-weight: bold; margin-top: 10px; display: block;">cor:</label>
-                    <div class="color-picker">${colorPickerHTML}</div>
                     
                     <label style="font-size: 12px; font-weight: bold; margin-top: 10px; display: block;">ícone:</label>
                     <div class="goal-icon-picker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div> 
@@ -2873,59 +2812,8 @@ body.dark-mode #remove-schedule-btn:hover {
                 iconPickerContainer.appendChild(optionDiv);
             }
 
-            // Inicializa os ícones com a cor atual da meta
-            const currentColor = goal.color;
-            const colorMap = {
-                '#42a5f5': 'blue',
-                '#7ed957': 'green',
-                '#ff5252': 'red',
-                '#ffeb3b': 'yellow',
-                '#ff69b4': 'pink',
-                '#9c27b0': 'purple',
-                '#ff9800': 'orange'
-            };
-            const currentColorName = colorMap[currentColor] || 'blue';
             
-            // Atualiza todos os ícones com a cor atual
-            const allIconOptions = iconPickerContainer.querySelectorAll('.task-icon-option');
-            allIconOptions.forEach(iconOption => {
-                const iconName = iconOption.dataset.iconName;
-                const coloredPath = getColoredIcons(iconName, currentColorName);
-                iconOption.querySelector('img').src = coloredPath;
-            });
 
-            // Event listeners para o seletor de cores na edição
-            const colorOptions = card.querySelectorAll('.color-option');
-            colorOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    // Remove seleção anterior
-                    colorOptions.forEach(opt => {
-                        opt.style.border = '2px solid #ccc';
-                        opt.classList.remove('selected');
-                    });
-                    
-                    // Seleciona a nova cor
-                    option.style.border = '3px solid #333';
-                    option.classList.add('selected');
-                    
-                    // Atualiza TODOS os ícones com a nova cor
-                    const selectedColor = option.dataset.color;
-                    const allIconOptions = iconPickerContainer.querySelectorAll('.task-icon-option');
-                    allIconOptions.forEach(iconOption => {
-                        const iconName = iconOption.dataset.iconName;
-                        const coloredPath = getColoredIcons(iconName, selectedColor);
-                        iconOption.querySelector('img').src = coloredPath;
-                    });
-                    
-                    // Atualiza o ícone selecionado no input hidden
-                    const selectedIcon = iconPickerContainer.querySelector('.selected');
-                    if (selectedIcon) {
-                        const iconName = selectedIcon.dataset.iconName;
-                        const coloredPath = getColoredIcons(iconName, selectedColor);
-                        hiddenIconInput.value = coloredPath;
-                    }
-                });
-            });
 
         } else {
             
@@ -3034,20 +2922,10 @@ body.dark-mode #remove-schedule-btn:hover {
       const interestRate = parseFloat(document.getElementById('newGoalInterestRate').value) || 0;
       const deadline = newGoalHasDeadlineCheckbox.checked ? newGoalDeadlineInput.value : null;
       const iconPath = goalIconHiddenInput.value;
-      const iconColor = goalIconColorInput.value;
 
       if (name && !isNaN(target) && target > 0) {
-        // Usa a cor selecionada pelo usuário (mesmas cores do planner)
-        const colorMap = {
-          'blue': '#3586ff',
-          'green': '#4caf50', 
-          'red': '#f44336',
-          'yellow': '#ffeb3b',
-          'pink': '#ff69b4',
-          'purple': '#9c27b0',
-          'orange': '#ff9800'
-        };
-        const color = colorMap[iconColor] || goalColors[investmentGoals.length % goalColors.length];
+        // Usa sempre a cor azul
+        const color = '#3586ff';
         
         investmentGoals.push({
           id: Date.now(),
@@ -3069,8 +2947,6 @@ body.dark-mode #remove-schedule-btn:hover {
         goalsContainer.style.display = 'block';
         openAddInvestmentFormBtn.style.display = 'block';
         
-        // Reseta os ícones para azul
-        resetGoalIconsToBlue();
       } else {
         alert('por favor, preencha o nome e um valor válido para a meta.');
       }
@@ -3107,14 +2983,8 @@ body.dark-mode #remove-schedule-btn:hover {
             const hasDeadline = e.target.querySelector('.editing-goal-has-deadline').checked;
             const newDeadline = hasDeadline ? e.target.querySelector('.editing-goal-deadline').value : null;
 
-            const selectedColorOption = e.target.querySelector('.color-option.selected');
             const newIcon = e.target.querySelector('.editing-goal-icon-input').value;
-            
-            if (!selectedColorOption) {
-                alert('erro: nenhuma cor selecionada.');
-                return;
-            }
-            const newColor = selectedColorOption.dataset.hex;
+            const newColor = '#3586ff'; // Sempre azul
 
             if (newName && !isNaN(newTarget) && newTarget > 0) {
                 goal.name = newName;
@@ -3152,13 +3022,6 @@ body.dark-mode #remove-schedule-btn:hover {
         else if (e.target.matches('.edit-goal-form .delete-btn')) {
             editingGoalId = null;
             renderInvestmentGoals();
-        }
-        else if (e.target.matches('.color-swatch')) {
-            const currentSelected = card.querySelector('.color-swatch.selected');
-            if (currentSelected) {
-                currentSelected.classList.remove('selected');
-            }
-            e.target.classList.add('selected');
         }
         else if (e.target.matches('.editing-goal-has-deadline')) {
             const deadlineInput = card.querySelector('.editing-goal-deadline');
@@ -3536,20 +3399,10 @@ body.dark-mode #remove-schedule-btn:hover {
         taskTimeInput.value = '09:00';
         taskPriorityInput.checked = false; 
         
-        // Reset da cor para azul
-        taskColorPicker.querySelectorAll('.color-option').forEach(option => {
-            option.classList.remove('selected');
-        });
-        const blueOption = taskColorPicker.querySelector('[data-color="blue"]');
-        if (blueOption) blueOption.classList.add('selected');
-        taskIconColorInput.value = 'blue';
-        
-        // Reset dos ícones para azul
-        taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-            const iconName = option.dataset.iconName;
-            const bluePath = getColoredIcons(iconName, 'blue');
-            option.querySelector('img').src = bluePath;
-        });
+        // Garante que os ícones estejam renderizados
+        if (taskIconPicker && taskIconPicker.children.length === 0) {
+            renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons);
+        }
         
         const defaultOption = taskIconPicker.querySelector('.task-icon-option');
         if (defaultOption) defaultOption.click();
@@ -3623,19 +3476,7 @@ body.dark-mode #remove-schedule-btn:hover {
             option.classList.toggle('selected', option.dataset.iconName === iconName);
         });
         
-        // Seleciona a cor correta
-        taskColorPicker.querySelectorAll('.color-option').forEach(option => {
-            option.classList.toggle('selected', option.dataset.color === iconColor);
-        });
-        taskIconColorInput.value = iconColor;
         
-        // Aplica a cor selecionada ao ícone escolhido
-        const selectedIconOption = taskIconPicker.querySelector('.task-icon-option.selected');
-        if (selectedIconOption) {
-            const selectedIconName = selectedIconOption.dataset.iconName;
-            const coloredPath = getColoredIcons(selectedIconName, iconColor);
-            selectedIconOption.querySelector('img').src = coloredPath;
-        }
 
         if (taskToEdit.recurrenceId) {
             recurrenceTypeInput.value = 'none';
@@ -3926,44 +3767,20 @@ body.dark-mode #remove-schedule-btn:hover {
             "escova de dente": "toothbrush"
         };
         
-        const colorMap = {
-            'blue': 'blue',
-            'yellow': 'yellow', 
-            'red': 'red',
-            'green': 'green',
-            'pink': 'pink',
-            'purple': 'purple',
-            'orange': 'orange'
-        };
-        
-        const colorFolder = colorMap[color] || 'blue';
+        // Sempre retorna ícones azuis
         const fileName = iconNameMap[iconName] || iconName;
-        
-        return `./images/colored/${colorFolder}/${fileName}.svg`;
+        return `./images/colored/blue/${fileName}.svg`;
     }
 
-    function getAllColoredIcons() {
-        // Retorna todos os ícones em todas as cores disponíveis
-        const coloredIcons = {};
-        const colors = ['blue', 'yellow', 'red', 'green', 'pink', 'purple', 'orange'];
-        
-        // Para cada ícone base, cria versões coloridas
-        Object.keys(taskIcons).forEach(iconName => {
-            if (iconName !== 'nenhum') {
-                colors.forEach(color => {
-                    const coloredKey = `${iconName}_${color}`;
-                    coloredIcons[coloredKey] = getColoredIcons(iconName, color);
-                });
-            }
-        });
-        
-        return coloredIcons;
-    }
 
     function renderIconPicker(pickerElement, hiddenInputElement, iconObject, onSelectCallback = null) {
-        if (!pickerElement) return;
+        if (!pickerElement) {
+            console.error('renderIconPicker: pickerElement não encontrado');
+            return;
+        }
         pickerElement.innerHTML = '';
         const icons = iconObject || taskIcons;
+        
 
         for (const key in icons) {
             const path = icons[key];
@@ -3985,6 +3802,8 @@ body.dark-mode #remove-schedule-btn:hover {
             });
             pickerElement.appendChild(option);
         }
+        
+        
 
         if(hiddenInputElement) {
             const firstOption = pickerElement.querySelector('.task-icon-option');
@@ -3994,56 +3813,6 @@ body.dark-mode #remove-schedule-btn:hover {
         }
     }
 
-    function renderColoredIconPicker(pickerElement, hiddenInputElement, colorInputElement) {
-        if (!pickerElement) return;
-        pickerElement.innerHTML = '';
-        
-        console.log('renderColoredIconPicker chamada para:', pickerElement.id);
-        
-        // Usa os nomes em inglês diretamente (como no planner)
-        const iconNames = [
-            "list", "shopping", "health", "pills", "tooth", "money", "heart", "pet", "gym", "meditation", "work", "hair", "food", "gift", "birthday", "party", "vacation", "trip", "meeting", "computer", "movie", "study", "house", "car", "picture", "nails", "lotion", "write", "art", "flower", "plant", "apple", "box", "brain", "buy", "carrot", "cigarette", "date", "icecream", "person", "phone", "popcorn", "shirt", "fute", "ping", "voleyball", "dna", "eye", "injection", "judge", "leaf", "slug", "star", "toothbrush"
-        ];
-        
-        console.log('Ícones disponíveis:', iconNames);
-        
-        // Renderiza os ícones usando nomes em inglês
-        iconNames.forEach(iconName => {
-            const option = document.createElement('div');
-            option.className = 'task-icon-option';
-            option.dataset.iconName = iconName;
-            option.title = iconName;
-            
-            // Usa o ícone azul da pasta colored como padrão
-            const defaultPath = `./images/colored/blue/${iconName}.svg`;
-            console.log(`Ícone ${iconName} -> ${defaultPath}`);
-            option.innerHTML = `<img src="${defaultPath}" alt="${iconName}">`;
-            
-            option.addEventListener('click', function() {
-                pickerElement.querySelector('.selected')?.classList.remove('selected');
-                this.classList.add('selected');
-                
-                // Atualiza o ícone com a cor selecionada
-                const selectedColor = colorInputElement.value;
-                const coloredPath = `./images/colored/${selectedColor}/${iconName}.svg`;
-                hiddenInputElement.value = coloredPath;
-                
-                // Atualiza a imagem exibida
-                this.querySelector('img').src = coloredPath;
-            });
-            
-            pickerElement.appendChild(option);
-        });
-
-        // Seleciona o primeiro ícone por padrão
-        const firstOption = pickerElement.querySelector('.task-icon-option');
-        if (firstOption) {
-            firstOption.click();
-        }
-        
-        // Garante que a cor padrão seja azul
-        colorInputElement.value = 'blue';
-    }
     
     function deleteListAndLinkedTask(listDiv, listName) {
         const listIdToDelete = listDiv.dataset.listId;
@@ -4826,36 +4595,6 @@ body.dark-mode #remove-schedule-btn:hover {
         console.error('backToInvestmentsListBtn não encontrado');
     }
 
-    // Event listeners para o seletor de cores das metas de investimento (igual ao planner)
-    goalColorPicker.addEventListener('click', (e) => {
-        const colorOption = e.target.closest('.color-option');
-        if (colorOption) {
-            // Remove seleção anterior
-            goalColorPicker.querySelectorAll('.color-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            
-            // Seleciona nova cor
-            colorOption.classList.add('selected');
-            const selectedColor = colorOption.dataset.color;
-            goalIconColorInput.value = selectedColor;
-            
-            // Atualiza TODOS os ícones com a nova cor (igual ao planner)
-            goalIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
-                const iconName = iconOption.dataset.iconName;
-                const coloredPath = getColoredIcons(iconName, selectedColor);
-                iconOption.querySelector('img').src = coloredPath;
-            });
-            
-            // Atualiza o valor do ícone selecionado
-            const selectedIcon = goalIconPicker.querySelector('.task-icon-option.selected');
-            if (selectedIcon) {
-                const iconName = selectedIcon.dataset.iconName;
-                const coloredPath = getColoredIcons(iconName, selectedColor);
-                goalIconHiddenInput.value = coloredPath;
-            }
-        }
-    });
 
     typeInput.addEventListener('change', (e) => {
         renderCategorySelect(e.target.value === 'receita');
@@ -4890,98 +4629,8 @@ body.dark-mode #remove-schedule-btn:hover {
         weeklyRecurrenceOptions.style.display = recurrenceTypeInput.value === 'weekly' ? 'block' : 'none';
     });
 
-    // Event listeners para o seletor de cores
-    taskColorPicker.addEventListener('click', (e) => {
-        const colorOption = e.target.closest('.color-option');
-        if (colorOption) {
-            // Remove seleção anterior
-            taskColorPicker.querySelectorAll('.color-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            
-            // Seleciona nova cor
-            colorOption.classList.add('selected');
-            const selectedColor = colorOption.dataset.color;
-            taskIconColorInput.value = selectedColor;
-            
-            // Atualiza TODOS os ícones com a nova cor
-            taskIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
-                const iconName = iconOption.dataset.iconName;
-                const coloredPath = getColoredIcons(iconName, selectedColor);
-                iconOption.querySelector('img').src = coloredPath;
-            });
-            
-            // Atualiza o valor do ícone selecionado
-            const selectedIcon = taskIconPicker.querySelector('.task-icon-option.selected');
-            if (selectedIcon) {
-                const iconName = selectedIcon.dataset.iconName;
-                const coloredPath = getColoredIcons(iconName, selectedColor);
-                taskIconHiddenInput.value = coloredPath;
-            }
-        }
-    });
 
-    // Event listeners para o seletor de cores das transações
-    transactionColorPicker.addEventListener('click', (e) => {
-        const colorOption = e.target.closest('.color-option');
-        if (colorOption) {
-            // Remove seleção anterior
-            transactionColorPicker.querySelectorAll('.color-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            
-            // Seleciona nova cor
-            colorOption.classList.add('selected');
-            const selectedColor = colorOption.dataset.color;
-            transactionIconColorInput.value = selectedColor;
-            
-            // Atualiza TODOS os ícones com a nova cor
-            transactionIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
-                const iconName = iconOption.dataset.iconName;
-                const coloredPath = getColoredIcons(iconName, selectedColor);
-                iconOption.querySelector('img').src = coloredPath;
-            });
-            
-            // Atualiza o valor do ícone selecionado
-            const selectedIcon = transactionIconPicker.querySelector('.task-icon-option.selected');
-            if (selectedIcon) {
-                const iconName = selectedIcon.dataset.iconName;
-                const coloredPath = getColoredIcons(iconName, selectedColor);
-                transactionIconHiddenInput.value = coloredPath;
-            }
-        }
-    });
 
-    // Event listeners para o seletor de cores do editor de listas
-    editorListColorPicker.addEventListener('click', (e) => {
-        const colorOption = e.target.closest('.color-option');
-        if (colorOption) {
-            // Remove seleção anterior
-            editorListColorPicker.querySelectorAll('.color-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            
-            // Seleciona nova cor
-            colorOption.classList.add('selected');
-            const selectedColor = colorOption.dataset.color;
-            editorListIconColorInput.value = selectedColor;
-            
-            // Atualiza TODOS os ícones com a nova cor
-            editorListIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
-                const iconName = iconOption.dataset.iconName;
-                const coloredPath = getColoredIcons(iconName, selectedColor);
-                iconOption.querySelector('img').src = coloredPath;
-            });
-            
-            // Atualiza o valor do ícone selecionado
-            const selectedIcon = editorListIconPicker.querySelector('.task-icon-option.selected');
-            if (selectedIcon) {
-                const iconName = selectedIcon.dataset.iconName;
-                const coloredPath = getColoredIcons(iconName, selectedColor);
-                editorListIconInput.value = coloredPath;
-            }
-        }
-    });
     
     listRecurrenceTypeInput.addEventListener('change', () => {
         const isRecurrent = listRecurrenceTypeInput.value !== 'none';
@@ -5076,16 +4725,12 @@ body.dark-mode #remove-schedule-btn:hover {
         currentCalendarDate = new Date();
         initCalendarSelect();
         
-        renderColoredIconPicker(taskIconPicker, taskIconHiddenInput, taskIconColorInput);
-        renderColoredIconPicker(transactionIconPicker, transactionIconHiddenInput, transactionIconColorInput);
-        renderColoredIconPicker(editorListIconPicker, editorListIconInput, editorListIconColorInput);
-        renderColoredIconPicker(goalIconPicker, goalIconHiddenInput, goalIconColorInput);
+        renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons);
+        renderIconPicker(transactionIconPicker, transactionIconHiddenInput, taskIcons);
+        renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons);
+        renderIconPicker(goalIconPicker, goalIconHiddenInput, taskIcons);
         renderIconPicker(listIconPickerGrid, null, taskIcons, selectListIcon);
         
-        // Inicializa o seletor de cores das metas de investimento
-        if (goalIconColorInput) {
-            goalIconColorInput.value = 'blue';
-        }
         
         // Verifica se todos os elementos de investimento estão disponíveis
         if (openAddInvestmentFormBtn && investmentFormView && backToInvestmentsListBtn) {
