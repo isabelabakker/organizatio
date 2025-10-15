@@ -795,6 +795,41 @@
         height: 100%;
         object-fit: contain;
     }
+
+    /* --- ESTILOS PARA SELETORES DE COR --- */
+    .color-option {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+        cursor: pointer;
+        transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .color-option:hover {
+        transform: scale(1.1);
+        border-color: #333;
+    }
+
+    .color-option.selected {
+        border-color: #333 !important;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        transform: scale(1.1);
+    }
+
+    /* Tema escuro para seletores de cor */
+    body.dark-mode .color-option {
+        border-color: #555;
+    }
+
+    body.dark-mode .color-option:hover {
+        border-color: #fff;
+    }
+
+    body.dark-mode .color-option.selected {
+        border-color: #fff !important;
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
     
     #listDetailsItems {
         list-style: none;
@@ -1547,6 +1582,19 @@ body.dark-mode #remove-schedule-btn:hover {
                             <div id="taskIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
                             <input type="hidden" id="taskIcon" value="">
                             
+                            <div id="task-color-picker-container" style="margin-top: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">cor:</label>
+                                <div id="taskColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <div class="color-option selected" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #333; cursor: pointer;" title="azul"></div>
+                                    <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;" title="verde"></div>
+                                    <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;" title="vermelho"></div>
+                                    <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;" title="amarelo"></div>
+                                    <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;" title="roxo"></div>
+                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;" title="rosa"></div>
+                                    <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;" title="laranja"></div>
+                                </div>
+                                <input type="hidden" id="taskIconColor" value="blue">
+                            </div>
                         </div>
                         <div id="recurrence-options" style="margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; align-items: center;">
                             <select id="recurrenceType">
@@ -1977,6 +2025,8 @@ body.dark-mode #remove-schedule-btn:hover {
     const taskDescriptionInput = document.getElementById('taskDescription');
     const taskIconHiddenInput = document.getElementById('taskIcon');
     const taskIconPicker = document.getElementById('taskIconPicker');
+    const taskIconColorInput = document.getElementById('taskIconColor');
+    const taskColorPicker = document.getElementById('taskColorPicker');
     const addTaskBtn = document.getElementById('add-task-btn');
     const taskPriorityInput = document.getElementById('taskPriority'); 
     const recurrenceTypeInput = document.getElementById('recurrenceType');
@@ -3401,7 +3451,17 @@ body.dark-mode #remove-schedule-btn:hover {
         
         // Garante que os ícones estejam renderizados
         if (taskIconPicker && taskIconPicker.children.length === 0) {
-            renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons);
+            renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons, null, taskColorPicker);
+        }
+        
+        // Reset da cor para azul
+        if (taskColorPicker && taskIconColorInput) {
+            taskColorPicker.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            const blueOption = taskColorPicker.querySelector('[data-color="blue"]');
+            if (blueOption) blueOption.classList.add('selected');
+            taskIconColorInput.value = 'blue';
         }
         
         const defaultOption = taskIconPicker.querySelector('.task-icon-option');
@@ -3767,13 +3827,13 @@ body.dark-mode #remove-schedule-btn:hover {
             "escova de dente": "toothbrush"
         };
         
-        // Sempre retorna ícones azuis
+        // Retorna ícones com a cor especificada
         const fileName = iconNameMap[iconName] || iconName;
-        return `./images/colored/blue/${fileName}.svg`;
+        return `./images/colored/${color}/${fileName}.svg`;
     }
 
 
-    function renderIconPicker(pickerElement, hiddenInputElement, iconObject, onSelectCallback = null) {
+    function renderIconPicker(pickerElement, hiddenInputElement, iconObject, onSelectCallback = null, colorPickerElement = null) {
         if (!pickerElement) {
             console.error('renderIconPicker: pickerElement não encontrado');
             return;
@@ -3781,14 +3841,35 @@ body.dark-mode #remove-schedule-btn:hover {
         pickerElement.innerHTML = '';
         const icons = iconObject || taskIcons;
         
+        // Determina a cor atual
+        let currentColor = 'blue';
+        if (colorPickerElement) {
+            const selectedColorOption = colorPickerElement.querySelector('.color-option.selected');
+            if (selectedColorOption) {
+                currentColor = selectedColorOption.dataset.color;
+            }
+        }
 
         for (const key in icons) {
-            const path = icons[key];
+            // Para o seletor de tarefas, usa cores dinâmicas
+            let iconPath;
+            if (colorPickerElement && pickerElement.id === 'taskIconPicker') {
+                iconPath = getColoredIcons(key, currentColor);
+            } else {
+                iconPath = icons[key]; // Para outros seletores, mantém o comportamento atual
+            }
+            
             const option = document.createElement('div');
             option.className = 'task-icon-option';
-            option.dataset.iconPath = path;
-            option.title = key;
-            option.innerHTML = `<img src="${path}" alt="${key}">`;
+            option.dataset.iconPath = iconPath;
+            option.dataset.iconName = key;
+            option.title = '';
+            
+            // Cria a imagem com timestamp para evitar cache
+            const img = document.createElement('img');
+            img.src = iconPath + '?t=' + Date.now();
+            img.alt = key;
+            option.appendChild(img);
             
             option.addEventListener('click', function() {
                 if (hiddenInputElement) {
@@ -3797,7 +3878,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     hiddenInputElement.value = this.getAttribute('data-icon-path');
                 }
                 if (onSelectCallback) {
-                    onSelectCallback(path);
+                    onSelectCallback(iconPath);
                 }
             });
             pickerElement.appendChild(option);
@@ -4510,6 +4591,56 @@ body.dark-mode #remove-schedule-btn:hover {
         taskFormView.style.display = 'block';
     });
 
+    // Event listener para o seletor de cores das tarefas
+    if (taskColorPicker) {
+        taskColorPicker.addEventListener('click', (e) => {
+            const colorOption = e.target.closest('.color-option');
+            if (colorOption) {
+                // Remove seleção anterior
+                taskColorPicker.querySelectorAll('.color-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Seleciona nova cor
+                colorOption.classList.add('selected');
+                const selectedColor = colorOption.dataset.color;
+                taskIconColorInput.value = selectedColor;
+                
+                // Atualiza TODOS os ícones com a nova cor
+                taskIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
+                    const iconName = iconOption.dataset.iconName;
+                    const coloredPath = getColoredIcons(iconName, selectedColor);
+                    
+                    // Abordagem mais direta para forçar o reload
+                    const img = iconOption.querySelector('img');
+                    
+                    // Remove a imagem completamente e recria
+                    img.remove();
+                    
+                    // Cria nova imagem
+                    const newImg = document.createElement('img');
+                    newImg.src = coloredPath;
+                    newImg.alt = iconName;
+                    newImg.style.width = '100%';
+                    newImg.style.height = '100%';
+                    newImg.style.objectFit = 'contain';
+                    newImg.style.borderRadius = '5px';
+                    
+                    iconOption.appendChild(newImg);
+                    iconOption.dataset.iconPath = coloredPath;
+                });
+                
+                // Atualiza o valor do ícone selecionado
+                const selectedIcon = taskIconPicker.querySelector('.task-icon-option.selected');
+                if (selectedIcon) {
+                    const iconName = selectedIcon.dataset.iconName;
+                    const coloredPath = getColoredIcons(iconName, selectedColor);
+                    taskIconHiddenInput.value = coloredPath;
+                }
+            }
+        });
+    }
+
     closeDayViewBtn.addEventListener('click', () => {
         plannerDetailsContainer.style.display = 'none';
     });
@@ -4725,7 +4856,7 @@ body.dark-mode #remove-schedule-btn:hover {
         currentCalendarDate = new Date();
         initCalendarSelect();
         
-        renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons);
+        renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons, null, taskColorPicker);
         renderIconPicker(transactionIconPicker, transactionIconHiddenInput, taskIcons);
         renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons);
         renderIconPicker(goalIconPicker, goalIconHiddenInput, taskIcons);
