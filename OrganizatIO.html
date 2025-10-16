@@ -250,7 +250,7 @@
         color: white;
     }
     
-    #manage-categories-btn {
+    #manage-categories-btn, #manage-categories-btn-budgets {
         background: #9E9E9E;
         color: white;
         border: none;
@@ -258,13 +258,15 @@
         border-radius: 10px;
         cursor: pointer;
         text-align: center;
-        flex-grow: 1;
         transition: background 0.2s;
         display: inline-flex;
         justify-content: center;
         align-items: center;
+        gap: 5px;
+        min-width: 40px;
+        height: 40px;
     }
-    #manage-categories-btn:hover {
+    #manage-categories-btn:hover, #manage-categories-btn-budgets:hover {
         background: #757575;
     }
     
@@ -301,7 +303,7 @@
       align-items: center;
     }
 
-    #manage-categories-btn img {
+    #manage-categories-btn img, #manage-categories-btn-budgets img {
         width: 16px;
         height: 16px;
         filter: brightness(0) invert(1);
@@ -1226,11 +1228,11 @@
         background-color: #343a40;
     }
     
-    body.dark-mode #manage-categories-btn {
+    body.dark-mode #manage-categories-btn, body.dark-mode #manage-categories-btn-budgets {
         background: #616161;
         color: white;
     }
-    body.dark-mode #manage-categories-btn:hover {
+    body.dark-mode #manage-categories-btn:hover, body.dark-mode #manage-categories-btn-budgets:hover {
         background: #424242;
     }
     
@@ -1690,7 +1692,6 @@ body.dark-mode #remove-schedule-btn:hover {
                             <input type="number" id="value" placeholder="r$" step="0.01" required>
                             <div class="add-btn-group">
                                 <button type="submit" class="add-btn" id="submit-expense-btn">adicionar</button>
-                                <button type="button" id="manage-categories-btn"><img src="images/buttons/settings.svg" alt="Gerenciar"></button>
                             </div>
                         </form>
                     </div>
@@ -1703,6 +1704,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         <select id="categoryLimitCategory" required></select>
                         <input type="number" id="categoryLimitValue" placeholder="limite (R$)" step="0.01" required>
                         <button type="submit" class="add-btn">salvar limite</button>
+                        <button type="button" id="manage-categories-btn-budgets"><img src="images/buttons/settings.svg" alt="Gerenciar"></button>
                     </form>
                     <table style="width: 100%;">
                         <tbody id="category-spending-list"></tbody>
@@ -1715,6 +1717,68 @@ body.dark-mode #remove-schedule-btn:hover {
                     
                     <!-- Lista de metas existentes -->
                     <div id="goals-container"></div>
+                </div>
+
+                <!-- Seção de Gerenciamento de Categorias -->
+                <div id="category-section" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <button class="close-button back-button" id="back-from-categories" style="position: relative; left: 0; top: 0;"><img src="images/buttons/back.svg" alt="Voltar"></button>
+                        <button class="close-button" id="close-category-section"><img src="images/buttons/close.svg" alt="Fechar"></button>
+                    </div>
+                    <h3 style="margin-top:0;">gerenciar categorias</h3>
+
+                    <!-- Formulário de Adicionar Categoria -->
+                    <div id="add-category-form" style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
+                        <select id="newCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid #ccc;">
+                            <option value="despesa">despesa</option>
+                            <option value="receita">receita</option>
+                        </select>
+                        <input type="text" id="newCategoryName" placeholder="nome da nova categoria" style="flex-grow: 1;">
+                        <button id="addCategoryButton" class="add-btn">adicionar</button>
+                    </div>
+
+                    <!-- Formulário de Editar Categoria -->
+                    <div id="edit-category-form" style="display: none; margin-bottom: 20px; padding: 15px; border: 2px solid #3586ff; border-radius: 10px; background: var(--secondary-bg);">
+                        <h4 style="margin: 0 0 15px 0; color: #3586ff;">editando categoria</h4>
+                        <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center;">
+                            <select id="editCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color);">
+                                <option value="despesa">despesa</option>
+                                <option value="receita">receita</option>
+                            </select>
+                            <input type="text" id="editCategoryName" placeholder="nome da categoria" style="flex-grow: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color);">
+                            <button id="saveCategoryButton" class="add-btn" style="background: #4CAF50;">salvar</button>
+                            <button id="cancelEditButton" class="add-btn" style="background: #9E9E9E;">cancelar</button>
+                        </div>
+                    </div>
+
+                    <!-- Seletor de Ícone e Cor para Categorias -->
+                    <div id="category-icon-picker-container" style="padding: 15px 0; border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 20px; background: var(--secondary-bg);">
+                        <label style="display: block; margin-bottom: 10px; font-weight: bold; color: var(--text-color);">ícone da categoria:</label>
+                        <div id="categoryIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;"></div>
+                        <input type="hidden" id="categoryIcon" value="">
+                        
+                        <div id="category-color-picker-container">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: var(--text-color);">cor da categoria:</label>
+                            <div id="categoryColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <div class="color-option selected" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #333; cursor: pointer;"></div>
+                                <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;"></div>
+                                <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;"></div>
+                                <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;"></div>
+                                <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;"></div>
+                                <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;"></div>
+                                <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;"></div>
+                            </div>
+                            <input type="hidden" id="categoryIconColor" value="blue">
+                        </div>
+                    </div>
+
+                    <h4>categorias de despesa</h4>
+                    <div id="expense-category-list-container"></div>
+
+                    <hr style="border-top: 1px solid #ddd; margin: 15px 0;">
+
+                    <h4>categorias de receita</h4>
+                    <div id="revenue-category-list-container"></div>
                     
                     <!-- Botão para adicionar nova meta -->
                     <button id="open-add-investment-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar investimento</button>
@@ -1826,66 +1890,6 @@ body.dark-mode #remove-schedule-btn:hover {
     </div>
     </div>
 
-  <!-- Seção de Gerenciamento de Categorias -->
-  <div id="category-section" class="mensal-content-section" style="display: none;">
-    <div style="padding: 20px;">
-      <button class="close-button back-button" onclick="closeCategorySection()"><img src="images/buttons/back.svg" alt="Voltar"></button>
-      <h3 style="margin-top:0;">gerenciar categorias</h3>
-
-      <!-- Formulário de Adicionar Categoria -->
-      <div id="add-category-form" style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
-        <select id="newCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid #ccc;">
-          <option value="despesa">despesa</option>
-          <option value="receita">receita</option>
-        </select>
-        <input type="text" id="newCategoryName" placeholder="nome da nova categoria" style="flex-grow: 1;">
-        <button id="addCategoryButton" class="add-btn">adicionar</button>
-      </div>
-
-      <!-- Formulário de Editar Categoria -->
-      <div id="edit-category-form" style="display: none; margin-bottom: 20px; padding: 15px; border: 2px solid #3586ff; border-radius: 10px; background: var(--secondary-bg);">
-        <h4 style="margin: 0 0 15px 0; color: #3586ff;">editando categoria</h4>
-        <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center;">
-          <select id="editCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color);">
-            <option value="despesa">despesa</option>
-            <option value="receita">receita</option>
-          </select>
-          <input type="text" id="editCategoryName" placeholder="nome da categoria" style="flex-grow: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color);">
-          <button id="saveCategoryButton" class="add-btn" style="background: #4CAF50;">salvar</button>
-          <button id="cancelEditButton" class="add-btn" style="background: #9E9E9E;">cancelar</button>
-        </div>
-      </div>
-
-      <!-- Seletor de Ícone e Cor para Categorias -->
-      <div id="category-icon-picker-container" style="padding: 15px 0; border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 20px; background: var(--secondary-bg);">
-        <label style="display: block; margin-bottom: 10px; font-weight: bold; color: var(--text-color);">ícone da categoria:</label>
-        <div id="categoryIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;"></div>
-        <input type="hidden" id="categoryIcon" value="">
-        
-        <div id="category-color-picker-container">
-          <label style="display: block; margin-bottom: 5px; font-weight: bold; color: var(--text-color);">cor da categoria:</label>
-          <div id="categoryColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <div class="color-option selected" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #333; cursor: pointer;"></div>
-            <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;"></div>
-            <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;"></div>
-            <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;"></div>
-            <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;"></div>
-            <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;"></div>
-            <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;"></div>
-          </div>
-          <input type="hidden" id="categoryIconColor" value="blue">
-        </div>
-      </div>
-
-      <h4>categorias de despesa</h4>
-      <div id="expense-category-list-container"></div>
-
-      <hr style="border-top: 1px solid #ddd; margin: 15px 0;">
-
-      <h4>categorias de receita</h4>
-      <div id="revenue-category-list-container"></div>
-    </div>
-  </div>
   
   <!-- Seção de Detalhes de Tarefa -->
   <div id="description-section" class="mensal-content-section" style="display: none;">
@@ -1996,7 +2000,7 @@ body.dark-mode #remove-schedule-btn:hover {
     const backToTransactionsListBtn = document.getElementById('back-to-transactions-list-btn');
     
     // --- ELEMENTOS DE GERENCIAMENTO DE CATEGORIAS ---
-    const manageCategoriesBtn = document.getElementById('manage-categories-btn');
+    const manageCategoriesBtnBudgets = document.getElementById('manage-categories-btn-budgets');
     const categorySection = document.getElementById('category-section');
     const newCategoryNameInput = document.getElementById('newCategoryName');
     const addCategoryButton = document.getElementById('addCategoryButton');
@@ -2335,40 +2339,16 @@ body.dark-mode #remove-schedule-btn:hover {
     // MODAIS (APENAS PARA LISTAS E PARTES DE FINANÇAS)
     // ----------------------------------------------------
     function openCategorySection() {
-        // Track current section as previous
-        const currentActiveSection = document.querySelector('.mensal-content-section[style*="block"]');
-        if (currentActiveSection) {
-            previousSection = currentActiveSection.id;
-        }
+        // Esconde outras views financeiras
+        transactionsView.style.display = 'none';
+        budgetsView.style.display = 'none';
+        investmentsView.style.display = 'none';
         
-        // Hide all other sections first
-        document.querySelectorAll('.mensal-content-section').forEach(section => section.style.display = 'none');
-        
-        // Show category section
+        // Mostra a seção de categorias
         categorySection.style.display = 'block';
         
         editingCategoryId = null;
         renderCategoryModalList();
-    }
-    function closeCategorySection() {
-        categorySection.style.display = 'none';
-        
-        // Volta para a tela de adicionar transação
-        if (addTransactionContainer) {
-            addTransactionContainer.style.display = 'block';
-        }
-        if (transactionListView) {
-            transactionListView.style.display = 'none';
-        }
-        
-        // Se estiver na aba financeiro, mostra o dashboard financeiro
-        const financeiroSection = document.getElementById('financeiro-section');
-        if (financeiroSection && financeiroSection.style.display === 'block') {
-            const financeDashboardMain = document.getElementById('finance-dashboard-main');
-            if (financeDashboardMain) {
-                financeDashboardMain.style.display = 'block';
-            }
-        }
     }
     
     function openDescriptionSection(description, date) {
@@ -3435,7 +3415,7 @@ body.dark-mode #remove-schedule-btn:hover {
             cancelButton.className = 'add-btn';
             cancelButton.style.background = '#FF9800';
             cancelButton.onclick = cancelEdit;
-            buttonGroup.insertBefore(cancelButton, manageCategoriesBtn);
+            buttonGroup.appendChild(cancelButton);
         }
     }
 
@@ -4884,7 +4864,7 @@ body.dark-mode #remove-schedule-btn:hover {
         investmentsView.style.display = 'none';
         budgetsView.style.display = 'block';
         budgetsView.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        closeCategorySection(); // Close category section when switching to budgets
+        categorySection.style.display = 'none'; // Close category section when switching to budgets
     });
 
     closeBudgetsViewBtn.addEventListener('click', () => {
@@ -4898,11 +4878,27 @@ body.dark-mode #remove-schedule-btn:hover {
         budgetsView.style.display = 'none';
         investmentsView.style.display = 'block';
         investmentsView.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        closeCategorySection(); // Close category section when switching to investments
+        categorySection.style.display = 'none'; // Close category section when switching to investments
     });
 
     closeInvestmentsViewBtn.addEventListener('click', () => {
         investmentsView.style.display = 'none';
+    });
+
+    // Event listeners para os botões da seção de categorias
+    const closeCategorySectionBtn = document.getElementById('close-category-section');
+    const backFromCategoriesBtn = document.getElementById('back-from-categories');
+    
+    // Botão de fechar (X) - fecha apenas a seção de orçamentos
+    closeCategorySectionBtn.addEventListener('click', () => {
+        categorySection.style.display = 'none';
+        budgetsView.style.display = 'none';
+    });
+    
+    // Botão de voltar - volta para a tela de orçamentos
+    backFromCategoriesBtn.addEventListener('click', () => {
+        categorySection.style.display = 'none';
+        budgetsView.style.display = 'block';
     });
 
     // Event listeners para navegação entre lista e formulário de investimentos
@@ -4950,7 +4946,10 @@ body.dark-mode #remove-schedule-btn:hover {
     document.getElementById('show-planner').addEventListener('click', () => showMensalSection('planner-section'));
     document.getElementById('show-financeiro').addEventListener('click', () => showMensalSection('financeiro-section'));
     document.getElementById('show-listas').addEventListener('click', () => showMensalSection('listas-section'));
-    manageCategoriesBtn.addEventListener('click', openCategorySection);
+    manageCategoriesBtnBudgets.addEventListener('click', () => {
+        previousSection = 'budgets-view';
+        openCategorySection();
+    });
     addCategoryButton.addEventListener('click', addCategory);
     
     // Event listeners para edição de categoria
@@ -5084,6 +5083,7 @@ body.dark-mode #remove-schedule-btn:hover {
             transactionsView.style.display = 'none';
             budgetsView.style.display = 'none';
             investmentsView.style.display = 'none';
+            categorySection.style.display = 'none';
             updateFinanceDisplay();
         }
         if (sectionId === 'listas-section') {
