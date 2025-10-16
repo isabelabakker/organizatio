@@ -1585,13 +1585,13 @@ body.dark-mode #remove-schedule-btn:hover {
                             <div id="task-color-picker-container" style="margin-top: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">cor:</label>
                                 <div id="taskColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                    <div class="color-option selected" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #333; cursor: pointer;" title="azul"></div>
-                                    <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;" title="verde"></div>
-                                    <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;" title="vermelho"></div>
-                                    <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;" title="amarelo"></div>
-                                    <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;" title="roxo"></div>
-                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;" title="rosa"></div>
-                                    <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;" title="laranja"></div>
+                                    <div class="color-option selected" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #333; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;"></div>
                                 </div>
                                 <input type="hidden" id="taskIconColor" value="blue">
                             </div>
@@ -1693,12 +1693,6 @@ body.dark-mode #remove-schedule-btn:hover {
                                 <button type="button" id="manage-categories-btn"><img src="images/buttons/settings.svg" alt="Gerenciar"></button>
                             </div>
                         </form>
-                        <div id="transaction-icon-picker-container" style="padding: 15px 0 10px 0;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
-                            <div id="transactionIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
-                            <input type="hidden" id="transactionIcon">
-                            
-                        </div>
                     </div>
                 </div>
     
@@ -1838,13 +1832,49 @@ body.dark-mode #remove-schedule-btn:hover {
       <button class="close-button back-button" onclick="closeCategorySection()"><img src="images/buttons/back.svg" alt="Voltar"></button>
       <h3 style="margin-top:0;">gerenciar categorias</h3>
 
-      <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
+      <!-- Formulário de Adicionar Categoria -->
+      <div id="add-category-form" style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
         <select id="newCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid #ccc;">
           <option value="despesa">despesa</option>
           <option value="receita">receita</option>
         </select>
         <input type="text" id="newCategoryName" placeholder="nome da nova categoria" style="flex-grow: 1;">
         <button id="addCategoryButton" class="add-btn">adicionar</button>
+      </div>
+
+      <!-- Formulário de Editar Categoria -->
+      <div id="edit-category-form" style="display: none; margin-bottom: 20px; padding: 15px; border: 2px solid #3586ff; border-radius: 10px; background: var(--secondary-bg);">
+        <h4 style="margin: 0 0 15px 0; color: #3586ff;">editando categoria</h4>
+        <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center;">
+          <select id="editCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color);">
+            <option value="despesa">despesa</option>
+            <option value="receita">receita</option>
+          </select>
+          <input type="text" id="editCategoryName" placeholder="nome da categoria" style="flex-grow: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color);">
+          <button id="saveCategoryButton" class="add-btn" style="background: #4CAF50;">salvar</button>
+          <button id="cancelEditButton" class="add-btn" style="background: #9E9E9E;">cancelar</button>
+        </div>
+      </div>
+
+      <!-- Seletor de Ícone e Cor para Categorias -->
+      <div id="category-icon-picker-container" style="padding: 15px 0; border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 20px; background: var(--secondary-bg);">
+        <label style="display: block; margin-bottom: 10px; font-weight: bold; color: var(--text-color);">ícone da categoria:</label>
+        <div id="categoryIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;"></div>
+        <input type="hidden" id="categoryIcon" value="">
+        
+        <div id="category-color-picker-container">
+          <label style="display: block; margin-bottom: 5px; font-weight: bold; color: var(--text-color);">cor da categoria:</label>
+          <div id="categoryColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <div class="color-option selected" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #333; cursor: pointer;"></div>
+            <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;"></div>
+            <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;"></div>
+            <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;"></div>
+            <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;"></div>
+            <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;"></div>
+            <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;"></div>
+          </div>
+          <input type="hidden" id="categoryIconColor" value="blue">
+        </div>
       </div>
 
       <h4>categorias de despesa</h4>
@@ -1959,8 +1989,6 @@ body.dark-mode #remove-schedule-btn:hover {
     const valueInput = document.getElementById('value');
     const submitButton = document.getElementById('submit-expense-btn');
     const buttonGroup = document.querySelector('.add-btn-group');
-    const transactionIconPicker = document.getElementById('transactionIconPicker');
-    const transactionIconHiddenInput = document.getElementById('transactionIcon');
     const showAddTransactionBtn = document.getElementById('show-add-transaction-form-btn');
     const addTransactionContainer = document.getElementById('add-transaction-container');
     const transactionFormTitle = document.getElementById('transaction-form-title');
@@ -1973,6 +2001,18 @@ body.dark-mode #remove-schedule-btn:hover {
     const newCategoryNameInput = document.getElementById('newCategoryName');
     const addCategoryButton = document.getElementById('addCategoryButton');
     const newCategoryTypeInput = document.getElementById('newCategoryType');
+    const categoryIconPicker = document.getElementById('categoryIconPicker');
+    const categoryIconHiddenInput = document.getElementById('categoryIcon');
+    const categoryIconColorInput = document.getElementById('categoryIconColor');
+    const categoryColorPicker = document.getElementById('categoryColorPicker');
+    
+    // Elementos do formulário de edição
+    const addCategoryForm = document.getElementById('add-category-form');
+    const editCategoryForm = document.getElementById('edit-category-form');
+    const editCategoryNameInput = document.getElementById('editCategoryName');
+    const editCategoryTypeInput = document.getElementById('editCategoryType');
+    const saveCategoryButton = document.getElementById('saveCategoryButton');
+    const cancelEditButton = document.getElementById('cancelEditButton');
     
     // --- ELEMENTOS DO DASHBOARD E SUB-VIEWS FINANCEIRAS ---
     const financeDashboardMain = document.getElementById('finance-dashboard-main');
@@ -2184,22 +2224,18 @@ body.dark-mode #remove-schedule-btn:hover {
     function saveCalendarTasks() { localStorage.setItem('calendarTasks', JSON.stringify(calendarTasks)); }
     
     function fixIconPathsInCalendarTasks() {
-        // Função para corrigir caminhos de ícones antigos para usar sempre ícones azuis
+        // Função para corrigir apenas ícones que não têm caminho completo (compatibilidade)
         let needsSave = false;
         
         for (const dateKey in calendarTasks) {
             const tasks = calendarTasks[dateKey];
             if (Array.isArray(tasks)) {
                 tasks.forEach(task => {
-                    if (task.icon && task.icon.includes('images/colored/')) {
-                        // Extrai o nome do arquivo do caminho atual
-                        const fileName = task.icon.split('/').pop();
-                        // Define o novo caminho sempre para ícones azuis
-                        const newIconPath = `./images/colored/blue/${fileName}`;
-                        if (task.icon !== newIconPath) {
-                            task.icon = newIconPath;
-                            needsSave = true;
-                        }
+                    // Só corrige se o ícone não tem um caminho completo ou é muito antigo
+                    if (task.icon && !task.icon.includes('images/colored/')) {
+                        // Se o ícone não tem caminho, define como azul por padrão
+                        task.icon = './images/colored/blue/none.svg';
+                        needsSave = true;
                     }
                 });
             }
@@ -2212,7 +2248,7 @@ body.dark-mode #remove-schedule-btn:hover {
     
     function loadCalendarTasks() { 
         calendarTasks = JSON.parse(localStorage.getItem('calendarTasks')) || {}; 
-        // Corrige caminhos de ícones antigos para usar sempre ícones azuis
+        // Corrige apenas ícones que não têm caminho completo (compatibilidade)
         fixIconPathsInCalendarTasks();
     }
 
@@ -2316,8 +2352,23 @@ body.dark-mode #remove-schedule-btn:hover {
     }
     function closeCategorySection() {
         categorySection.style.display = 'none';
-        // Não volta para seção anterior para evitar conflitos com navegação principal
-        // A navegação principal já gerencia qual seção deve estar visível
+        
+        // Volta para a tela de adicionar transação
+        if (addTransactionContainer) {
+            addTransactionContainer.style.display = 'block';
+        }
+        if (transactionListView) {
+            transactionListView.style.display = 'none';
+        }
+        
+        // Se estiver na aba financeiro, mostra o dashboard financeiro
+        const financeiroSection = document.getElementById('financeiro-section');
+        if (financeiroSection && financeiroSection.style.display === 'block') {
+            const financeDashboardMain = document.getElementById('finance-dashboard-main');
+            if (financeDashboardMain) {
+                financeDashboardMain.style.display = 'block';
+            }
+        }
     }
     
     function openDescriptionSection(description, date) {
@@ -2523,7 +2574,10 @@ body.dark-mode #remove-schedule-btn:hover {
     // ----------------------------------------------------
     function renderCategorySelect(isRevenue = false) {
         const categories = isRevenue ? revenueCategories : expenseCategories;
-        categoryInput.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
+        categoryInput.innerHTML = categories.map(c => {
+            const categoryName = typeof c === 'string' ? c : c.name;
+            return `<option value="${categoryName}">${categoryName}</option>`;
+        }).join('');
         if (editingIndex !== null && dataByMonth[currentMonth]?.[editingIndex]) {
             categoryInput.value = dataByMonth[currentMonth][editingIndex].category;
         }
@@ -2531,27 +2585,30 @@ body.dark-mode #remove-schedule-btn:hover {
     
     function renderCategoryLimitSelect() {
         const categorySelect = document.getElementById('categoryLimitCategory');
-        categorySelect.innerHTML = expenseCategories.map(c => `<option value="${c}">${c}</option>`).join('');
+        categorySelect.innerHTML = expenseCategories.map(c => {
+            const categoryName = typeof c === 'string' ? c : c.name;
+            return `<option value="${categoryName}">${categoryName}</option>`;
+        }).join('');
     }
 
     function renderCategoryModalList() {
         const renderList = (categories, container, type) => {
             container.innerHTML = categories.length === 0 ? `<p style="color: #777;">nenhuma categoria de ${type} cadastrada.</p>` :
                 categories.map(category => {
-                    if (editingCategoryId && editingCategoryId.name === category && editingCategoryId.type === type) {
-                        return `<div>
-                                    <input type="text" id="editing-category-input" value="${category}" style="flex-grow: 1;">
-                                    <span>
-                                        <button class="edit-btn" onclick="saveCategoryEdit('${category}', '${type}')">salvar</button>
-                                        <button class="delete-btn" onclick="cancelCategoryEdit()">cancelar</button>
-                                    </span>
+                    const categoryName = typeof category === 'string' ? category : category.name;
+                    const categoryIcon = typeof category === 'object' ? category.icon : categoryIcons[categoryName] || categoryIcons.money;
+                    
+                    if (editingCategoryId && editingCategoryId.name === categoryName && editingCategoryId.type === type) {
+                        return `<div style="padding: 8px; border: 2px solid #3586ff; border-radius: 8px; background: #e3f2fd; margin-bottom: 5px;">
+                                    <span style="color: #3586ff; font-weight: bold;">editando: ${categoryName}</span>
                                 </div>`;
                     } else {
-                        return `<div>
-                                    <span>${category}</span>
+                        return `<div style="display: flex; align-items: center; gap: 10px; padding: 8px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 5px;">
+                                    <img src="${categoryIcon}" style="width: 20px; height: 20px;" alt="${categoryName}">
+                                    <span style="flex-grow: 1;">${categoryName}</span>
                                     <span>
-                                        <button class="edit-btn" onclick="editCategory('${category}', '${type}')"><img src="images/buttons/pencil.svg" alt="Editar"></button>
-                                        <button class="delete-btn" onclick="removeCategory('${category}', '${type}')"><img src="images/buttons/trash.svg" alt="Remover"></button>
+                                        <button class="edit-btn" onclick="editCategory('${categoryName}', '${type}')"><img src="images/buttons/pencil.svg" alt="Editar"></button>
+                                        <button class="delete-btn" onclick="removeCategory('${categoryName}', '${type}')"><img src="images/buttons/trash.svg" alt="Remover"></button>
                                     </span>
                                 </div>`;
                     }
@@ -2569,23 +2626,60 @@ body.dark-mode #remove-schedule-btn:hover {
         let targetArray = type === 'receita' ? revenueCategories : expenseCategories;
         if (targetArray.includes(name)) return alert('categoria já existe.');
         
-        targetArray.push(name);
+        // Obtém o ícone e cor selecionados
+        const selectedIconName = categoryIconPicker.querySelector('.task-icon-option.selected')?.dataset.iconName || 'dinheiro';
+        const selectedColor = categoryIconColorInput.value || 'blue';
+        
+        // Gera o ícone com a cor selecionada
+        const coloredIcon = getColoredIcons(selectedIconName, selectedColor);
+        
+        // Cria o objeto da categoria com ícone e cor
+        const categoryData = {
+            name: name,
+            icon: coloredIcon,
+            color: selectedColor
+        };
+        
+        targetArray.push(categoryData);
         newCategoryNameInput.value = '';
+        
+        // Reset do seletor de ícones e cores
+        categoryIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        const firstIcon = categoryIconPicker.querySelector('.task-icon-option');
+        if (firstIcon) firstIcon.classList.add('selected');
+        categoryIconHiddenInput.value = getColoredIcons('dinheiro', 'blue');
+        
+        categoryColorPicker.querySelectorAll('.color-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        const blueOption = categoryColorPicker.querySelector('[data-color="blue"]');
+        if (blueOption) blueOption.classList.add('selected');
+        categoryIconColorInput.value = 'blue';
+        
         saveFinancialData();
         renderCategoryModalList();
         updateFinanceDisplay();
     }
 
     window.removeCategory = function(category, type) {
-        if (confirm(`tem certeza que deseja remover a categoria "${category}"? todas as transações associadas serão movidas para "outros".`)) {
+        const categoryName = typeof category === 'string' ? category : category.name;
+        if (confirm(`tem certeza que deseja remover a categoria "${categoryName}"? todas as transações associadas serão movidas para "outros".`)) {
             if (type === 'receita') {
-                revenueCategories = revenueCategories.filter(c => c !== category);
+                revenueCategories = revenueCategories.filter(c => {
+                    const catName = typeof c === 'string' ? c : c.name;
+                    return catName !== categoryName;
+                });
             } else {
-                expenseCategories = expenseCategories.filter(c => c !== category);
+                expenseCategories = expenseCategories.filter(c => {
+                    const catName = typeof c === 'string' ? c : c.name;
+                    return catName !== categoryName;
+                });
             }
             
             Object.values(dataByMonth).flat().forEach(item => {
-                if (item.category === category) item.category = 'outros';
+                if (item.category === categoryName) item.category = 'outros';
             });
             
             saveFinancialData();
@@ -2596,25 +2690,131 @@ body.dark-mode #remove-schedule-btn:hover {
 
     window.editCategory = function(name, type) {
         editingCategoryId = { name, type };
+        
+        // Encontra a categoria sendo editada
+        const categoryArray = type === 'despesa' ? expenseCategories : revenueCategories;
+        const categoryData = categoryArray.find(cat => {
+            const catName = typeof cat === 'string' ? cat : cat.name;
+            return catName === name;
+        });
+        
+        // Preenche o formulário de edição
+        editCategoryNameInput.value = name;
+        editCategoryTypeInput.value = type;
+        
+        // Define a cor atual
+        const currentColor = (typeof categoryData === 'object' && categoryData.color) ? categoryData.color : 'blue';
+        categoryIconColorInput.value = currentColor;
+        
+        // Atualiza o seletor de cores
+        categoryColorPicker.querySelectorAll('.color-option').forEach(option => {
+            option.classList.toggle('selected', option.dataset.color === currentColor);
+        });
+        
+        // Atualiza os ícones com a cor atual
+        categoryIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
+            const iconName = iconOption.dataset.iconName;
+            const coloredPath = getColoredIcons(iconName, currentColor);
+            
+            const img = iconOption.querySelector('img');
+            img.remove();
+            
+            const newImg = document.createElement('img');
+            newImg.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
+            newImg.style.width = '100%';
+            newImg.style.height = '100%';
+            newImg.style.objectFit = 'contain';
+            newImg.style.borderRadius = '5px';
+            
+            iconOption.appendChild(newImg);
+            iconOption.dataset.iconPath = coloredPath;
+        });
+        
+        // Seleciona o ícone atual da categoria
+        if (typeof categoryData === 'object' && categoryData.icon) {
+            const currentIconName = Object.keys(taskIcons).find(key => 
+                getColoredIcons(key, currentColor) === categoryData.icon
+            );
+            if (currentIconName) {
+                categoryIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
+                    option.classList.toggle('selected', option.dataset.iconName === currentIconName);
+                });
+                categoryIconHiddenInput.value = getColoredIcons(currentIconName, currentColor);
+            }
+        }
+        
+        // Mostra o formulário de edição e esconde o de adicionar
+        addCategoryForm.style.display = 'none';
+        editCategoryForm.style.display = 'block';
+        
         renderCategoryModalList();
     }
 
     window.cancelCategoryEdit = function() {
         editingCategoryId = null;
+        addCategoryForm.style.display = 'flex';
+        editCategoryForm.style.display = 'none';
         renderCategoryModalList();
     }
 
-    window.saveCategoryEdit = function(oldName, type) {
-        const newName = document.getElementById('editing-category-input').value.trim().toLowerCase();
+    window.saveCategoryEdit = function() {
+        const newName = editCategoryNameInput.value.trim().toLowerCase();
+        const newType = editCategoryTypeInput.value;
+        
         if (!newName) return alert('o nome da categoria não pode ficar em branco.');
 
-        const categoryArray = type === 'despesa' ? expenseCategories : revenueCategories;
-        if (newName !== oldName && categoryArray.includes(newName)) {
+        const categoryArray = newType === 'despesa' ? expenseCategories : revenueCategories;
+        
+        // Verifica se a nova categoria já existe (considerando objetos e strings)
+        const categoryExists = categoryArray.some(cat => {
+            const catName = typeof cat === 'string' ? cat : cat.name;
+            return catName === newName;
+        });
+        
+        if (newName !== editingCategoryId.name && categoryExists) {
             return alert('essa categoria já existe.');
         }
 
-        const index = categoryArray.indexOf(oldName);
-        if (index > -1) categoryArray[index] = newName;
+        // Obtém o ícone e cor selecionados
+        const selectedIconName = categoryIconPicker.querySelector('.task-icon-option.selected')?.dataset.iconName || 'dinheiro';
+        const selectedColor = categoryIconColorInput.value || 'blue';
+        const coloredIcon = getColoredIcons(selectedIconName, selectedColor);
+        
+        // Encontra o índice da categoria (considerando objetos e strings)
+        const oldName = editingCategoryId.name;
+        const oldType = editingCategoryId.type;
+        
+        // Se mudou o tipo, remove da array antiga e adiciona na nova
+        if (newType !== oldType) {
+            const oldCategoryArray = oldType === 'despesa' ? expenseCategories : revenueCategories;
+            const index = oldCategoryArray.findIndex(cat => {
+                const catName = typeof cat === 'string' ? cat : cat.name;
+                return catName === oldName;
+            });
+            
+            if (index > -1) {
+                oldCategoryArray.splice(index, 1);
+                categoryArray.push({
+                    name: newName,
+                    icon: coloredIcon,
+                    color: selectedColor
+                });
+            }
+        } else {
+            // Se não mudou o tipo, apenas atualiza a categoria existente
+            const index = categoryArray.findIndex(cat => {
+                const catName = typeof cat === 'string' ? cat : cat.name;
+                return catName === oldName;
+            });
+            
+            if (index > -1) {
+                categoryArray[index] = {
+                    name: newName,
+                    icon: coloredIcon,
+                    color: selectedColor
+                };
+            }
+        }
         
         Object.values(dataByMonth).flat().forEach(item => {
             if (item.category === oldName) {
@@ -2847,8 +3047,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 const optionDiv = document.createElement('div');
                 optionDiv.className = 'task-icon-option';
                 optionDiv.dataset.iconPath = iconPath;
-                optionDiv.title = key;
-                optionDiv.innerHTML = `<img src="${iconPath}" alt="${key}">`;
+                optionDiv.innerHTML = `<img src="${iconPath}">`;
                 if (goal.icon === iconPath) {
                     optionDiv.classList.add('selected');
                 }
@@ -3167,8 +3366,23 @@ body.dark-mode #remove-schedule-btn:hover {
             const iconColorClass = transactionType === 'receita' ? 'icon-revenue' : 'icon-expense';
             const escapedDesc = (item.desc || '').replace(/'/g, "&apos;").replace(/"/g, "&quot;");
             
-            const iconPath = item.icon || categoryIcons[item.category] || categoryIcons["outros"];
-            const iconHtml = `<img src="${iconPath}" title="${item.category}" class="category-icon ${iconColorClass}" alt="${item.category}" onclick="openDescriptionSection('${escapedDesc}', '${item.date}')" style="cursor: pointer;">`;
+            // Procura o ícone da categoria personalizada
+            let iconPath = item.icon;
+            if (!iconPath) {
+                const allCategories = [...expenseCategories, ...revenueCategories];
+                const categoryData = allCategories.find(cat => {
+                    const catName = typeof cat === 'string' ? cat : cat.name;
+                    return catName === item.category;
+                });
+                
+                if (categoryData && typeof categoryData === 'object') {
+                    iconPath = categoryData.icon;
+                } else {
+                    iconPath = categoryIcons[item.category] || categoryIcons["outros"];
+                }
+            }
+            
+            const iconHtml = `<img src="${iconPath}" class="category-icon ${iconColorClass}" alt="${item.category}" onclick="openDescriptionSection('${escapedDesc}', '${item.date}')" style="cursor: pointer;">`;
             
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -3205,11 +3419,6 @@ body.dark-mode #remove-schedule-btn:hover {
         categoryInput.value = item.category;
         valueInput.value = Math.abs(item.value);
         
-        const iconToSelect = item.icon || categoryIcons[item.category] || categoryIcons["outros"];
-        transactionIconHiddenInput.value = iconToSelect;
-        transactionIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-            option.classList.toggle('selected', option.getAttribute('data-icon-path') === iconToSelect);
-        });
         
         transactionListView.style.display = 'none';
         addTransactionContainer.style.display = 'block';
@@ -3242,10 +3451,6 @@ body.dark-mode #remove-schedule-btn:hover {
         const cancelButton = document.getElementById('cancel-edit-btn');
         if (cancelButton) cancelButton.remove();
         
-        const firstIconOption = transactionIconPicker.querySelector('.task-icon-option');
-        if (firstIconOption) {
-            firstIconOption.click();
-        }
 
         addTransactionContainer.style.display = 'none';
         transactionListView.style.display = 'block';
@@ -3255,7 +3460,20 @@ body.dark-mode #remove-schedule-btn:hover {
         e.preventDefault();
         const desc = descInput.value, category = categoryInput.value, type = typeInput.value;
         let value = parseFloat(valueInput.value);
-        const icon = transactionIconHiddenInput.value;
+        
+        // Obtém o ícone da categoria automaticamente
+        let icon = null;
+        const allCategories = [...expenseCategories, ...revenueCategories];
+        const categoryData = allCategories.find(cat => {
+            const catName = typeof cat === 'string' ? cat : cat.name;
+            return catName === category;
+        });
+        
+        if (categoryData && typeof categoryData === 'object') {
+            icon = categoryData.icon;
+        } else {
+            icon = categoryIcons[category] || categoryIcons["outros"];
+        }
 
         if (!desc || !category || isNaN(value)) {
             alert('Por favor, preencha a descrição, categoria e valor.');
@@ -3295,8 +3513,6 @@ body.dark-mode #remove-schedule-btn:hover {
             form.reset();
             typeInput.value = 'despesa';
             renderCategorySelect(false);
-            const firstIconOption = transactionIconPicker.querySelector('.task-icon-option');
-            if (firstIconOption) firstIconOption.click();
             addTransactionContainer.style.display = 'none';
             transactionListView.style.display = 'block';
         }
@@ -3405,7 +3621,6 @@ body.dark-mode #remove-schedule-btn:hover {
                     if (task.icon) { 
                         const iconEl = document.createElement('img');
                         iconEl.src = task.icon;
-                        iconEl.title = task.description;
                         iconEl.className = 'task-icon-grid-view';
                         if (task.priority === 'alta') {
                             iconEl.classList.add('priority-icon-alta');
@@ -3566,7 +3781,6 @@ body.dark-mode #remove-schedule-btn:hover {
             }
             if (task.linkedListId) {
                 taskItem.dataset.listId = task.linkedListId;
-                taskItem.title = 'clique para ver os itens da lista';
                 taskItem.style.cursor = 'pointer';
             }
 
@@ -3589,7 +3803,13 @@ body.dark-mode #remove-schedule-btn:hover {
         e.preventDefault();
         const time = taskTimeInput.value;
         const description = taskDescriptionInput.value.trim();
-        const icon = taskIconHiddenInput.value;
+        
+        // Obtém o ícone com a cor selecionada
+        const selectedIconName = taskIconPicker.querySelector('.task-icon-option.selected')?.dataset.iconName || 'nenhum';
+        const selectedColor = taskIconColorInput.value || 'blue';
+        const icon = getColoredIcons(selectedIconName, selectedColor);
+        
+        
         const priority = taskPriorityInput.checked ? 'alta' : 'nenhuma';
         
         if (!time || !description) return alert('por favor, preencha o horário e a descrição da tarefa.');
@@ -3863,13 +4083,11 @@ body.dark-mode #remove-schedule-btn:hover {
             option.className = 'task-icon-option';
             option.dataset.iconPath = iconPath;
             option.dataset.iconName = key;
-            option.title = '';
             
-            // Cria a imagem com timestamp para evitar cache
-            const img = document.createElement('img');
-            img.src = iconPath + '?t=' + Date.now();
-            img.alt = key;
-            option.appendChild(img);
+             // Cria a imagem com timestamp para evitar cache
+             const img = document.createElement('img');
+             img.src = iconPath + '?t=' + Date.now() + '&r=' + Math.random();
+             option.appendChild(img);
             
             option.addEventListener('click', function() {
                 if (hiddenInputElement) {
@@ -4611,16 +4829,12 @@ body.dark-mode #remove-schedule-btn:hover {
                     const iconName = iconOption.dataset.iconName;
                     const coloredPath = getColoredIcons(iconName, selectedColor);
                     
-                    // Abordagem mais direta para forçar o reload
+                    // Remove a imagem e recria com a nova cor
                     const img = iconOption.querySelector('img');
-                    
-                    // Remove a imagem completamente e recria
                     img.remove();
                     
-                    // Cria nova imagem
                     const newImg = document.createElement('img');
-                    newImg.src = coloredPath;
-                    newImg.alt = iconName;
+                    newImg.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
                     newImg.style.width = '100%';
                     newImg.style.height = '100%';
                     newImg.style.objectFit = 'contain';
@@ -4731,22 +4945,67 @@ body.dark-mode #remove-schedule-btn:hover {
         renderCategorySelect(e.target.value === 'receita');
     });
 
-    categoryInput.addEventListener('change', (e) => {
-        const category = e.target.value;
-        const defaultIcon = categoryIcons[category];
-        if (defaultIcon) {
-            transactionIconHiddenInput.value = defaultIcon;
-            transactionIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-                option.classList.toggle('selected', option.getAttribute('data-icon-path') === defaultIcon);
-            });
-        }
-    });
+
 
     document.getElementById('show-planner').addEventListener('click', () => showMensalSection('planner-section'));
     document.getElementById('show-financeiro').addEventListener('click', () => showMensalSection('financeiro-section'));
     document.getElementById('show-listas').addEventListener('click', () => showMensalSection('listas-section'));
     manageCategoriesBtn.addEventListener('click', openCategorySection);
     addCategoryButton.addEventListener('click', addCategory);
+    
+    // Event listeners para edição de categoria
+    saveCategoryButton.addEventListener('click', () => {
+        saveCategoryEdit();
+        cancelCategoryEdit();
+    });
+    
+    cancelEditButton.addEventListener('click', cancelCategoryEdit);
+
+    // Event listener para o seletor de cores das categorias
+    if (categoryColorPicker) {
+        categoryColorPicker.addEventListener('click', (e) => {
+            const colorOption = e.target.closest('.color-option');
+            if (colorOption) {
+                // Remove seleção anterior
+                categoryColorPicker.querySelectorAll('.color-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Seleciona nova cor
+                colorOption.classList.add('selected');
+                const selectedColor = colorOption.dataset.color;
+                categoryIconColorInput.value = selectedColor;
+                
+                // Atualiza TODOS os ícones com a nova cor
+                categoryIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
+                    const iconName = iconOption.dataset.iconName;
+                    const coloredPath = getColoredIcons(iconName, selectedColor);
+                    
+                    // Remove a imagem e recria com a nova cor
+                    const img = iconOption.querySelector('img');
+                    img.remove();
+                    
+                    const newImg = document.createElement('img');
+                    newImg.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
+                    newImg.style.width = '100%';
+                    newImg.style.height = '100%';
+                    newImg.style.objectFit = 'contain';
+                    newImg.style.borderRadius = '5px';
+                    
+                    iconOption.appendChild(newImg);
+                    iconOption.dataset.iconPath = coloredPath;
+                });
+                
+                // Atualiza o valor do ícone selecionado
+                const selectedIcon = categoryIconPicker.querySelector('.task-icon-option.selected');
+                if (selectedIcon) {
+                    const iconName = selectedIcon.dataset.iconName;
+                    const coloredPath = getColoredIcons(iconName, selectedColor);
+                    categoryIconHiddenInput.value = coloredPath;
+                }
+            }
+        });
+    }
     calendarMonthSelect.addEventListener('change', (e) => { 
         currentCalendarDate.setMonth(parseInt(e.target.value));
         currentCalendarDate.setDate(1); 
@@ -4857,10 +5116,10 @@ body.dark-mode #remove-schedule-btn:hover {
         initCalendarSelect();
         
         renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons, null, taskColorPicker);
-        renderIconPicker(transactionIconPicker, transactionIconHiddenInput, taskIcons);
         renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons);
         renderIconPicker(goalIconPicker, goalIconHiddenInput, taskIcons);
         renderIconPicker(listIconPickerGrid, null, taskIcons, selectListIcon);
+        renderIconPicker(categoryIconPicker, categoryIconHiddenInput, taskIcons, null, categoryColorPicker);
         
         
         // Verifica se todos os elementos de investimento estão disponíveis
