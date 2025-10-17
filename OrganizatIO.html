@@ -1677,31 +1677,34 @@
         gap: 10px;
       }
       
-      /* Mantém layout igual à versão web */
+      /* Layout responsivo para mobile */
       #newListForm-main-line {
-        flex-direction: row !important;
-        align-items: center !important;
-        flex-wrap: wrap !important;
-        gap: 10px !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
       }
       
       #newListForm-main-line input {
-        flex: 1 !important;
-        min-width: 200px !important;
+        flex: none !important;
+        min-width: auto !important;
+        width: 100% !important;
         margin-bottom: 0 !important;
       }
       
       #newListForm-main-line > div {
         flex-direction: row !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 6px !important;
         margin-bottom: 0 !important;
         flex-shrink: 0 !important;
+        justify-content: space-between !important;
       }
       
       #newListForm-main-line select {
-        flex-shrink: 0 !important;
+        flex: 1 !important;
         margin-bottom: 0 !important;
+        min-width: 120px !important;
       }
       
       /* Mantém seção de agendamento igual à versão web */
@@ -1727,30 +1730,32 @@
         padding: 6px;
       }
       
-      /* Botões específicos de lista da mesma largura do campo nome no mobile */
+      /* Botões específicos de lista menores no mobile */
       #shopping-list-container .icon-toggle-button,
       #link-to-planner-container .icon-toggle-button,
       #routine-container .icon-toggle-button {
-        width: 100%;
-        height: 44px;
-        padding: 0;
-        border-radius: 8px;
-        font-size: 16px;
-        min-height: 44px;
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+        border-radius: 6px;
+        font-size: 14px;
+        min-height: 32px;
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
       }
       
-      /* Garante que os containers dos botões tenham a mesma largura do campo nome */
+      /* Containers dos botões menores no mobile */
       #shopping-list-container,
       #link-to-planner-container,
       #routine-container {
-        width: 100%;
-        height: 44px;
+        width: auto;
+        height: 32px;
         display: flex;
         align-items: center;
-        margin-bottom: 10px;
+        margin-bottom: 0;
+        flex-shrink: 0;
       }
       
       /* Melhora progress bars */
