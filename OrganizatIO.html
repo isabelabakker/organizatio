@@ -1727,12 +1727,12 @@
         padding: 6px;
       }
       
-      /* Botões específicos de lista do mesmo tamanho da div do seletor no mobile */
+      /* Botões específicos de lista da mesma largura do campo nome no mobile */
       #shopping-list-container .icon-toggle-button,
       #link-to-planner-container .icon-toggle-button,
       #routine-container .icon-toggle-button {
         width: 100%;
-        height: 100%;
+        height: 44px;
         padding: 0;
         border-radius: 8px;
         font-size: 16px;
@@ -1742,13 +1742,15 @@
         justify-content: center;
       }
       
-      /* Garante que os containers dos botões tenham a mesma altura do select */
+      /* Garante que os containers dos botões tenham a mesma largura do campo nome */
       #shopping-list-container,
       #link-to-planner-container,
       #routine-container {
+        width: 100%;
         height: 44px;
         display: flex;
         align-items: center;
+        margin-bottom: 10px;
       }
       
       /* Melhora progress bars */
