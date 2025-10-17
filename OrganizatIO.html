@@ -806,6 +806,8 @@
         border: 2px solid #ccc;
         cursor: pointer;
         transition: transform 0.2s, border-color 0.2s;
+        display: block;
+        margin: 2px;
     }
 
     .color-option:hover {
@@ -900,8 +902,8 @@
     }
     
     .category-icon {
-        width: 28px;
-        height: 28px;
+        width: 24px;
+        height: 24px;
         vertical-align: middle;
         display: inline-flex;
         align-items: center;
@@ -912,6 +914,34 @@
         width: 100%;
         height: 100%;
         object-fit: contain;
+    }
+
+    /* Mobile-friendly table styles */
+    @media (max-width: 768px) {
+        #expense-table {
+            font-size: 12px;
+        }
+        
+        #expense-table th,
+        #expense-table td {
+            padding: 8px 4px !important;
+        }
+        
+        .category-icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .edit-btn img,
+        .delete-btn img {
+            width: 14px !important;
+            height: 14px !important;
+        }
+        
+        .total {
+            font-size: 16px !important;
+            padding: 12px !important;
+        }
     }
 
     #new-goal-form {
@@ -1449,15 +1479,34 @@
     
       /* Ajusta o contêiner principal para ter menos margem em telas pequenas */
       .container {
-        margin: 10px;
-        padding: 15px;
+        margin: 5px;
+        padding: 10px;
+      }
+      
+      /* Melhora a navegação principal */
+      #mensal-controls {
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+      
+      #mensal-controls > div {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .mensal-sub-toggle {
+        flex: 1;
+        min-width: 80px;
+        padding: 10px 8px;
+        font-size: 14px;
       }
       
       /* Ajusta os dias do calendário */
       .calendar-day {
         min-height: unset;
         aspect-ratio: 1 / 1; 
-        padding: 5px;
+        padding: 4px;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -1465,28 +1514,191 @@
 
       /* Diminui o tamanho da fonte do número do dia */
       .calendar-day-number {
-        font-size: 14px;
-        margin-bottom: 3px;
+        font-size: 12px;
+        margin-bottom: 2px;
       }
       
       /* Diminui o tamanho dos ícones de tarefas para caberem melhor */
       .task-icon-grid-view {
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
       }
       
       /* Reduz o espaço entre os ícones */
       .calendar-task-icons {
-         gap: 2px;
+         gap: 1px;
       }
 
       /* Reduz o texto dos dias da semana para economizar espaço */
       .calendar-day-name {
-        font-size: 11px;
-        padding: 8px 2px;
+        font-size: 10px;
+        padding: 6px 2px;
       }
-
-      /* Removed mobile modal styles - now using sections */
+      
+      /* Melhora formulários para mobile */
+      input[type="text"], input[type="number"], input[type="time"], input[type="date"], select {
+        font-size: 16px !important; /* Evita zoom no iOS */
+        padding: 12px 8px !important;
+        border-radius: 8px !important;
+        border: 2px solid #ddd !important;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      
+      /* Melhora botões para mobile */
+      button, .add-btn, .edit-btn, .delete-btn {
+        min-height: 44px; /* Tamanho mínimo recomendado para touch */
+        padding: 12px 16px;
+        font-size: 16px;
+        border-radius: 8px;
+      }
+      
+      /* Melhora seletores de ícones */
+      .task-icon-option {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+      }
+      
+      /* Melhora seletores de cor */
+      .color-option {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        min-height: 36px;
+      }
+      
+      /* Melhora tabelas */
+      table {
+        font-size: 14px;
+        width: 100%;
+      }
+      
+      th, td {
+        padding: 8px 4px !important;
+        text-align: left;
+      }
+      
+      /* Melhora cards de investimento */
+      .investment-goal-card {
+        margin-bottom: 15px;
+        padding: 15px;
+      }
+      
+      /* Melhora listas */
+      .list {
+        margin-bottom: 15px;
+        padding: 15px;
+      }
+      
+      /* Melhora modais e seções */
+      .mensal-content-section {
+        padding: 15px;
+      }
+      
+      /* Melhora botões de fechar */
+      .close-button {
+        width: 44px;
+        height: 44px;
+        padding: 8px;
+      }
+      
+      /* Melhora formulários de edição */
+      .form-inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .form-inputs input {
+        width: 100%;
+      }
+      
+      /* Melhora grid de formulários */
+      div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+      
+      /* Melhora flex containers */
+      div[style*="display: flex"] {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      
+      /* Melhora inputs específicos */
+      #newListForm-main-line {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      #newListForm-main-line input,
+      #newListForm-main-line select {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      
+      /* Melhora seção de agendamento */
+      #planner-link-options {
+        flex-direction: column;
+      }
+      
+      #planner-link-options > div {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      /* Melhora ícones de toggle */
+      .icon-toggle-button {
+        width: 44px;
+        height: 44px;
+        padding: 8px;
+      }
+      
+      /* Melhora progress bars */
+      .progress-bar-container {
+        height: 24px;
+      }
+      
+      .progress-bar-text {
+        line-height: 24px;
+        font-size: 14px;
+      }
+      
+      /* Melhora espaçamento geral */
+      h3, h4 {
+        margin: 15px 0 10px 0;
+        font-size: 18px;
+      }
+      
+      /* Melhora labels */
+      label {
+        font-size: 14px;
+        margin-bottom: 5px;
+        display: block;
+      }
+      
+      /* Melhora checkboxes */
+      input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+      }
+      
+      /* Melhora selects */
+      select {
+        background-color: white;
+        background-image: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding-right: 30px;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        background-size: 16px;
+      }
     }
 
 /* ================================================================ */
@@ -1543,12 +1755,14 @@ body.dark-mode #remove-schedule-btn:hover {
     
     <div id="mensal-page">
 
-        <div id="mensal-controls" style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px;">
-            <select id="calendar-month-select" style="padding: 8px; border-radius: 8px; text-transform: lowercase; font-size: 14px; border-color: #6A8EFE;"></select>
+        <div id="mensal-controls" style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+            <select id="calendar-month-select" style="padding: 8px; border-radius: 8px; text-transform: lowercase; font-size: 14px; border-color: #6A8EFE; min-width: 120px;"></select>
             
-            <button id="show-planner" class="mensal-sub-toggle active-sub">planner</button>
-            <button id="show-financeiro" class="mensal-sub-toggle">finanças</button>
-            <button id="show-listas" class="mensal-sub-toggle">listas</button>
+            <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                <button id="show-planner" class="mensal-sub-toggle active-sub">planner</button>
+                <button id="show-financeiro" class="mensal-sub-toggle">finanças</button>
+                <button id="show-listas" class="mensal-sub-toggle">listas</button>
+            </div>
         </div>
         
         <hr style="border-top: 1px solid #ddd; margin: 30px 0;">
@@ -1571,9 +1785,9 @@ body.dark-mode #remove-schedule-btn:hover {
                     <h3 id="task-form-title">adicionar tarefa</h3>
                     <form id="task-form-modal">
                         <div style="display: grid; grid-template-columns: 1fr 3fr auto; gap: 10px; align-items: center; margin-top: 30px;">
-                            <input type="time" id="taskTime" value="09:00">
-                            <input type="text" id="taskDescription" placeholder="descrição da tarefa" required>
-                            <button type="submit" id="add-task-btn">adicionar</button>
+                            <input type="time" id="taskTime" value="09:00" style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                            <input type="text" id="taskDescription" placeholder="descrição da tarefa" required style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                            <button type="submit" id="add-task-btn" style="padding: 8px 12px; border-radius: 6px; font-size: 14px;">adicionar</button>
                         </div>
                         <div style="margin: 10px 0; display: flex; align-items: center;">
                             <input type="checkbox" id="taskPriority" style="width: 18px; height: 18px; margin-right: 8px; cursor: pointer;">
@@ -1666,32 +1880,36 @@ body.dark-mode #remove-schedule-btn:hover {
                     
                     <div id="transaction-list-view">
                         <h3 style="margin-top:0;">transações do mês</h3>
-                        <div class="details-flex-container">
-                            <div class="details-table-container">
-                                <table id="expense-table">
-                                  <tbody id="expense-list"></tbody>
-                                </table>
-                                <div class="total" id="total-container">
-                                    saldo do mês: r$ <span id="total">0.00</span>
-                                </div>
-                            </div>
+                        <div class="details-table-container" style="margin-top: 20px;">
+                            <table id="expense-table" style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: var(--secondary-bg, #f8f9fa);">
+                                        <th style="padding: 12px 8px; text-align: center; font-size: 14px; color: var(--text-color-secondary, #666);">ícone</th>
+                                        <th style="padding: 12px 8px; text-align: left; font-size: 14px; color: var(--text-color-secondary, #666);">descrição</th>
+                                        <th style="padding: 12px 8px; text-align: right; font-size: 14px; color: var(--text-color-secondary, #666);">valor</th>
+                                        <th style="padding: 12px 8px; text-align: center; font-size: 14px; color: var(--text-color-secondary, #666);">ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="expense-list"></tbody>
+                            </table>
                         </div>
                         <button id="show-add-transaction-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar transação</button>
                     </div>
     
                     <div id="add-transaction-container" style="display: none; position: relative; z-index: 5;">
                         <button class="close-button back-button" id="back-to-transactions-list-btn"><img src="images/buttons/back.svg" alt="Voltar"></button>
+                        <button class="close-button" id="close-add-transaction-btn" style="top: 15px; right: 15px;"><img src="images/buttons/close.svg" alt="Fechar"></button>
                         <h3 id="transaction-form-title" style="margin-top: 0;">adicionar transação</h3>
-                        <form id="expense-form" style="margin-top: 30px;">
-                            <input type="text" id="desc" placeholder="descrição" required>
-                            <select id="type">
+                        <form id="expense-form" style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
+                            <input type="text" id="desc" placeholder="descrição" required style="padding: 12px; border-radius: 8px; border: 2px solid #ddd; font-size: 16px;">
+                            <select id="type" style="padding: 12px; border-radius: 8px; border: 2px solid #ddd; font-size: 16px;">
                                 <option value="despesa">despesa</option>
                                 <option value="receita">receita</option>
                             </select>
-                            <select id="category" placeholder="categoria"></select>
-                            <input type="number" id="value" placeholder="r$" step="0.01" required>
+                            <select id="category" placeholder="categoria" style="padding: 12px; border-radius: 8px; border: 2px solid #ddd; font-size: 16px;"></select>
+                            <input type="number" id="value" placeholder="r$" step="0.01" required style="padding: 12px; border-radius: 8px; border: 2px solid #ddd; font-size: 16px;">
                             <div class="add-btn-group">
-                                <button type="submit" class="add-btn" id="submit-expense-btn">adicionar</button>
+                                <button type="submit" class="add-btn" id="submit-expense-btn" style="padding: 12px 16px; font-size: 16px; min-height: 44px;">adicionar</button>
                             </div>
                         </form>
                     </div>
@@ -1717,6 +1935,52 @@ body.dark-mode #remove-schedule-btn:hover {
                     
                     <!-- Lista de metas existentes -->
                     <div id="goals-container"></div>
+                    
+                    <!-- Botão para adicionar nova meta -->
+                    <button id="open-add-investment-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar investimento</button>
+                    
+                    <!-- Formulário de nova meta (escondido inicialmente) -->
+                    <div id="investment-form-view" style="display: none; position: relative;">
+                        <button class="close-button back-button" id="back-to-investments-list-btn" style="right: auto; left: 15px; top: 15px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
+                        <h3 id="investment-form-title" style="margin-top: 0;">adicionar meta de investimento</h3>
+                        
+                        <form id="new-goal-form" style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+                            <input type="text" id="newGoalName" placeholder="nome da nova meta" required style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                            <input type="number" id="newGoalTarget" placeholder="valor da meta (r$)" step="0.01" required style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                        </div>
+                        
+                        <!-- Seletor de Ícone e Cor -->
+                        <div id="goal-icon-picker-container" style="padding: 5px 0 15px 0;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
+                            <div id="goalIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+                            <input type="hidden" id="goalIcon" value="">
+                            
+                            <div id="goal-color-picker-container" style="margin-top: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">cor:</label>
+                                <div id="goalColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <div class="color-option" data-color="red" style="background-color: #f44336;"></div>
+                                    <div class="color-option" data-color="blue" style="background-color: #3586ff;"></div>
+                                    <div class="color-option" data-color="green" style="background-color: #4caf50;"></div>
+                                    <div class="color-option" data-color="yellow" style="background-color: #ffeb3b;"></div>
+                                    <div class="color-option" data-color="purple" style="background-color: #9c27b0;"></div>
+                                    <div class="color-option" data-color="pink" style="background-color: #ff69b4;"></div>
+                                    <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
+                                </div>
+                                <input type="hidden" id="goalColor" value="blue">
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: center;">
+                             <input type="number" id="newGoalInterestRate" placeholder="juros mensais (%)" step="0.01">
+                            <div style="text-align: right;">
+                                <input type="checkbox" id="newGoalHasDeadline" style="width: auto; vertical-align: middle;">
+                                <label for="newGoalHasDeadline" style="font-size: 12px; vertical-align: middle; cursor: pointer;">definir prazo</label>
+                            </div>
+                        </div>
+                        <input type="date" id="newGoalDeadline" style="display: none;">
+                        <button type="submit" class="add-btn">criar meta</button>
+                        </form>
+                    </div>
                 </div>
 
                 <!-- Seção de Gerenciamento de Categorias -->
@@ -1728,7 +1992,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     <h3 style="margin-top:0;">gerenciar categorias</h3>
 
                     <!-- Formulário de Adicionar Categoria -->
-                    <div id="add-category-form" style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
+                    <div id="add-category-form" style="display: none; gap: 10px; margin-bottom: 20px; align-items: center;">
                         <select id="newCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid #ccc;">
                             <option value="despesa">despesa</option>
                             <option value="receita">receita</option>
@@ -1752,7 +2016,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     </div>
 
                     <!-- Seletor de Ícone e Cor para Categorias -->
-                    <div id="category-icon-picker-container" style="padding: 15px 0; border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 20px; background: var(--secondary-bg);">
+                    <div id="category-icon-picker-container" style="display: none; padding: 15px 0; border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 20px; background: var(--secondary-bg);">
                         <label style="display: block; margin-bottom: 10px; font-weight: bold; color: var(--text-color);">ícone da categoria:</label>
                         <div id="categoryIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;"></div>
                         <input type="hidden" id="categoryIcon" value="">
@@ -1779,39 +2043,6 @@ body.dark-mode #remove-schedule-btn:hover {
 
                     <h4>categorias de receita</h4>
                     <div id="revenue-category-list-container"></div>
-                    
-                    <!-- Botão para adicionar nova meta -->
-                    <button id="open-add-investment-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar investimento</button>
-                    
-                    <!-- Formulário de nova meta (escondido inicialmente) -->
-                    <div id="investment-form-view" style="display: none; position: relative;">
-                        <button class="close-button back-button" id="back-to-investments-list-btn" style="right: auto; left: 15px; top: 15px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
-                        <h3 id="investment-form-title" style="margin-top: 0;">adicionar meta de investimento</h3>
-                        
-                        <form id="new-goal-form" style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
-                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
-                            <input type="text" id="newGoalName" placeholder="nome da nova meta" required>
-                            <input type="number" id="newGoalTarget" placeholder="valor da meta (r$)" step="0.01" required>
-                        </div>
-                        
-                        <!-- Seletor de Ícone e Cor (igual ao planner) -->
-                        <div id="goal-icon-picker-container" style="padding: 5px 0 15px 0;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
-                            <div id="goalIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
-                            <input type="hidden" id="goalIcon" value="">
-                            
-                        </div>
-                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: center;">
-                             <input type="number" id="newGoalInterestRate" placeholder="juros mensais (%)" step="0.01">
-                            <div style="text-align: right;">
-                                <input type="checkbox" id="newGoalHasDeadline" style="width: auto; vertical-align: middle;">
-                                <label for="newGoalHasDeadline" style="font-size: 12px; vertical-align: middle; cursor: pointer;">definir prazo</label>
-                            </div>
-                        </div>
-                        <input type="date" id="newGoalDeadline" style="display: none;">
-                        <button type="submit" class="add-btn">criar meta</button>
-                        </form>
-                    </div>
                 </div>
             </div>
 
@@ -1819,9 +2050,9 @@ body.dark-mode #remove-schedule-btn:hover {
 
         <div id="listas-section" class="mensal-content-section" style="display: none;">
             <form id="newListForm">
-                <div id="newListForm-main-line" style="display: flex; gap: 10px; align-items: center;">
-                    <input type="text" id="newListName" placeholder="nome da nova lista" required style="flex-grow: 1;">
-                    <select id="newListPriority" style="text-transform: none; flex-shrink: 0;">
+                <div id="newListForm-main-line" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <input type="text" id="newListName" placeholder="nome da nova lista" required style="flex-grow: 1; min-width: 200px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                    <select id="newListPriority" style="text-transform: none; flex-shrink: 0; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
                         <option value="baixa">prioridade: baixa</option>
                         <option value="media">prioridade: média</option>
                         <option value="alta">prioridade: alta</option>
@@ -1893,11 +2124,15 @@ body.dark-mode #remove-schedule-btn:hover {
   
   <!-- Seção de Detalhes de Tarefa -->
   <div id="description-section" class="mensal-content-section" style="display: none;">
-    <div style="padding: 20px; text-align: center;">
-      <button class="close-button back-button" onclick="closeDescriptionSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
-      <h3 style="margin-top: 0;">detalhes</h3>
-      <p id="modal-description-text" style="font-size: 16px; margin-top: 20px; line-height: 1.5;"></p>
-      <p id="modal-date-text"></p>
+    <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
+      <button class="close-button back-button" onclick="closeDescriptionSection()" style="position: relative; top: 0; left: 0; margin-bottom: 15px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
+      <h3 style="margin-top: 0; text-align: center; color: var(--text-color, #333); font-size: 24px; font-weight: 600;">detalhes</h3>
+      <div style="background: var(--secondary-bg, #f8f9fa); border-radius: 12px; padding: 20px; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <div style="text-align: center;">
+          <p id="modal-description-text" style="font-size: 18px; margin: 15px 0; line-height: 1.6; color: var(--text-color, #333); font-weight: 500;"></p>
+          <p id="modal-date-text" style="font-size: 16px; margin: 10px 0; line-height: 1.5; color: var(--text-color-secondary, #666);"></p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1915,8 +2150,28 @@ body.dark-mode #remove-schedule-btn:hover {
     <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
         <button class="close-button back-button" onclick="closeListIconSection()"><img src="images/buttons/back.svg" alt="Voltar"></button>
         <h3>escolha um ícone para a lista</h3>
-        <div id="list-icon-picker-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px; max-height: 300px; overflow-y: auto;">
+        
+        <!-- Seletor de Ícone -->
+        <div style="margin-top: 20px;">
+            <label style="display: block; margin-bottom: 10px; font-weight: bold;">ícone:</label>
+            <div id="list-icon-picker-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-height: 300px; overflow-y: auto;">
             </div>
+        </div>
+        
+        <!-- Seletor de Cor -->
+        <div style="margin-top: 20px;">
+            <label style="display: block; margin-bottom: 10px; font-weight: bold;">cor:</label>
+            <div id="list-color-picker" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
+                <div class="color-option" data-color="red" style="background-color: #f44336;"></div>
+                <div class="color-option" data-color="blue" style="background-color: #3586ff;"></div>
+                <div class="color-option" data-color="green" style="background-color: #4caf50;"></div>
+                <div class="color-option" data-color="yellow" style="background-color: #ffeb3b;"></div>
+                <div class="color-option" data-color="purple" style="background-color: #9c27b0;"></div>
+                <div class="color-option" data-color="pink" style="background-color: #ff69b4;"></div>
+                <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
+            </div>
+            <input type="hidden" id="listColor" value="blue">
+        </div>
     </div>
   </div>
 
@@ -1938,6 +2193,17 @@ body.dark-mode #remove-schedule-btn:hover {
                 <div id="editor-list-icon-picker" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 140px; overflow-y: auto; padding: 5px; border-radius: 8px; background: rgba(0,0,0,0.05);"></div>
                 <input type="hidden" id="editor-list-icon-main">
                 
+                <label style="display: block; margin-bottom: 5px; font-weight: bold; margin-top: 10px;">Cor da Lista:</label>
+                <div id="editor-list-color-picker" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <div class="color-option" data-color="red" style="background-color: #f44336;"></div>
+                    <div class="color-option" data-color="blue" style="background-color: #3586ff;"></div>
+                    <div class="color-option" data-color="green" style="background-color: #4caf50;"></div>
+                    <div class="color-option" data-color="yellow" style="background-color: #ffeb3b;"></div>
+                    <div class="color-option" data-color="purple" style="background-color: #9c27b0;"></div>
+                    <div class="color-option" data-color="pink" style="background-color: #ff69b4;"></div>
+                    <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
+                </div>
+                <input type="hidden" id="editor-list-color-main" value="blue">
             </div>
 
             <hr>
@@ -2009,6 +2275,10 @@ body.dark-mode #remove-schedule-btn:hover {
     const categoryIconHiddenInput = document.getElementById('categoryIcon');
     const categoryIconColorInput = document.getElementById('categoryIconColor');
     const categoryColorPicker = document.getElementById('categoryColorPicker');
+    const goalColorPicker = document.getElementById('goalColorPicker');
+    const listColorPicker = document.getElementById('list-color-picker');
+    const goalColor = document.getElementById('goalColor');
+    const listColor = document.getElementById('listColor');
     
     // Elementos do formulário de edição
     const addCategoryForm = document.getElementById('add-category-form');
@@ -2156,7 +2426,53 @@ body.dark-mode #remove-schedule-btn:hover {
     let monthChart, annualChart;
     let dataByMonth = {};
     let revenueCategories = ["salário", "freela", "outros"];
-    let expenseCategories = ["alimentação", "transporte", "moradia", "lazer", "saúde", "educação", "compras", "contas", "beleza", "outros"];
+    let expenseCategories = [
+        {
+            name: "alimentação",
+            icon: "./images/colored/red/food.svg",
+            color: "red"
+        },
+        {
+            name: "lazer",
+            icon: "./images/colored/purple/picture.svg",
+            color: "purple"
+        },
+        {
+            name: "moradia",
+            icon: "./images/colored/blue/house.svg",
+            color: "blue"
+        },
+        {
+            name: "transporte",
+            icon: "./images/colored/blue/car.svg",
+            color: "blue"
+        },
+        {
+            name: "saúde",
+            icon: "./images/colored/green/health.svg",
+            color: "green"
+        },
+        {
+            name: "educação",
+            icon: "./images/colored/red/study.svg",
+            color: "red"
+        },
+        {
+            name: "assinaturas",
+            icon: "./images/colored/yellow/none.svg",
+            color: "yellow"
+        },
+        {
+            name: "compras",
+            icon: "./images/colored/orange/shopping.svg",
+            color: "orange"
+        },
+        {
+            name: "beleza",
+            icon: "./images/colored/pink/nails.svg",
+            color: "pink"
+        }
+    ];
     let investmentGoals = [];
     let editingGoalId = null;
     let editingContributionKey = null;
@@ -2216,12 +2532,7 @@ body.dark-mode #remove-schedule-btn:hover {
 
     function loadFinancialData() {
         dataByMonth = JSON.parse(localStorage.getItem('financialData')) || {};
-        expenseCategories = JSON.parse(localStorage.getItem('expenseCategories')) || expenseCategories;
-        revenueCategories = JSON.parse(localStorage.getItem('revenueCategories')) || revenueCategories;
-        ['outros', 'contas', 'compras', 'beleza'].forEach(cat => {
-            if (!expenseCategories.includes(cat)) expenseCategories.push(cat);
-        });
-        if (!revenueCategories.includes('outros')) revenueCategories.push('outros');
+        // Não carrega categorias do localStorage - usa apenas as categorias básicas definidas no código
         categoryLimits = JSON.parse(localStorage.getItem('categoryLimits')) || {};
     }
 
@@ -2352,34 +2663,29 @@ body.dark-mode #remove-schedule-btn:hover {
     }
     
     function openDescriptionSection(description, date) {
-        // Track current section as previous
-        const currentActiveSection = document.querySelector('.mensal-content-section[style*="block"]');
-        if (currentActiveSection) {
-            previousSection = currentActiveSection.id;
-        }
-        
-        // Hide all other sections first
-        document.querySelectorAll('.mensal-content-section').forEach(section => section.style.display = 'none');
-        
         const modalDescText = document.getElementById('modal-description-text');
         const modalDateText = document.getElementById('modal-date-text');
+        const detailsContent = document.getElementById('transaction-details-content');
+        const noSelectionMessage = document.getElementById('no-selection-message');
         
-        modalDescText.textContent = description;
-        if (date) {
-            const [year, month, day] = date.split('-');
-            modalDateText.textContent = `data: ${day}/${month}/${year}`;
-        } else {
-            modalDateText.textContent = '';
+        if (modalDescText) modalDescText.textContent = description;
+        if (modalDateText) {
+            if (date) {
+                const [year, month, day] = date.split('-');
+                modalDateText.textContent = `${day}/${month}/${year}`;
+            } else {
+                modalDateText.textContent = '';
+            }
         }
-
-        // Show description section
-        descriptionSection.style.display = 'block';
+        
+        // Mostra os detalhes e esconde a mensagem de nenhuma seleção
+        if (detailsContent) detailsContent.style.display = 'block';
+        if (noSelectionMessage) noSelectionMessage.style.display = 'none';
     }
 
     function closeDescriptionSection() {
-        descriptionSection.style.display = 'none';
-        // Não volta para seção anterior para evitar conflitos com navegação principal
-        // A navegação principal já gerencia qual seção deve estar visível
+        // Função mantida para compatibilidade, mas não faz mais nada
+        // Os detalhes agora ficam sempre visíveis no painel lateral
     }
     
     function openListDetailsSection(listId) {
@@ -2449,7 +2755,34 @@ body.dark-mode #remove-schedule-btn:hover {
         if (currentListIconBeingEdited) {
             const listDiv = document.querySelector(`.list[data-list-id="${currentListIconBeingEdited}"]`);
             if (listDiv) {
+                // Usa a cor selecionada para o ícone
+                const selectedColor = listColor.value || 'blue';
+                const colorMap = {
+                    'blue': '#3586ff',
+                    'green': '#4caf50',
+                    'red': '#f44336',
+                    'yellow': '#ffeb3b',
+                    'purple': '#9c27b0',
+                    'pink': '#ff69b4',
+                    'orange': '#ff9800'
+                };
+                const color = colorMap[selectedColor] || '#3586ff';
+                
+                // Atualiza o ícone da lista
                 listDiv.querySelector('.list-title-icon').src = iconPath;
+                
+                // Atualiza a cor da borda da lista para combinar com o ícone
+                listDiv.style.borderLeftColor = color;
+                
+                // Salva a lista com a nova cor
+                const allLists = JSON.parse(localStorage.getItem('todoLists')) || [];
+                const listIndex = allLists.findIndex(list => list.id === currentListIconBeingEdited);
+                if (listIndex !== -1) {
+                    allLists[listIndex].icon = iconPath;
+                    allLists[listIndex].color = color;
+                    localStorage.setItem('todoLists', JSON.stringify(allLists));
+                }
+                
                 saveLists();
             }
         }
@@ -2488,6 +2821,29 @@ body.dark-mode #remove-schedule-btn:hover {
         editorListIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
             option.classList.toggle('selected', option.getAttribute('data-icon-path') === currentIconPath);
         });
+        
+        // Inicializa o seletor de cor
+        const currentColor = listData.color || '#3586ff';
+        const colorMap = {
+            '#3586ff': 'blue',
+            '#4caf50': 'green', 
+            '#f44336': 'red',
+            '#ffeb3b': 'yellow',
+            '#9c27b0': 'purple',
+            '#ff69b4': 'pink',
+            '#ff9800': 'orange'
+        };
+        const currentColorName = colorMap[currentColor] || 'blue';
+        
+        const editorListColorPicker = document.getElementById('editor-list-color-picker');
+        const editorListColorInput = document.getElementById('editor-list-color-main');
+        
+        if (editorListColorPicker && editorListColorInput) {
+            editorListColorPicker.querySelectorAll('.color-option').forEach(option => {
+                option.classList.toggle('selected', option.dataset.color === currentColorName);
+            });
+            editorListColorInput.value = currentColorName;
+        }
 
         const linkedTaskInfo = findLinkedTask(listId);
         if (linkedTaskInfo) {
@@ -2545,8 +2901,16 @@ body.dark-mode #remove-schedule-btn:hover {
 
     function closeListEditorSection() {
         listEditorSection.style.display = 'none';
-        // Não volta para seção anterior para evitar conflitos com navegação principal
-        // A navegação principal já gerencia qual seção deve estar visível
+        // Volta para a seção anterior
+        if (previousSection) {
+            const targetSection = document.getElementById(previousSection);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+        } else {
+            // Se não há seção anterior, volta para a seção de listas
+            document.getElementById('listas-section').style.display = 'block';
+        }
     }
 
     // ----------------------------------------------------
@@ -2579,7 +2943,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     const categoryIcon = typeof category === 'object' ? category.icon : categoryIcons[categoryName] || categoryIcons.money;
                     
                     if (editingCategoryId && editingCategoryId.name === categoryName && editingCategoryId.type === type) {
-                        return `<div style="padding: 8px; border: 2px solid #3586ff; border-radius: 8px; background: #e3f2fd; margin-bottom: 5px;">
+                        return `<div style="padding: 8px; border: 2px solid #3586ff; border-radius: 8px; background: rgba(53, 134, 255, 0.1); margin-bottom: 5px;">
                                     <span style="color: #3586ff; font-weight: bold;">editando: ${categoryName}</span>
                                 </div>`;
                     } else {
@@ -2604,7 +2968,11 @@ body.dark-mode #remove-schedule-btn:hover {
         if (!name) return alert('o nome da categoria é obrigatório.');
         
         let targetArray = type === 'receita' ? revenueCategories : expenseCategories;
-        if (targetArray.includes(name)) return alert('categoria já existe.');
+        const categoryExists = targetArray.some(cat => {
+            const catName = typeof cat === 'string' ? cat : cat.name;
+            return catName === name;
+        });
+        if (categoryExists) return alert('categoria já existe.');
         
         // Obtém o ícone e cor selecionados
         const selectedIconName = categoryIconPicker.querySelector('.task-icon-option.selected')?.dataset.iconName || 'dinheiro';
@@ -2732,7 +3100,7 @@ body.dark-mode #remove-schedule-btn:hover {
 
     window.cancelCategoryEdit = function() {
         editingCategoryId = null;
-        addCategoryForm.style.display = 'flex';
+        addCategoryForm.style.display = 'none'; // Mantém escondido
         editCategoryForm.style.display = 'none';
         renderCategoryModalList();
     }
@@ -2851,17 +3219,45 @@ body.dark-mode #remove-schedule-btn:hover {
 
         const allExpenseCategories = [...new Set(expenseCategories)];
         allExpenseCategories.forEach(category => {
-            const limit = categoryLimits[category] || 0;
-            const spent = totals[category] || 0;
+            // Extrai o nome da categoria (pode ser string ou objeto)
+            const categoryName = typeof category === 'string' ? category : category.name;
+            const limit = categoryLimits[categoryName] || 0;
+            const spent = totals[categoryName] || 0;
             const percentage = limit > 0 ? (spent / limit) * 100 : 0;
             const row = document.createElement('tr');
-            const progressBarColor = percentage > 100 ? '#FF5252' : (percentage > 80 ? '#FF9800' : '#4CAF50');
             
-            const iconPath = categoryIcons[category] || categoryIcons["outros"];
-            const categoryDisplay = `<img src="${iconPath}" alt="${category}" class="category-icon">`;
+            // Procura o ícone e cor da categoria personalizada
+            let iconPath = categoryIcons[categoryName] || categoryIcons["outros"];
+            let categoryColor = '#3586ff'; // Cor padrão azul
+            
+            const categoryData = expenseCategories.find(cat => {
+                const catName = typeof cat === 'string' ? cat : cat.name;
+                return catName === categoryName;
+            });
+            
+            if (categoryData && typeof categoryData === 'object') {
+                iconPath = categoryData.icon;
+                categoryColor = categoryData.color || '#3586ff';
+            }
+            
+            // Mapeia a cor para o código hexadecimal
+            const colorMap = {
+                'blue': '#3586ff',
+                'green': '#4caf50',
+                'red': '#f44336',
+                'yellow': '#ffeb3b',
+                'purple': '#9c27b0',
+                'pink': '#ff69b4',
+                'orange': '#ff9800'
+            };
+            const hexColor = colorMap[categoryColor] || categoryColor;
+            
+            const progressBarColor = percentage > 100 ? '#FF5252' : (percentage > 80 ? '#FF9800' : hexColor);
+            
+            const categoryDisplay = `<img src="${iconPath}" alt="${categoryName}" class="category-icon" style="filter: hue-rotate(0deg) saturate(1.2) brightness(1.1);">`;
             
             row.innerHTML = `
-                <td title="${category}" style="width: 15%; text-align: center;">${categoryDisplay}</td>
+                <td title="${categoryName}" style="width: 15%; text-align: center;">${categoryDisplay}</td>
                 <td style="width: 85%;">
                     <div class="progress-bar-container"
                          data-spent="${spent}"
@@ -2954,8 +3350,18 @@ body.dark-mode #remove-schedule-btn:hover {
     }
 
     function renderGoalIconPicker() {
-        // Usa apenas ícones azuis
-        renderIconPicker(goalIconPicker, goalIconHiddenInput, taskIcons);
+        // Renderiza ícones com cores
+        renderIconPicker(goalIconPicker, goalIconHiddenInput, taskIcons, null, goalColorPicker);
+        
+        // Seleciona a cor azul por padrão
+        if (goalColorPicker) {
+            goalColorPicker.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            const blueOption = goalColorPicker.querySelector('[data-color="blue"]');
+            if (blueOption) blueOption.classList.add('selected');
+            if (goalColor) goalColor.value = 'blue';
+        }
     }
 
     function renderInvestmentGoals() {
@@ -3012,6 +3418,18 @@ body.dark-mode #remove-schedule-btn:hover {
                     <div class="goal-icon-picker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div> 
                     <input type="hidden" class="editing-goal-icon-input" value="${goal.icon}">
                     
+                    <label style="font-size: 12px; font-weight: bold; margin-top: 10px; display: block;">cor:</label>
+                    <div class="editing-goal-color-picker" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <div class="color-option" data-color="red" style="background-color: #f44336;"></div>
+                        <div class="color-option" data-color="blue" style="background-color: #3586ff;"></div>
+                        <div class="color-option" data-color="green" style="background-color: #4caf50;"></div>
+                        <div class="color-option" data-color="yellow" style="background-color: #ffeb3b;"></div>
+                        <div class="color-option" data-color="purple" style="background-color: #9c27b0;"></div>
+                        <div class="color-option" data-color="pink" style="background-color: #ff69b4;"></div>
+                        <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
+                    </div>
+                    <input type="hidden" class="editing-goal-color-input" value="${goal.color}">
+                    
                     <div class="actions" style="margin-top: 15px;">
                         <button type="submit" class="edit-btn">salvar</button>
                         <button type="button" class="delete-btn">cancelar</button>
@@ -3021,14 +3439,36 @@ body.dark-mode #remove-schedule-btn:hover {
 
             const iconPickerContainer = card.querySelector('.goal-icon-picker');
             const hiddenIconInput = card.querySelector('.editing-goal-icon-input');
+            const colorPickerContainer = card.querySelector('.editing-goal-color-picker');
+            const hiddenColorInput = card.querySelector('.editing-goal-color-input');
             
+            // Determina a cor atual do investimento
+            const currentColor = goal.color || '#3586ff';
+            const colorMap = {
+                '#3586ff': 'blue',
+                '#4caf50': 'green', 
+                '#f44336': 'red',
+                '#ffeb3b': 'yellow',
+                '#9c27b0': 'purple',
+                '#ff69b4': 'pink',
+                '#ff9800': 'orange'
+            };
+            const currentColorName = colorMap[currentColor] || 'blue';
+            
+            // Inicializa o seletor de cor
+            colorPickerContainer.querySelectorAll('.color-option').forEach(option => {
+                option.classList.toggle('selected', option.dataset.color === currentColorName);
+            });
+            
+            // Renderiza os ícones com a cor atual
             for (const key in taskIcons) {
-                const iconPath = taskIcons[key];
+                const iconPath = getColoredIcons(key, currentColorName);
                 const optionDiv = document.createElement('div');
                 optionDiv.className = 'task-icon-option';
                 optionDiv.dataset.iconPath = iconPath;
+                optionDiv.dataset.iconName = key;
                 optionDiv.innerHTML = `<img src="${iconPath}">`;
-                if (goal.icon === iconPath) {
+                if (goal.icon === iconPath || goal.icon === taskIcons[key]) {
                     optionDiv.classList.add('selected');
                 }
 
@@ -3040,6 +3480,35 @@ body.dark-mode #remove-schedule-btn:hover {
 
                 iconPickerContainer.appendChild(optionDiv);
             }
+            
+            // Event listener para o seletor de cor
+            colorPickerContainer.addEventListener('click', (e) => {
+                const colorOption = e.target.closest('.color-option');
+                if (colorOption) {
+                    colorPickerContainer.querySelectorAll('.color-option').forEach(option => {
+                        option.classList.remove('selected');
+                    });
+                    colorOption.classList.add('selected');
+                    const selectedColor = colorOption.dataset.color;
+                    
+                    // Atualiza os ícones com a nova cor
+                    iconPickerContainer.querySelectorAll('.task-icon-option').forEach(iconOption => {
+                        const iconName = iconOption.dataset.iconName;
+                        const coloredPath = getColoredIcons(iconName, selectedColor);
+                        const img = iconOption.querySelector('img');
+                        img.src = coloredPath;
+                        iconOption.dataset.iconPath = coloredPath;
+                    });
+                    
+                    // Atualiza o ícone selecionado
+                    const selectedIcon = iconPickerContainer.querySelector('.task-icon-option.selected');
+                    if (selectedIcon) {
+                        const iconName = selectedIcon.dataset.iconName;
+                        const coloredPath = getColoredIcons(iconName, selectedColor);
+                        hiddenIconInput.value = coloredPath;
+                    }
+                }
+            });
 
             
 
@@ -3151,10 +3620,20 @@ body.dark-mode #remove-schedule-btn:hover {
       const interestRate = parseFloat(document.getElementById('newGoalInterestRate').value) || 0;
       const deadline = newGoalHasDeadlineCheckbox.checked ? newGoalDeadlineInput.value : null;
       const iconPath = goalIconHiddenInput.value;
+      const selectedColor = goalColor.value || 'blue';
 
       if (name && !isNaN(target) && target > 0) {
-        // Usa sempre a cor azul
-        const color = '#3586ff';
+        // Mapeia a cor para o código hexadecimal
+        const colorMap = {
+          'blue': '#3586ff',
+          'green': '#4caf50',
+          'red': '#f44336',
+          'yellow': '#ffeb3b',
+          'purple': '#9c27b0',
+          'pink': '#ff69b4',
+          'orange': '#ff9800'
+        };
+        const color = colorMap[selectedColor] || '#3586ff';
         
         investmentGoals.push({
           id: Date.now(),
@@ -3213,7 +3692,20 @@ body.dark-mode #remove-schedule-btn:hover {
             const newDeadline = hasDeadline ? e.target.querySelector('.editing-goal-deadline').value : null;
 
             const newIcon = e.target.querySelector('.editing-goal-icon-input').value;
-            const newColor = '#3586ff'; // Sempre azul
+            const newColorInput = e.target.querySelector('.editing-goal-color-input');
+            const selectedColorOption = e.target.querySelector('.editing-goal-color-picker .color-option.selected');
+            const selectedColorName = selectedColorOption ? selectedColorOption.dataset.color : 'blue';
+            
+            const colorMap = {
+                'blue': '#3586ff',
+                'green': '#4caf50',
+                'red': '#f44336',
+                'yellow': '#ffeb3b',
+                'purple': '#9c27b0',
+                'pink': '#ff69b4',
+                'orange': '#ff9800'
+            };
+            const newColor = colorMap[selectedColorName] || '#3586ff';
 
             if (newName && !isNaN(newTarget) && newTarget > 0) {
                 goal.name = newName;
@@ -3343,11 +3835,11 @@ body.dark-mode #remove-schedule-btn:hover {
 
         monthData.forEach((item, index) => {
             const transactionType = item.type || (item.value >= 0 ? 'receita' : 'despesa');
-            const iconColorClass = transactionType === 'receita' ? 'icon-revenue' : 'icon-expense';
             const escapedDesc = (item.desc || '').replace(/'/g, "&apos;").replace(/"/g, "&quot;");
             
             // Procura o ícone da categoria personalizada
             let iconPath = item.icon;
+            
             if (!iconPath) {
                 const allCategories = [...expenseCategories, ...revenueCategories];
                 const categoryData = allCategories.find(cat => {
@@ -3362,23 +3854,37 @@ body.dark-mode #remove-schedule-btn:hover {
                 }
             }
             
-            const iconHtml = `<img src="${iconPath}" class="category-icon ${iconColorClass}" alt="${item.category}" onclick="openDescriptionSection('${escapedDesc}', '${item.date}')" style="cursor: pointer;">`;
+            // Cores simplificadas: vermelho para despesas, verde para receitas
+            const iconColor = transactionType === 'receita' ? 'green' : 'red';
+            const valueColor = transactionType === 'receita' ? '#4CAF50' : '#f44336';
+            
+            // Converte o ícone para a cor apropriada
+            let coloredIconPath = iconPath;
+            if (iconPath.includes('/colored/')) {
+                // Se já é um ícone colorido, substitui a cor
+                coloredIconPath = iconPath.replace(/\/colored\/[^\/]+\//, `/colored/${iconColor}/`);
+            } else {
+                // Se não é colorido, adiciona a cor
+                const iconName = iconPath.split('/').pop();
+                coloredIconPath = `./images/colored/${iconColor}/${iconName}`;
+            }
+            
+            const iconHtml = `<img src="${coloredIconPath}" class="category-icon" alt="${item.category}" style="width: 24px; height: 24px; object-fit: contain;">`;
             
             const row = document.createElement('tr');
+            row.style.borderBottom = '1px solid var(--border-color, #eee)';
             row.innerHTML = `
-                <td style="text-align:center;">${iconHtml}</td>
-                <td>${item.desc}</td>
-                <td style="color: ${transactionType === 'receita' ? '#4CAF50' : '#FF5252'}; font-weight: bold; text-align:right;">${formatCurrency(Math.abs(item.value))}</td>
-                <td style="text-align:center;">
-                    <button class="edit-btn" data-index="${index}"><img src="images/buttons/pencil.svg" alt="Editar"></button>
-                    <button class="delete-btn" data-index="${index}"><img src="images/buttons/trash.svg" alt="Remover"></button>
+                <td style="text-align:center; padding: 12px 8px;">${iconHtml}</td>
+                <td style="padding: 12px 8px; font-size: 14px;">${item.desc}</td>
+                <td style="color: ${valueColor}; font-weight: bold; text-align:right; padding: 12px 8px; font-size: 14px;">${formatCurrency(Math.abs(item.value))}</td>
+                <td style="text-align:center; padding: 12px 8px;">
+                    <button class="edit-btn" data-index="${index}" style="margin-right: 5px;"><img src="images/buttons/pencil.svg" alt="Editar" style="width: 16px; height: 16px;"></button>
+                    <button class="delete-btn" data-index="${index}"><img src="images/buttons/trash.svg" alt="Remover" style="width: 16px; height: 16px;"></button>
                 </td>
             `;
             expenseList.appendChild(row);
             total += item.value;
         });
-
-        document.getElementById('total-container').innerHTML = `saldo do mês: <span id="total" style="color: ${total >= 0 ? '#4CAF50' : '#FF5252'};">${formatCurrency(total)}</span>`;
     }
 
     window.deleteExpense = function(index) {
@@ -4051,9 +4557,9 @@ body.dark-mode #remove-schedule-btn:hover {
         }
 
         for (const key in icons) {
-            // Para o seletor de tarefas, usa cores dinâmicas
+            // Para seletores com colorPickerElement, usa cores dinâmicas
             let iconPath;
-            if (colorPickerElement && pickerElement.id === 'taskIconPicker') {
+            if (colorPickerElement) {
                 iconPath = getColoredIcons(key, currentColor);
             } else {
                 iconPath = icons[key]; // Para outros seletores, mantém o comportamento atual
@@ -4080,6 +4586,40 @@ body.dark-mode #remove-schedule-btn:hover {
                 }
             });
             pickerElement.appendChild(option);
+        }
+        
+        // Adiciona event listener para o seletor de cor se fornecido
+        if (colorPickerElement) {
+            colorPickerElement.addEventListener('click', (e) => {
+                const colorOption = e.target.closest('.color-option');
+                if (colorOption) {
+                    // Remove seleção anterior
+                    colorPickerElement.querySelectorAll('.color-option').forEach(option => {
+                        option.classList.remove('selected');
+                    });
+                    
+                    // Seleciona nova cor
+                    colorOption.classList.add('selected');
+                    const selectedColor = colorOption.dataset.color;
+                    
+                    // Atualiza TODOS os ícones com a nova cor
+                    pickerElement.querySelectorAll('.task-icon-option').forEach(iconOption => {
+                        const iconName = iconOption.dataset.iconName;
+                        const coloredPath = getColoredIcons(iconName, selectedColor);
+                        const img = iconOption.querySelector('img');
+                        img.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
+                        iconOption.dataset.iconPath = coloredPath;
+                    });
+                    
+                    // Atualiza o ícone selecionado
+                    const selectedIcon = pickerElement.querySelector('.task-icon-option.selected');
+                    if (selectedIcon && hiddenInputElement) {
+                        const iconName = selectedIcon.dataset.iconName;
+                        const coloredPath = getColoredIcons(iconName, selectedColor);
+                        hiddenInputElement.value = coloredPath;
+                    }
+                }
+            });
         }
         
         
@@ -4240,6 +4780,22 @@ body.dark-mode #remove-schedule-btn:hover {
         if (transactionId) {
             listDiv.dataset.transactionId = transactionId;
             listDiv.dataset.transactionMonth = transactionMonth;
+        }
+        
+        // Define a cor da borda baseada na cor selecionada (se disponível) ou na prioridade
+        const selectedColor = listColor ? listColor.value : null;
+        if (selectedColor) {
+            const colorMap = {
+                'blue': '#3586ff',
+                'green': '#4caf50',
+                'red': '#f44336',
+                'yellow': '#ffeb3b',
+                'purple': '#9c27b0',
+                'pink': '#ff69b4',
+                'orange': '#ff9800'
+            };
+            const color = colorMap[selectedColor] || '#3586ff';
+            listDiv.style.borderLeftColor = color;
         }
         
         const titleContainer = document.createElement('div');
@@ -4535,6 +5091,13 @@ body.dark-mode #remove-schedule-btn:hover {
         cancelEdit(); // Reseta o formulário caso estivesse em modo de edição
     });
 
+    const closeAddTransactionBtn = document.getElementById('close-add-transaction-btn');
+    closeAddTransactionBtn.addEventListener('click', () => {
+        addTransactionContainer.style.display = 'none';
+        transactionListView.style.display = 'block';
+        cancelEdit(); // Reseta o formulário caso estivesse em modo de edição
+    });
+
     newListForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const listName = newListNameInput.value.trim().toLowerCase();
@@ -4627,6 +5190,20 @@ body.dark-mode #remove-schedule-btn:hover {
         const listId = editorListIdInput.value;
         const newName = editorListNameInput.value.trim();
         const newListIcon = editorListIconInput.value;
+        const editorListColorInput = document.getElementById('editor-list-color-main');
+        const selectedColorOption = document.querySelector('#editor-list-color-picker .color-option.selected');
+        const selectedColorName = selectedColorOption ? selectedColorOption.dataset.color : 'blue';
+        
+        const colorMap = {
+            'blue': '#3586ff',
+            'green': '#4caf50',
+            'red': '#f44336',
+            'yellow': '#ffeb3b',
+            'purple': '#9c27b0',
+            'pink': '#ff69b4',
+            'orange': '#ff9800'
+        };
+        const newColor = colorMap[selectedColorName] || '#3586ff';
 
         if (!newName) {
             alert("O nome da lista não pode ficar em branco.");
@@ -4638,6 +5215,7 @@ body.dark-mode #remove-schedule-btn:hover {
         if (listIndex > -1) {
             allLists[listIndex].name = newName;
             allLists[listIndex].icon = newListIcon;
+            allLists[listIndex].color = newColor;
         }
         localStorage.setItem('todoLists', JSON.stringify(allLists));
 
@@ -4850,6 +5428,7 @@ body.dark-mode #remove-schedule-btn:hover {
         addTransactionContainer.style.display = 'none';
         budgetsView.style.display = 'none';
         investmentsView.style.display = 'none';
+        categorySection.style.display = 'none'; // Close category section when switching to transactions
         transactionsView.style.display = 'block';
         transactionsView.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
@@ -5005,7 +5584,91 @@ body.dark-mode #remove-schedule-btn:hover {
             }
         });
     }
-    calendarMonthSelect.addEventListener('change', (e) => { 
+
+    // Event listener para o seletor de cores dos investimentos
+    if (goalColorPicker) {
+        goalColorPicker.addEventListener('click', (e) => {
+            const colorOption = e.target.closest('.color-option');
+            if (colorOption) {
+                // Remove seleção anterior
+                goalColorPicker.querySelectorAll('.color-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Seleciona nova cor
+                colorOption.classList.add('selected');
+                const selectedColor = colorOption.dataset.color;
+                goalColor.value = selectedColor;
+                
+                // Atualiza TODOS os ícones com a nova cor
+                goalIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
+                    const iconName = iconOption.dataset.iconName;
+                    const coloredPath = getColoredIcons(iconName, selectedColor);
+                    
+                    // Remove a imagem e recria com a nova cor
+                    const img = iconOption.querySelector('img');
+                    img.remove();
+                    
+                    const newImg = document.createElement('img');
+                    newImg.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
+                    newImg.style.width = '100%';
+                    newImg.style.height = '100%';
+                    newImg.style.objectFit = 'contain';
+                    newImg.style.borderRadius = '5px';
+                    
+                    iconOption.appendChild(newImg);
+                    iconOption.dataset.iconPath = coloredPath;
+                });
+                
+                // Atualiza o valor do ícone selecionado
+                const selectedIcon = goalIconPicker.querySelector('.task-icon-option.selected');
+                if (selectedIcon) {
+                    const iconName = selectedIcon.dataset.iconName;
+                    const coloredPath = getColoredIcons(iconName, selectedColor);
+                    goalIconHiddenInput.value = coloredPath;
+                }
+            }
+        });
+    }
+
+    // Event listener para o seletor de cores das listas
+    if (listColorPicker) {
+        listColorPicker.addEventListener('click', (e) => {
+            const colorOption = e.target.closest('.color-option');
+            if (colorOption) {
+                // Remove seleção anterior
+                listColorPicker.querySelectorAll('.color-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Seleciona nova cor
+                colorOption.classList.add('selected');
+                const selectedColor = colorOption.dataset.color;
+                listColor.value = selectedColor;
+                
+                // Atualiza TODOS os ícones com a nova cor
+                listIconPickerGrid.querySelectorAll('.task-icon-option').forEach(iconOption => {
+                    const iconName = iconOption.dataset.iconName;
+                    const coloredPath = getColoredIcons(iconName, selectedColor);
+                    
+                    // Remove a imagem e recria com a nova cor
+                    const img = iconOption.querySelector('img');
+                    img.remove();
+                    
+                    const newImg = document.createElement('img');
+                    newImg.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
+                    newImg.style.width = '100%';
+                    newImg.style.height = '100%';
+                    newImg.style.objectFit = 'contain';
+                    newImg.style.borderRadius = '5px';
+                    
+                    iconOption.appendChild(newImg);
+                    iconOption.dataset.iconPath = coloredPath;
+                });
+            }
+        });
+    }
+    calendarMonthSelect.addEventListener('change', (e) => {
         currentCalendarDate.setMonth(parseInt(e.target.value));
         currentCalendarDate.setDate(1); 
         updateMonthlyView();
@@ -5116,10 +5779,39 @@ body.dark-mode #remove-schedule-btn:hover {
         initCalendarSelect();
         
         renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons, null, taskColorPicker);
-        renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons);
+        renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons, null, document.getElementById('editor-list-color-picker'));
         renderIconPicker(goalIconPicker, goalIconHiddenInput, taskIcons);
-        renderIconPicker(listIconPickerGrid, null, taskIcons, selectListIcon);
+        renderIconPicker(listIconPickerGrid, null, taskIcons, selectListIcon, listColorPicker);
         renderIconPicker(categoryIconPicker, categoryIconHiddenInput, taskIcons, null, categoryColorPicker);
+        
+        // Inicializa os seletores de cor
+        if (goalColorPicker) {
+            goalColorPicker.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            const blueOption = goalColorPicker.querySelector('[data-color="blue"]');
+            if (blueOption) blueOption.classList.add('selected');
+            if (goalColor) goalColor.value = 'blue';
+        }
+        
+        if (listColorPicker) {
+            listColorPicker.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            const blueOption = listColorPicker.querySelector('[data-color="blue"]');
+            if (blueOption) blueOption.classList.add('selected');
+            if (listColor) listColor.value = 'blue';
+        }
+        
+        // Inicializa o seletor de cor do editor de listas
+        const editorListColorPicker = document.getElementById('editor-list-color-picker');
+        if (editorListColorPicker) {
+            editorListColorPicker.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            const blueOption = editorListColorPicker.querySelector('[data-color="blue"]');
+            if (blueOption) blueOption.classList.add('selected');
+        }
         
         
         // Verifica se todos os elementos de investimento estão disponíveis
