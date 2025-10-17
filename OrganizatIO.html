@@ -1562,6 +1562,15 @@
         border-radius: 8px;
       }
       
+      /* Mantém botões de lista redondos */
+      .edit-list-btn, .delete-list-circular-btn {
+        border-radius: 50% !important;
+        min-height: unset;
+        padding: 0;
+        width: 32px;
+        height: 32px;
+      }
+      
       /* Melhora seletores de ícones */
       .task-icon-option {
         width: 40px;
@@ -1642,10 +1651,21 @@
         align-items: stretch;
       }
       
-      #newListForm-main-line input,
-      #newListForm-main-line select {
+      #newListForm-main-line input {
         width: 100%;
         margin-bottom: 10px;
+      }
+      
+      #newListForm-main-line > div {
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      
+      #newListForm-main-line select {
+        flex: 1;
+        margin-bottom: 0;
       }
       
       /* Melhora seção de agendamento */
@@ -2070,24 +2090,27 @@ body.dark-mode #remove-schedule-btn:hover {
             <form id="newListForm">
                 <div id="newListForm-main-line" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                     <input type="text" id="newListName" placeholder="nome da nova lista" required style="flex-grow: 1; min-width: 200px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
-                    <select id="newListPriority" style="text-transform: none; flex-shrink: 0; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
-                        <option value="baixa">prioridade: baixa</option>
-                        <option value="media">prioridade: média</option>
-                        <option value="alta">prioridade: alta</option>
-                    </select>
-
-                    <div id="shopping-list-container" title="Marcar como lista de compras">
-                        <input type="checkbox" id="shopping-list-checkbox">
-                        <label for="shopping-list-checkbox" class="icon-toggle-button">
-                            <img src="images/buttons/lists/compras.svg" alt="Lista de Compras">
-                        </label>
-                    </div>
                     
-                    <div id="link-to-planner-container" title="Agendar no planner">
-                        <input type="checkbox" id="link-to-planner-checkbox">
-                        <label for="link-to-planner-checkbox" class="icon-toggle-button">
-                            <img src="images/buttons/lists/agendar.svg" alt="Agendar no Planner">
-                        </label>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                        <select id="newListPriority" style="text-transform: none; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                            <option value="baixa">prioridade: baixa</option>
+                            <option value="media">prioridade: média</option>
+                            <option value="alta">prioridade: alta</option>
+                        </select>
+
+                        <div id="shopping-list-container" title="Marcar como lista de compras">
+                            <input type="checkbox" id="shopping-list-checkbox">
+                            <label for="shopping-list-checkbox" class="icon-toggle-button">
+                                <img src="images/buttons/lists/compras.svg" alt="Lista de Compras">
+                            </label>
+                        </div>
+                        
+                        <div id="link-to-planner-container" title="Agendar no planner">
+                            <input type="checkbox" id="link-to-planner-checkbox">
+                            <label for="link-to-planner-checkbox" class="icon-toggle-button">
+                                <img src="images/buttons/lists/agendar.svg" alt="Agendar no Planner">
+                            </label>
+                        </div>
                     </div>
                 </div>
 
