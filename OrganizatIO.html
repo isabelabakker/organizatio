@@ -1365,6 +1365,15 @@
         background-color: #f9f9f9;
         flex-shrink: 0;
     }
+    
+    /* Botões específicos de lista menores */
+    #shopping-list-container .icon-toggle-button,
+    #link-to-planner-container .icon-toggle-button,
+    #routine-container .icon-toggle-button {
+        width: 18px;
+        height: 18px;
+        padding: 3px;
+    }
 
     /* 3. Estiliza a imagem dentro do botão */
     .icon-toggle-button img {
@@ -1649,11 +1658,20 @@
         align-items: stretch;
       }
       
-      /* Melhora ícones de toggle */
+      /* Melhora ícones de toggle - menores para lista de compras, agendar e rotina */
       .icon-toggle-button {
-        width: 44px;
-        height: 44px;
-        padding: 8px;
+        width: 36px;
+        height: 36px;
+        padding: 6px;
+      }
+      
+      /* Botões específicos de lista ainda menores */
+      #shopping-list-container .icon-toggle-button,
+      #link-to-planner-container .icon-toggle-button,
+      #routine-container .icon-toggle-button {
+        width: 24px;
+        height: 24px;
+        padding: 2px;
       }
       
       /* Melhora progress bars */
