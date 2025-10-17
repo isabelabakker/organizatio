@@ -1645,26 +1645,30 @@
         gap: 10px;
       }
       
-      /* Melhora inputs específicos */
+      /* Melhora inputs específicos - mantém layout horizontal como web */
       #newListForm-main-line {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
       }
       
       #newListForm-main-line input {
-        width: 100%;
-        margin-bottom: 10px;
+        flex: 1;
+        min-width: 200px;
+        margin-bottom: 0;
       }
       
       #newListForm-main-line > div {
         flex-direction: row;
         align-items: center;
         gap: 8px;
-        margin-bottom: 10px;
+        margin-bottom: 0;
+        flex-shrink: 0;
       }
       
       #newListForm-main-line select {
-        flex: 1;
+        flex-shrink: 0;
         margin-bottom: 0;
       }
       
