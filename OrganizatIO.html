@@ -27,7 +27,7 @@
 |_|___ ___| |_ ___| |___   | |_ ___| |_| |_ ___ ___   
 | |_ -| .'| . | -_| | .'|  | . | .'| '_| '_| -_|  _|   
 |_|___|__,|___|___|_|__,|  |___|__,|_,_|_,_|___|_|                                                   
-♡‧₊˚🎀༺♡༻🎀˚₊‧♡
+♡‧₊˚🎀༺♡༻🎀˚₊‧♡ ♡‧₊˚🎀༺♡༻🎀˚₊‧♡ ♡‧₊˚🎀༺♡༻🎀˚₊‧♡ 
 -->
 
 <!DOCTYPE html>
@@ -1516,6 +1516,100 @@
     /* ================================================================ */
     /* === BLOCO DE ESTILOS PARA DISPOSITIVOS MÓVEIS (RESPONSIVO) === */
     /* ================================================================ */
+    
+    /* Media query para telas muito pequenas (≤480px) */
+    @media (max-width: 480px) {
+      .container {
+        margin: 2px;
+        padding: 8px;
+      }
+      
+      .mensal-sub-toggle {
+        padding: 8px 6px;
+        font-size: 12px;
+        min-width: 70px;
+      }
+      
+      .calendar-day {
+        padding: 2px;
+      }
+      
+      .calendar-day-number {
+        font-size: 10px;
+      }
+      
+      .task-icon-grid-view {
+        width: 12px;
+        height: 12px;
+      }
+      
+      .calendar-day-name {
+        font-size: 8px;
+        padding: 4px 1px;
+      }
+      
+      input[type="text"], input[type="number"], input[type="time"], input[type="date"], select, textarea {
+        padding: 10px 6px !important;
+        font-size: 16px !important;
+      }
+      
+      button, .add-btn, .edit-btn, .delete-btn {
+        padding: 10px 12px !important;
+        font-size: 14px !important;
+        min-height: 40px !important;
+      }
+      
+      .close-button {
+        width: 40px;
+        height: 40px;
+        padding: 6px;
+      }
+      
+      .edit-list-btn, .delete-list-circular-btn {
+        width: 28px;
+        height: 28px;
+      }
+      
+      .save-item-btn, .cancel-item-btn {
+        width: 28px;
+        height: 28px;
+      }
+      
+      .icon-toggle-button {
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+      }
+      
+      #shopping-list-container .icon-toggle-button,
+      #link-to-planner-container .icon-toggle-button,
+      #routine-container .icon-toggle-button {
+        width: 28px;
+        height: 28px;
+        padding: 3px;
+      }
+      
+      .task-icon-option {
+        width: 36px;
+        height: 36px;
+      }
+      
+      .color-option {
+        width: 32px;
+        height: 32px;
+      }
+      
+      h1, h2, h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
+      
+      h4 {
+        font-size: 16px;
+        margin: 10px 0 8px 0;
+      }
+    }
+    
     @media (max-width: 768px) {
     
       /* Ajusta o contêiner principal para ter menos margem em telas pequenas */
@@ -1534,6 +1628,9 @@
       #mensal-controls > div {
         width: 100%;
         justify-content: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
       }
       
       .mensal-sub-toggle {
@@ -1541,6 +1638,8 @@
         min-width: 80px;
         padding: 10px 8px;
         font-size: 14px;
+        text-align: center;
+        white-space: nowrap;
       }
       
       /* Ajusta os dias do calendário */
@@ -1577,7 +1676,7 @@
       }
       
       /* Melhora formulários para mobile */
-      input[type="text"], input[type="number"], input[type="time"], input[type="date"], select {
+      input[type="text"], input[type="number"], input[type="time"], input[type="date"], select, textarea {
         font-size: 16px !important; /* Evita zoom no iOS */
         padding: 12px 8px !important;
         border-radius: 8px !important;
@@ -1592,6 +1691,31 @@
         padding: 12px 16px;
         font-size: 16px;
         border-radius: 8px;
+      }
+
+      /* Overrides fortes para inline styles em botões no mobile (exclui botões icônicos) */
+      button:not(.close-button):not(.back-button):not(.edit-list-btn):not(.delete-list-circular-btn):not(.save-item-btn):not(.cancel-item-btn):not(.icon-toggle-button),
+      .add-btn, .edit-btn, .delete-btn {
+        min-height: 44px !important;
+        padding: 12px 16px !important;
+        font-size: 16px !important;
+        border-radius: 8px !important;
+        max-width: 100%;
+        line-height: 1.2;
+      }
+
+      /* Ajuste específico para textarea no mobile */
+      textarea {
+        min-height: 100px;
+        line-height: 1.4;
+      }
+
+      /* Botões de salvar/cancelar icônicos maiores para toque confortável */
+      .save-item-btn, .cancel-item-btn {
+        width: 32px;
+        height: 32px;
+        min-height: unset;
+        padding: 0;
       }
       
       /* Mantém botões de lista redondos */
@@ -1675,6 +1799,16 @@
       div[style*="display: flex"] {
         flex-wrap: wrap;
         gap: 10px;
+      }
+
+      /* Previne overflow horizontal em elementos com width inline maior que viewport */
+      [style*="width:"] {
+        max-width: 100% !important;
+      }
+
+      /* Garantir que inputs/botões ocupem largura disponível quando necessário */
+      form input, form select, form textarea, form button {
+        max-width: 100%;
       }
       
       /* Layout responsivo para mobile */
@@ -1779,6 +1913,28 @@
         font-size: 14px;
         margin-bottom: 5px;
         display: block;
+      }
+      
+      /* Melhora espaçamento de listas e cards */
+      .list, .investment-goal-card, .task-list-item {
+        margin-bottom: 12px;
+        padding: 12px;
+      }
+      
+      /* Ajusta gaps em formulários */
+      form {
+        gap: 12px;
+      }
+      
+      /* Melhora botões de ação em listas */
+      .list-item-actions {
+        gap: 6px;
+      }
+      
+      .list-item-actions button {
+        min-width: 32px;
+        min-height: 32px;
+        padding: 6px;
       }
       
       /* Melhora checkboxes */
@@ -2514,7 +2670,11 @@ body.dark-mode #remove-schedule-btn:hover {
         "maçã": "./images/colored/blue/apple.svg", "caixa": "./images/colored/blue/box.svg", "cérebro": "./images/colored/blue/brain.svg",
         "comprar": "./images/colored/blue/buy.svg", "cenoura": "./images/colored/blue/carrot.svg", "cigarro": "./images/colored/blue/cigarette.svg",
         "data": "./images/colored/blue/date.svg", "sorvete": "./images/colored/blue/icecream.svg", "pessoa": "./images/colored/blue/person.svg",
-        "telefone": "./images/colored/blue/phone.svg", "pipoca": "./images/colored/blue/popcorn.svg", "camisa": "./images/colored/blue/shirt.svg"
+        "telefone": "./images/colored/blue/phone.svg", "pipoca": "./images/colored/blue/popcorn.svg", "camisa": "./images/colored/blue/shirt.svg",
+        "futebol": "./images/colored/blue/fute.svg", "ping pong": "./images/colored/blue/ping.svg", "vôlei": "./images/colored/blue/voleyball.svg",
+        "dna": "./images/colored/blue/dna.svg", "olho": "./images/colored/blue/eye.svg", "injeção": "./images/colored/blue/injection.svg",
+        "juiz": "./images/colored/blue/judge.svg", "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg",
+        "estrela": "./images/colored/blue/star.svg", "escova de dente": "./images/colored/blue/toothbrush.svg", "cogumelo": "./images/colored/blue/mushroom.svg"
     };
 
     // --- ÍCONES DE CATEGORIA (MAPEAMENTO NOME -> CAMINHO) ---
@@ -2523,7 +2683,11 @@ body.dark-mode #remove-schedule-btn:hover {
         "lazer": "./images/colored/blue/movie.svg", "saúde": "./images/colored/blue/health.svg", "educação": "./images/colored/blue/study.svg",
         "compras": "./images/colored/blue/shopping.svg", "contas": "./images/colored/blue/money.svg", "pet": "./images/colored/blue/pet.svg",
         "beleza": "./images/colored/blue/hair.svg", "presente": "./images/colored/blue/gift.svg", "salário": "./images/colored/blue/money.svg",
-        "freela": "./images/colored/blue/work.svg", "outros": "./images/colored/blue/star.svg"
+        "freela": "./images/colored/blue/work.svg", "outros": "./images/colored/blue/star.svg",
+        "futebol": "./images/colored/blue/fute.svg", "ping pong": "./images/colored/blue/ping.svg", "vôlei": "./images/colored/blue/voleyball.svg",
+        "dna": "./images/colored/blue/dna.svg", "olho": "./images/colored/blue/eye.svg", "injeção": "./images/colored/blue/injection.svg",
+        "juiz": "./images/colored/blue/judge.svg", "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg",
+        "escova de dente": "./images/colored/blue/toothbrush.svg", "cogumelo": "./images/colored/blue/mushroom.svg"
     };
 
 
