@@ -171,15 +171,15 @@
 
     #theme-toggle {
         position: fixed;
-        top: 20px;
-        left: 20px;
+        top: 10px;
+        left: 10px;
         background: #9E9E9E;
         color: white;
         border: none;
         border-radius: 50%;
-        width: 48px;
-        height: 48px;
-        font-size: 24px;
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
         cursor: pointer;
         z-index: 1001;
         display: flex;
@@ -193,8 +193,8 @@
     }
     
     #theme-toggle img {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         filter: invert(1);
         transition: filter 0.3s;
     }
@@ -1921,6 +1921,20 @@
         padding: 12px;
       }
       
+      /* Ajusta botão de tema para mobile */
+      #theme-toggle {
+        top: 5px;
+        left: 5px;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+      
+      #theme-toggle img {
+        width: 18px;
+        height: 18px;
+      }
+      
       /* Ajusta gaps em formulários */
       form {
         gap: 12px;
@@ -2656,38 +2670,79 @@ body.dark-mode #remove-schedule-btn:hover {
 
     // --- ÍCONES DE TAREFAS (USADOS TAMBÉM PARA LISTAS) ---
     const taskIcons = {
-        "nenhum": "./images/colored/blue/none.svg", "lista": "./images/colored/blue/list.svg", "compras": "./images/colored/blue/shopping.svg",
-        "médico": "./images/colored/blue/health.svg", "medicação": "./images/colored/blue/pills.svg", "dentista": "./images/colored/blue/tooth.svg",    
-        "dinheiro": "./images/colored/blue/money.svg", "coração": "./images/colored/blue/heart.svg", "pet": "./images/colored/blue/pet.svg",
-        "exercício": "./images/colored/blue/gym.svg", "meditação": "./images/colored/blue/meditation.svg", "trabalho": "./images/colored/blue/work.svg",
-        "beleza": "./images/colored/blue/hair.svg", "comida": "./images/colored/blue/food.svg", "presente": "./images/colored/blue/gift.svg",
-        "aniversário": "./images/colored/blue/birthday.svg", "festa": "./images/colored/blue/party.svg", "férias": "./images/colored/blue/vacation.svg",
-        "viagem": "./images/colored/blue/trip.svg", "reunião": "./images/colored/blue/meeting.svg", "computador": "./images/colored/blue/computer.svg",
-        "filme": "./images/colored/blue/movie.svg", "estudo": "./images/colored/blue/study.svg", "casa": "./images/colored/blue/house.svg",
-         "carro": "./images/colored/blue/car.svg", "câmera": "./images/colored/blue/picture.svg",
-        "unhas": "./images/colored/blue/nails.svg", "pele": "./images/colored/blue/lotion.svg", "escrever": "./images/colored/blue/write.svg",
-        "arte": "./images/colored/blue/art.svg", "flor": "./images/colored/blue/flower.svg", "planta": "./images/colored/blue/plant.svg",
-        "maçã": "./images/colored/blue/apple.svg", "caixa": "./images/colored/blue/box.svg", "cérebro": "./images/colored/blue/brain.svg",
-        "comprar": "./images/colored/blue/buy.svg", "cenoura": "./images/colored/blue/carrot.svg", "cigarro": "./images/colored/blue/cigarette.svg",
-        "data": "./images/colored/blue/date.svg", "sorvete": "./images/colored/blue/icecream.svg", "pessoa": "./images/colored/blue/person.svg",
-        "telefone": "./images/colored/blue/phone.svg", "pipoca": "./images/colored/blue/popcorn.svg", "camisa": "./images/colored/blue/shirt.svg",
-        "futebol": "./images/colored/blue/fute.svg", "ping pong": "./images/colored/blue/ping.svg", "vôlei": "./images/colored/blue/voleyball.svg",
-        "dna": "./images/colored/blue/dna.svg", "olho": "./images/colored/blue/eye.svg", "injeção": "./images/colored/blue/injection.svg",
-        "juiz": "./images/colored/blue/judge.svg", "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg",
-        "estrela": "./images/colored/blue/star.svg", "escova de dente": "./images/colored/blue/toothbrush.svg", "cogumelo": "./images/colored/blue/mushroom.svg"
+        // === ÍCONES CIRCULARES/BÁSICOS ===
+        "nenhum": "./images/colored/blue/none.svg", "coração": "./images/colored/blue/heart.svg", "estrela": "./images/colored/blue/star.svg", "médico": "./images/colored/blue/health.svg",
+        
+        // === SAÚDE E BEM-ESTAR ===
+        "medicação": "./images/colored/blue/pills.svg", "dentista": "./images/colored/blue/tooth.svg", "escova de dente": "./images/colored/blue/toothbrush.svg", "injeção": "./images/colored/blue/injection.svg",
+        "beleza": "./images/colored/blue/hair.svg", "unhas": "./images/colored/blue/nails.svg", "pele": "./images/colored/blue/lotion.svg", "meditação": "./images/colored/blue/meditation.svg",
+        
+        // === ESPORTES E ATIVIDADES ===
+        "exercício": "./images/colored/blue/gym.svg", "futebol": "./images/colored/blue/fute.svg", "ping pong": "./images/colored/blue/ping.svg", "vôlei": "./images/colored/blue/voleyball.svg",
+        
+        // === TRABALHO E ESTUDO ===
+        "trabalho": "./images/colored/blue/work.svg", "estudo": "./images/colored/blue/study.svg", "reunião": "./images/colored/blue/meeting.svg", "computador": "./images/colored/blue/computer.svg",
+        "escrever": "./images/colored/blue/write.svg", "cérebro": "./images/colored/blue/brain.svg",
+        
+        // === CASA E FAMÍLIA ===
+        "casa": "./images/colored/blue/house.svg", "pet": "./images/colored/blue/pet.svg", "pessoa": "./images/colored/blue/person.svg", "presente": "./images/colored/blue/gift.svg",
+        "aniversário": "./images/colored/blue/birthday.svg", "festa": "./images/colored/blue/party.svg",
+        
+        // === TRANSPORTE E VIAGEM ===
+        "carro": "./images/colored/blue/car.svg", "viagem": "./images/colored/blue/trip.svg", "férias": "./images/colored/blue/vacation.svg",
+        
+        // === COMIDA E BEBIDA ===
+        "comida": "./images/colored/blue/food.svg", "maçã": "./images/colored/blue/apple.svg", "cenoura": "./images/colored/blue/carrot.svg", "sorvete": "./images/colored/blue/icecream.svg",
+        "pipoca": "./images/colored/blue/popcorn.svg", "cogumelo": "./images/colored/blue/mushroom.svg",
+        
+        // === ENTRETENIMENTO E LAZER ===
+        "filme": "./images/colored/blue/movie.svg", "arte": "./images/colored/blue/art.svg", "câmera": "./images/colored/blue/picture.svg",
+        
+        // === NATUREZA E PLANTAS ===
+        "flor": "./images/colored/blue/flower.svg", "planta": "./images/colored/blue/plant.svg", "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg",
+        
+        // === COMPRAS E FINANÇAS ===
+        "dinheiro": "./images/colored/blue/money.svg", "compras": "./images/colored/blue/shopping.svg", "comprar": "./images/colored/blue/buy.svg", "lista": "./images/colored/blue/list.svg",
+        
+        // === COMUNICAÇÃO E TECNOLOGIA ===
+        "telefone": "./images/colored/blue/phone.svg", "data": "./images/colored/blue/date.svg",
+        
+        // === ROUPAS E ACESSÓRIOS ===
+        "camisa": "./images/colored/blue/shirt.svg", "caixa": "./images/colored/blue/box.svg",
+        
+        // === OUTROS/VARIADOS ===
+        "cigarro": "./images/colored/blue/cigarette.svg", "dna": "./images/colored/blue/dna.svg", "olho": "./images/colored/blue/eye.svg", "juiz": "./images/colored/blue/judge.svg"
     };
 
     // --- ÍCONES DE CATEGORIA (MAPEAMENTO NOME -> CAMINHO) ---
     const categoryIcons = {
-        "comida": "./images/colored/blue/food.svg", "transporte": "./images/colored/blue/car.svg", "moradia": "./images/colored/blue/house.svg",
-        "lazer": "./images/colored/blue/movie.svg", "saúde": "./images/colored/blue/health.svg", "educação": "./images/colored/blue/study.svg",
-        "compras": "./images/colored/blue/shopping.svg", "contas": "./images/colored/blue/money.svg", "pet": "./images/colored/blue/pet.svg",
-        "beleza": "./images/colored/blue/hair.svg", "presente": "./images/colored/blue/gift.svg", "salário": "./images/colored/blue/money.svg",
-        "freela": "./images/colored/blue/work.svg", "outros": "./images/colored/blue/star.svg",
+        // === CATEGORIAS BÁSICAS ===
+        "outros": "./images/colored/blue/star.svg", "saúde": "./images/colored/blue/health.svg", "educação": "./images/colored/blue/study.svg",
+        
+        // === FINANÇAS ===
+        "comida": "./images/colored/blue/food.svg", "compras": "./images/colored/blue/shopping.svg", "contas": "./images/colored/blue/money.svg",
+        "salário": "./images/colored/blue/money.svg", "freela": "./images/colored/blue/work.svg",
+        
+        // === CASA E FAMÍLIA ===
+        "moradia": "./images/colored/blue/house.svg", "pet": "./images/colored/blue/pet.svg", "presente": "./images/colored/blue/gift.svg",
+        
+        // === TRANSPORTE E VIAGEM ===
+        "transporte": "./images/colored/blue/car.svg",
+        
+        // === ENTRETENIMENTO E LAZER ===
+        "lazer": "./images/colored/blue/movie.svg", "beleza": "./images/colored/blue/hair.svg",
+        
+        // === ESPORTES ===
         "futebol": "./images/colored/blue/fute.svg", "ping pong": "./images/colored/blue/ping.svg", "vôlei": "./images/colored/blue/voleyball.svg",
-        "dna": "./images/colored/blue/dna.svg", "olho": "./images/colored/blue/eye.svg", "injeção": "./images/colored/blue/injection.svg",
-        "juiz": "./images/colored/blue/judge.svg", "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg",
-        "escova de dente": "./images/colored/blue/toothbrush.svg", "cogumelo": "./images/colored/blue/mushroom.svg"
+        
+        // === SAÚDE E BEM-ESTAR ===
+        "injeção": "./images/colored/blue/injection.svg", "escova de dente": "./images/colored/blue/toothbrush.svg",
+        
+        // === NATUREZA E PLANTAS ===
+        "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg", "cogumelo": "./images/colored/blue/mushroom.svg",
+        
+        // === OUTROS/VARIADOS ===
+        "dna": "./images/colored/blue/dna.svg", "olho": "./images/colored/blue/eye.svg", "juiz": "./images/colored/blue/judge.svg"
     };
 
 
@@ -4720,19 +4775,21 @@ body.dark-mode #remove-schedule-btn:hover {
         
         // Adiciona ícones adicionais que podem não estar nos outros objetos
         const additionalIcons = {
-            "futebol": "./images/colored/blue/fute.svg",
-            "ping pong": "./images/colored/blue/ping.svg",
-            "vôlei": "./images/colored/blue/voleyball.svg",
-            "dna": "./images/colored/blue/dna.svg",
-            "olho": "./images/colored/blue/eye.svg",
-            "injeção": "./images/colored/blue/injection.svg",
-            "juiz": "./images/colored/blue/judge.svg",
-            "folha": "./images/colored/blue/leaf.svg",
-            "pílulas": "./images/colored/blue/pills.svg",
-            "lesma": "./images/colored/blue/slug.svg",
+            // === ÍCONES CIRCULARES/BÁSICOS ===
             "estrela": "./images/colored/blue/star.svg",
-            "dente": "./images/colored/blue/tooth.svg",
-            "escova de dente": "./images/colored/blue/toothbrush.svg"
+            
+            // === SAÚDE E BEM-ESTAR ===
+            "pílulas": "./images/colored/blue/pills.svg", "dente": "./images/colored/blue/tooth.svg", "escova de dente": "./images/colored/blue/toothbrush.svg",
+            "injeção": "./images/colored/blue/injection.svg",
+            
+            // === ESPORTES ===
+            "futebol": "./images/colored/blue/fute.svg", "ping pong": "./images/colored/blue/ping.svg", "vôlei": "./images/colored/blue/voleyball.svg",
+            
+            // === NATUREZA E PLANTAS ===
+            "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg",
+            
+            // === OUTROS/VARIADOS ===
+            "dna": "./images/colored/blue/dna.svg", "olho": "./images/colored/blue/eye.svg", "juiz": "./images/colored/blue/judge.svg"
         };
         
         Object.assign(allIcons, additionalIcons);
