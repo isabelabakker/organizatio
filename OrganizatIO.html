@@ -27,7 +27,7 @@
 |_|___ ___| |_ ___| |___   | |_ ___| |_| |_ ___ ___   
 | |_ -| .'| . | -_| | .'|  | . | .'| '_| '_| -_|  _|   
 |_|___|__,|___|___|_|__,|  |___|__,|_,_|_,_|___|_|                                                   
-♡‧₊˚🎀༺♡༻🎀˚₊‧♡ ♡‧₊˚🎀༺♡༻🎀˚₊‧♡ ♡‧₊˚🎀༺♡༻🎀˚₊‧♡ 
+♡‧₊˚🎀༺♡༻🎀˚₊‧♡ ♡‧₊˚🎀♡༻🎀˚₊‧♡ ♡‧₊˚🎀༺♡༻🎀˚₊‧♡ 
 -->
 
 <!DOCTYPE html>
@@ -39,10 +39,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title> OrganizatIO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
 
-    /* ... (estilos existentes) ... */
+    /* ------------------------------------------------ */
+    /* FONTE INTER PARA TODO O APP */
+    /* ------------------------------------------------ */
+    * {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
     
     /* ------------------------------------------------ */
     /* CORREÇÃO PARA O TÍTULO PRINCIPAL */
@@ -169,34 +177,57 @@
         transition: background 0.3s, border-color 0.3s;
     }
 
-    #theme-toggle {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        background: #9E9E9E;
+    
+    /* === CABEÇALHO SIMPLIFICADO === */
+    .main-header {
+        background: linear-gradient(135deg, #3586ff 0%, #6A8EFE 100%);
         color: white;
-        border: none;
+        box-shadow: 0 4px 15px rgba(53, 134, 255, 0.3);
+        position: relative;
+        z-index: 1;
+        padding: 15px 0;
+    }
+    
+    .header-controls {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .header-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.3);
         border-radius: 50%;
         width: 44px;
         height: 44px;
-        font-size: 20px;
+        color: white;
         cursor: pointer;
-        z-index: 1001;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: background 0.2s, transform 0.2s;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
     }
-    #theme-toggle:hover {
+    
+    .header-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
         transform: scale(1.1);
     }
     
-    #theme-toggle img {
+    .header-btn img {
         width: 20px;
         height: 20px;
         filter: invert(1);
-        transition: filter 0.3s;
+    }
+    
+    /* Tema escuro para o header */
+    body.dark-mode .main-header {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
     
     .mensal-sub-toggle {
@@ -208,13 +239,14 @@
         color: white;
         transition: 0.2s;
         text-transform: lowercase;
+        font-weight: 500;
     }
     .mensal-sub-toggle:hover {
         background: #3d71ff;
     }
     .mensal-sub-toggle.active-sub {
         background: #3d71ff;
-        font-weight: bold;
+        font-weight: 600;
         color: white;
     }
     
@@ -228,7 +260,11 @@
       margin: 20px;
       padding: 20px;
       overflow-y: auto;
+      overflow-x: hidden;
       transition: background 0.3s, box-shadow 0.3s;
+      max-width: 1400px;
+      width: calc(100% - 40px);
+      box-sizing: border-box;
     }
     h1, h2, h3 {
       text-align: center;
@@ -236,6 +272,7 @@
       margin-bottom: 20px;
       text-transform: lowercase;
       transition: color 0.3s;
+      font-weight: 600;
     }
     
     form#expense-form {
@@ -255,6 +292,7 @@
       border-radius: 10px;
       border: 1px solid #ccc;
       font-size: 14px;
+      font-weight: 500;
       text-transform: lowercase;
       transition: background 0.3s, border-color 0.3s, color 0.3s;
     }
@@ -351,22 +389,22 @@
     
     #charts-dual-container {
         display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 40px;
         margin-top: 30px;
         align-items: center;
     }
     
     #month-chart-container {
-      flex: 1; 
-      max-width: 280px; 
-      min-width: 250px;
+      width: 100%;
+      max-width: 400px;
+      min-width: 300px;
     }
     
     #annual-chart-container {
-        flex: 2;
-        min-width: 300px;
-        max-width: 500px;
+        width: 100%;
+        max-width: 600px;
+        min-width: 400px;
     }
 
     .summary-card {
@@ -382,9 +420,11 @@
         font-size: 14px;
         color: #666;
         text-transform: lowercase;
+        font-weight: 600;
     }
     .summary-card p {
         margin: 0;
+        font-weight: 500;
     }
     #fab-add-expense {
         position: fixed;
@@ -409,7 +449,8 @@
       display: none; /* Inicialmente escondido, será mostrado apenas na aba de listas */
       flex-wrap: wrap;
       gap: 20px;
-      justify-content: flex-start;
+      justify-content: center;
+      align-items: flex-start;
       position: relative;
       z-index: 10;
     }
@@ -572,6 +613,8 @@
         display: inline-flex;
         justify-content: center;
         align-items: center;
+        min-width: 24px;
+        min-height: 24px;
     }
 
     /* --- ESTILO PADRÃO PARA BOTÕES REDONDOS COM ÍCONE --- */
@@ -596,11 +639,15 @@
     }
 
     .close-button {
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 8px;
+        right: 8px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .save-item-btn,
@@ -620,22 +667,30 @@
     }
     
     .close-button img {
-        width: 16px;
-        height: 16px;
+        width: 12px;
+        height: 12px;
     }
 
     /* Back button in top-left of container with theme-aware icon color */
     .back-button {
         position: absolute !important;
-        left: 15px !important;
-        top: 15px !important;
+        left: 12px !important;
+        top: 12px !important;
         right: auto !important;
         z-index: 1100;
         background: transparent;
         border: none;
         box-shadow: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .back-button img {
+        width: 12px;
+        height: 12px;
         filter: invert(25%);
     }
     body.dark-mode .back-button img {
@@ -659,7 +714,11 @@
     #calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 5px;
+      gap: 6px;
+      max-width: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      align-items: start;
     }
 
     .calendar-day-name {
@@ -677,14 +736,16 @@
       background: #fff;
       border: 1px solid #e6e5e5;
       border-radius: 5px;
-      padding: 10px 5px;
-      min-height: 80px;
+      padding: 20px 6px 6px 6px;
+      min-height: 180px;
       text-align: left;
       vertical-align: top;
       transition: background 0.2s, border-color 0.3s;
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      width: 100%;
+      box-sizing: border-box;
     }
     .calendar-day:hover:not(.inactive) {
       background: #E8F0FE;
@@ -696,27 +757,35 @@
       cursor: default;
     }
     .calendar-day-number {
-      font-size: 18px;
-      font-weight: bold;
-      color: #9C27B0;
+      font-size: 12px;
+      font-weight: normal;
+      color: #999;
       display: block;
-      margin-bottom: 5px;
+      margin: 0;
       transition: color 0.3s;
+      position: absolute;
+      top: 4px;
+      right: 6px;
+      z-index: 1;
     }
     
     .calendar-task-icons {
       display: flex;
       flex-wrap: wrap;
       gap: 3px;
-      margin-top: 5px;
+      margin-top: 10px;
+      margin-left: 3px;
+      margin-right: 3px;
       justify-content: flex-start;
-      align-items: center;
+      align-items: flex-start;
+      width: calc(100% - 6px);
+      box-sizing: border-box;
     }
     .task-icon-grid-view {
-      width: 20px;
-      height: 20px;
-      border-radius: 5px;
-      border: 2px solid transparent;
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      border: 1px solid transparent;
       padding: 1px;
       box-sizing: border-box;
     }
@@ -737,6 +806,20 @@
     @media (max-width: 900px) {
         .details-flex-container {
             flex-direction: column;
+        }
+        
+        #charts-dual-container {
+            gap: 30px;
+        }
+        
+        #month-chart-container {
+            max-width: 350px;
+            min-width: 280px;
+        }
+        
+        #annual-chart-container {
+            max-width: 500px;
+            min-width: 350px;
         }
     }
 
@@ -1315,7 +1398,7 @@
     }
 
     body.dark-mode .calendar-day-number {
-      color: #8d1ce9;
+      color: #666;
     }
     
     /* Removed modal-content dark mode styles */
@@ -1522,6 +1605,8 @@
       .container {
         margin: 2px;
         padding: 8px;
+        width: calc(100% - 4px);
+        max-width: none;
       }
       
       .mensal-sub-toggle {
@@ -1531,11 +1616,16 @@
       }
       
       .calendar-day {
-        padding: 2px;
+        padding: 10px 1px 1px 1px;
+        width: 100%;
+        box-sizing: border-box;
+        aspect-ratio: 1 / 1.3;
       }
       
       .calendar-day-number {
-        font-size: 10px;
+        font-size: 9px;
+        top: 1px;
+        right: 3px;
       }
       
       .task-icon-grid-view {
@@ -1568,17 +1658,31 @@
       .edit-list-btn, .delete-list-circular-btn {
         width: 28px;
         height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        min-height: 28px;
       }
       
       .save-item-btn, .cancel-item-btn {
         width: 28px;
         height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       
       .icon-toggle-button {
         width: 32px;
         height: 32px;
         padding: 4px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       
       #shopping-list-container .icon-toggle-button,
@@ -1608,6 +1712,22 @@
         font-size: 16px;
         margin: 10px 0 8px 0;
       }
+      
+      /* Ajusta cabeçalho para telas muito pequenas */
+      .header-controls {
+        padding: 0 10px;
+        gap: 6px;
+      }
+      
+      .header-btn {
+        width: 36px;
+        height: 36px;
+      }
+      
+      .header-btn img {
+        width: 16px;
+        height: 16px;
+      }
     }
     
     @media (max-width: 768px) {
@@ -1616,6 +1736,8 @@
       .container {
         margin: 5px;
         padding: 10px;
+        width: calc(100% - 10px);
+        max-width: none;
       }
       
       /* Melhora a navegação principal */
@@ -1645,28 +1767,37 @@
       /* Ajusta os dias do calendário */
       .calendar-day {
         min-height: unset;
-        aspect-ratio: 1 / 1; 
-        padding: 4px;
+        aspect-ratio: 1 / 1.2; 
+        padding: 14px 3px 3px 3px;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
+        width: 100%;
+        box-sizing: border-box;
       }
 
-      /* Diminui o tamanho da fonte do número do dia */
+      /* Ajusta o número do dia para mobile */
       .calendar-day-number {
-        font-size: 12px;
-        margin-bottom: 2px;
+        font-size: 10px;
+        top: 2px;
+        right: 4px;
       }
       
-      /* Diminui o tamanho dos ícones de tarefas para caberem melhor */
+      /* Ajusta o tamanho dos ícones de tarefas para mobile */
       .task-icon-grid-view {
         width: 14px;
         height: 14px;
       }
       
-      /* Reduz o espaço entre os ícones */
+      /* Ajusta o espaçamento dos ícones para mobile */
       .calendar-task-icons {
-         gap: 1px;
+         gap: 3px;
+         margin-top: 8px;
+         margin-left: 2px;
+         margin-right: 2px;
+         align-items: flex-start;
+         width: calc(100% - 4px);
+         box-sizing: border-box;
       }
 
       /* Reduz o texto dos dias da semana para economizar espaço */
@@ -1716,6 +1847,10 @@
         height: 32px;
         min-height: unset;
         padding: 0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       
       /* Mantém botões de lista redondos */
@@ -1725,6 +1860,8 @@
         padding: 0;
         width: 32px;
         height: 32px;
+        min-width: 32px;
+        min-height: 32px;
       }
       
       /* Melhora seletores de ícones */
@@ -1773,9 +1910,35 @@
       
       /* Melhora botões de fechar */
       .close-button {
-        width: 44px;
-        height: 44px;
-        padding: 8px;
+        width: 28px;
+        height: 28px;
+        padding: 4px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      /* Ajusta botão de voltar para mobile */
+      .back-button {
+        left: 8px !important;
+        top: 8px !important;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .back-button img {
+        width: 10px;
+        height: 10px;
+      }
+      
+      .close-button img {
+        width: 10px;
+        height: 10px;
       }
       
       /* Melhora formulários de edição */
@@ -1783,6 +1946,26 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
+      }
+      
+      /* Ajusta gráficos para mobile */
+      #charts-dual-container {
+        gap: 25px;
+      }
+      
+      #month-chart-container {
+        max-width: 100%;
+        min-width: 250px;
+      }
+      
+      #annual-chart-container {
+        max-width: 100%;
+        min-width: 250px;
+      }
+      
+      /* Centraliza listas no mobile */
+      .lists-container {
+        justify-content: center;
       }
       
       .form-inputs input {
@@ -1921,16 +2104,23 @@
         padding: 12px;
       }
       
-      /* Ajusta botão de tema para mobile */
-      #theme-toggle {
-        top: 5px;
-        left: 5px;
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
+      
+      /* Ajusta cabeçalho para mobile */
+      .main-header {
+        padding: 12px 0;
       }
       
-      #theme-toggle img {
+      .header-controls {
+        padding: 0 15px;
+        gap: 8px;
+      }
+      
+      .header-btn {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .header-btn img {
         width: 18px;
         height: 18px;
       }
@@ -2021,7 +2211,13 @@ body.dark-mode #remove-schedule-btn:hover {
 </head>
 <body>
   
-  <button id="theme-toggle"><img src="images/buttons/moon.svg" alt="Modo escuro" id="theme-icon"></button>
+  <!-- Cabeçalho Simplificado -->
+  <header class="main-header">
+    <div class="header-controls">
+      <button id="theme-toggle" class="header-btn theme-btn"><img src="images/buttons/moon.svg" alt="Modo escuro" id="theme-icon"></button>
+      <button id="settings-btn" class="header-btn settings-btn"><img src="images/buttons/settings.svg" alt="Configurações"></button>
+    </div>
+  </header>
 
   <div class="container">
     
@@ -2592,13 +2788,15 @@ body.dark-mode #remove-schedule-btn:hover {
     const investmentFormTitle = document.getElementById('investment-form-title');
 
 
-    // --- ELEMENTO DE TEMA ---
+    // --- ELEMENTOS DO CABEÇALHO ---
     const themeToggle = document.getElementById('theme-toggle');
+    const settingsBtn = document.getElementById('settings-btn');
     
     // --- ELEMENTOS DO CALENDÁRIO E SUAS VIEWS ---
     const calendarGrid = document.getElementById('calendar-grid');
     const calendarMonthSelect = document.getElementById('calendar-month-select');
     const plannerDetailsContainer = document.getElementById('planner-details-container');
+    
     const dayViewSection = document.getElementById('day-view-section');
     const dayViewTitle = document.getElementById('day-view-title');
     const taskFormView = document.getElementById('task-form-view');
@@ -5397,6 +5595,13 @@ body.dark-mode #remove-schedule-btn:hover {
     });
 
     themeToggle.addEventListener('click', () => applyTheme(document.body.classList.contains('dark-mode') ? 'light' : 'dark'));
+    
+    // Event listener para botão de configurações (placeholder)
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', () => {
+            alert('Configurações serão implementadas em breve!');
+        });
+    }
     expenseList.addEventListener('click', function(e) {
         const button = e.target.closest('button');
         if (!button) return;
@@ -5999,6 +6204,7 @@ body.dark-mode #remove-schedule-btn:hover {
         currentCalendarDate.setDate(1); 
         updateMonthlyView();
      });
+     
     
     recurrenceTypeInput.addEventListener('change', () => {
         const isRecurrent = recurrenceTypeInput.value !== 'none';
@@ -6092,9 +6298,11 @@ body.dark-mode #remove-schedule-btn:hover {
         
         calendarMonthSelect.value = monthIndex;
         
+        
         const activeSectionId = document.querySelector('#mensal-controls .mensal-sub-toggle.active-sub')?.id.replace('show-', '') + '-section' || 'planner-section';
         showMensalSection(activeSectionId);
     }
+    
 
     function initApp() {
         loadFinancialData();
@@ -6103,6 +6311,7 @@ body.dark-mode #remove-schedule-btn:hover {
         applyTheme(localStorage.getItem('theme') || 'light');
         currentCalendarDate = new Date();
         initCalendarSelect();
+        
         
         renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons, null, taskColorPicker);
         renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons, null, document.getElementById('editor-list-color-picker'));
