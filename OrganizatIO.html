@@ -44,19 +44,444 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* === DESIGN SYSTEM === */
+    :root {
+      /* Colors */
+      --primary: #3586ff;
+      --primary-hover: #3d71ff;
+      --primary-light: #6b9aff;
+      --success: #4CAF50;
+      --success-hover: #45a049;
+      --danger: #FF5252;
+      --danger-hover: #f44336;
+      --warning: #FF9800;
+      --neutral: #9E9E9E;
+      --neutral-hover: #757575;
+      
+      /* Text */
+      --text-primary: #333;
+      --text-secondary: #666;
+      --text-muted: #999;
+      
+      /* Backgrounds */
+      --bg-primary: #FFFFFF;
+      --bg-secondary: #f8f9fa;
+      --bg-tertiary: #f0f2f5;
+      
+      /* Borders */
+      --border-light: #e6e5e5;
+      --border-medium: #ddd;
+      --border-dark: #ccc;
+      
+      /* Spacing Scale */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 20px;
+      --space-2xl: 24px;
+      --space-3xl: 32px;
+      
+      /* Border Radius */
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --radius-full: 50%;
+      
+      /* Shadows */
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+      --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
+      --shadow-lg: 0 8px 16px rgba(0,0,0,0.1);
+      
+      /* Typography */
+      --font-size-xs: 12px;
+      --font-size-sm: 14px;
+      --font-size-md: 16px;
+      --font-size-lg: 18px;
+      --font-size-xl: 20px;
+      --font-size-2xl: 24px;
+      
+      --line-height-tight: 1.2;
+      --line-height-normal: 1.4;
+      --line-height-relaxed: 1.6;
+    }
 
-    /* ------------------------------------------------ */
-    /* FONTE INTER PARA TODO O APP */
-    /* ------------------------------------------------ */
+    /* Dark Mode */
+    body.dark-mode {
+      --text-primary: #E0E0E0;
+      --text-secondary: #BDBDBD;
+      --text-muted: #9E9E9E;
+      
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #2d2d2d;
+      --bg-tertiary: #333;
+      
+      --border-light: #444;
+      --border-medium: #555;
+      --border-dark: #666;
+      
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 8px rgba(0,0,0,0.3);
+      --shadow-lg: 0 8px 16px rgba(0,0,0,0.3);
+    }
+    /* === BASE STYLES === */
     * {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      box-sizing: border-box;
     }
+
+    body {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      font-size: var(--font-size-md);
+      line-height: var(--line-height-normal);
+      margin: 0;
+      padding: 0;
+      text-transform: lowercase;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* === COMPONENT SYSTEM === */
     
-    /* ------------------------------------------------ */
-    /* CORREÇÃO PARA O TÍTULO PRINCIPAL */
-    /* ------------------------------------------------ */
-    #mensal-page-title {
-        text-transform: none;
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      padding: var(--space-md) var(--space-lg);
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 44px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-medium);
+    }
+    .btn-secondary:hover {
+      background: var(--border-light);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+    .btn-success:hover {
+      background: var(--success-hover);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+    .btn-danger:hover {
+      background: var(--danger-hover);
+    }
+
+    .btn-sm {
+      padding: var(--space-sm) var(--space-md);
+      font-size: var(--font-size-xs);
+      min-height: 32px;
+    }
+
+    .btn-lg {
+      padding: var(--space-lg) var(--space-xl);
+      font-size: var(--font-size-lg);
+      min-height: 52px;
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-primary);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: var(--space-xl);
+      border: 1px solid var(--border-light);
+    }
+
+    .card-header {
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .card-title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      margin: 0;
+      color: var(--text-primary);
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: var(--space-sm);
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: var(--space-md);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-md);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(53, 134, 255, 0.1);
+    }
+
+    .form-select {
+      width: 100%;
+      padding: var(--space-md);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-md);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 2000px;
+      margin: 0 auto;
+      padding: var(--space-lg);
+      padding-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      gap: var(--space-lg);
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .flex-col {
+      flex-direction: column;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    .gap-sm {
+      gap: var(--space-sm);
+    }
+
+    .gap-md {
+      gap: var(--space-md);
+    }
+
+    .gap-lg {
+      gap: var(--space-lg);
+    }
+
+    /* Spacing utilities */
+    .p-sm { padding: var(--space-sm); }
+    .p-md { padding: var(--space-md); }
+    .p-lg { padding: var(--space-lg); }
+    .p-xl { padding: var(--space-xl); }
+
+    .m-sm { margin: var(--space-sm); }
+    .m-md { margin: var(--space-md); }
+    .m-lg { margin: var(--space-lg); }
+    .m-xl { margin: var(--space-xl); }
+
+    .mb-sm { margin-bottom: var(--space-sm); }
+    .mb-md { margin-bottom: var(--space-md); }
+    .mb-lg { margin-bottom: var(--space-lg); }
+    .mb-xl { margin-bottom: var(--space-xl); }
+
+    /* Text utilities */
+    .text-xs { font-size: var(--font-size-xs); }
+    .text-sm { font-size: var(--font-size-sm); }
+    .text-md { font-size: var(--font-size-md); }
+    .text-lg { font-size: var(--font-size-lg); }
+    .text-xl { font-size: var(--font-size-xl); }
+
+    .text-primary { color: var(--text-primary); }
+    .text-secondary { color: var(--text-secondary); }
+    .text-muted { color: var(--text-muted); }
+
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+
+    /* Icon buttons */
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border-radius: var(--radius-full);
+      background: transparent;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: var(--bg-secondary);
+    }
+
+    /* === MOBILE NAVIGATION === */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-primary);
+      border-top: 1px solid var(--border-light);
+      padding: var(--space-sm) 0;
+      display: none;
+      z-index: 1000;
+      height: 70px;
+      box-sizing: border-box;
+    }
+
+    /* Add padding to body to prevent content overlap */
+    body {
+      padding-bottom: 0;
+      min-height: 100vh;
+    }
+
+    /* Add padding on mobile */
+    @media (max-width: 768px) {
+      body {
+        padding-bottom: 80px;
+      }
+    }
+
+    .bottom-nav-items {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-sm);
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      min-width: 60px;
+    }
+
+    .bottom-nav-item.active {
+      color: var(--primary);
+      background: rgba(53, 134, 255, 0.1);
+    }
+
+    .bottom-nav-item img {
+      width: 20px;
+      height: 20px;
+      filter: invert(40%); /* Cinza escuro no tema claro */
+      transition: filter 0.3s ease;
+    }
+
+    /* Tema escuro - ícones cinza claro */
+    body.dark-mode .bottom-nav-item img {
+      filter: invert(70%); /* Cinza claro no tema escuro */
+    }
+
+    .bottom-nav-item.active img {
+      filter: invert(0%) sepia(100%) saturate(10000%) hue-rotate(200deg) brightness(1); /* Azul para ativo */
+    }
+
+    .bottom-nav-item span {
+      font-size: var(--font-size-xs);
+      font-weight: 500;
+    }
+
+    /* === RESPONSIVE DESIGN === */
+    @media (max-width: 768px) {
+      .bottom-nav {
+        display: block;
+      }
+
+      .container {
+        padding-bottom: 90px !important; /* Space for bottom nav */
+      }
+
+      .btn-full-mobile {
+        width: 100%;
+      }
+
+      .grid-responsive {
+        grid-template-columns: 1fr;
+      }
+
+      .hide-mobile {
+        display: none;
+      }
+
+      .card {
+        padding: var(--space-lg);
+      }
+
+      .form-input,
+      .form-select {
+        font-size: var(--font-size-md); /* Prevent zoom on iOS */
+      }
+    }
+
+    @media (min-width: 769px) {
+      .show-mobile-only {
+        display: none;
+      }
     }
     
     /* --- NOVO ESTILO PARA O BOTÃO DE EDITAR AGENDAMENTO --- */
@@ -617,10 +1042,11 @@
         min-height: 24px;
     }
 
-    /* --- ESTILO PADRÃO PARA BOTÕES REDONDOS COM ÍCONE --- */
-    .close-button,
+    /* === CLEANED UP ICON BUTTONS === */
     .save-item-btn,
     .cancel-item-btn {
+        width: 24px;
+        height: 24px;
         background: #EEEEEE;
         border: none;
         cursor: pointer;
@@ -632,69 +1058,9 @@
         transition: background 0.2s;
     }
 
-    .close-button:hover,
     .save-item-btn:hover,
     .cancel-item-btn:hover {
         background: #E0E0E0;
-    }
-
-    .close-button {
-        width: 24px;
-        height: 24px;
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .save-item-btn,
-    .cancel-item-btn {
-        width: 24px;
-        height: 24px;
-    }
-
-    .close-button img,
-    .cancel-item-btn img,
-    .delete-list-circular-btn img {
-        filter: invert(41%) sepia(97%) saturate(1451%) hue-rotate(325deg) brightness(99%) contrast(106%); /* Vermelho #FF5252 */
-    }
-
-    .save-item-btn img {
-        filter: invert(48%) sepia(71%) saturate(415%) hue-rotate(75deg) brightness(95%) contrast(84%); /* Verde #4CAF50 */
-    }
-    
-    .close-button img {
-        width: 12px;
-        height: 12px;
-    }
-
-    /* Back button in top-left of container with theme-aware icon color */
-    .back-button {
-        position: absolute !important;
-        left: 12px !important;
-        top: 12px !important;
-        right: auto !important;
-        z-index: 1100;
-        background: transparent;
-        border: none;
-        box-shadow: none;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .back-button img {
-        width: 12px;
-        height: 12px;
-        filter: invert(25%);
-    }
-    body.dark-mode .back-button img {
-        filter: brightness(0) invert(0.8);
     }
 
     .save-item-btn img,
@@ -704,6 +1070,15 @@
         height: 14px;
     }
 
+    .save-item-btn img {
+        filter: invert(48%) sepia(71%) saturate(415%) hue-rotate(75deg) brightness(95%) contrast(84%); /* Verde #4CAF50 */
+    }
+
+    .cancel-item-btn img,
+    .delete-list-circular-btn img {
+        filter: invert(41%) sepia(97%) saturate(1451%) hue-rotate(325deg) brightness(99%) contrast(106%); /* Vermelho #FF5252 */
+    }
+
     /* --- ESTILO PARA BOTÕES DE EDITAR/EXCLUIR META --- */
     .edit-goal-form .edit-btn,
     .edit-goal-form .delete-btn {
@@ -711,32 +1086,31 @@
     }
 
 
+    /* === CALENDAR OPTIMIZATION === */
+    #planner-section {
+      max-width: none !important;
+      width: 100vw !important;
+      margin-left: calc(-50vw + 50%) !important;
+      margin-right: calc(-50vw + 50%) !important;
+      padding: 0 var(--space-lg) !important;
+      box-sizing: border-box;
+    }
+
     #calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
+      gap: 2px;
       max-width: 100%;
       width: 100%;
       box-sizing: border-box;
       align-items: start;
     }
 
-    .calendar-day-name {
-      text-align: center;
-      font-weight: bold;
-      padding: 10px 0;
-      background: #E0F2F7;
-      border-radius: 5px;
-      text-transform: lowercase;
-      font-size: 12px;
-      transition: background 0.3s;
-    }
-    
     .calendar-day {
-      background: #fff;
-      border: 1px solid #e6e5e5;
-      border-radius: 5px;
-      padding: 20px 6px 6px 6px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg) var(--space-sm) var(--space-sm) var(--space-sm);
       min-height: 180px;
       text-align: left;
       vertical-align: top;
@@ -747,39 +1121,65 @@
       width: 100%;
       box-sizing: border-box;
     }
+
     .calendar-day:hover:not(.inactive) {
-      background: #E8F0FE;
+      background: var(--bg-secondary);
     }
+
     .calendar-day.inactive {
-      background: #F9F9F9;
-      color: #bbb;
-      border: 1px dashed #eee;
+      background: var(--bg-tertiary);
+      color: var(--text-muted);
+      border: 1px dashed var(--border-light);
       cursor: default;
     }
+
     .calendar-day-number {
-      font-size: 12px;
+      font-size: var(--font-size-sm);
       font-weight: normal;
-      color: #999;
+      color: var(--text-muted);
       display: block;
       margin: 0;
       transition: color 0.3s;
       position: absolute;
-      top: 4px;
-      right: 6px;
+      top: var(--space-xs);
+      right: var(--space-sm);
       z-index: 1;
     }
-    
+
+    .calendar-day-name {
+      text-align: center;
+      font-weight: 600;
+      padding: var(--space-md) 0;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      text-transform: lowercase;
+      font-size: var(--font-size-sm);
+      transition: background 0.3s;
+    }
+
     .calendar-task-icons {
       display: flex;
       flex-wrap: wrap;
       gap: 3px;
-      margin-top: 10px;
+      margin-top: var(--space-md);
       margin-left: 3px;
       margin-right: 3px;
       justify-content: flex-start;
       align-items: flex-start;
       width: calc(100% - 6px);
       box-sizing: border-box;
+    }
+
+    .task-icon-grid-view {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+      border-radius: var(--radius-sm);
+      transition: transform 0.2s;
+    }
+
+    .task-icon-grid-view:hover {
+      transform: scale(1.1);
     }
     .task-icon-grid-view {
       width: 18px;
@@ -2222,96 +2622,283 @@ body.dark-mode #remove-schedule-btn:hover {
     color: #E0E0E0; /* Cor da borda no hover do dark mode */
 }
 
-/* === Ajustes solicitados: finanças e botões de voltar/fechar === */
-/* Deixa os botões de voltar e fechar perfeitamente redondos */
-.close-button,
-.back-button {
-    aspect-ratio: 1 / 1;
-    border-radius: 50% !important;
-    padding: 0 !important;
-    width: 24px !important;
-    height: 24px !important;
-}
+    /* === OPTIMIZED NAVIGATION BUTTONS === */
+    .close-button,
+    .back-button {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border: none;
+      border-radius: var(--radius-full);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+      z-index: 100;
+    }
 
-/* Remove qualquer fundo do botão de voltar */
-.back-button {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-.back-button:hover {
-    background: transparent !important;
-}
+    .close-button {
+      top: var(--space-md);
+      right: var(--space-md);
+    }
 
-/* Diminui as fontes e evita quebra feia nos botões da aba finanças */
-#financeiro-section .mensal-sub-toggle {
-    font-size: 14px !important;
-    padding: 8px 12px !important;
-    line-height: 1 !important;
-    white-space: normal !important;
-    word-break: break-word !important;
-    box-sizing: border-box !important;
-    min-width: 120px !important;
-}
+    .back-button {
+      top: var(--space-md);
+      left: var(--space-md);
+    }
 
-/* Permite que o grupo de botões "transações/orçamentos/investimentos" quebre linha quando necessário */
-#finance-dashboard-main > div:nth-of-type(2) {
-    flex-wrap: wrap !important;
-}
+    .close-button:hover,
+    .back-button:hover {
+      background: var(--bg-secondary);
+    }
 
-/* Mantém contraste no tema escuro */
-body.dark-mode .back-button {
-    background: #424242 !important;
-}
-body.dark-mode .back-button:hover {
-    background: #3a3a3a !important;
-}
+    .close-button img,
+    .back-button img {
+      width: 16px;
+      height: 16px;
+      filter: invert(25%);
+    }
 
-/* Previna que as imagens internas estiquem o botão */
-.close-button img,
-.back-button img {
-    display: block;
-}
+    body.dark-mode .close-button img,
+    body.dark-mode .back-button img {
+      filter: brightness(0) invert(0.8);
+    }
 
-/* Remover fundo dos botões de voltar e fechar, mantendo só os ícones */
-.close-button,
-.back-button {
-    background: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
-    width: 32px !important;
-    height: 32px !important;
-}
-.close-button:hover,
-.back-button:hover {
-    background: transparent !important;
-}
-.close-button img,
-.back-button img {
-    width: 16px !important;
-    height: 16px !important;
-}
+    /* === SPECIFIC CLOSE BUTTON OVERRIDES === */
+    #close-transactions-view,
+    #close-budgets-view,
+    #close-investments-view,
+    #close-category-section {
+      background: transparent !important;
+      box-shadow: none !important;
+    }
 
-/* Reduz o tamanho do texto dos valores do resumo financeiro */
-#total-revenue,
-#total-expense,
-#month-balance {
-    font-size: 18px !important;
-}
+    #close-transactions-view:hover,
+    #close-budgets-view:hover,
+    #close-investments-view:hover,
+    #close-category-section:hover {
+      background: var(--bg-secondary) !important;
+    }
 
-@media (max-width: 480px) {
-  #total-revenue,
-  #total-expense,
-  #month-balance {
-      font-size: 16px !important;
-  }
-  /* Botões de finanças maiores no mobile, com possibilidade de quebra */
-  #financeiro-section .mensal-sub-toggle {
-      font-size: 13px !important;
-      padding: 8px 12px !important;
-      min-width: 110px !important;
-  }
-}
+    /* === BUTTON VISIBILITY FIXES === */
+    #show-add-transaction-form-btn,
+    #open-add-investment-form-btn {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #transaction-list-view,
+    #goals-container {
+      display: block !important;
+    }
+
+    #expense-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    #expense-table td {
+      padding: var(--space-md);
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: middle;
+    }
+
+    /* === FORCE CONTAINER AND BUTTON VISIBILITY === */
+    #planner-details-container,
+    #finance-details-container {
+      display: block !important;
+    }
+
+    #day-view-section,
+    #transaction-list-view,
+    #goals-container {
+      display: block !important;
+    }
+
+    #day-view-section,
+    #transaction-list-view {
+      min-height: 400px;
+      padding-bottom: 10px;
+    }
+    
+    /* Ensure all content sections have enough bottom padding */
+    .mensal-content-section {
+      padding-bottom: 10px !important;
+    }
+    
+    /* Ensure all detail views and forms have enough bottom padding */
+    #planner-details-container,
+    #finance-details-container,
+    #transactions-view,
+    #budgets-view,
+    #investments-view,
+    #add-transaction-container,
+    #investment-form-view,
+    #list-details-section,
+    #task-form-view {
+      padding-bottom: 10px !important;
+    }
+
+    /* === ULTRA AGGRESSIVE TASK BUTTON FORCE === */
+    #open-add-task-form-btn,
+    button#open-add-task-form-btn.add-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      width: 100% !important;
+      height: 50px !important;
+      min-height: 50px !important;
+      margin-top: 20px !important;
+      margin-bottom: 20px !important;
+      background: transparent !important;
+      background-color: transparent !important;
+      color: var(--primary) !important;
+      border: 2px solid var(--primary) !important;
+      padding: var(--space-md) !important;
+      border-radius: var(--radius-md) !important;
+      font-size: var(--font-size-md) !important;
+      cursor: pointer !important;
+      transition: all 0.2s ease !important;
+      position: relative !important;
+      z-index: 9999 !important;
+      text-align: center !important;
+    }
+
+    #open-add-task-form-btn:hover,
+    button#open-add-task-form-btn.add-btn:hover {
+      background: rgba(53, 134, 255, 0.1) !important;
+      background-color: rgba(53, 134, 255, 0.1) !important;
+      color: var(--primary) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    /* Force visibility in all contexts */
+    #planner-details-container #open-add-task-form-btn,
+    #day-view-section #open-add-task-form-btn,
+    .planner-details-container #open-add-task-form-btn,
+    .day-view-section #open-add-task-form-btn {
+      display: inline-flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    /* === TRANSACTION AND INVESTMENT BUTTONS === */
+    #show-add-transaction-form-btn,
+    #open-add-investment-form-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      width: 100% !important;
+      height: 50px !important;
+      min-height: 50px !important;
+      margin-top: 20px !important;
+      margin-bottom: 20px !important;
+      background: transparent !important;
+      color: var(--primary) !important;
+      border: 2px solid var(--primary) !important;
+      padding: var(--space-md) !important;
+      border-radius: var(--radius-md) !important;
+      font-size: var(--font-size-md) !important;
+      cursor: pointer !important;
+      transition: all 0.2s ease !important;
+      position: relative !important;
+      z-index: 9999 !important;
+      text-align: center !important;
+    }
+
+    #show-add-transaction-form-btn:hover,
+    #open-add-investment-form-btn:hover {
+      background: rgba(53, 134, 255, 0.1) !important;
+      color: var(--primary) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    /* Remove duplicate styles - button already styled above */
+
+
+    /* Override any parent hiding */
+    .mensal-content-section button,
+    .planner-details-container button,
+    .finance-details-container button {
+      display: inline-flex !important;
+      visibility: visible !important;
+    }
+
+    /* === FINANCE NAVIGATION BUTTONS === */
+    #financeiro-section .mensal-sub-toggle,
+    #view-details-btn,
+    #view-category-spending-btn,
+    #view-investments-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        border: 2px solid var(--primary) !important;
+        color: var(--primary) !important;
+        font-size: 14px !important;
+        padding: 8px 12px !important;
+        line-height: 1 !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        box-sizing: border-box !important;
+        min-width: 120px !important;
+        transition: all 0.2s ease !important;
+        border-radius: var(--radius-md) !important;
+        cursor: pointer !important;
+        text-align: center !important;
+    }
+
+    #financeiro-section .mensal-sub-toggle:hover,
+    #view-details-btn:hover,
+    #view-category-spending-btn:hover,
+    #view-investments-btn:hover {
+        background: rgba(53, 134, 255, 0.1) !important;
+        background-color: rgba(53, 134, 255, 0.1) !important;
+        border-color: var(--primary) !important;
+        color: var(--primary) !important;
+    }
+
+    #financeiro-section .mensal-sub-toggle.active-sub,
+    #view-details-btn.active-sub,
+    #view-category-spending-btn.active-sub,
+    #view-investments-btn.active-sub {
+        background: var(--primary) !important;
+        background-color: var(--primary) !important;
+        border-color: var(--primary) !important;
+        color: white !important;
+    }
+
+    #finance-dashboard-main > div:nth-of-type(2) {
+        flex-wrap: wrap !important;
+    }
+
+    #total-revenue,
+    #total-expense,
+    #month-balance {
+        font-size: 18px !important;
+    }
+
+    @media (max-width: 480px) {
+        #total-revenue,
+        #total-expense,
+        #month-balance {
+            font-size: 16px !important;
+        }
+        #financeiro-section .mensal-sub-toggle {
+            font-size: 13px !important;
+            padding: 8px 12px !important;
+            min-width: 110px !important;
+        }
+    }
 
   </style>
   <script src="./js/chart.js"></script>
@@ -2330,14 +2917,8 @@ body.dark-mode .back-button:hover {
     
     <div id="mensal-page">
 
-        <div id="mensal-controls" style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+        <div id="mensal-controls" style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
             <select id="calendar-month-select" style="padding: 8px; border-radius: 8px; text-transform: lowercase; font-size: 14px; border-color: #6A8EFE; min-width: 120px;"></select>
-            
-            <div style="display: flex; gap: 5px; flex-wrap: wrap;">
-                <button id="show-planner" class="mensal-sub-toggle active-sub">planner</button>
-                <button id="show-financeiro" class="mensal-sub-toggle">finanças</button>
-                <button id="show-listas" class="mensal-sub-toggle">listas</button>
-            </div>
         </div>
         
         <hr style="border-top: 1px solid #ddd; margin: 30px 0;">
@@ -2457,18 +3038,10 @@ body.dark-mode .back-button:hover {
                         <h3 style="margin-top:0;">transações do mês</h3>
                         <div class="details-table-container" style="margin-top: 20px;">
                             <table id="expense-table" style="width: 100%; border-collapse: collapse;">
-                                <thead>
-                                    <tr style="background: var(--secondary-bg, #f8f9fa);">
-                                        <th style="padding: 12px 8px; text-align: center; font-size: 14px; color: var(--text-color-secondary, #666);">ícone</th>
-                                        <th style="padding: 12px 8px; text-align: left; font-size: 14px; color: var(--text-color-secondary, #666);">descrição</th>
-                                        <th style="padding: 12px 8px; text-align: right; font-size: 14px; color: var(--text-color-secondary, #666);">valor</th>
-                                        <th style="padding: 12px 8px; text-align: center; font-size: 14px; color: var(--text-color-secondary, #666);">ações</th>
-                                    </tr>
-                                </thead>
                                 <tbody id="expense-list"></tbody>
                             </table>
                         </div>
-                        <button id="show-add-transaction-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar transação</button>
+                        <button id="show-add-transaction-form-btn" class="btn btn-primary btn-full" style="margin-top: 20px;">adicionar transação</button>
                     </div>
     
                     <div id="add-transaction-container" style="display: none; position: relative; z-index: 5;">
@@ -2512,7 +3085,7 @@ body.dark-mode .back-button:hover {
                     <div id="goals-container"></div>
                     
                     <!-- Botão para adicionar nova meta -->
-                    <button id="open-add-investment-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar investimento</button>
+                    <button id="open-add-investment-form-btn" class="btn btn-primary btn-full" style="margin-top: 20px;">adicionar investimento</button>
                     
                     <!-- Formulário de nova meta (escondido inicialmente) -->
                     <div id="investment-form-view" style="display: none; position: relative;">
@@ -2976,7 +3549,7 @@ body.dark-mode .back-button:hover {
     // --- ÍCONES DE TAREFAS (USADOS TAMBÉM PARA LISTAS) ---
     const taskIcons = {
         // === ÍCONES CIRCULARES/BÁSICOS ===
-        "nenhum": "./images/colored/blue/none.svg", "coração": "./images/colored/blue/heart.svg", "estrela": "./images/colored/blue/star.svg", "médico": "./images/colored/blue/health.svg",
+        "nenhum": "./images/colored/blue/none.svg", "coração": "./images/colored/blue/heart.svg", "estrela": "./images/colored/blue/star.svg", "dinheiro": "./images/colored/blue/money.svg","médico": "./images/colored/blue/health.svg",
         
         // === SAÚDE E BEM-ESTAR ===
         "medicação": "./images/colored/blue/pills.svg", "dentista": "./images/colored/blue/tooth.svg", "escova de dente": "./images/colored/blue/toothbrush.svg", "injeção": "./images/colored/blue/injection.svg",
@@ -3007,7 +3580,7 @@ body.dark-mode .back-button:hover {
         "flor": "./images/colored/blue/flower.svg", "planta": "./images/colored/blue/plant.svg", "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg",
         
         // === COMPRAS E FINANÇAS ===
-        "dinheiro": "./images/colored/blue/money.svg", "compras": "./images/colored/blue/shopping.svg", "comprar": "./images/colored/blue/buy.svg", "lista": "./images/colored/blue/list.svg", "assinaturas": "./images/colored/blue/assinatura.svg",
+        "compras": "./images/colored/blue/shopping.svg", "comprar": "./images/colored/blue/buy.svg", "lista": "./images/colored/blue/list.svg", "assinaturas": "./images/colored/blue/assinatura.svg",
         
         // === COMUNICAÇÃO E TECNOLOGIA ===
         "telefone": "./images/colored/blue/phone.svg", "data": "./images/colored/blue/date.svg",
@@ -3044,7 +3617,7 @@ body.dark-mode .back-button:hover {
         "injeção": "./images/colored/blue/injection.svg", "escova de dente": "./images/colored/blue/toothbrush.svg",
         
         // === NATUREZA E PLANTAS ===
-        "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg", "cogumelo": "./images/colored/blue/mushroom.svg",
+        "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg",
         
         // === OUTROS/VARIADOS ===
         "dna": "./images/colored/blue/dna.svg", "olho": "./images/colored/blue/eye.svg", "juiz": "./images/colored/blue/judge.svg"
@@ -3324,8 +3897,9 @@ body.dark-mode .back-button:hover {
             previousSection = currentActiveSection.id;
         }
         
-        // Hide all other sections first
-        document.querySelectorAll('.mensal-content-section').forEach(section => section.style.display = 'none');
+        // Hide day view section but keep planner-details-container visible
+        dayViewSection.style.setProperty('display', 'none', 'important');
+        taskFormView.style.setProperty('display', 'none', 'important');
         
         const allLists = JSON.parse(localStorage.getItem('todoLists')) || [];
         const targetList = allLists.find(list => list.id === listId);
@@ -3348,16 +3922,23 @@ body.dark-mode .back-button:hover {
             }
             
             // Show list details section
-            listDetailsSection.style.display = 'block';
+            listDetailsSection.style.setProperty('display', 'block', 'important');
         } else {
             alert("Erro: não foi possível encontrar a lista vinculada.");
         }
     }
 
     function closeListDetailsSection() {
-        listDetailsSection.style.display = 'none';
-        // Não volta para seção anterior para evitar conflitos com navegação principal
-        // A navegação principal já gerencia qual seção deve estar visível
+        listDetailsSection.style.setProperty('display', 'none', 'important');
+        
+        // Volta para as tarefas do dia
+        plannerDetailsContainer.style.setProperty('display', 'block', 'important');
+        dayViewSection.style.setProperty('display', 'block', 'important');
+        
+        // Garante que o botão de adicionar tarefa seja visível
+        openAddTaskFormBtn.style.setProperty('display', 'inline-flex', 'important');
+        openAddTaskFormBtn.style.setProperty('visibility', 'visible', 'important');
+        openAddTaskFormBtn.style.setProperty('opacity', '1', 'important');
     }
 
     function openListIconSection(listId) {
@@ -4766,9 +5347,46 @@ body.dark-mode .back-button:hover {
         dayViewTitle.textContent = `tarefas do dia`;
         renderDayTasks();
         
-        plannerDetailsContainer.style.display = 'block';
-        dayViewSection.style.display = 'block';
-        taskFormView.style.display = 'none';
+        // Força visibilidade com !important
+        plannerDetailsContainer.style.setProperty('display', 'block', 'important');
+        dayViewSection.style.setProperty('display', 'block', 'important');
+        taskFormView.style.setProperty('display', 'none', 'important');
+        
+        // Scroll para garantir que o botão seja visível
+        setTimeout(() => {
+            // Scroll para o final da seção com margem extra
+            const rect = dayViewSection.getBoundingClientRect();
+            const scrollTop = window.pageYOffset + rect.bottom - window.innerHeight + 100;
+            window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+        }, 200);
+        
+        // Debug: verifica se o botão existe
+        console.log('Botão encontrado:', openAddTaskFormBtn);
+        console.log('Botão display atual:', openAddTaskFormBtn.style.display);
+        
+        // Remove qualquer estilo inline que possa estar interferindo
+        openAddTaskFormBtn.removeAttribute('style');
+        
+        // Garante que o botão de adicionar tarefa seja visível com !important
+        openAddTaskFormBtn.style.setProperty('display', 'inline-flex', 'important');
+        openAddTaskFormBtn.style.setProperty('visibility', 'visible', 'important');
+        openAddTaskFormBtn.style.setProperty('opacity', '1', 'important');
+        openAddTaskFormBtn.style.setProperty('width', '100%', 'important');
+        openAddTaskFormBtn.style.setProperty('margin-top', '20px', 'important');
+        
+        console.log('Botão display após setProperty:', openAddTaskFormBtn.style.display);
+        console.log('Botão computed style:', window.getComputedStyle(openAddTaskFormBtn).display);
+        
+        // Debug adicional para verificar visibilidade
+        console.log('Container planner-details-container display:', window.getComputedStyle(plannerDetailsContainer).display);
+        console.log('Container day-view-section display:', window.getComputedStyle(dayViewSection).display);
+        console.log('Botão visibility:', window.getComputedStyle(openAddTaskFormBtn).visibility);
+        console.log('Botão opacity:', window.getComputedStyle(openAddTaskFormBtn).opacity);
+        console.log('Botão width:', window.getComputedStyle(openAddTaskFormBtn).width);
+        console.log('Botão height:', window.getComputedStyle(openAddTaskFormBtn).height);
+        console.log('Botão position:', window.getComputedStyle(openAddTaskFormBtn).position);
+        console.log('Botão z-index:', window.getComputedStyle(openAddTaskFormBtn).zIndex);
+        
         cancelTaskEdit(); // Garante que o formulário esteja limpo
     }
     
@@ -4876,9 +5494,9 @@ body.dark-mode .back-button:hover {
             weeklyRecurrenceOptions.querySelectorAll('input').forEach(cb => cb.disabled = true);
         }
         
-        // Navega para a view do formulário
-        dayViewSection.style.display = 'none';
-        taskFormView.style.display = 'block';
+        // Navega para a view do formulário - esconde tarefas do dia
+        dayViewSection.style.setProperty('display', 'none', 'important');
+        taskFormView.style.setProperty('display', 'block', 'important');
     }
     
     function renderDayTasks() {
@@ -5127,6 +5745,7 @@ body.dark-mode .back-button:hover {
             "reunião": "meeting",
             "computador": "computer",
             "filme": "movie",
+            "cogumelo": "mushroom",
             "estudo": "study",
             "casa": "house",
             "carro": "car",
@@ -5720,8 +6339,8 @@ body.dark-mode .back-button:hover {
     });
 
     showAddTransactionBtn.addEventListener('click', () => {
-        transactionListView.style.display = 'none';
-        addTransactionContainer.style.display = 'block';
+        transactionListView.style.setProperty('display', 'none', 'important');
+        addTransactionContainer.style.setProperty('display', 'block', 'important');
     });
     
     backToTransactionsListBtn.addEventListener('click', () => {
@@ -6004,8 +6623,8 @@ body.dark-mode .back-button:hover {
     // LISTENERS PARA NAVEGAÇÃO
     openAddTaskFormBtn.addEventListener('click', () => {
         cancelTaskEdit(); 
-        dayViewSection.style.display = 'none';
-        taskFormView.style.display = 'block';
+        dayViewSection.style.setProperty('display', 'none', 'important');
+        taskFormView.style.setProperty('display', 'block', 'important');
     });
 
     // Event listener para o seletor de cores das tarefas
@@ -6055,27 +6674,64 @@ body.dark-mode .back-button:hover {
     }
 
     closeDayViewBtn.addEventListener('click', () => {
-        plannerDetailsContainer.style.display = 'none';
+        plannerDetailsContainer.style.setProperty('display', 'none', 'important');
+        // Oculta o botão de adicionar tarefa quando fecha a view de dia
+        openAddTaskFormBtn.style.setProperty('display', 'none', 'important');
     });
     
     backToDayViewBtn.addEventListener('click', () => {
-        taskFormView.style.display = 'none';
-        dayViewSection.style.display = 'block';
+        taskFormView.style.setProperty('display', 'none', 'important');
+        dayViewSection.style.setProperty('display', 'block', 'important');
+        
+        // Garante que o botão de adicionar tarefa seja visível
+        openAddTaskFormBtn.style.setProperty('display', 'inline-flex', 'important');
+        openAddTaskFormBtn.style.setProperty('visibility', 'visible', 'important');
+        openAddTaskFormBtn.style.setProperty('opacity', '1', 'important');
     });
 
     viewDetailsBtn.addEventListener('click', () => {
         renderExpenses(); 
-        transactionListView.style.display = 'block';
-        addTransactionContainer.style.display = 'none';
+        transactionListView.style.setProperty('display', 'block', 'important');
+        addTransactionContainer.style.setProperty('display', 'none', 'important');
         budgetsView.style.display = 'none';
         investmentsView.style.display = 'none';
-        categorySection.style.display = 'none'; // Close category section when switching to transactions
+        categorySection.style.display = 'none';
         transactionsView.style.display = 'block';
-        transactionsView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Garante que o botão de adicionar transação seja visível
+        showAddTransactionBtn.style.setProperty('display', 'inline-flex', 'important');
+        showAddTransactionBtn.style.setProperty('visibility', 'visible', 'important');
+        showAddTransactionBtn.style.setProperty('opacity', '1', 'important');
+        
+        // Scroll para garantir que o botão seja visível
+        setTimeout(() => {
+            const rect = transactionListView.getBoundingClientRect();
+            const scrollTop = window.pageYOffset + rect.bottom - window.innerHeight + 100;
+            window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+        }, 200);
     });
 
     closeTransactionsViewBtn.addEventListener('click', () => {
         transactionsView.style.display = 'none';
+    });
+
+    // Back to transactions list - goes from add/edit form to transactions list
+    backToTransactionsListBtn.addEventListener('click', () => {
+        addTransactionContainer.style.setProperty('display', 'none', 'important');
+        transactionListView.style.setProperty('display', 'block', 'important');
+        
+        // Garante que o botão de adicionar transação seja visível
+        showAddTransactionBtn.style.setProperty('display', 'inline-flex', 'important');
+        showAddTransactionBtn.style.setProperty('visibility', 'visible', 'important');
+        showAddTransactionBtn.style.setProperty('opacity', '1', 'important');
+        
+        cancelEdit(); // Resets form if in edit mode
+    });
+
+    // Show add transaction form
+    showAddTransactionBtn.addEventListener('click', () => {
+        transactionListView.style.setProperty('display', 'none', 'important');
+        addTransactionContainer.style.setProperty('display', 'block', 'important');
     });
 
     viewCategorySpendingBtn.addEventListener('click', () => {
@@ -6163,9 +6819,9 @@ body.dark-mode .back-button:hover {
 
 
 
-    document.getElementById('show-planner').addEventListener('click', () => showMensalSection('planner-section'));
-    document.getElementById('show-financeiro').addEventListener('click', () => showMensalSection('financeiro-section'));
-    document.getElementById('show-listas').addEventListener('click', () => showMensalSection('listas-section'));
+    // === NAVIGATION EVENT LISTENERS ===
+    // Bottom navigation handles main section switching
+    // Removed top navigation buttons (planner, finanças, listas)
     manageCategoriesBtnBudgets.addEventListener('click', () => {
         previousSection = 'budgets-view';
         openCategorySection();
@@ -6370,11 +7026,19 @@ body.dark-mode .back-button:hover {
         }
         
         document.querySelectorAll('#mensal-controls .mensal-sub-toggle').forEach(btn => btn.classList.remove('active-sub'));
-        document.getElementById(`show-${sectionId.replace('-section', '')}`).classList.add('active-sub');
+        // Update bottom navigation instead of top navigation
+        const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
+        bottomNavItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.dataset.section === sectionId) {
+                item.classList.add('active');
+            }
+        });
         
         // Esconde todas as sub-views ao trocar de aba principal
-        plannerDetailsContainer.style.display = 'none';
-        document.getElementById('finance-details-container').style.display = 'none';
+        // Não esconde os containers principais para manter os botões visíveis
+        // plannerDetailsContainer.style.display = 'none';
+        // document.getElementById('finance-details-container').style.display = 'none';
 
         // Esconde as listas e o formulário quando não estiver na aba de listas
         if (sectionId !== 'listas-section') {
@@ -6382,8 +7046,20 @@ body.dark-mode .back-button:hover {
             newListForm.style.display = 'none';
         }
 
+        if (sectionId === 'planner-section') {
+            // Garante que o container do planner esteja visível
+            plannerDetailsContainer.style.setProperty('display', 'block', 'important');
+            // Hide all detail views within the container
+            dayViewSection.style.setProperty('display', 'none', 'important');
+            taskFormView.style.setProperty('display', 'none', 'important');
+            
+            // Oculta o botão de adicionar tarefa quando não estiver na view de dia
+            openAddTaskFormBtn.style.setProperty('display', 'none', 'important');
+        }
+
         if (sectionId === 'financeiro-section') {
-            document.getElementById('finance-details-container').style.display = 'block'; // Make sure container is visible
+            // Garante que o container de finanças esteja visível
+            document.getElementById('finance-details-container').style.display = 'block';
             // Hide all detail views within the container
             transactionsView.style.display = 'none';
             budgetsView.style.display = 'none';
@@ -6409,7 +7085,7 @@ body.dark-mode .back-button:hover {
         calendarMonthSelect.value = monthIndex;
         
         
-        const activeSectionId = document.querySelector('#mensal-controls .mensal-sub-toggle.active-sub')?.id.replace('show-', '') + '-section' || 'planner-section';
+        const activeSectionId = document.querySelector('.bottom-nav-item.active')?.dataset.section || 'planner-section';
         showMensalSection(activeSectionId);
     }
     
@@ -6476,8 +7152,59 @@ body.dark-mode .back-button:hover {
     }
 
     initApp();
+    
+    // Bottom Navigation Control
+    document.addEventListener('DOMContentLoaded', function() {
+      const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
+      
+      bottomNavItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          const sectionId = this.dataset.section;
+          
+          // Update active state
+          bottomNavItems.forEach(nav => nav.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Show the section
+          showMensalSection(sectionId);
+        });
+      });
+      
+      // Update bottom nav active state when switching sections
+      const originalShowMensalSection = window.showMensalSection;
+      window.showMensalSection = function(sectionId) {
+        originalShowMensalSection(sectionId);
+        
+        // Update bottom nav
+        bottomNavItems.forEach(item => {
+          item.classList.remove('active');
+          if (item.dataset.section === sectionId) {
+            item.classList.add('active');
+          }
+        });
+      };
+    });
   </script>
 
+
+  <!-- Bottom Navigation (Mobile) -->
+  <nav class="bottom-nav">
+    <div class="bottom-nav-items">
+      <a href="#" class="bottom-nav-item active" data-section="planner-section">
+        <img src="images/buttons/calendar.svg" alt="Planner">
+        <span>planner</span>
+      </a>
+      <a href="#" class="bottom-nav-item" data-section="financeiro-section">
+        <img src="images/buttons/finance.svg" alt="Finanças">
+        <span>finanças</span>
+      </a>
+      <a href="#" class="bottom-nav-item" data-section="listas-section">
+        <img src="images/buttons/checklist.svg" alt="Listas">
+        <span>listas</span>
+      </a>
+    </div>
+  </nav>
 
 </body>
 </html>
