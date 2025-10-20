@@ -1,4 +1,4 @@
-OrganizatIO: Planejar. Organizar. Controlar.
+OrganizatIO: Planeje. Organize. Controle.
 
 - Planner mensal inteligente — visualize e agende suas tarefas, compromissos e listas diretamente no calendário.
 - Finanças com propósito — acompanhe suas transações mensais, defina metas financeiras e de investimento, e veja sua evolução rumo a sonhos e objetivos reais.
