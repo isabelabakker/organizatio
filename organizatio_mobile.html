@@ -554,7 +554,7 @@
     .edit-item-btn, .delete-item-btn,
     .edit-list-btn, .delete-list-circular-btn {
      background-color: #f5f5f5; 
-     border: 1px solid #BDBDBD;
+     border: none;
      transition: background-color 0.2s, border-color 0.2s;
     }
 
@@ -564,7 +564,6 @@
     .edit-item-btn:hover, .delete-item-btn:hover,
     .edit-list-btn:hover, .delete-list-circular-btn:hover {
         background-color: #e5e5e5;
-        border-color: #9E9E9E;
     }
 
     /* ÍCONE ESCURO PARA TEMA CLARO */
@@ -578,15 +577,14 @@
     body.dark-mode .edit-item-btn, body.dark-mode .delete-item-btn,
     body.dark-mode .edit-list-btn, body.dark-mode .delete-list-circular-btn {
     background-color: #1F1F1F; 
-    border: 1px solid #9E9E9E; 
+    border: none; 
     }
     
     body.dark-mode .edit-btn:hover, body.dark-mode .delete-btn:hover,
     body.dark-mode .edit-task-btn:hover, body.dark-mode .task-list-item button:hover,
     body.dark-mode .edit-item-btn:hover, body.dark-mode .delete-item-btn:hover,
     body.dark-mode .edit-list-btn:hover, body.dark-mode .delete-list-circular-btn:hover {
-    background-color: #282828; 
-    border-color: #E0E0E0;   
+    background-color: #282828;
     }
 
     #newListForm {
@@ -595,11 +593,27 @@
         max-width: 500px;
         margin: 0 auto 30px auto;
         padding: 20px;
+        padding-bottom: 60px;
         border: 1px solid #ddd;
         border-radius: 15px;
         gap: 10px;
         background: #fdfdfd;
         transition: background 0.3s, border-color 0.3s;
+    }
+    
+    #newListForm input[type="text"],
+    #newListForm input[type="date"],
+    #newListForm input[type="time"],
+    #newListForm select,
+    #newListForm label,
+    #newListForm button[type="submit"] {
+        font-size: 12px !important;
+    }
+    
+    #planner-link-options label,
+    #routine-options label,
+    #list-weekly-recurrence-options label {
+        font-size: 11px !important;
     }
 
     
@@ -902,6 +916,7 @@
     .list-title-container h2 {
         flex-grow: 1;
         text-align: left;
+        font-size: 14px;
     }
     .change-list-icon-btn {
         background: #FFC107;
@@ -940,6 +955,7 @@
     .list-input-group input {
         flex-grow: 1;
         margin-bottom: 0;
+        font-size: 14px;
     }
 
     .list.completed {
@@ -953,7 +969,7 @@
         border-radius: 5px;
         border: 1px solid #ccc;
         background-color: #f9f9f9;
-        font-size: 12px;
+        font-size: 9px;
     }
 
     .list.priority-baixa { border-left-color: #3586ff; }
@@ -990,6 +1006,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 14px;
     }
     
     .list-item-value {
@@ -1005,6 +1022,7 @@
       flex-grow: 1;
       border: 1px solid transparent;
       padding: 2px 4px;
+      font-size: 14px;
     }
     
     .list-item-content input[type="text"] {
@@ -1335,7 +1353,7 @@
     }
     
     .icon-color-pink, .task-icon-option img[data-color="pink"] {
-        filter: brightness(0) saturate(100%) invert(58%) sepia(86%) saturate(3394%) hue-rotate(312deg) brightness(101%) contrast(101%);
+        filter: brightness(0) saturate(100%) invert(51%) sepia(96%) saturate(4217%) hue-rotate(300deg) brightness(102%) contrast(101%);
     }
     
     .icon-color-orange, .task-icon-option img[data-color="orange"] {
@@ -2627,10 +2645,12 @@
 /* --- Estilo para o botão "Remover Agendamento" --- */
 #remove-schedule-btn {
     background: transparent;
-    color: #BDBDBD; /* Cor da borda definida pela classe .delete-btn */
+    color: #BDBDBD;
+    border: 2px solid #BDBDBD !important;
 }
 #remove-schedule-btn:hover {
-    color: #9E9E9E; /* Cor da borda no hover definida por .delete-btn:hover */
+    color: #9E9E9E;
+    border-color: #9E9E9E !important;
 }
 
 
@@ -2645,10 +2665,12 @@ body.dark-mode #add-schedule-btn:hover {
 }
 
 body.dark-mode #remove-schedule-btn {
-    color: #9E9E9E; /* Cor da borda no dark mode definida por .delete-btn */
+    color: #9E9E9E;
+    border: 2px solid #9E9E9E !important;
 }
 body.dark-mode #remove-schedule-btn:hover {
-    color: #E0E0E0; /* Cor da borda no hover do dark mode */
+    color: #E0E0E0;
+    border-color: #E0E0E0 !important;
 }
 
     /* === OPTIMIZED NAVIGATION BUTTONS === */
@@ -2991,7 +3013,7 @@ body.dark-mode #remove-schedule-btn:hover {
                                     <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;"></div>
                                     <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;"></div>
                                     <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;"></div>
-                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff66cc; border: 2px solid #ccc; cursor: pointer;"></div>
                                     <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;"></div>
                                 </div>
                                 <input type="hidden" id="taskIconColor" value="blue">
@@ -3141,7 +3163,7 @@ body.dark-mode #remove-schedule-btn:hover {
                                     <div class="color-option" data-color="green" style="background-color: #4caf50;"></div>
                                     <div class="color-option" data-color="yellow" style="background-color: #ffeb3b;"></div>
                                     <div class="color-option" data-color="purple" style="background-color: #9c27b0;"></div>
-                                    <div class="color-option" data-color="pink" style="background-color: #ff69b4;"></div>
+                                    <div class="color-option" data-color="pink" style="background-color: #ff66cc;"></div>
                                     <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
                                 </div>
                                 <input type="hidden" id="goalColor" value="blue">
@@ -3198,17 +3220,13 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div id="categoryIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;"></div>
                         <input type="hidden" id="categoryIcon" value="">
                         
-                        <div id="category-color-picker-container">
-                            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: var(--text-color);">cor da categoria:</label>
-                            <div id="categoryColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <div class="color-option selected" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #333; cursor: pointer;"></div>
-                                <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;"></div>
-                                <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;"></div>
-                                <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;"></div>
-                                <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;"></div>
-                                <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;"></div>
-                                <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;"></div>
-                            </div>
+                        <p style="font-size: 12px; color: #888; margin-top: 10px; text-align: center;">
+                            💡 A cor do ícone é definida automaticamente pelo nome da categoria
+                        </p>
+                        
+                        <!-- Seletor de cor oculto (cor baseada no nome da categoria) -->
+                        <div style="display: none;">
+                            <div id="categoryColorPicker"></div>
                             <input type="hidden" id="categoryIconColor" value="blue">
                         </div>
                     </div>
@@ -3228,10 +3246,10 @@ body.dark-mode #remove-schedule-btn:hover {
         <div id="listas-section" class="mensal-content-section" style="display: none;">
             <form id="newListForm">
                 <div id="newListForm-main-line" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                    <input type="text" id="newListName" placeholder="nome da nova lista" required style="flex-grow: 1; min-width: 200px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                    <input type="text" id="newListName" placeholder="nome da nova lista" required style="flex-grow: 1; min-width: 200px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px;">
                     
                     <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
-                        <select id="newListPriority" style="text-transform: none; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                        <select id="newListPriority" style="text-transform: none; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px;">
                             <option value="baixa">prioridade: baixa</option>
                             <option value="media">prioridade: média</option>
                             <option value="alta">prioridade: alta</option>
@@ -3276,8 +3294,8 @@ body.dark-mode #remove-schedule-btn:hover {
                         </select>
                         <input type="date" id="list-recurrence-end-date" title="data final da recorrência" style="display: none;">
                         <div id="list-weekly-recurrence-options" style="display: none; margin-top: 5px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
-                            <label style="display: block; margin-bottom: 5px; font-size: 12px; font-weight: bold;">repetir nos dias:</label>
-                            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 5px; font-size: 14px;">
+                            <label style="display: block; margin-bottom: 5px; font-size: 11px; font-weight: bold;">repetir nos dias:</label>
+                            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 5px; font-size: 11px;">
                                 <label><input type="checkbox" name="list-weekday" value="0"> dom</label>
                                 <label><input type="checkbox" name="list-weekday" value="1"> seg</label>
                                 <label><input type="checkbox" name="list-weekday" value="2"> ter</label>
@@ -3338,18 +3356,9 @@ body.dark-mode #remove-schedule-btn:hover {
             </div>
         </div>
         
-        <!-- Seletor de Cor -->
-        <div style="margin-top: 20px;">
-            <label style="display: block; margin-bottom: 10px; font-weight: bold;">cor:</label>
-            <div id="list-color-picker" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
-                <div class="color-option" data-color="red" style="background-color: #f44336;"></div>
-                <div class="color-option" data-color="blue" style="background-color: #3586ff;"></div>
-                <div class="color-option" data-color="green" style="background-color: #4caf50;"></div>
-                <div class="color-option" data-color="yellow" style="background-color: #ffeb3b;"></div>
-                <div class="color-option" data-color="purple" style="background-color: #9c27b0;"></div>
-                <div class="color-option" data-color="pink" style="background-color: #ff69b4;"></div>
-                <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
-            </div>
+        <!-- Seletor de Cor (oculto - cor baseada em prioridade) -->
+        <div style="display: none;">
+            <div id="list-color-picker"></div>
             <input type="hidden" id="listColor" value="blue">
         </div>
     </div>
@@ -3357,7 +3366,7 @@ body.dark-mode #remove-schedule-btn:hover {
 
   <!-- Seção de Editor de Lista -->
   <div id="list-editor-section" class="mensal-content-section" style="display: none;">
-    <div style="padding: 20px; max-width: 450px; margin: 0 auto;">
+    <div style="padding: 20px; padding-bottom: 80px; max-width: 450px; margin: 0 auto;">
         <button class="close-button back-button" onclick="closeListEditorSection()"><img src="buttons/back.svg" alt="Voltar"></button>
         <h3>Editar Lista</h3>
         <form id="list-editor-form" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
@@ -3369,21 +3378,22 @@ body.dark-mode #remove-schedule-btn:hover {
             </div>
 
             <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Prioridade (define a cor do ícone):</label>
+                <select id="editor-list-priority" style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: 13px;">
+                    <option value="baixa">Baixa (Azul)</option>
+                    <option value="media">Média (Amarelo)</option>
+                    <option value="alta">Alta (Vermelho)</option>
+                </select>
+                
                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">Ícone da Lista:</label>
                 <div id="editor-list-icon-picker" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 140px; overflow-y: auto; padding: 5px; border-radius: 8px; background: rgba(0,0,0,0.05);"></div>
                 <input type="hidden" id="editor-list-icon-main">
                 
-                <label style="display: block; margin-bottom: 5px; font-weight: bold; margin-top: 10px;">Cor da Lista:</label>
-                <div id="editor-list-color-picker" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <div class="color-option" data-color="red" style="background-color: #f44336;"></div>
-                    <div class="color-option" data-color="blue" style="background-color: #3586ff;"></div>
-                    <div class="color-option" data-color="green" style="background-color: #4caf50;"></div>
-                    <div class="color-option" data-color="yellow" style="background-color: #ffeb3b;"></div>
-                    <div class="color-option" data-color="purple" style="background-color: #9c27b0;"></div>
-                    <div class="color-option" data-color="pink" style="background-color: #ff69b4;"></div>
-                    <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
+                <!-- Seletor de Cor oculto (cor baseada em prioridade) -->
+                <div style="display: none;">
+                    <div id="editor-list-color-picker"></div>
+                    <input type="hidden" id="editor-list-color-main" value="blue">
                 </div>
-                <input type="hidden" id="editor-list-color-main" value="blue">
             </div>
 
             <hr>
@@ -3560,6 +3570,7 @@ body.dark-mode #remove-schedule-btn:hover {
     const listEditorForm = document.getElementById('list-editor-form');
     const editorListIdInput = document.getElementById('editor-list-id-main');
     const editorListNameInput = document.getElementById('editor-list-name');
+    const editorListPriorityInput = document.getElementById('editor-list-priority');
     const editorListIconPicker = document.getElementById('editor-list-icon-picker');
     const editorListIconInput = document.getElementById('editor-list-icon-main');
     const addScheduleBtn = document.getElementById('add-schedule-btn');
@@ -3578,47 +3589,44 @@ body.dark-mode #remove-schedule-btn:hover {
     // --- ÍCONES DE TAREFAS (USADOS TAMBÉM PARA LISTAS) ---
     const taskIcons = {
         // === ÍCONES CIRCULARES/BÁSICOS ===
-        "nenhum": "./images/circledashed.svg", "coração": "./images/heart.svg", "estrela": "./images/star.svg", "dinheiro": "./images/money.svg","médico": "./images/health.svg",
+        "nenhum": "./images/circledashed.svg", "coração": "./images/heart.svg", "estrela": "./images/star.svg", "dinheiro": "./images/money.svg",
         
         // === SAÚDE E BEM-ESTAR ===
-        "medicação": "./images/pills.svg", "dentista": "./images/tooth.svg", "escova de dente": "./images/hairbrush.svg", "injeção": "./images/injection.svg",
-        "beleza": "./images/hairbrush.svg", "unhas": "./images/nails.svg", "pele": "./images/body.svg", "meditação": "./images/meditation.svg",
+        "médico": "./images/health.svg", "medicação": "./images/pills.svg", "dentista": "./images/tooth.svg", "escova": "./images/hairbrush.svg", 
+        "injeção": "./images/injection.svg", "unhas": "./images/nails.svg", "pele": "./images/body.svg", "meditação": "./images/meditation.svg",
         
         // === ESPORTES E ATIVIDADES ===
-        "exercício": "./images/gym.svg", "futebol": "./images/football.svg", "ping pong": "./images/football.svg", "vôlei": "./images/football.svg",
+        "exercício": "./images/gym.svg", "esportes": "./images/football.svg",
         
         // === TRABALHO E ESTUDO ===
-        "trabalho": "./images/work.svg", "estudo": "./images/study.svg", "reunião": "./images/people.svg", "computador": "./images/computer.svg",
-        "escrever": "./images/write.svg", "cérebro": "./images/study.svg",
+        "trabalho": "./images/work.svg", "estudo": "./images/study.svg", "pessoas": "./images/people.svg", "computador": "./images/computer.svg",
+        "escrever": "./images/write.svg",
         
         // === CASA E FAMÍLIA ===
-        "casa": "./images/house.svg", "pet": "./images/pet.svg", "pessoa": "./images/people.svg", "presente": "./images/gift.svg",
+        "casa": "./images/house.svg", "pet": "./images/pet.svg", "presente": "./images/gift.svg",
         "aniversário": "./images/birthday.svg", "festa": "./images/party.svg",
         
         // === TRANSPORTE E VIAGEM ===
-        "carro": "./images/plane.svg", "viagem": "./images/plane.svg", "férias": "./images/vacation.svg",
+        "viagem": "./images/plane.svg", "férias": "./images/vacation.svg",
         
         // === COMIDA E BEBIDA ===
         "comida": "./images/burger.svg", "maçã": "./images/apple.svg", "cenoura": "./images/carrot.svg", "sorvete": "./images/icecream.svg",
         "pipoca": "./images/popcorn.svg", "cogumelo": "./images/mushroom.svg",
         
         // === ENTRETENIMENTO E LAZER ===
-        "filme": "./images/picture.svg", "arte": "./images/picture.svg", "câmera": "./images/picture.svg",
+        "mídia": "./images/picture.svg",
         
         // === NATUREZA E PLANTAS ===
-        "flor": "./images/flower.svg", "planta": "./images/plant.svg", "folha": "./images/plant.svg", "lesma": "./images/snail.svg",
+        "flor": "./images/flower.svg", "planta": "./images/plant.svg", "lesma": "./images/snail.svg",
         
         // === COMPRAS E FINANÇAS ===
-        "compras": "./images/shopping.svg", "comprar": "./images/buy.svg", "lista": "./images/shopping.svg", "assinaturas": "./images/infinite.svg",
-        
-        // === COMUNICAÇÃO E TECNOLOGIA ===
-        "telefone": "./images/computer.svg", "data": "./images/circledashed.svg",
+        "compras": "./images/shopping.svg", "comprar": "./images/buy.svg", "assinaturas": "./images/infinite.svg",
         
         // === ROUPAS E ACESSÓRIOS ===
         "camisa": "./images/shirt.svg", "caixa": "./images/box.svg",
         
         // === OUTROS/VARIADOS ===
-        "cigarro": "./images/cigarette.svg", "dna": "./images/health.svg", "olho": "./images/eye.svg", "juiz": "./images/people.svg"
+        "cigarro": "./images/cigarette.svg", "olho": "./images/eye.svg"
     };
 
     // --- ÍCONES DE CATEGORIA (MAPEAMENTO NOME -> CAMINHO) ---
@@ -3627,8 +3635,8 @@ body.dark-mode #remove-schedule-btn:hover {
         "outros": "./images/star.svg", "saúde": "./images/health.svg", "educação": "./images/study.svg",
         
         // === FINANÇAS ===
-        "comida": "./images/burger.svg", "compras": "./images/shopping.svg", "contas": "./images/money.svg", "assinaturas": "./images/infinite.svg",
-        "salário": "./images/money.svg", "freela": "./images/work.svg",
+        "comida": "./images/burger.svg", "compras": "./images/shopping.svg", "dinheiro": "./images/money.svg", "assinaturas": "./images/infinite.svg",
+        "freela": "./images/work.svg",
         
         // === CASA E FAMÍLIA ===
         "moradia": "./images/house.svg", "pet": "./images/pet.svg", "presente": "./images/gift.svg",
@@ -3640,16 +3648,16 @@ body.dark-mode #remove-schedule-btn:hover {
         "lazer": "./images/picture.svg", "beleza": "./images/hairbrush.svg",
         
         // === ESPORTES ===
-        "futebol": "./images/football.svg", "ping pong": "./images/football.svg", "vôlei": "./images/football.svg",
+        "esportes": "./images/football.svg",
         
         // === SAÚDE E BEM-ESTAR ===
-        "injeção": "./images/injection.svg", "escova de dente": "./images/hairbrush.svg",
+        "injeção": "./images/injection.svg",
         
         // === NATUREZA E PLANTAS ===
         "folha": "./images/plant.svg", "lesma": "./images/snail.svg",
         
         // === OUTROS/VARIADOS ===
-        "dna": "./images/health.svg", "olho": "./images/eye.svg", "juiz": "./images/people.svg"
+        "olho": "./images/eye.svg", "pessoas": "./images/people.svg"
     };
 
 
@@ -3724,6 +3732,71 @@ body.dark-mode #remove-schedule-btn:hover {
     // ----------------------------------------------------
     // FUNÇÕES DE UTILIDADE E TEMA
     // ----------------------------------------------------
+    
+    // Função para converter prioridade em cor
+    function getPriorityColor(priority, darkMode = false) {
+        if (darkMode) {
+            const colors = {
+                'baixa': '#6b9aff',
+                'media': '#FFCA28',
+                'alta': '#FF1744'
+            };
+            return colors[priority] || '#6b9aff';
+        } else {
+            const colors = {
+                'baixa': '#3586ff',
+                'media': '#FFC107',
+                'alta': '#FF5252'
+            };
+            return colors[priority] || '#3586ff';
+        }
+    }
+    
+    // Função para converter cor em nome de cor para ícone
+    function getColorNameFromPriority(priority) {
+        const colorNames = {
+            'baixa': 'blue',
+            'media': 'yellow',
+            'alta': 'red'
+        };
+        return colorNames[priority] || 'blue';
+    }
+    
+    // Função para obter cor pré-definida baseada no nome da categoria
+    function getCategoryColor(categoryName) {
+        const name = categoryName.toLowerCase();
+        
+        // Mapeamento de categorias para cores
+        if (name.includes('aliment') || name.includes('comida') || name.includes('restaur') || name.includes('lanche')) {
+            return 'orange'; // Laranja
+        } else if (name.includes('transport') || name.includes('uber') || name.includes('carro') || name.includes('gasolina')) {
+            return 'blue'; // Azul
+        } else if (name.includes('saúde') || name.includes('médico') || name.includes('farmá') || name.includes('hospital')) {
+            return 'green'; // Verde
+        } else if (name.includes('lazer') || name.includes('entretenimento') || name.includes('cinema') || name.includes('festa') || name.includes('diversão')) {
+            return 'purple'; // Roxo
+        } else if (name.includes('moradia') || name.includes('casa') || name.includes('aluguel') || name.includes('água') || name.includes('luz') || name.includes('energia')) {
+            return 'blue'; // Azul
+        } else if (name.includes('educação') || name.includes('estudo') || name.includes('curso') || name.includes('escola') || name.includes('faculdade')) {
+            return 'blue'; // Azul
+        } else if (name.includes('compra') || name.includes('shopping') || name.includes('roupa') || name.includes('vestuário')) {
+            return 'pink'; // Rosa
+        } else if (name.includes('salário') || name.includes('receita') || name.includes('renda') || name.includes('ganho')) {
+            return 'green'; // Verde
+        } else if (name.includes('beleza') || name.includes('cabelo') || name.includes('unha') || name.includes('estética')) {
+            return 'pink'; // Rosa
+        } else if (name.includes('pet') || name.includes('animal')) {
+            return 'orange'; // Laranja
+        } else if (name.includes('assinatura') || name.includes('streaming') || name.includes('netflix') || name.includes('spotify')) {
+            return 'purple'; // Roxo
+        } else if (name.includes('presente') || name.includes('gift')) {
+            return 'red'; // Vermelho
+        } else if (name.includes('freela') || name.includes('extra')) {
+            return 'yellow'; // Amarelo
+        } else {
+            return 'blue'; // Azul como padrão
+        }
+    }
     function parseMonthYear(monthYearString) {
         const [monthName, year] = monthYearString.split('-');
         const monthIndex = monthNamesPt.indexOf(monthName.toLowerCase());
@@ -3839,6 +3912,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 items: items,
                 priority: listDiv.querySelector('.list-priority-select').value,
                 icon: listDiv.querySelector('.list-title-icon').src,
+                color: listDiv.style.borderLeftColor || null,
                 isShoppingList: isShopping,
                 isFinalized: listDiv.classList.contains('finalized'),
                 isRoutine: isRoutine,
@@ -3882,7 +3956,8 @@ body.dark-mode #remove-schedule-btn:hover {
                 listData.isFinalized,
                 listData.isRoutine,
                 listData.transactionId,
-                listData.transactionMonth
+                listData.transactionMonth,
+                listData.color
             );
         });
     }
@@ -4017,7 +4092,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     'red': '#f44336',
                     'yellow': '#ffeb3b',
                     'purple': '#9c27b0',
-                    'pink': '#ff69b4',
+                    'pink': '#ff66cc',
                     'orange': '#ff9800'
                 };
                 const color = colorMap[selectedColor] || '#3586ff';
@@ -4070,33 +4145,36 @@ body.dark-mode #remove-schedule-btn:hover {
         editorListIdInput.value = listId;
         editorListNameInput.value = listData.name;
         
-        const currentIconPath = listData.icon;
-        editorListIconInput.value = currentIconPath;
-        editorListIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-            option.classList.toggle('selected', option.getAttribute('data-icon-path') === currentIconPath);
+        // Define a prioridade atual
+        const currentPriority = listData.priority || 'baixa';
+        editorListPriorityInput.value = currentPriority;
+        
+        // Obtém a cor baseada na prioridade
+        const currentColorName = getColorNameFromPriority(currentPriority);
+        
+        // Renderiza o picker de ícones com a cor da prioridade
+        renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons, null, null);
+        
+        // Aplica a cor aos ícones
+        editorListIconPicker.querySelectorAll('.task-icon-option img').forEach(img => {
+            img.className = 'icon-color-' + currentColorName;
+            img.dataset.color = currentColorName;
         });
         
-        // Inicializa o seletor de cor
-        const currentColor = listData.color || '#3586ff';
-        const colorMap = {
-            '#3586ff': 'blue',
-            '#4caf50': 'green', 
-            '#f44336': 'red',
-            '#ffeb3b': 'yellow',
-            '#9c27b0': 'purple',
-            '#ff69b4': 'pink',
-            '#ff9800': 'orange'
-        };
-        const currentColorName = colorMap[currentColor] || 'blue';
+        // Agora seleciona o ícone atual
+        const currentIconPath = listData.icon;
+        editorListIconInput.value = currentIconPath;
         
-        const editorListColorPicker = document.getElementById('editor-list-color-picker');
-        const editorListColorInput = document.getElementById('editor-list-color-main');
+        // Procura pelo nome do ícone
+        const currentIconName = Object.keys(taskIcons).find(key => {
+            return currentIconPath.includes(taskIcons[key].split('/').pop().replace('.svg', ''));
+        });
         
-        if (editorListColorPicker && editorListColorInput) {
-            editorListColorPicker.querySelectorAll('.color-option').forEach(option => {
-                option.classList.toggle('selected', option.dataset.color === currentColorName);
+        if (currentIconName) {
+            editorListIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
+                option.classList.toggle('selected', option.dataset.iconName === currentIconName);
             });
-            editorListColorInput.value = currentColorName;
+            editorListIconInput.value = getColoredIcons(currentIconName, currentColorName);
         }
 
         const linkedTaskInfo = findLinkedTask(listId);
@@ -4230,9 +4308,11 @@ body.dark-mode #remove-schedule-btn:hover {
         
         // Obtém o ícone e cor selecionados
         const selectedIconName = categoryIconPicker.querySelector('.task-icon-option.selected')?.dataset.iconName || 'dinheiro';
-        const selectedColor = categoryIconColorInput.value || 'blue';
         
-        // Gera o ícone com a cor selecionada
+        // Obtém cor automática baseada no nome da categoria
+        const selectedColor = getCategoryColor(name);
+        
+        // Gera o ícone com a cor automática
         const coloredIcon = getColoredIcons(selectedIconName, selectedColor);
         
         // Cria o objeto da categoria com ícone e cor
@@ -4304,16 +4384,11 @@ body.dark-mode #remove-schedule-btn:hover {
         editCategoryNameInput.value = name;
         editCategoryTypeInput.value = type;
         
-        // Define a cor atual
-        const currentColor = (typeof categoryData === 'object' && categoryData.color) ? categoryData.color : 'blue';
+        // Obtém cor automática baseada no nome da categoria
+        const currentColor = getCategoryColor(name);
         categoryIconColorInput.value = currentColor;
         
-        // Atualiza o seletor de cores
-        categoryColorPicker.querySelectorAll('.color-option').forEach(option => {
-            option.classList.toggle('selected', option.dataset.color === currentColor);
-        });
-        
-        // Atualiza os ícones com a cor atual
+        // Atualiza os ícones com a cor automática
         categoryIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
             const iconName = iconOption.dataset.iconName;
             const coloredPath = getColoredIcons(iconName, currentColor);
@@ -4379,9 +4454,9 @@ body.dark-mode #remove-schedule-btn:hover {
             return alert('essa categoria já existe.');
         }
 
-        // Obtém o ícone e cor selecionados
+        // Obtém o ícone selecionado e cor automática baseada no novo nome
         const selectedIconName = categoryIconPicker.querySelector('.task-icon-option.selected')?.dataset.iconName || 'dinheiro';
-        const selectedColor = categoryIconColorInput.value || 'blue';
+        const selectedColor = getCategoryColor(newName);
         const coloredIcon = getColoredIcons(selectedIconName, selectedColor);
         
         // Encontra o índice da categoria (considerando objetos e strings)
@@ -4503,7 +4578,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 'red': '#f44336',
                 'yellow': '#ffeb3b',
                 'purple': '#9c27b0',
-                'pink': '#ff69b4',
+                'pink': '#ff66cc',
                 'orange': '#ff9800'
             };
             const hexColor = colorMap[categoryColor] || categoryColor;
@@ -4646,7 +4721,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 { name: 'green', color: '#7ed957' },
                 { name: 'red', color: '#ff5252' },
                 { name: 'yellow', color: '#ffeb3b' },
-                { name: 'pink', color: '#ff69b4' },
+                { name: 'pink', color: '#ff66cc' },
                 { name: 'purple', color: '#9c27b0' },
                 { name: 'orange', color: '#ff9800' }
             ];
@@ -4682,7 +4757,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div class="color-option" data-color="green" style="background-color: #4caf50;"></div>
                         <div class="color-option" data-color="yellow" style="background-color: #ffeb3b;"></div>
                         <div class="color-option" data-color="purple" style="background-color: #9c27b0;"></div>
-                        <div class="color-option" data-color="pink" style="background-color: #ff69b4;"></div>
+                        <div class="color-option" data-color="pink" style="background-color: #ff66cc;"></div>
                         <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
                     </div>
                     <input type="hidden" class="editing-goal-color-input" value="${goal.color}">
@@ -4707,7 +4782,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 '#f44336': 'red',
                 '#ffeb3b': 'yellow',
                 '#9c27b0': 'purple',
-                '#ff69b4': 'pink',
+                '#ff66cc': 'pink',
                 '#ff9800': 'orange'
             };
             const currentColorName = colorMap[currentColor] || 'blue';
@@ -4889,7 +4964,7 @@ body.dark-mode #remove-schedule-btn:hover {
           'red': '#f44336',
           'yellow': '#ffeb3b',
           'purple': '#9c27b0',
-          'pink': '#ff69b4',
+          'pink': '#ff66cc',
           'orange': '#ff9800'
         };
         const color = colorMap[selectedColor] || '#3586ff';
@@ -4961,7 +5036,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 'red': '#f44336',
                 'yellow': '#ffeb3b',
                 'purple': '#9c27b0',
-                'pink': '#ff69b4',
+                'pink': '#ff66cc',
                 'orange': '#ff9800'
             };
             const newColor = colorMap[selectedColorName] || '#3586ff';
@@ -6081,7 +6156,7 @@ body.dark-mode #remove-schedule-btn:hover {
     }
 
 
-    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = taskIcons.lista, isShoppingList = false, isFinalized = false, isRoutine = false, transactionId = null, transactionMonth = null) {
+    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = taskIcons.lista, isShoppingList = false, isFinalized = false, isRoutine = false, transactionId = null, transactionMonth = null, borderColor = null) {
         if (!listName) return;
 
         const listDiv = document.createElement("div");
@@ -6096,19 +6171,12 @@ body.dark-mode #remove-schedule-btn:hover {
             listDiv.dataset.transactionMonth = transactionMonth;
         }
         
-        // Define a cor da borda baseada na cor selecionada (se disponível) ou na prioridade
-        const selectedColor = listColor ? listColor.value : null;
-        if (selectedColor) {
-            const colorMap = {
-                'blue': '#3586ff',
-                'green': '#4caf50',
-                'red': '#f44336',
-                'yellow': '#ffeb3b',
-                'purple': '#9c27b0',
-                'pink': '#ff69b4',
-                'orange': '#ff9800'
-            };
-            const color = colorMap[selectedColor] || '#3586ff';
+        // Define a cor da borda baseada na prioridade
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        if (borderColor) {
+            listDiv.style.borderLeftColor = borderColor;
+        } else {
+            const color = getPriorityColor(initialPriority, isDarkMode);
             listDiv.style.borderLeftColor = color;
         }
         
@@ -6119,12 +6187,19 @@ body.dark-mode #remove-schedule-btn:hover {
         titleContainer.style.alignItems = 'center';
         titleContainer.style.marginBottom = '10px';
         const iconImg = document.createElement('img');
-        iconImg.src = isShoppingList ? (listIcon === taskIcons.lista ? taskIcons.compras : listIcon) : listIcon;
-        iconImg.className = 'list-title-icon';
+        
+        // Aplica a cor do ícone baseada na prioridade
+        const colorName = getColorNameFromPriority(initialPriority);
+        const iconFileName = (isShoppingList ? (listIcon === taskIcons.lista ? taskIcons.compras : listIcon) : listIcon).split('/').pop().replace('.svg', '');
+        const iconName = Object.keys(taskIcons).find(key => taskIcons[key].includes(iconFileName)) || 'compras';
+        const coloredIconPath = getColoredIcons(iconName, colorName);
+        
+        iconImg.src = coloredIconPath + '?t=' + Date.now();
+        iconImg.className = 'list-title-icon icon-color-' + colorName;
         const title = document.createElement("h2");
         title.textContent = listName;
         title.style.margin = 0;
-        title.style.fontSize = '18px';
+        title.style.fontSize = '14px';
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'list-title-actions';
         const editBtn = document.createElement("button");
@@ -6145,7 +6220,29 @@ body.dark-mode #remove-schedule-btn:hover {
         prioritySelect.className = "list-priority-select";
         prioritySelect.innerHTML = `<option value="baixa">baixa prioridade</option><option value="media">média prioridade</option><option value="alta">alta prioridade</option>`;
         prioritySelect.value = initialPriority;
-        prioritySelect.onchange = () => { /* ... (lógica de mudança de prioridade) ... */ };
+        prioritySelect.onchange = () => {
+            const newPriority = prioritySelect.value;
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const newColor = getPriorityColor(newPriority, isDarkMode);
+            const newColorName = getColorNameFromPriority(newPriority);
+            
+            // Atualiza a classe de prioridade
+            listDiv.classList.remove('priority-baixa', 'priority-media', 'priority-alta');
+            listDiv.classList.add('priority-' + newPriority);
+            
+            // Atualiza a cor da borda
+            listDiv.style.borderLeftColor = newColor;
+            
+            // Atualiza o ícone com a nova cor
+            const currentIconSrc = iconImg.src;
+            const iconFileName = currentIconSrc.split('/').pop().split('?')[0].replace('.svg', '');
+            const iconName = Object.keys(taskIcons).find(key => taskIcons[key].includes(iconFileName)) || 'compras';
+            const newIconPath = getColoredIcons(iconName, newColorName);
+            iconImg.src = newIconPath + '?t=' + Date.now();
+            iconImg.className = 'list-title-icon icon-color-' + newColorName;
+            
+            saveLists();
+        };
 
         const inputGroup = document.createElement("div");
         const ul = document.createElement("ul");
@@ -6513,20 +6610,11 @@ body.dark-mode #remove-schedule-btn:hover {
         const listId = editorListIdInput.value;
         const newName = editorListNameInput.value.trim();
         const newListIcon = editorListIconInput.value;
-        const editorListColorInput = document.getElementById('editor-list-color-main');
-        const selectedColorOption = document.querySelector('#editor-list-color-picker .color-option.selected');
-        const selectedColorName = selectedColorOption ? selectedColorOption.dataset.color : 'blue';
+        const newPriority = editorListPriorityInput.value;
         
-        const colorMap = {
-            'blue': '#3586ff',
-            'green': '#4caf50',
-            'red': '#f44336',
-            'yellow': '#ffeb3b',
-            'purple': '#9c27b0',
-            'pink': '#ff69b4',
-            'orange': '#ff9800'
-        };
-        const newColor = colorMap[selectedColorName] || '#3586ff';
+        // Obtém a cor baseada na prioridade
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        const newColor = getPriorityColor(newPriority, isDarkMode);
 
         if (!newName) {
             alert("O nome da lista não pode ficar em branco.");
@@ -6538,6 +6626,7 @@ body.dark-mode #remove-schedule-btn:hover {
         if (listIndex > -1) {
             allLists[listIndex].name = newName;
             allLists[listIndex].icon = newListIcon;
+            allLists[listIndex].priority = newPriority;
             allLists[listIndex].color = newColor;
         }
         localStorage.setItem('todoLists', JSON.stringify(allLists));
@@ -6652,6 +6741,31 @@ body.dark-mode #remove-schedule-btn:hover {
             renderCalendar(currentCalendarDate);
         }
     });
+
+    // Event listener para mudança de prioridade no editor de lista (muda a cor do ícone)
+    if (editorListPriorityInput) {
+        editorListPriorityInput.addEventListener('change', (e) => {
+            const selectedPriority = e.target.value;
+            const selectedColor = getColorNameFromPriority(selectedPriority);
+            
+            // Atualiza a cor de todos os ícones no picker
+            editorListIconPicker.querySelectorAll('.task-icon-option img').forEach(img => {
+                img.className = 'icon-color-' + selectedColor;
+                img.dataset.color = selectedColor;
+            });
+            
+            // Atualiza o ícone selecionado
+            const currentIconPath = editorListIconInput.value;
+            const currentIconName = Object.keys(taskIcons).find(key => {
+                return currentIconPath.includes(taskIcons[key].split('/').pop().replace('.svg', ''));
+            });
+            
+            if (currentIconName) {
+                const newIconPath = getColoredIcons(currentIconName, selectedColor);
+                editorListIconInput.value = newIconPath;
+            }
+        });
+    }
 
     linkToPlannerCheckbox.addEventListener('change', () => {
         const isChecked = linkToPlannerCheckbox.checked;
@@ -6901,53 +7015,8 @@ body.dark-mode #remove-schedule-btn:hover {
     
     cancelEditButton.addEventListener('click', cancelCategoryEdit);
 
-    // Event listener para o seletor de cores das categorias
-    if (categoryColorPicker) {
-        categoryColorPicker.addEventListener('click', (e) => {
-            const colorOption = e.target.closest('.color-option');
-            if (colorOption) {
-                // Remove seleção anterior
-                categoryColorPicker.querySelectorAll('.color-option').forEach(option => {
-                    option.classList.remove('selected');
-                });
-                
-                // Seleciona nova cor
-                colorOption.classList.add('selected');
-                const selectedColor = colorOption.dataset.color;
-                categoryIconColorInput.value = selectedColor;
-                
-                // Atualiza TODOS os ícones com a nova cor
-                categoryIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
-                    const iconName = iconOption.dataset.iconName;
-                    const coloredPath = getColoredIcons(iconName, selectedColor);
-                    
-                    // Remove a imagem e recria com a nova cor
-                    const img = iconOption.querySelector('img');
-                    img.remove();
-                    
-                    const newImg = document.createElement('img');
-                    newImg.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
-                    newImg.className = `icon-color-${selectedColor}`;
-                    newImg.dataset.color = selectedColor;
-                    newImg.style.width = '100%';
-                    newImg.style.height = '100%';
-                    newImg.style.objectFit = 'contain';
-                    newImg.style.borderRadius = '5px';
-                    
-                    iconOption.appendChild(newImg);
-                    iconOption.dataset.iconPath = coloredPath;
-                });
-                
-                // Atualiza o valor do ícone selecionado
-                const selectedIcon = categoryIconPicker.querySelector('.task-icon-option.selected');
-                if (selectedIcon) {
-                    const iconName = selectedIcon.dataset.iconName;
-                    const coloredPath = getColoredIcons(iconName, selectedColor);
-                    categoryIconHiddenInput.value = coloredPath;
-                }
-            }
-        });
-    }
+    // Event listener desabilitado - cores automáticas baseadas no nome da categoria
+    // As cores agora são definidas automaticamente pela função getCategoryColor()
 
     // Event listener para o seletor de cores dos investimentos
     if (goalColorPicker) {
@@ -7174,7 +7243,7 @@ body.dark-mode #remove-schedule-btn:hover {
         renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons, null, document.getElementById('editor-list-color-picker'));
         renderIconPicker(goalIconPicker, goalIconHiddenInput, taskIcons);
         renderIconPicker(listIconPickerGrid, null, taskIcons, selectListIcon, listColorPicker);
-        renderIconPicker(categoryIconPicker, categoryIconHiddenInput, taskIcons, null, categoryColorPicker);
+        renderIconPicker(categoryIconPicker, categoryIconHiddenInput, taskIcons, null, null);
         
         // Inicializa os seletores de cor
         if (goalColorPicker) {
