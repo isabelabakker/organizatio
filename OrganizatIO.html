@@ -554,7 +554,7 @@
     .edit-item-btn, .delete-item-btn,
     .edit-list-btn, .delete-list-circular-btn {
      background-color: #f5f5f5; 
-     border: 1px solid #BDBDBD;
+     border: none;
      transition: background-color 0.2s, border-color 0.2s;
     }
 
@@ -564,7 +564,6 @@
     .edit-item-btn:hover, .delete-item-btn:hover,
     .edit-list-btn:hover, .delete-list-circular-btn:hover {
         background-color: #e5e5e5;
-        border-color: #9E9E9E;
     }
 
     /* ÍCONE ESCURO PARA TEMA CLARO */
@@ -578,15 +577,14 @@
     body.dark-mode .edit-item-btn, body.dark-mode .delete-item-btn,
     body.dark-mode .edit-list-btn, body.dark-mode .delete-list-circular-btn {
     background-color: #1F1F1F; 
-    border: 1px solid #9E9E9E; 
+    border: none; 
     }
     
     body.dark-mode .edit-btn:hover, body.dark-mode .delete-btn:hover,
     body.dark-mode .edit-task-btn:hover, body.dark-mode .task-list-item button:hover,
     body.dark-mode .edit-item-btn:hover, body.dark-mode .delete-item-btn:hover,
     body.dark-mode .edit-list-btn:hover, body.dark-mode .delete-list-circular-btn:hover {
-    background-color: #282828; 
-    border-color: #E0E0E0;   
+    background-color: #282828;
     }
 
     #newListForm {
@@ -595,11 +593,27 @@
         max-width: 500px;
         margin: 0 auto 30px auto;
         padding: 20px;
+        padding-bottom: 60px;
         border: 1px solid #ddd;
         border-radius: 15px;
         gap: 10px;
         background: #fdfdfd;
         transition: background 0.3s, border-color 0.3s;
+    }
+    
+    #newListForm input[type="text"],
+    #newListForm input[type="date"],
+    #newListForm input[type="time"],
+    #newListForm select,
+    #newListForm label,
+    #newListForm button[type="submit"] {
+        font-size: 12px !important;
+    }
+    
+    #planner-link-options label,
+    #routine-options label,
+    #list-weekly-recurrence-options label {
+        font-size: 11px !important;
     }
 
     
@@ -902,6 +916,7 @@
     .list-title-container h2 {
         flex-grow: 1;
         text-align: left;
+        font-size: 14px;
     }
     .change-list-icon-btn {
         background: #FFC107;
@@ -940,6 +955,7 @@
     .list-input-group input {
         flex-grow: 1;
         margin-bottom: 0;
+        font-size: 14px;
     }
 
     .list.completed {
@@ -953,7 +969,7 @@
         border-radius: 5px;
         border: 1px solid #ccc;
         background-color: #f9f9f9;
-        font-size: 12px;
+        font-size: 9px;
     }
 
     .list.priority-baixa { border-left-color: #3586ff; }
@@ -990,6 +1006,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 14px;
     }
     
     .list-item-value {
@@ -1005,6 +1022,7 @@
       flex-grow: 1;
       border: 1px solid transparent;
       padding: 2px 4px;
+      font-size: 14px;
     }
     
     .list-item-content input[type="text"] {
@@ -1311,6 +1329,35 @@
         width: 100%;
         height: 100%;
         object-fit: contain;
+    }
+    
+    /* === FILTROS DE COR PARA ÍCONES SVG === */
+    .icon-color-blue, .task-icon-option img[data-color="blue"] {
+        filter: brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(197deg) brightness(103%) contrast(101%);
+    }
+    
+    .icon-color-green, .task-icon-option img[data-color="green"] {
+        filter: brightness(0) saturate(100%) invert(64%) sepia(57%) saturate(441%) hue-rotate(75deg) brightness(94%) contrast(89%);
+    }
+    
+    .icon-color-red, .task-icon-option img[data-color="red"] {
+        filter: brightness(0) saturate(100%) invert(33%) sepia(93%) saturate(1537%) hue-rotate(339deg) brightness(99%) contrast(96%);
+    }
+    
+    .icon-color-yellow, .task-icon-option img[data-color="yellow"] {
+        filter: brightness(0) saturate(100%) invert(92%) sepia(95%) saturate(2430%) hue-rotate(330deg) brightness(102%) contrast(104%);
+    }
+    
+    .icon-color-purple, .task-icon-option img[data-color="purple"] {
+        filter: brightness(0) saturate(100%) invert(21%) sepia(97%) saturate(3283%) hue-rotate(281deg) brightness(89%) contrast(90%);
+    }
+    
+    .icon-color-pink, .task-icon-option img[data-color="pink"] {
+        filter: brightness(0) saturate(100%) invert(51%) sepia(96%) saturate(4217%) hue-rotate(300deg) brightness(102%) contrast(101%);
+    }
+    
+    .icon-color-orange, .task-icon-option img[data-color="orange"] {
+        filter: brightness(0) saturate(100%) invert(64%) sepia(90%) saturate(1488%) hue-rotate(357deg) brightness(101%) contrast(103%);
     }
 
     /* --- ESTILOS PARA SELETORES DE COR --- */
@@ -2598,10 +2645,12 @@
 /* --- Estilo para o botão "Remover Agendamento" --- */
 #remove-schedule-btn {
     background: transparent;
-    color: #BDBDBD; /* Cor da borda definida pela classe .delete-btn */
+    color: #BDBDBD;
+    border: 2px solid #BDBDBD !important;
 }
 #remove-schedule-btn:hover {
-    color: #9E9E9E; /* Cor da borda no hover definida por .delete-btn:hover */
+    color: #9E9E9E;
+    border-color: #9E9E9E !important;
 }
 
 
@@ -2616,10 +2665,12 @@ body.dark-mode #add-schedule-btn:hover {
 }
 
 body.dark-mode #remove-schedule-btn {
-    color: #9E9E9E; /* Cor da borda no dark mode definida por .delete-btn */
+    color: #9E9E9E;
+    border: 2px solid #9E9E9E !important;
 }
 body.dark-mode #remove-schedule-btn:hover {
-    color: #E0E0E0; /* Cor da borda no hover do dark mode */
+    color: #E0E0E0;
+    border-color: #E0E0E0 !important;
 }
 
     /* === OPTIMIZED NAVIGATION BUTTONS === */
@@ -2908,8 +2959,8 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Cabeçalho Simplificado -->
   <header class="main-header">
     <div class="header-controls">
-      <button id="theme-toggle" class="header-btn theme-btn"><img src="images/buttons/moon.svg" alt="Modo escuro" id="theme-icon"></button>
-      <button id="settings-btn" class="header-btn settings-btn"><img src="images/buttons/settings.svg" alt="Configurações"></button>
+      <button id="theme-toggle" class="header-btn theme-btn"><img src="buttons/moon.svg" alt="Modo escuro" id="theme-icon"></button>
+      <button id="settings-btn" class="header-btn settings-btn"><img src="buttons/settings.svg" alt="Configurações"></button>
     </div>
   </header>
 
@@ -2930,14 +2981,14 @@ body.dark-mode #remove-schedule-btn:hover {
             <div id="planner-details-container" style="display: none;">
                 
                 <div id="day-view-section" style="display: none; position: relative;">
-                    <button class="close-button" id="close-day-view-btn" style="top: 0; right: 0;"><img src="images/buttons/close.svg" alt="Fechar"></button>
+                    <button class="close-button" id="close-day-view-btn" style="top: 0; right: 0;"><img src="buttons/close.svg" alt="Fechar"></button>
                     <h3 id="day-view-title" style="text-align: center; margin-top: 0;"></h3>
                     <div id="tasksList"></div>
                     <button id="open-add-task-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar tarefa</button>
                 </div>
 
                 <div id="task-form-view" style="display: none; position: relative;">
-                    <button class="close-button back-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
+                    <button class="close-button back-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
                     <h3 id="task-form-title">adicionar tarefa</h3>
                     <form id="task-form-modal">
                         <div style="display: grid; grid-template-columns: 1fr 3fr auto; gap: 10px; align-items: center; margin-top: 30px;">
@@ -2962,7 +3013,7 @@ body.dark-mode #remove-schedule-btn:hover {
                                     <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;"></div>
                                     <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;"></div>
                                     <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;"></div>
-                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff66cc; border: 2px solid #ccc; cursor: pointer;"></div>
                                     <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;"></div>
                                 </div>
                                 <input type="hidden" id="taskIconColor" value="blue">
@@ -3032,7 +3083,7 @@ body.dark-mode #remove-schedule-btn:hover {
             
             <div id="finance-details-container">
                 <div id="transactions-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
-                    <button class="close-button" id="close-transactions-view"><img src="images/buttons/close.svg" alt="Fechar"></button>
+                    <button class="close-button" id="close-transactions-view"><img src="buttons/close.svg" alt="Fechar"></button>
                     
                     <div id="transaction-list-view">
                         <h3 style="margin-top:0;">transações do mês</h3>
@@ -3045,7 +3096,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     </div>
     
                     <div id="add-transaction-container" style="display: none; position: relative; z-index: 5;">
-                        <button class="close-button back-button" id="back-to-transactions-list-btn"><img src="images/buttons/back.svg" alt="Voltar"></button>
+                        <button class="close-button back-button" id="back-to-transactions-list-btn"><img src="buttons/back.svg" alt="Voltar"></button>
                         
                         <h3 id="transaction-form-title" style="margin-top: 0;">adicionar transação</h3>
                         <form id="expense-form" style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
@@ -3064,13 +3115,13 @@ body.dark-mode #remove-schedule-btn:hover {
                 </div>
     
                 <div id="budgets-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
-                    <button class="close-button" id="close-budgets-view"><img src="images/buttons/close.svg" alt="Fechar"></button>
+                    <button class="close-button" id="close-budgets-view"><img src="buttons/close.svg" alt="Fechar"></button>
                     <h3 style="margin-top:0;">orçamentos</h3>
                     <form id="category-limit-form" style="display: flex; gap: 10px; margin-bottom: 20px;">
                         <select id="categoryLimitCategory" required></select>
                         <input type="number" id="categoryLimitValue" placeholder="limite (R$)" step="0.01" required>
                         <button type="submit" class="add-btn">salvar limite</button>
-                        <button type="button" id="manage-categories-btn-budgets"><img src="images/buttons/settings.svg" alt="Gerenciar"></button>
+                        <button type="button" id="manage-categories-btn-budgets"><img src="buttons/settings.svg" alt="Gerenciar"></button>
                     </form>
                     <table style="width: 100%;">
                         <tbody id="category-spending-list"></tbody>
@@ -3078,7 +3129,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 </div>
     
                 <div id="investments-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
-                    <button class="close-button" id="close-investments-view"><img src="images/buttons/close.svg" alt="Fechar"></button>
+                    <button class="close-button" id="close-investments-view"><img src="buttons/close.svg" alt="Fechar"></button>
                     <h3 style="margin-top:0;">investimentos</h3>
                     
                     <!-- Lista de metas existentes -->
@@ -3089,7 +3140,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     
                     <!-- Formulário de nova meta (escondido inicialmente) -->
                     <div id="investment-form-view" style="display: none; position: relative;">
-                        <button class="close-button back-button" id="back-to-investments-list-btn" style="right: auto; left: 15px; top: 15px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
+                        <button class="close-button back-button" id="back-to-investments-list-btn" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
                         <h3 id="investment-form-title" style="margin-top: 0;">adicionar meta de investimento</h3>
                         
                         <form id="new-goal-form" style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
@@ -3112,7 +3163,7 @@ body.dark-mode #remove-schedule-btn:hover {
                                     <div class="color-option" data-color="green" style="background-color: #4caf50;"></div>
                                     <div class="color-option" data-color="yellow" style="background-color: #ffeb3b;"></div>
                                     <div class="color-option" data-color="purple" style="background-color: #9c27b0;"></div>
-                                    <div class="color-option" data-color="pink" style="background-color: #ff69b4;"></div>
+                                    <div class="color-option" data-color="pink" style="background-color: #ff66cc;"></div>
                                     <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
                                 </div>
                                 <input type="hidden" id="goalColor" value="blue">
@@ -3134,8 +3185,8 @@ body.dark-mode #remove-schedule-btn:hover {
                 <!-- Seção de Gerenciamento de Categorias -->
                 <div id="category-section" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <button class="close-button back-button" id="back-from-categories" style="position: relative; left: 0; top: 0;"><img src="images/buttons/back.svg" alt="Voltar"></button>
-                        <button class="close-button" id="close-category-section"><img src="images/buttons/close.svg" alt="Fechar"></button>
+                        <button class="close-button back-button" id="back-from-categories" style="position: relative; left: 0; top: 0;"><img src="buttons/back.svg" alt="Voltar"></button>
+                        <button class="close-button" id="close-category-section"><img src="buttons/close.svg" alt="Fechar"></button>
                     </div>
                     <h3 style="margin-top:0;">gerenciar categorias</h3>
 
@@ -3169,17 +3220,13 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div id="categoryIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;"></div>
                         <input type="hidden" id="categoryIcon" value="">
                         
-                        <div id="category-color-picker-container">
-                            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: var(--text-color);">cor da categoria:</label>
-                            <div id="categoryColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <div class="color-option selected" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #333; cursor: pointer;"></div>
-                                <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;"></div>
-                                <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;"></div>
-                                <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;"></div>
-                                <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;"></div>
-                                <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff69b4; border: 2px solid #ccc; cursor: pointer;"></div>
-                                <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;"></div>
-                            </div>
+                        <p style="font-size: 12px; color: #888; margin-top: 10px; text-align: center;">
+                            💡 A cor do ícone é definida automaticamente pelo nome da categoria
+                        </p>
+                        
+                        <!-- Seletor de cor oculto (cor baseada no nome da categoria) -->
+                        <div style="display: none;">
+                            <div id="categoryColorPicker"></div>
                             <input type="hidden" id="categoryIconColor" value="blue">
                         </div>
                     </div>
@@ -3199,10 +3246,10 @@ body.dark-mode #remove-schedule-btn:hover {
         <div id="listas-section" class="mensal-content-section" style="display: none;">
             <form id="newListForm">
                 <div id="newListForm-main-line" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                    <input type="text" id="newListName" placeholder="nome da nova lista" required style="flex-grow: 1; min-width: 200px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                    <input type="text" id="newListName" placeholder="nome da nova lista" required style="flex-grow: 1; min-width: 200px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px;">
                     
                     <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
-                        <select id="newListPriority" style="text-transform: none; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                        <select id="newListPriority" style="text-transform: none; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px;">
                             <option value="baixa">prioridade: baixa</option>
                             <option value="media">prioridade: média</option>
                             <option value="alta">prioridade: alta</option>
@@ -3211,14 +3258,14 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div id="shopping-list-container" title="Marcar como lista de compras">
                             <input type="checkbox" id="shopping-list-checkbox">
                             <label for="shopping-list-checkbox" class="icon-toggle-button">
-                                <img src="images/buttons/lists/compras.svg" alt="Lista de Compras">
+                                <img src="buttons/lists/compras.svg" alt="Lista de Compras">
                             </label>
                         </div>
                         
                         <div id="link-to-planner-container" title="Agendar no planner">
                             <input type="checkbox" id="link-to-planner-checkbox">
                             <label for="link-to-planner-checkbox" class="icon-toggle-button">
-                                <img src="images/buttons/lists/agendar.svg" alt="Agendar no Planner">
+                                <img src="buttons/lists/agendar.svg" alt="Agendar no Planner">
                             </label>
                         </div>
                     </div>
@@ -3234,7 +3281,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div id="routine-container" title="Marcar como rotina" style="display: none;">
                              <input type="checkbox" id="link-as-routine-checkbox">
                              <label for="link-as-routine-checkbox" class="icon-toggle-button">
-                                 <img src="images/buttons/lists/rotina.svg" alt="Marcar como Rotina">
+                                 <img src="buttons/lists/rotina.svg" alt="Marcar como Rotina">
                              </label>
                         </div>
                     </div>
@@ -3247,8 +3294,8 @@ body.dark-mode #remove-schedule-btn:hover {
                         </select>
                         <input type="date" id="list-recurrence-end-date" title="data final da recorrência" style="display: none;">
                         <div id="list-weekly-recurrence-options" style="display: none; margin-top: 5px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
-                            <label style="display: block; margin-bottom: 5px; font-size: 12px; font-weight: bold;">repetir nos dias:</label>
-                            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 5px; font-size: 14px;">
+                            <label style="display: block; margin-bottom: 5px; font-size: 11px; font-weight: bold;">repetir nos dias:</label>
+                            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 5px; font-size: 11px;">
                                 <label><input type="checkbox" name="list-weekday" value="0"> dom</label>
                                 <label><input type="checkbox" name="list-weekday" value="1"> seg</label>
                                 <label><input type="checkbox" name="list-weekday" value="2"> ter</label>
@@ -3276,7 +3323,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Detalhes de Tarefa -->
   <div id="description-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
-      <button class="close-button back-button" onclick="closeDescriptionSection()" style="position: relative; top: 0; left: 0; margin-bottom: 15px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
+      <button class="close-button back-button" onclick="closeDescriptionSection()" style="position: relative; top: 0; left: 0; margin-bottom: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
       <h3 style="margin-top: 0; text-align: center; color: var(--text-color, #333); font-size: 24px; font-weight: 600;">detalhes</h3>
       <div style="background: var(--secondary-bg, #f8f9fa); border-radius: 12px; padding: 20px; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         <div style="text-align: center;">
@@ -3290,7 +3337,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Detalhes de Lista -->
   <div id="list-details-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px;">
-      <button class="close-button back-button" onclick="closeListDetailsSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
+      <button class="close-button back-button" onclick="closeListDetailsSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="buttons/back.svg" alt="Voltar"></button>
       <h3 id="listDetailsTitle" style="margin-top: 0;"></h3>
       <ul id="listDetailsItems"></ul>
     </div>
@@ -3299,7 +3346,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Escolha de Ícone da Lista -->
   <div id="list-icon-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
-        <button class="close-button back-button" onclick="closeListIconSection()"><img src="images/buttons/back.svg" alt="Voltar"></button>
+        <button class="close-button back-button" onclick="closeListIconSection()"><img src="buttons/back.svg" alt="Voltar"></button>
         <h3>escolha um ícone para a lista</h3>
         
         <!-- Seletor de Ícone -->
@@ -3309,18 +3356,9 @@ body.dark-mode #remove-schedule-btn:hover {
             </div>
         </div>
         
-        <!-- Seletor de Cor -->
-        <div style="margin-top: 20px;">
-            <label style="display: block; margin-bottom: 10px; font-weight: bold;">cor:</label>
-            <div id="list-color-picker" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
-                <div class="color-option" data-color="red" style="background-color: #f44336;"></div>
-                <div class="color-option" data-color="blue" style="background-color: #3586ff;"></div>
-                <div class="color-option" data-color="green" style="background-color: #4caf50;"></div>
-                <div class="color-option" data-color="yellow" style="background-color: #ffeb3b;"></div>
-                <div class="color-option" data-color="purple" style="background-color: #9c27b0;"></div>
-                <div class="color-option" data-color="pink" style="background-color: #ff69b4;"></div>
-                <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
-            </div>
+        <!-- Seletor de Cor (oculto - cor baseada em prioridade) -->
+        <div style="display: none;">
+            <div id="list-color-picker"></div>
             <input type="hidden" id="listColor" value="blue">
         </div>
     </div>
@@ -3328,8 +3366,8 @@ body.dark-mode #remove-schedule-btn:hover {
 
   <!-- Seção de Editor de Lista -->
   <div id="list-editor-section" class="mensal-content-section" style="display: none;">
-    <div style="padding: 20px; max-width: 450px; margin: 0 auto;">
-        <button class="close-button back-button" onclick="closeListEditorSection()"><img src="images/buttons/back.svg" alt="Voltar"></button>
+    <div style="padding: 20px; padding-bottom: 80px; max-width: 450px; margin: 0 auto;">
+        <button class="close-button back-button" onclick="closeListEditorSection()"><img src="buttons/back.svg" alt="Voltar"></button>
         <h3>Editar Lista</h3>
         <form id="list-editor-form" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
             <input type="hidden" id="editor-list-id-main">
@@ -3340,21 +3378,22 @@ body.dark-mode #remove-schedule-btn:hover {
             </div>
 
             <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Prioridade (define a cor do ícone):</label>
+                <select id="editor-list-priority" style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: 13px;">
+                    <option value="baixa">Baixa (Azul)</option>
+                    <option value="media">Média (Amarelo)</option>
+                    <option value="alta">Alta (Vermelho)</option>
+                </select>
+                
                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">Ícone da Lista:</label>
                 <div id="editor-list-icon-picker" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 140px; overflow-y: auto; padding: 5px; border-radius: 8px; background: rgba(0,0,0,0.05);"></div>
                 <input type="hidden" id="editor-list-icon-main">
                 
-                <label style="display: block; margin-bottom: 5px; font-weight: bold; margin-top: 10px;">Cor da Lista:</label>
-                <div id="editor-list-color-picker" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <div class="color-option" data-color="red" style="background-color: #f44336;"></div>
-                    <div class="color-option" data-color="blue" style="background-color: #3586ff;"></div>
-                    <div class="color-option" data-color="green" style="background-color: #4caf50;"></div>
-                    <div class="color-option" data-color="yellow" style="background-color: #ffeb3b;"></div>
-                    <div class="color-option" data-color="purple" style="background-color: #9c27b0;"></div>
-                    <div class="color-option" data-color="pink" style="background-color: #ff69b4;"></div>
-                    <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
+                <!-- Seletor de Cor oculto (cor baseada em prioridade) -->
+                <div style="display: none;">
+                    <div id="editor-list-color-picker"></div>
+                    <input type="hidden" id="editor-list-color-main" value="blue">
                 </div>
-                <input type="hidden" id="editor-list-color-main" value="blue">
             </div>
 
             <hr>
@@ -3531,6 +3570,7 @@ body.dark-mode #remove-schedule-btn:hover {
     const listEditorForm = document.getElementById('list-editor-form');
     const editorListIdInput = document.getElementById('editor-list-id-main');
     const editorListNameInput = document.getElementById('editor-list-name');
+    const editorListPriorityInput = document.getElementById('editor-list-priority');
     const editorListIconPicker = document.getElementById('editor-list-icon-picker');
     const editorListIconInput = document.getElementById('editor-list-icon-main');
     const addScheduleBtn = document.getElementById('add-schedule-btn');
@@ -3549,78 +3589,75 @@ body.dark-mode #remove-schedule-btn:hover {
     // --- ÍCONES DE TAREFAS (USADOS TAMBÉM PARA LISTAS) ---
     const taskIcons = {
         // === ÍCONES CIRCULARES/BÁSICOS ===
-        "nenhum": "./images/colored/blue/none.svg", "coração": "./images/colored/blue/heart.svg", "estrela": "./images/colored/blue/star.svg", "dinheiro": "./images/colored/blue/money.svg","médico": "./images/colored/blue/health.svg",
+        "nenhum": "./images/circledashed.svg", "coração": "./images/heart.svg", "estrela": "./images/star.svg", "dinheiro": "./images/money.svg",
         
         // === SAÚDE E BEM-ESTAR ===
-        "medicação": "./images/colored/blue/pills.svg", "dentista": "./images/colored/blue/tooth.svg", "escova de dente": "./images/colored/blue/toothbrush.svg", "injeção": "./images/colored/blue/injection.svg",
-        "beleza": "./images/colored/blue/hair.svg", "unhas": "./images/colored/blue/nails.svg", "pele": "./images/colored/blue/lotion.svg", "meditação": "./images/colored/blue/meditation.svg",
+        "médico": "./images/health.svg", "medicação": "./images/pills.svg", "dentista": "./images/tooth.svg", "escova": "./images/hairbrush.svg", 
+        "injeção": "./images/injection.svg", "unhas": "./images/nails.svg", "pele": "./images/body.svg", "meditação": "./images/meditation.svg",
         
         // === ESPORTES E ATIVIDADES ===
-        "exercício": "./images/colored/blue/gym.svg", "futebol": "./images/colored/blue/fute.svg", "ping pong": "./images/colored/blue/ping.svg", "vôlei": "./images/colored/blue/voleyball.svg",
+        "exercício": "./images/gym.svg", "esportes": "./images/football.svg",
         
         // === TRABALHO E ESTUDO ===
-        "trabalho": "./images/colored/blue/work.svg", "estudo": "./images/colored/blue/study.svg", "reunião": "./images/colored/blue/meeting.svg", "computador": "./images/colored/blue/computer.svg",
-        "escrever": "./images/colored/blue/write.svg", "cérebro": "./images/colored/blue/brain.svg",
+        "trabalho": "./images/work.svg", "estudo": "./images/study.svg", "pessoas": "./images/people.svg", "computador": "./images/computer.svg",
+        "escrever": "./images/write.svg",
         
         // === CASA E FAMÍLIA ===
-        "casa": "./images/colored/blue/house.svg", "pet": "./images/colored/blue/pet.svg", "pessoa": "./images/colored/blue/person.svg", "presente": "./images/colored/blue/gift.svg",
-        "aniversário": "./images/colored/blue/birthday.svg", "festa": "./images/colored/blue/party.svg",
+        "casa": "./images/house.svg", "pet": "./images/pet.svg", "presente": "./images/gift.svg",
+        "aniversário": "./images/birthday.svg", "festa": "./images/party.svg",
         
         // === TRANSPORTE E VIAGEM ===
-        "carro": "./images/colored/blue/car.svg", "viagem": "./images/colored/blue/trip.svg", "férias": "./images/colored/blue/vacation.svg",
+        "viagem": "./images/plane.svg", "férias": "./images/vacation.svg",
         
         // === COMIDA E BEBIDA ===
-        "comida": "./images/colored/blue/food.svg", "maçã": "./images/colored/blue/apple.svg", "cenoura": "./images/colored/blue/carrot.svg", "sorvete": "./images/colored/blue/icecream.svg",
-        "pipoca": "./images/colored/blue/popcorn.svg", "cogumelo": "./images/colored/blue/mushroom.svg",
+        "comida": "./images/burger.svg", "maçã": "./images/apple.svg", "cenoura": "./images/carrot.svg", "sorvete": "./images/icecream.svg",
+        "pipoca": "./images/popcorn.svg", "cogumelo": "./images/mushroom.svg",
         
         // === ENTRETENIMENTO E LAZER ===
-        "filme": "./images/colored/blue/movie.svg", "arte": "./images/colored/blue/art.svg", "câmera": "./images/colored/blue/picture.svg",
+        "mídia": "./images/picture.svg",
         
         // === NATUREZA E PLANTAS ===
-        "flor": "./images/colored/blue/flower.svg", "planta": "./images/colored/blue/plant.svg", "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg",
+        "flor": "./images/flower.svg", "planta": "./images/plant.svg", "lesma": "./images/snail.svg",
         
         // === COMPRAS E FINANÇAS ===
-        "compras": "./images/colored/blue/shopping.svg", "comprar": "./images/colored/blue/buy.svg", "lista": "./images/colored/blue/list.svg", "assinaturas": "./images/colored/blue/assinatura.svg",
-        
-        // === COMUNICAÇÃO E TECNOLOGIA ===
-        "telefone": "./images/colored/blue/phone.svg", "data": "./images/colored/blue/date.svg",
+        "compras": "./images/shopping.svg", "comprar": "./images/buy.svg", "assinaturas": "./images/infinite.svg",
         
         // === ROUPAS E ACESSÓRIOS ===
-        "camisa": "./images/colored/blue/shirt.svg", "caixa": "./images/colored/blue/box.svg",
+        "camisa": "./images/shirt.svg", "caixa": "./images/box.svg",
         
         // === OUTROS/VARIADOS ===
-        "cigarro": "./images/colored/blue/cigarette.svg", "dna": "./images/colored/blue/dna.svg", "olho": "./images/colored/blue/eye.svg", "juiz": "./images/colored/blue/judge.svg"
+        "cigarro": "./images/cigarette.svg", "olho": "./images/eye.svg"
     };
 
     // --- ÍCONES DE CATEGORIA (MAPEAMENTO NOME -> CAMINHO) ---
     const categoryIcons = {
         // === CATEGORIAS BÁSICAS ===
-        "outros": "./images/colored/blue/star.svg", "saúde": "./images/colored/blue/health.svg", "educação": "./images/colored/blue/study.svg",
+        "outros": "./images/star.svg", "saúde": "./images/health.svg", "educação": "./images/study.svg",
         
         // === FINANÇAS ===
-        "comida": "./images/colored/blue/food.svg", "compras": "./images/colored/blue/shopping.svg", "contas": "./images/colored/blue/money.svg", "assinaturas": "./images/colored/blue/assinatura.svg",
-        "salário": "./images/colored/blue/money.svg", "freela": "./images/colored/blue/work.svg",
+        "comida": "./images/burger.svg", "compras": "./images/shopping.svg", "dinheiro": "./images/money.svg", "assinaturas": "./images/infinite.svg",
+        "freela": "./images/work.svg",
         
         // === CASA E FAMÍLIA ===
-        "moradia": "./images/colored/blue/house.svg", "pet": "./images/colored/blue/pet.svg", "presente": "./images/colored/blue/gift.svg",
+        "moradia": "./images/house.svg", "pet": "./images/pet.svg", "presente": "./images/gift.svg",
         
         // === TRANSPORTE E VIAGEM ===
-        "transporte": "./images/colored/blue/car.svg",
+        "transporte": "./images/plane.svg",
         
         // === ENTRETENIMENTO E LAZER ===
-        "lazer": "./images/colored/blue/movie.svg", "beleza": "./images/colored/blue/hair.svg",
+        "lazer": "./images/picture.svg", "beleza": "./images/hairbrush.svg",
         
         // === ESPORTES ===
-        "futebol": "./images/colored/blue/fute.svg", "ping pong": "./images/colored/blue/ping.svg", "vôlei": "./images/colored/blue/voleyball.svg",
+        "esportes": "./images/football.svg",
         
         // === SAÚDE E BEM-ESTAR ===
-        "injeção": "./images/colored/blue/injection.svg", "escova de dente": "./images/colored/blue/toothbrush.svg",
+        "injeção": "./images/injection.svg",
         
         // === NATUREZA E PLANTAS ===
-        "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg",
+        "folha": "./images/plant.svg", "lesma": "./images/snail.svg",
         
         // === OUTROS/VARIADOS ===
-        "dna": "./images/colored/blue/dna.svg", "olho": "./images/colored/blue/eye.svg", "juiz": "./images/colored/blue/judge.svg"
+        "olho": "./images/eye.svg", "pessoas": "./images/people.svg"
     };
 
 
@@ -3631,47 +3668,47 @@ body.dark-mode #remove-schedule-btn:hover {
     let expenseCategories = [
         {
             name: "alimentação",
-            icon: "./images/colored/red/food.svg",
+            icon: "./images/burger.svg",
             color: "red"
         },
         {
             name: "lazer",
-            icon: "./images/colored/purple/picture.svg",
+            icon: "./images/picture.svg",
             color: "purple"
         },
         {
             name: "moradia",
-            icon: "./images/colored/blue/house.svg",
+            icon: "./images/house.svg",
             color: "blue"
         },
         {
             name: "transporte",
-            icon: "./images/colored/blue/car.svg",
+            icon: "./images/plane.svg",
             color: "blue"
         },
         {
             name: "saúde",
-            icon: "./images/colored/green/health.svg",
+            icon: "./images/health.svg",
             color: "green"
         },
         {
             name: "educação",
-            icon: "./images/colored/red/study.svg",
+            icon: "./images/study.svg",
             color: "red"
         },
         {
             name: "assinaturas",
-            icon: "./images/colored/blue/assinatura.svg",
+            icon: "./images/infinite.svg",
             color: "blue"
         },
         {
             name: "compras",
-            icon: "./images/colored/orange/shopping.svg",
+            icon: "./images/shopping.svg",
             color: "orange"
         },
         {
             name: "beleza",
-            icon: "./images/colored/pink/nails.svg",
+            icon: "./images/nails.svg",
             color: "pink"
         }
     ];
@@ -3695,6 +3732,71 @@ body.dark-mode #remove-schedule-btn:hover {
     // ----------------------------------------------------
     // FUNÇÕES DE UTILIDADE E TEMA
     // ----------------------------------------------------
+    
+    // Função para converter prioridade em cor
+    function getPriorityColor(priority, darkMode = false) {
+        if (darkMode) {
+            const colors = {
+                'baixa': '#6b9aff',
+                'media': '#FFCA28',
+                'alta': '#FF1744'
+            };
+            return colors[priority] || '#6b9aff';
+        } else {
+            const colors = {
+                'baixa': '#3586ff',
+                'media': '#FFC107',
+                'alta': '#FF5252'
+            };
+            return colors[priority] || '#3586ff';
+        }
+    }
+    
+    // Função para converter cor em nome de cor para ícone
+    function getColorNameFromPriority(priority) {
+        const colorNames = {
+            'baixa': 'blue',
+            'media': 'yellow',
+            'alta': 'red'
+        };
+        return colorNames[priority] || 'blue';
+    }
+    
+    // Função para obter cor pré-definida baseada no nome da categoria
+    function getCategoryColor(categoryName) {
+        const name = categoryName.toLowerCase();
+        
+        // Mapeamento de categorias para cores
+        if (name.includes('aliment') || name.includes('comida') || name.includes('restaur') || name.includes('lanche')) {
+            return 'orange'; // Laranja
+        } else if (name.includes('transport') || name.includes('uber') || name.includes('carro') || name.includes('gasolina')) {
+            return 'blue'; // Azul
+        } else if (name.includes('saúde') || name.includes('médico') || name.includes('farmá') || name.includes('hospital')) {
+            return 'green'; // Verde
+        } else if (name.includes('lazer') || name.includes('entretenimento') || name.includes('cinema') || name.includes('festa') || name.includes('diversão')) {
+            return 'purple'; // Roxo
+        } else if (name.includes('moradia') || name.includes('casa') || name.includes('aluguel') || name.includes('água') || name.includes('luz') || name.includes('energia')) {
+            return 'blue'; // Azul
+        } else if (name.includes('educação') || name.includes('estudo') || name.includes('curso') || name.includes('escola') || name.includes('faculdade')) {
+            return 'blue'; // Azul
+        } else if (name.includes('compra') || name.includes('shopping') || name.includes('roupa') || name.includes('vestuário')) {
+            return 'pink'; // Rosa
+        } else if (name.includes('salário') || name.includes('receita') || name.includes('renda') || name.includes('ganho')) {
+            return 'green'; // Verde
+        } else if (name.includes('beleza') || name.includes('cabelo') || name.includes('unha') || name.includes('estética')) {
+            return 'pink'; // Rosa
+        } else if (name.includes('pet') || name.includes('animal')) {
+            return 'orange'; // Laranja
+        } else if (name.includes('assinatura') || name.includes('streaming') || name.includes('netflix') || name.includes('spotify')) {
+            return 'purple'; // Roxo
+        } else if (name.includes('presente') || name.includes('gift')) {
+            return 'red'; // Vermelho
+        } else if (name.includes('freela') || name.includes('extra')) {
+            return 'yellow'; // Amarelo
+        } else {
+            return 'blue'; // Azul como padrão
+        }
+    }
     function parseMonthYear(monthYearString) {
         const [monthName, year] = monthYearString.split('-');
         const monthIndex = monthNamesPt.indexOf(monthName.toLowerCase());
@@ -3714,7 +3816,7 @@ body.dark-mode #remove-schedule-btn:hover {
     function applyTheme(theme) {
         document.body.classList.toggle('dark-mode', theme === 'dark');
         const themeIcon = document.getElementById('theme-icon');
-        themeIcon.src = theme === 'dark' ? 'images/buttons/sun.svg' : 'images/buttons/moon.svg';
+        themeIcon.src = theme === 'dark' ? 'buttons/sun.svg' : 'buttons/moon.svg';
         themeIcon.alt = theme === 'dark' ? 'Modo claro' : 'Modo escuro';
         localStorage.setItem('theme', theme);
         if (document.getElementById('financeiro-section').style.display !== 'none') {
@@ -3748,10 +3850,25 @@ body.dark-mode #remove-schedule-btn:hover {
             const tasks = calendarTasks[dateKey];
             if (Array.isArray(tasks)) {
                 tasks.forEach(task => {
-                    // Só corrige se o ícone não tem um caminho completo ou é muito antigo
-                    if (task.icon && !task.icon.includes('images/colored/')) {
-                        // Se o ícone não tem caminho, define como azul por padrão
-                        task.icon = './images/colored/blue/none.svg';
+                    // Corrige ícones antigos da pasta colored/ para os novos
+                    if (task.icon && task.icon.includes('images/colored/')) {
+                        // Extrai o nome do arquivo e mapeia para o novo caminho
+                        const fileName = task.icon.split('/').pop();
+                        const iconName = fileName.replace('.svg', '');
+                        
+                        // Mapeamento de nomes antigos para novos
+                        const iconMap = {
+                            'none': 'circledashed', 'hair': 'hairbrush', 'lotion': 'body',
+                            'fute': 'football', 'ping': 'football', 'voleyball': 'football',
+                            'brain': 'study', 'car': 'plane', 'trip': 'plane', 'food': 'burger',
+                            'movie': 'picture', 'art': 'picture', 'leaf': 'plant', 'slug': 'snail',
+                            'list': 'shopping', 'assinatura': 'infinite', 'phone': 'computer',
+                            'date': 'circledashed', 'person': 'people', 'meeting': 'people',
+                            'toothbrush': 'hairbrush', 'dna': 'health', 'judge': 'people'
+                        };
+                        
+                        const newIconName = iconMap[iconName] || iconName;
+                        task.icon = `./images/${newIconName}.svg`;
                         needsSave = true;
                     }
                 });
@@ -3795,6 +3912,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 items: items,
                 priority: listDiv.querySelector('.list-priority-select').value,
                 icon: listDiv.querySelector('.list-title-icon').src,
+                color: listDiv.style.borderLeftColor || null,
                 isShoppingList: isShopping,
                 isFinalized: listDiv.classList.contains('finalized'),
                 isRoutine: isRoutine,
@@ -3838,7 +3956,8 @@ body.dark-mode #remove-schedule-btn:hover {
                 listData.isFinalized,
                 listData.isRoutine,
                 listData.transactionId,
-                listData.transactionMonth
+                listData.transactionMonth,
+                listData.color
             );
         });
     }
@@ -3973,7 +4092,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     'red': '#f44336',
                     'yellow': '#ffeb3b',
                     'purple': '#9c27b0',
-                    'pink': '#ff69b4',
+                    'pink': '#ff66cc',
                     'orange': '#ff9800'
                 };
                 const color = colorMap[selectedColor] || '#3586ff';
@@ -4026,33 +4145,36 @@ body.dark-mode #remove-schedule-btn:hover {
         editorListIdInput.value = listId;
         editorListNameInput.value = listData.name;
         
-        const currentIconPath = listData.icon;
-        editorListIconInput.value = currentIconPath;
-        editorListIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-            option.classList.toggle('selected', option.getAttribute('data-icon-path') === currentIconPath);
+        // Define a prioridade atual
+        const currentPriority = listData.priority || 'baixa';
+        editorListPriorityInput.value = currentPriority;
+        
+        // Obtém a cor baseada na prioridade
+        const currentColorName = getColorNameFromPriority(currentPriority);
+        
+        // Renderiza o picker de ícones com a cor da prioridade
+        renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons, null, null);
+        
+        // Aplica a cor aos ícones
+        editorListIconPicker.querySelectorAll('.task-icon-option img').forEach(img => {
+            img.className = 'icon-color-' + currentColorName;
+            img.dataset.color = currentColorName;
         });
         
-        // Inicializa o seletor de cor
-        const currentColor = listData.color || '#3586ff';
-        const colorMap = {
-            '#3586ff': 'blue',
-            '#4caf50': 'green', 
-            '#f44336': 'red',
-            '#ffeb3b': 'yellow',
-            '#9c27b0': 'purple',
-            '#ff69b4': 'pink',
-            '#ff9800': 'orange'
-        };
-        const currentColorName = colorMap[currentColor] || 'blue';
+        // Agora seleciona o ícone atual
+        const currentIconPath = listData.icon;
+        editorListIconInput.value = currentIconPath;
         
-        const editorListColorPicker = document.getElementById('editor-list-color-picker');
-        const editorListColorInput = document.getElementById('editor-list-color-main');
+        // Procura pelo nome do ícone
+        const currentIconName = Object.keys(taskIcons).find(key => {
+            return currentIconPath.includes(taskIcons[key].split('/').pop().replace('.svg', ''));
+        });
         
-        if (editorListColorPicker && editorListColorInput) {
-            editorListColorPicker.querySelectorAll('.color-option').forEach(option => {
-                option.classList.toggle('selected', option.dataset.color === currentColorName);
+        if (currentIconName) {
+            editorListIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
+                option.classList.toggle('selected', option.dataset.iconName === currentIconName);
             });
-            editorListColorInput.value = currentColorName;
+            editorListIconInput.value = getColoredIcons(currentIconName, currentColorName);
         }
 
         const linkedTaskInfo = findLinkedTask(listId);
@@ -4161,8 +4283,8 @@ body.dark-mode #remove-schedule-btn:hover {
                                     <img src="${categoryIcon}" style="width: 20px; height: 20px;" alt="${categoryName}">
                                     <span style="flex-grow: 1;">${categoryName}</span>
                                     <span>
-                                        <button class="edit-btn" onclick="editCategory('${categoryName}', '${type}')"><img src="images/buttons/pencil.svg" alt="Editar"></button>
-                                        <button class="delete-btn" onclick="removeCategory('${categoryName}', '${type}')"><img src="images/buttons/trash.svg" alt="Remover"></button>
+                                        <button class="edit-btn" onclick="editCategory('${categoryName}', '${type}')"><img src="buttons/pencil.svg" alt="Editar"></button>
+                                        <button class="delete-btn" onclick="removeCategory('${categoryName}', '${type}')"><img src="buttons/trash.svg" alt="Remover"></button>
                                     </span>
                                 </div>`;
                     }
@@ -4186,9 +4308,11 @@ body.dark-mode #remove-schedule-btn:hover {
         
         // Obtém o ícone e cor selecionados
         const selectedIconName = categoryIconPicker.querySelector('.task-icon-option.selected')?.dataset.iconName || 'dinheiro';
-        const selectedColor = categoryIconColorInput.value || 'blue';
         
-        // Gera o ícone com a cor selecionada
+        // Obtém cor automática baseada no nome da categoria
+        const selectedColor = getCategoryColor(name);
+        
+        // Gera o ícone com a cor automática
         const coloredIcon = getColoredIcons(selectedIconName, selectedColor);
         
         // Cria o objeto da categoria com ícone e cor
@@ -4260,16 +4384,11 @@ body.dark-mode #remove-schedule-btn:hover {
         editCategoryNameInput.value = name;
         editCategoryTypeInput.value = type;
         
-        // Define a cor atual
-        const currentColor = (typeof categoryData === 'object' && categoryData.color) ? categoryData.color : 'blue';
+        // Obtém cor automática baseada no nome da categoria
+        const currentColor = getCategoryColor(name);
         categoryIconColorInput.value = currentColor;
         
-        // Atualiza o seletor de cores
-        categoryColorPicker.querySelectorAll('.color-option').forEach(option => {
-            option.classList.toggle('selected', option.dataset.color === currentColor);
-        });
-        
-        // Atualiza os ícones com a cor atual
+        // Atualiza os ícones com a cor automática
         categoryIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
             const iconName = iconOption.dataset.iconName;
             const coloredPath = getColoredIcons(iconName, currentColor);
@@ -4279,6 +4398,8 @@ body.dark-mode #remove-schedule-btn:hover {
             
             const newImg = document.createElement('img');
             newImg.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
+            newImg.className = `icon-color-${currentColor}`;
+            newImg.dataset.color = currentColor;
             newImg.style.width = '100%';
             newImg.style.height = '100%';
             newImg.style.objectFit = 'contain';
@@ -4333,9 +4454,9 @@ body.dark-mode #remove-schedule-btn:hover {
             return alert('essa categoria já existe.');
         }
 
-        // Obtém o ícone e cor selecionados
+        // Obtém o ícone selecionado e cor automática baseada no novo nome
         const selectedIconName = categoryIconPicker.querySelector('.task-icon-option.selected')?.dataset.iconName || 'dinheiro';
-        const selectedColor = categoryIconColorInput.value || 'blue';
+        const selectedColor = getCategoryColor(newName);
         const coloredIcon = getColoredIcons(selectedIconName, selectedColor);
         
         // Encontra o índice da categoria (considerando objetos e strings)
@@ -4457,14 +4578,15 @@ body.dark-mode #remove-schedule-btn:hover {
                 'red': '#f44336',
                 'yellow': '#ffeb3b',
                 'purple': '#9c27b0',
-                'pink': '#ff69b4',
+                'pink': '#ff66cc',
                 'orange': '#ff9800'
             };
             const hexColor = colorMap[categoryColor] || categoryColor;
             
             const progressBarColor = percentage > 100 ? '#FF5252' : (percentage > 80 ? '#FF9800' : hexColor);
             
-            const categoryDisplay = `<img src="${iconPath}" alt="${categoryName}" class="category-icon" style="filter: hue-rotate(0deg) saturate(1.2) brightness(1.1);">`;
+            const iconColor = categoryData.color || 'blue';
+            const categoryDisplay = `<img src="${iconPath}" alt="${categoryName}" class="category-icon icon-color-${iconColor}">`;
             
             row.innerHTML = `
                 <td title="${categoryName}" style="width: 15%; text-align: center;">${categoryDisplay}</td>
@@ -4599,7 +4721,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 { name: 'green', color: '#7ed957' },
                 { name: 'red', color: '#ff5252' },
                 { name: 'yellow', color: '#ffeb3b' },
-                { name: 'pink', color: '#ff69b4' },
+                { name: 'pink', color: '#ff66cc' },
                 { name: 'purple', color: '#9c27b0' },
                 { name: 'orange', color: '#ff9800' }
             ];
@@ -4607,7 +4729,7 @@ body.dark-mode #remove-schedule-btn:hover {
 
             card.innerHTML = `
                 <div style="position: relative;">
-                    <button class="close-button back-button" onclick="cancelEditGoal()" style="right: auto; left: 15px; top: 15px;"><img src="images/buttons/back.svg" alt="Voltar"></button>
+                    <button class="close-button back-button" onclick="cancelEditGoal()" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
                     <h4 style="margin-top: 0; text-align: center; padding-top: 10px;">editar meta de investimento</h4>
                 </div>
                 <form class="edit-goal-form">
@@ -4635,7 +4757,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div class="color-option" data-color="green" style="background-color: #4caf50;"></div>
                         <div class="color-option" data-color="yellow" style="background-color: #ffeb3b;"></div>
                         <div class="color-option" data-color="purple" style="background-color: #9c27b0;"></div>
-                        <div class="color-option" data-color="pink" style="background-color: #ff69b4;"></div>
+                        <div class="color-option" data-color="pink" style="background-color: #ff66cc;"></div>
                         <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
                     </div>
                     <input type="hidden" class="editing-goal-color-input" value="${goal.color}">
@@ -4660,7 +4782,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 '#f44336': 'red',
                 '#ffeb3b': 'yellow',
                 '#9c27b0': 'purple',
-                '#ff69b4': 'pink',
+                '#ff66cc': 'pink',
                 '#ff9800': 'orange'
             };
             const currentColorName = colorMap[currentColor] || 'blue';
@@ -4707,6 +4829,8 @@ body.dark-mode #remove-schedule-btn:hover {
                         const coloredPath = getColoredIcons(iconName, selectedColor);
                         const img = iconOption.querySelector('img');
                         img.src = coloredPath;
+                        img.className = `icon-color-${selectedColor}`;
+                        img.dataset.color = selectedColor;
                         iconOption.dataset.iconPath = coloredPath;
                     });
                     
@@ -4765,16 +4889,16 @@ body.dark-mode #remove-schedule-btn:hover {
                             <li>
                                 <span>${entry.key.replace('-', '/')}: </span>
                                 <input id="contribution-input-${currentKey}" type="number" value="${entry.amount}" step="0.01">
-                                <button class="save-item-btn" onclick="saveContributionEdit(${goal.id}, '${entry.key}')"><img src="images/buttons/ok.svg" alt="Salvar"></button>
-                                <button class="cancel-item-btn" onclick="cancelContributionEdit()"><img src="images/buttons/close.svg" alt="Cancelar"></button>
+                                <button class="save-item-btn" onclick="saveContributionEdit(${goal.id}, '${entry.key}')"><img src="buttons/ok.svg" alt="Salvar"></button>
+                                <button class="cancel-item-btn" onclick="cancelContributionEdit()"><img src="buttons/close.svg" alt="Cancelar"></button>
                             </li>`;
                     } else {
                          historyHtml += `
                             <li>
                                 <span>${entry.key.replace('-', '/')}: ${formatCurrency(entry.amount)}</span>
                                 <span>
-                                    <button class="edit-btn" onclick="editContribution(${goal.id}, '${entry.key}')"><img src="images/buttons/pencil.svg" alt="Editar"></button>
-                                    <button class="delete-btn" onclick="deleteContribution(${goal.id}, '${entry.key}')"><img src="images/buttons/trash.svg" alt="Remover"></button>
+                                    <button class="edit-btn" onclick="editContribution(${goal.id}, '${entry.key}')"><img src="buttons/pencil.svg" alt="Editar"></button>
+                                    <button class="delete-btn" onclick="deleteContribution(${goal.id}, '${entry.key}')"><img src="buttons/trash.svg" alt="Remover"></button>
                                 </span>
                             </li>`;
                     }
@@ -4787,12 +4911,12 @@ body.dark-mode #remove-schedule-btn:hover {
             card.innerHTML = `
               <div class="goal-header">
                 <div class="goal-header-content">
-                    <img src="${goal.icon || taskIcons.money}" class="goal-icon" alt="ícone da meta">
+                    <img src="${goal.icon || taskIcons.money}" class="goal-icon icon-color-${goal.color || 'blue'}" alt="ícone da meta">
                     <h4>${goal.name}</h4>
                 </div>
                 <div class="actions">
-                    <button class="edit-btn"><img src="images/buttons/pencil.svg" alt="Editar"></button>
-                    <button class="delete-btn"><img src="images/buttons/trash.svg" alt="Remover"></button>
+                    <button class="edit-btn"><img src="buttons/pencil.svg" alt="Editar"></button>
+                    <button class="delete-btn"><img src="buttons/trash.svg" alt="Remover"></button>
                 </div>
               </div>
               <div class="goal-details">
@@ -4840,7 +4964,7 @@ body.dark-mode #remove-schedule-btn:hover {
           'red': '#f44336',
           'yellow': '#ffeb3b',
           'purple': '#9c27b0',
-          'pink': '#ff69b4',
+          'pink': '#ff66cc',
           'orange': '#ff9800'
         };
         const color = colorMap[selectedColor] || '#3586ff';
@@ -4912,7 +5036,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 'red': '#f44336',
                 'yellow': '#ffeb3b',
                 'purple': '#9c27b0',
-                'pink': '#ff69b4',
+                'pink': '#ff66cc',
                 'orange': '#ff9800'
             };
             const newColor = colorMap[selectedColorName] || '#3586ff';
@@ -5065,21 +5189,14 @@ body.dark-mode #remove-schedule-btn:hover {
             }
             
             // Cores simplificadas: vermelho para despesas, verde para receitas
-            const iconColor = transactionType === 'receita' ? 'green' : 'red';
+            const defaultIconColor = transactionType === 'receita' ? 'green' : 'red';
             const valueColor = transactionType === 'receita' ? '#4CAF50' : '#f44336';
             
-            // Converte o ícone para a cor apropriada
-            let coloredIconPath = iconPath;
-            if (iconPath.includes('/colored/')) {
-                // Se já é um ícone colorido, substitui a cor
-                coloredIconPath = iconPath.replace(/\/colored\/[^\/]+\//, `/colored/${iconColor}/`);
-            } else {
-                // Se não é colorido, adiciona a cor
-                const iconName = iconPath.split('/').pop();
-                coloredIconPath = `./images/colored/${iconColor}/${iconName}`;
-            }
+            // Usa o ícone diretamente (cores serão aplicadas via CSS)
+            const coloredIconPath = iconPath;
+            const iconColor = item.categoryColor || defaultIconColor;
             
-            const iconHtml = `<img src="${coloredIconPath}" class="category-icon" alt="${item.category}" style="width: 24px; height: 24px; object-fit: contain;">`;
+            const iconHtml = `<img src="${coloredIconPath}" class="category-icon icon-color-${iconColor}" alt="${item.category}" style="width: 24px; height: 24px; object-fit: contain;">`;
             
             const row = document.createElement('tr');
             row.style.borderBottom = '1px solid var(--border-color, #eee)';
@@ -5088,8 +5205,8 @@ body.dark-mode #remove-schedule-btn:hover {
                 <td style="padding: 12px 8px; font-size: 14px;">${item.desc}</td>
                 <td style="color: ${valueColor}; font-weight: bold; text-align:right; padding: 12px 8px; font-size: 14px;">${formatCurrency(Math.abs(item.value))}</td>
                 <td style="text-align:center; padding: 12px 8px;">
-                    <button class="edit-btn" data-index="${index}" style="margin-right: 5px;"><img src="images/buttons/pencil.svg" alt="Editar" style="width: 16px; height: 16px;"></button>
-                    <button class="delete-btn" data-index="${index}"><img src="images/buttons/trash.svg" alt="Remover" style="width: 16px; height: 16px;"></button>
+                    <button class="edit-btn" data-index="${index}" style="margin-right: 5px;"><img src="buttons/pencil.svg" alt="Editar" style="width: 16px; height: 16px;"></button>
+                    <button class="delete-btn" data-index="${index}"><img src="buttons/trash.svg" alt="Remover" style="width: 16px; height: 16px;"></button>
                 </td>
             `;
             expenseList.appendChild(row);
@@ -5317,7 +5434,8 @@ body.dark-mode #remove-schedule-btn:hover {
                     if (task.icon) { 
                         const iconEl = document.createElement('img');
                         iconEl.src = task.icon;
-                        iconEl.className = 'task-icon-grid-view';
+                        const iconColor = task.color || task.iconColor || getIconColorFromPath(task.icon);
+                        iconEl.className = `task-icon-grid-view icon-color-${iconColor}`;
                         if (task.priority === 'alta') {
                             iconEl.classList.add('priority-icon-alta');
                         }
@@ -5476,7 +5594,10 @@ body.dark-mode #remove-schedule-btn:hover {
         taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
             const optionIconName = option.dataset.iconName;
             const bluePath = getColoredIcons(optionIconName, 'blue');
-            option.querySelector('img').src = bluePath;
+            const img = option.querySelector('img');
+            img.src = bluePath;
+            img.className = 'icon-color-blue';
+            img.dataset.color = 'blue';
         });
         
         // Seleciona o ícone correto
@@ -5517,16 +5638,17 @@ body.dark-mode #remove-schedule-btn:hover {
                 taskItem.style.cursor = 'pointer';
             }
 
-            const iconHtml = task.icon ? `<img src="${task.icon}" class="task-icon" alt="ícone da tarefa">` : '';
+            const iconColor = task.color || task.iconColor || getIconColorFromPath(task.icon);
+            const iconHtml = task.icon ? `<img src="${task.icon}" class="task-icon icon-color-${iconColor}" alt="ícone da tarefa">` : '';
             
             // Para listas agendadas, não mostra o botão de editar
-            const editButton = task.linkedListId ? '' : `<button class="edit-task-btn" onclick="editTask('${task.id}')"><img src="images/buttons/pencil.svg" alt="Editar"></button>`;
+            const editButton = task.linkedListId ? '' : `<button class="edit-task-btn" onclick="editTask('${task.id}')"><img src="buttons/pencil.svg" alt="Editar"></button>`;
             
             taskItem.innerHTML = `
                 <span>${iconHtml}<strong>${task.time}</strong> - ${task.description}</span>
                 <div class="task-actions">
                     ${editButton}
-                    <button onclick="removeTask('${task.id}')"><img src="images/buttons/trash.svg" alt="Remover"></button>
+                    <button onclick="removeTask('${task.id}')"><img src="buttons/trash.svg" alt="Remover"></button>
                 </div>`;
             tasksList.appendChild(taskItem);
         });
@@ -5555,7 +5677,7 @@ body.dark-mode #remove-schedule-btn:hover {
             if (taskIndex === -1) return;
 
             const originalTask = calendarTasks[selectedDateKey][taskIndex];
-            const updatedTaskData = { time, description, icon, priority };
+            const updatedTaskData = { time, description, icon, priority, color: selectedColor };
 
             if (originalTask.recurrenceId) {
                 const updateAll = confirm("esta é uma tarefa recorrente. deseja atualizar TODAS as futuras ocorrências?\n\n(clique em 'ok' para atualizar todas, ou 'cancelar' para atualizar apenas esta.)");
@@ -5581,7 +5703,7 @@ body.dark-mode #remove-schedule-btn:hover {
         } else {
             if (recurrenceType === 'none') {
                 if (!calendarTasks[selectedDateKey]) calendarTasks[selectedDateKey] = [];
-                calendarTasks[selectedDateKey].push({ id: Date.now().toString(), time, description, icon, priority, recurrenceId: null });
+                calendarTasks[selectedDateKey].push({ id: Date.now().toString(), time, description, icon, priority, color: selectedColor, recurrenceId: null });
             } else {
                 const endDateStr = recurrenceEndDateInput.value;
                 if (!endDateStr) return alert('por favor, selecione uma data final para a recorrência.');
@@ -5621,6 +5743,7 @@ body.dark-mode #remove-schedule-btn:hover {
                             description,
                             icon,
                             priority,
+                            color: selectedColor,
                             recurrenceId
                         });
                     }
@@ -5699,20 +5822,20 @@ body.dark-mode #remove-schedule-btn:hover {
         // Adiciona ícones adicionais que podem não estar nos outros objetos
         const additionalIcons = {
             // === ÍCONES CIRCULARES/BÁSICOS ===
-            "estrela": "./images/colored/blue/star.svg",
+            "estrela": "./images/star.svg",
             
             // === SAÚDE E BEM-ESTAR ===
-            "pílulas": "./images/colored/blue/pills.svg", "dente": "./images/colored/blue/tooth.svg", "escova de dente": "./images/colored/blue/toothbrush.svg",
-            "injeção": "./images/colored/blue/injection.svg",
+            "pílulas": "./images/pills.svg", "dente": "./images/tooth.svg", "escova de dente": "./images/hairbrush.svg",
+            "injeção": "./images/injection.svg",
             
             // === ESPORTES ===
-            "futebol": "./images/colored/blue/fute.svg", "ping pong": "./images/colored/blue/ping.svg", "vôlei": "./images/colored/blue/voleyball.svg",
+            "futebol": "./images/football.svg", "ping pong": "./images/football.svg", "vôlei": "./images/football.svg",
             
             // === NATUREZA E PLANTAS ===
-            "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg",
+            "folha": "./images/plant.svg", "lesma": "./images/snail.svg",
             
             // === OUTROS/VARIADOS ===
-            "dna": "./images/colored/blue/dna.svg", "olho": "./images/colored/blue/eye.svg", "juiz": "./images/colored/blue/judge.svg"
+            "dna": "./images/health.svg", "olho": "./images/eye.svg", "juiz": "./images/people.svg"
         };
         
         Object.assign(allIcons, additionalIcons);
@@ -5720,11 +5843,22 @@ body.dark-mode #remove-schedule-btn:hover {
         return allIcons;
     }
 
+    // Função auxiliar para extrair a cor do caminho do ícone
+    function getIconColorFromPath(iconPath) {
+        // Extrai a cor do caminho antigo (colored/[cor]/) ou retorna 'blue' como padrão
+        const colorMatch = iconPath.match(/\/colored\/([^\/]+)\//);
+        if (colorMatch) {
+            return colorMatch[1];
+        }
+        // Para novos caminhos, retorna 'blue' como padrão
+        return 'blue';
+    }
+    
     function getColoredIcons(iconName, color = 'blue') {
-        // Mapeamento dos nomes do código para os nomes dos arquivos
+        // Mapeamento dos nomes do código para os nomes dos arquivos (cores aplicadas via CSS)
         const iconNameMap = {
-            "nenhum": "none",
-            "lista": "list", 
+            "nenhum": "circledashed",
+            "lista": "shopping", 
             "compras": "shopping",
             "médico": "health",
             "medicação": "pills",
@@ -5735,58 +5869,58 @@ body.dark-mode #remove-schedule-btn:hover {
             "exercício": "gym",
             "meditação": "meditation",
             "trabalho": "work",
-            "beleza": "hair",
-            "comida": "food",
+            "beleza": "hairbrush",
+            "comida": "burger",
             "presente": "gift",
             "aniversário": "birthday",
             "festa": "party",
             "férias": "vacation",
-            "viagem": "trip",
-            "reunião": "meeting",
+            "viagem": "plane",
+            "reunião": "people",
             "computador": "computer",
-            "filme": "movie",
+            "filme": "picture",
             "cogumelo": "mushroom",
             "estudo": "study",
             "casa": "house",
-            "carro": "car",
+            "carro": "plane",
             "câmera": "picture",
             "unhas": "nails",
-            "pele": "lotion",
+            "pele": "body",
             "escrever": "write",
-            "arte": "art",
+            "arte": "picture",
             "flor": "flower",
             "planta": "plant",
             "maçã": "apple",
             "caixa": "box",
-            "cérebro": "brain",
+            "cérebro": "study",
             "comprar": "buy",
             "cenoura": "carrot",
             "cigarro": "cigarette",
-            "data": "date",
+            "data": "circledashed",
             "sorvete": "icecream",
-            "pessoa": "person",
-            "telefone": "phone",
+            "pessoa": "people",
+            "telefone": "computer",
             "pipoca": "popcorn",
             "camisa": "shirt",
-            "assinaturas": "assinatura",
-            "futebol": "fute",
-            "ping pong": "ping",
-            "vôlei": "voleyball",
-            "dna": "dna",
+            "assinaturas": "infinite",
+            "futebol": "football",
+            "ping pong": "football",
+            "vôlei": "football",
+            "dna": "health",
             "olho": "eye",
             "injeção": "injection",
-            "juiz": "judge",
-            "folha": "leaf",
+            "juiz": "people",
+            "folha": "plant",
             "pílulas": "pills",
-            "lesma": "slug",
+            "lesma": "snail",
             "estrela": "star",
             "dente": "tooth",
-            "escova de dente": "toothbrush"
+            "escova de dente": "hairbrush"
         };
         
-        // Retorna ícones com a cor especificada
+        // Retorna ícones sem pasta colorida (cores aplicadas via CSS)
         const fileName = iconNameMap[iconName] || iconName;
-        return `./images/colored/${color}/${fileName}.svg`;
+        return `./images/${fileName}.svg`;
     }
 
 
@@ -5824,6 +5958,8 @@ body.dark-mode #remove-schedule-btn:hover {
              // Cria a imagem com timestamp para evitar cache
              const img = document.createElement('img');
              img.src = iconPath + '?t=' + Date.now() + '&r=' + Math.random();
+             img.className = `icon-color-${currentColor}`;
+             img.dataset.color = currentColor;
              option.appendChild(img);
             
             option.addEventListener('click', function() {
@@ -5859,6 +5995,8 @@ body.dark-mode #remove-schedule-btn:hover {
                         const coloredPath = getColoredIcons(iconName, selectedColor);
                         const img = iconOption.querySelector('img');
                         img.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
+                        img.className = `icon-color-${selectedColor}`;
+                        img.dataset.color = selectedColor;
                         iconOption.dataset.iconPath = coloredPath;
                     });
                     
@@ -6018,7 +6156,7 @@ body.dark-mode #remove-schedule-btn:hover {
     }
 
 
-    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = taskIcons.lista, isShoppingList = false, isFinalized = false, isRoutine = false, transactionId = null, transactionMonth = null) {
+    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = taskIcons.lista, isShoppingList = false, isFinalized = false, isRoutine = false, transactionId = null, transactionMonth = null, borderColor = null) {
         if (!listName) return;
 
         const listDiv = document.createElement("div");
@@ -6033,19 +6171,12 @@ body.dark-mode #remove-schedule-btn:hover {
             listDiv.dataset.transactionMonth = transactionMonth;
         }
         
-        // Define a cor da borda baseada na cor selecionada (se disponível) ou na prioridade
-        const selectedColor = listColor ? listColor.value : null;
-        if (selectedColor) {
-            const colorMap = {
-                'blue': '#3586ff',
-                'green': '#4caf50',
-                'red': '#f44336',
-                'yellow': '#ffeb3b',
-                'purple': '#9c27b0',
-                'pink': '#ff69b4',
-                'orange': '#ff9800'
-            };
-            const color = colorMap[selectedColor] || '#3586ff';
+        // Define a cor da borda baseada na prioridade
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        if (borderColor) {
+            listDiv.style.borderLeftColor = borderColor;
+        } else {
+            const color = getPriorityColor(initialPriority, isDarkMode);
             listDiv.style.borderLeftColor = color;
         }
         
@@ -6056,20 +6187,27 @@ body.dark-mode #remove-schedule-btn:hover {
         titleContainer.style.alignItems = 'center';
         titleContainer.style.marginBottom = '10px';
         const iconImg = document.createElement('img');
-        iconImg.src = isShoppingList ? (listIcon === taskIcons.lista ? taskIcons.compras : listIcon) : listIcon;
-        iconImg.className = 'list-title-icon';
+        
+        // Aplica a cor do ícone baseada na prioridade
+        const colorName = getColorNameFromPriority(initialPriority);
+        const iconFileName = (isShoppingList ? (listIcon === taskIcons.lista ? taskIcons.compras : listIcon) : listIcon).split('/').pop().replace('.svg', '');
+        const iconName = Object.keys(taskIcons).find(key => taskIcons[key].includes(iconFileName)) || 'compras';
+        const coloredIconPath = getColoredIcons(iconName, colorName);
+        
+        iconImg.src = coloredIconPath + '?t=' + Date.now();
+        iconImg.className = 'list-title-icon icon-color-' + colorName;
         const title = document.createElement("h2");
         title.textContent = listName;
         title.style.margin = 0;
-        title.style.fontSize = '18px';
+        title.style.fontSize = '14px';
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'list-title-actions';
         const editBtn = document.createElement("button");
-        editBtn.innerHTML = '<img src="images/buttons/pencil.svg" alt="Editar">';
+        editBtn.innerHTML = '<img src="buttons/pencil.svg" alt="Editar">';
         editBtn.className = "edit-list-btn";
         editBtn.onclick = () => openListEditorSection(listId);
         const removeBtn = document.createElement("button");
-        removeBtn.innerHTML = '<img src="images/buttons/closelist.svg" alt="Remover Lista">';
+        removeBtn.innerHTML = '<img src="buttons/closelist.svg" alt="Remover Lista">';
         removeBtn.className = "delete-list-circular-btn";
         removeBtn.onclick = () => deleteListAndLinkedTask(listDiv, listName);
         actionsDiv.appendChild(editBtn);
@@ -6082,7 +6220,29 @@ body.dark-mode #remove-schedule-btn:hover {
         prioritySelect.className = "list-priority-select";
         prioritySelect.innerHTML = `<option value="baixa">baixa prioridade</option><option value="media">média prioridade</option><option value="alta">alta prioridade</option>`;
         prioritySelect.value = initialPriority;
-        prioritySelect.onchange = () => { /* ... (lógica de mudança de prioridade) ... */ };
+        prioritySelect.onchange = () => {
+            const newPriority = prioritySelect.value;
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const newColor = getPriorityColor(newPriority, isDarkMode);
+            const newColorName = getColorNameFromPriority(newPriority);
+            
+            // Atualiza a classe de prioridade
+            listDiv.classList.remove('priority-baixa', 'priority-media', 'priority-alta');
+            listDiv.classList.add('priority-' + newPriority);
+            
+            // Atualiza a cor da borda
+            listDiv.style.borderLeftColor = newColor;
+            
+            // Atualiza o ícone com a nova cor
+            const currentIconSrc = iconImg.src;
+            const iconFileName = currentIconSrc.split('/').pop().split('?')[0].replace('.svg', '');
+            const iconName = Object.keys(taskIcons).find(key => taskIcons[key].includes(iconFileName)) || 'compras';
+            const newIconPath = getColoredIcons(iconName, newColorName);
+            iconImg.src = newIconPath + '?t=' + Date.now();
+            iconImg.className = 'list-title-icon icon-color-' + newColorName;
+            
+            saveLists();
+        };
 
         const inputGroup = document.createElement("div");
         const ul = document.createElement("ul");
@@ -6164,12 +6324,12 @@ body.dark-mode #remove-schedule-btn:hover {
                 actionsDiv.innerHTML = '';
                 const editBtnItem = document.createElement('button');
                 editBtnItem.className = 'edit-item-btn';
-                editBtnItem.innerHTML = '<img src="images/buttons/pencil.svg" alt="Editar">';
+                editBtnItem.innerHTML = '<img src="buttons/pencil.svg" alt="Editar">';
                 editBtnItem.onclick = () => toggleEditMode(true, li);
 
                 const deleteBtnItem = document.createElement('button');
                 deleteBtnItem.className = 'delete-item-btn';
-                deleteBtnItem.innerHTML = '<img src="images/buttons/trash.svg" alt="Remover">';
+                deleteBtnItem.innerHTML = '<img src="buttons/trash.svg" alt="Remover">';
                 deleteBtnItem.onclick = () => {
                     li.remove();
                     if(isShoppingList) updateShoppingListTotal(listDiv);
@@ -6202,7 +6362,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     actionsDiv.innerHTML = '';
                     const saveBtn = document.createElement('button');
                     saveBtn.className = 'save-item-btn';
-                    saveBtn.innerHTML = '<img src="images/buttons/ok.svg" alt="Salvar">';
+                    saveBtn.innerHTML = '<img src="buttons/ok.svg" alt="Salvar">';
                     saveBtn.onclick = () => {
                         span.textContent = textInputField.value;
                         if(isShoppingList){
@@ -6217,7 +6377,7 @@ body.dark-mode #remove-schedule-btn:hover {
 
                     const cancelBtn = document.createElement('button');
                     cancelBtn.className = 'cancel-item-btn';
-                    cancelBtn.innerHTML = '<img src="images/buttons/close.svg" alt="Cancelar">';
+                    cancelBtn.innerHTML = '<img src="buttons/close.svg" alt="Cancelar">';
                     cancelBtn.onclick = () => toggleEditMode(false, currentLi);
 
                     actionsDiv.appendChild(saveBtn);
@@ -6450,20 +6610,11 @@ body.dark-mode #remove-schedule-btn:hover {
         const listId = editorListIdInput.value;
         const newName = editorListNameInput.value.trim();
         const newListIcon = editorListIconInput.value;
-        const editorListColorInput = document.getElementById('editor-list-color-main');
-        const selectedColorOption = document.querySelector('#editor-list-color-picker .color-option.selected');
-        const selectedColorName = selectedColorOption ? selectedColorOption.dataset.color : 'blue';
+        const newPriority = editorListPriorityInput.value;
         
-        const colorMap = {
-            'blue': '#3586ff',
-            'green': '#4caf50',
-            'red': '#f44336',
-            'yellow': '#ffeb3b',
-            'purple': '#9c27b0',
-            'pink': '#ff69b4',
-            'orange': '#ff9800'
-        };
-        const newColor = colorMap[selectedColorName] || '#3586ff';
+        // Obtém a cor baseada na prioridade
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        const newColor = getPriorityColor(newPriority, isDarkMode);
 
         if (!newName) {
             alert("O nome da lista não pode ficar em branco.");
@@ -6475,6 +6626,7 @@ body.dark-mode #remove-schedule-btn:hover {
         if (listIndex > -1) {
             allLists[listIndex].name = newName;
             allLists[listIndex].icon = newListIcon;
+            allLists[listIndex].priority = newPriority;
             allLists[listIndex].color = newColor;
         }
         localStorage.setItem('todoLists', JSON.stringify(allLists));
@@ -6590,6 +6742,31 @@ body.dark-mode #remove-schedule-btn:hover {
         }
     });
 
+    // Event listener para mudança de prioridade no editor de lista (muda a cor do ícone)
+    if (editorListPriorityInput) {
+        editorListPriorityInput.addEventListener('change', (e) => {
+            const selectedPriority = e.target.value;
+            const selectedColor = getColorNameFromPriority(selectedPriority);
+            
+            // Atualiza a cor de todos os ícones no picker
+            editorListIconPicker.querySelectorAll('.task-icon-option img').forEach(img => {
+                img.className = 'icon-color-' + selectedColor;
+                img.dataset.color = selectedColor;
+            });
+            
+            // Atualiza o ícone selecionado
+            const currentIconPath = editorListIconInput.value;
+            const currentIconName = Object.keys(taskIcons).find(key => {
+                return currentIconPath.includes(taskIcons[key].split('/').pop().replace('.svg', ''));
+            });
+            
+            if (currentIconName) {
+                const newIconPath = getColoredIcons(currentIconName, selectedColor);
+                editorListIconInput.value = newIconPath;
+            }
+        });
+    }
+
     linkToPlannerCheckbox.addEventListener('change', () => {
         const isChecked = linkToPlannerCheckbox.checked;
         plannerLinkOptions.style.display = isChecked ? 'flex' : 'none';
@@ -6653,6 +6830,8 @@ body.dark-mode #remove-schedule-btn:hover {
                     
                     const newImg = document.createElement('img');
                     newImg.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
+                    newImg.className = `icon-color-${selectedColor}`;
+                    newImg.dataset.color = selectedColor;
                     newImg.style.width = '100%';
                     newImg.style.height = '100%';
                     newImg.style.objectFit = 'contain';
@@ -6836,51 +7015,8 @@ body.dark-mode #remove-schedule-btn:hover {
     
     cancelEditButton.addEventListener('click', cancelCategoryEdit);
 
-    // Event listener para o seletor de cores das categorias
-    if (categoryColorPicker) {
-        categoryColorPicker.addEventListener('click', (e) => {
-            const colorOption = e.target.closest('.color-option');
-            if (colorOption) {
-                // Remove seleção anterior
-                categoryColorPicker.querySelectorAll('.color-option').forEach(option => {
-                    option.classList.remove('selected');
-                });
-                
-                // Seleciona nova cor
-                colorOption.classList.add('selected');
-                const selectedColor = colorOption.dataset.color;
-                categoryIconColorInput.value = selectedColor;
-                
-                // Atualiza TODOS os ícones com a nova cor
-                categoryIconPicker.querySelectorAll('.task-icon-option').forEach(iconOption => {
-                    const iconName = iconOption.dataset.iconName;
-                    const coloredPath = getColoredIcons(iconName, selectedColor);
-                    
-                    // Remove a imagem e recria com a nova cor
-                    const img = iconOption.querySelector('img');
-                    img.remove();
-                    
-                    const newImg = document.createElement('img');
-                    newImg.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
-                    newImg.style.width = '100%';
-                    newImg.style.height = '100%';
-                    newImg.style.objectFit = 'contain';
-                    newImg.style.borderRadius = '5px';
-                    
-                    iconOption.appendChild(newImg);
-                    iconOption.dataset.iconPath = coloredPath;
-                });
-                
-                // Atualiza o valor do ícone selecionado
-                const selectedIcon = categoryIconPicker.querySelector('.task-icon-option.selected');
-                if (selectedIcon) {
-                    const iconName = selectedIcon.dataset.iconName;
-                    const coloredPath = getColoredIcons(iconName, selectedColor);
-                    categoryIconHiddenInput.value = coloredPath;
-                }
-            }
-        });
-    }
+    // Event listener desabilitado - cores automáticas baseadas no nome da categoria
+    // As cores agora são definidas automaticamente pela função getCategoryColor()
 
     // Event listener para o seletor de cores dos investimentos
     if (goalColorPicker) {
@@ -6908,6 +7044,8 @@ body.dark-mode #remove-schedule-btn:hover {
                     
                     const newImg = document.createElement('img');
                     newImg.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
+                    newImg.className = `icon-color-${selectedColor}`;
+                    newImg.dataset.color = selectedColor;
                     newImg.style.width = '100%';
                     newImg.style.height = '100%';
                     newImg.style.objectFit = 'contain';
@@ -6954,6 +7092,8 @@ body.dark-mode #remove-schedule-btn:hover {
                     
                     const newImg = document.createElement('img');
                     newImg.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
+                    newImg.className = `icon-color-${selectedColor}`;
+                    newImg.dataset.color = selectedColor;
                     newImg.style.width = '100%';
                     newImg.style.height = '100%';
                     newImg.style.objectFit = 'contain';
@@ -7103,7 +7243,7 @@ body.dark-mode #remove-schedule-btn:hover {
         renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons, null, document.getElementById('editor-list-color-picker'));
         renderIconPicker(goalIconPicker, goalIconHiddenInput, taskIcons);
         renderIconPicker(listIconPickerGrid, null, taskIcons, selectListIcon, listColorPicker);
-        renderIconPicker(categoryIconPicker, categoryIconHiddenInput, taskIcons, null, categoryColorPicker);
+        renderIconPicker(categoryIconPicker, categoryIconHiddenInput, taskIcons, null, null);
         
         // Inicializa os seletores de cor
         if (goalColorPicker) {
@@ -7192,15 +7332,15 @@ body.dark-mode #remove-schedule-btn:hover {
   <nav class="bottom-nav">
     <div class="bottom-nav-items">
       <a href="#" class="bottom-nav-item active" data-section="planner-section">
-        <img src="images/buttons/calendar.svg" alt="Planner">
+        <img src="buttons/calendar.svg" alt="Planner">
         <span>planner</span>
       </a>
       <a href="#" class="bottom-nav-item" data-section="financeiro-section">
-        <img src="images/buttons/finance.svg" alt="Finanças">
+        <img src="buttons/finance.svg" alt="Finanças">
         <span>finanças</span>
       </a>
       <a href="#" class="bottom-nav-item" data-section="listas-section">
-        <img src="images/buttons/checklist.svg" alt="Listas">
+        <img src="buttons/checklist.svg" alt="Listas">
         <span>listas</span>
       </a>
     </div>
