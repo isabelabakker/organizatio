@@ -1367,10 +1367,11 @@
     }
     
     body.dark-mode .back-button {
-        background-color: #495057;
+        background: transparent !important;
+        color: inherit;
     }
     body.dark-mode .back-button:hover {
-        background-color: #343a40;
+        background: transparent !important;
     }
     
     body.dark-mode #manage-categories-btn, body.dark-mode #manage-categories-btn-budgets {
@@ -1650,9 +1651,10 @@
       }
       
       .close-button {
-        width: 40px;
-        height: 40px;
-        padding: 6px;
+        width: 32px !important;
+        height: 32px !important;
+        padding: 4px !important;
+        border-radius: 50% !important;
       }
       
       .edit-list-btn, .delete-list-circular-btn {
@@ -1727,6 +1729,20 @@
       .header-btn img {
         width: 16px;
         height: 16px;
+      }
+
+  /* Botões da aba finanças em 12px no mobile */
+  #financeiro-section .mensal-sub-toggle {
+    font-size: 14px !important;
+    padding: 8px 12px !important;
+    line-height: 1 !important;
+  }
+
+      /* Ajuste consistente também para telas pequenas até 768px */
+      #financeiro-section .mensal-sub-toggle {
+        font-size: 14px !important;
+        padding: 8px 12px !important;
+        line-height: 1 !important;
       }
     }
     
@@ -1923,9 +1939,9 @@
       .back-button {
         left: 8px !important;
         top: 8px !important;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 50% !important;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -2206,6 +2222,97 @@ body.dark-mode #remove-schedule-btn:hover {
     color: #E0E0E0; /* Cor da borda no hover do dark mode */
 }
 
+/* === Ajustes solicitados: finanças e botões de voltar/fechar === */
+/* Deixa os botões de voltar e fechar perfeitamente redondos */
+.close-button,
+.back-button {
+    aspect-ratio: 1 / 1;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    width: 24px !important;
+    height: 24px !important;
+}
+
+/* Remove qualquer fundo do botão de voltar */
+.back-button {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.back-button:hover {
+    background: transparent !important;
+}
+
+/* Diminui as fontes e evita quebra feia nos botões da aba finanças */
+#financeiro-section .mensal-sub-toggle {
+    font-size: 14px !important;
+    padding: 8px 12px !important;
+    line-height: 1 !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    box-sizing: border-box !important;
+    min-width: 120px !important;
+}
+
+/* Permite que o grupo de botões "transações/orçamentos/investimentos" quebre linha quando necessário */
+#finance-dashboard-main > div:nth-of-type(2) {
+    flex-wrap: wrap !important;
+}
+
+/* Mantém contraste no tema escuro */
+body.dark-mode .back-button {
+    background: #424242 !important;
+}
+body.dark-mode .back-button:hover {
+    background: #3a3a3a !important;
+}
+
+/* Previna que as imagens internas estiquem o botão */
+.close-button img,
+.back-button img {
+    display: block;
+}
+
+/* Remover fundo dos botões de voltar e fechar, mantendo só os ícones */
+.close-button,
+.back-button {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    width: 32px !important;
+    height: 32px !important;
+}
+.close-button:hover,
+.back-button:hover {
+    background: transparent !important;
+}
+.close-button img,
+.back-button img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* Reduz o tamanho do texto dos valores do resumo financeiro */
+#total-revenue,
+#total-expense,
+#month-balance {
+    font-size: 18px !important;
+}
+
+@media (max-width: 480px) {
+  #total-revenue,
+  #total-expense,
+  #month-balance {
+      font-size: 16px !important;
+  }
+  /* Botões de finanças maiores no mobile, com possibilidade de quebra */
+  #financeiro-section .mensal-sub-toggle {
+      font-size: 13px !important;
+      padding: 8px 12px !important;
+      min-width: 110px !important;
+  }
+}
+
   </style>
   <script src="./js/chart.js"></script>
 </head>
@@ -2366,7 +2473,7 @@ body.dark-mode #remove-schedule-btn:hover {
     
                     <div id="add-transaction-container" style="display: none; position: relative; z-index: 5;">
                         <button class="close-button back-button" id="back-to-transactions-list-btn"><img src="images/buttons/back.svg" alt="Voltar"></button>
-                        <button class="close-button" id="close-add-transaction-btn" style="top: 15px; right: 15px;"><img src="images/buttons/close.svg" alt="Fechar"></button>
+                        
                         <h3 id="transaction-form-title" style="margin-top: 0;">adicionar transação</h3>
                         <form id="expense-form" style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
                             <input type="text" id="desc" placeholder="descrição" required style="padding: 12px; border-radius: 8px; border: 2px solid #ddd; font-size: 16px;">
@@ -2900,7 +3007,7 @@ body.dark-mode #remove-schedule-btn:hover {
         "flor": "./images/colored/blue/flower.svg", "planta": "./images/colored/blue/plant.svg", "folha": "./images/colored/blue/leaf.svg", "lesma": "./images/colored/blue/slug.svg",
         
         // === COMPRAS E FINANÇAS ===
-        "dinheiro": "./images/colored/blue/money.svg", "compras": "./images/colored/blue/shopping.svg", "comprar": "./images/colored/blue/buy.svg", "lista": "./images/colored/blue/list.svg",
+        "dinheiro": "./images/colored/blue/money.svg", "compras": "./images/colored/blue/shopping.svg", "comprar": "./images/colored/blue/buy.svg", "lista": "./images/colored/blue/list.svg", "assinaturas": "./images/colored/blue/assinatura.svg",
         
         // === COMUNICAÇÃO E TECNOLOGIA ===
         "telefone": "./images/colored/blue/phone.svg", "data": "./images/colored/blue/date.svg",
@@ -2918,7 +3025,7 @@ body.dark-mode #remove-schedule-btn:hover {
         "outros": "./images/colored/blue/star.svg", "saúde": "./images/colored/blue/health.svg", "educação": "./images/colored/blue/study.svg",
         
         // === FINANÇAS ===
-        "comida": "./images/colored/blue/food.svg", "compras": "./images/colored/blue/shopping.svg", "contas": "./images/colored/blue/money.svg",
+        "comida": "./images/colored/blue/food.svg", "compras": "./images/colored/blue/shopping.svg", "contas": "./images/colored/blue/money.svg", "assinaturas": "./images/colored/blue/assinatura.svg",
         "salário": "./images/colored/blue/money.svg", "freela": "./images/colored/blue/work.svg",
         
         // === CASA E FAMÍLIA ===
@@ -2981,8 +3088,8 @@ body.dark-mode #remove-schedule-btn:hover {
         },
         {
             name: "assinaturas",
-            icon: "./images/colored/yellow/none.svg",
-            color: "yellow"
+            icon: "./images/colored/blue/assinatura.svg",
+            color: "blue"
         },
         {
             name: "compras",
@@ -5042,6 +5149,7 @@ body.dark-mode #remove-schedule-btn:hover {
             "telefone": "phone",
             "pipoca": "popcorn",
             "camisa": "shirt",
+            "assinaturas": "assinatura",
             "futebol": "fute",
             "ping pong": "ping",
             "vôlei": "voleyball",
@@ -5623,11 +5731,13 @@ body.dark-mode #remove-schedule-btn:hover {
     });
 
     const closeAddTransactionBtn = document.getElementById('close-add-transaction-btn');
-    closeAddTransactionBtn.addEventListener('click', () => {
-        addTransactionContainer.style.display = 'none';
-        transactionListView.style.display = 'block';
-        cancelEdit(); // Reseta o formulário caso estivesse em modo de edição
-    });
+    if (closeAddTransactionBtn) {
+        closeAddTransactionBtn.addEventListener('click', () => {
+            addTransactionContainer.style.display = 'none';
+            transactionListView.style.display = 'block';
+            cancelEdit(); // Reseta o formulário caso estivesse em modo de edição
+        });
+    }
 
     newListForm.addEventListener('submit', (e) => {
         e.preventDefault();
