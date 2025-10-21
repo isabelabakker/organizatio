@@ -93,6 +93,7 @@
       --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
       --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
       --shadow-lg: 0 8px 16px rgba(0,0,0,0.1);
+      --category-icon-filter: grayscale(100%) brightness(0.55);
       
       /* Typography */
       --font-size-xs: 12px;
@@ -124,6 +125,7 @@
       --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
       --shadow-md: 0 4px 8px rgba(0,0,0,0.3);
       --shadow-lg: 0 8px 16px rgba(0,0,0,0.3);
+      --category-icon-filter: grayscale(100%) brightness(1.4);
     }
     /* === BASE STYLES === */
     * {
@@ -1476,6 +1478,11 @@
         width: 100%;
         height: 100%;
         object-fit: contain;
+    }
+
+    #category-section .category-icon-static {
+        filter: var(--category-icon-filter);
+        transition: filter 0.3s ease;
     }
 
     /* Mobile-friendly table styles */
@@ -2991,10 +2998,9 @@ body.dark-mode #remove-schedule-btn:hover {
                     <button class="close-button back-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
                     <h3 id="task-form-title">adicionar tarefa</h3>
                     <form id="task-form-modal">
-                        <div style="display: grid; grid-template-columns: 1fr 3fr auto; gap: 10px; align-items: center; margin-top: 30px;">
+                        <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 10px; align-items: center; margin-top: 30px;">
                             <input type="time" id="taskTime" value="09:00" style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
                             <input type="text" id="taskDescription" placeholder="descrição da tarefa" required style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
-                            <button type="submit" id="add-task-btn" style="padding: 8px 12px; border-radius: 6px; font-size: 14px;">adicionar</button>
                         </div>
                         <div style="margin: 10px 0; display: flex; align-items: center;">
                             <input type="checkbox" id="taskPriority" style="width: 18px; height: 18px; margin-right: 8px; cursor: pointer;">
@@ -3038,6 +3044,9 @@ body.dark-mode #remove-schedule-btn:hover {
                                 <label><input type="checkbox" name="weekday" value="5"> sex</label>
                                 <label><input type="checkbox" name="weekday" value="6"> sáb</label>
                             </div>
+                        </div>
+                        <div id="task-form-submit-container" style="margin-top: 20px; display: flex; justify-content: flex-end;">
+                            <button type="submit" id="add-task-btn" style="padding: 10px 16px; border-radius: 6px; font-size: 14px;">adicionar</button>
                         </div>
                     </form>
                 </div>
@@ -3614,7 +3623,7 @@ body.dark-mode #remove-schedule-btn:hover {
         "pipoca": "./images/popcorn.svg", "cogumelo": "./images/mushroom.svg",
         
         // === ENTRETENIMENTO E LAZER ===
-        "mídia": "./images/picture.svg",
+        "mídia": "./images/picture.svg", "música": "./images/music.svg",
         
         // === NATUREZA E PLANTAS ===
         "flor": "./images/flower.svg", "planta": "./images/plant.svg", "lesma": "./images/snail.svg",
@@ -3626,7 +3635,7 @@ body.dark-mode #remove-schedule-btn:hover {
         "camisa": "./images/shirt.svg", "caixa": "./images/box.svg",
         
         // === OUTROS/VARIADOS ===
-        "cigarro": "./images/cigarette.svg", "olho": "./images/eye.svg"
+        "cigarro": "./images/cigarette.svg", "olho": "./images/eye.svg", "arma": "./images/gun.svg"
     };
 
     // --- ÍCONES DE CATEGORIA (MAPEAMENTO NOME -> CAMINHO) ---
@@ -3635,7 +3644,7 @@ body.dark-mode #remove-schedule-btn:hover {
         "outros": "./images/star.svg", "saúde": "./images/health.svg", "educação": "./images/study.svg",
         
         // === FINANÇAS ===
-        "comida": "./images/burger.svg", "compras": "./images/shopping.svg", "dinheiro": "./images/money.svg", "assinaturas": "./images/infinite.svg",
+        "comida": "./images/burger.svg", "compras": "./images/shopping.svg", "dinheiro": "./images/money.svg", "salário": "./images/money.svg", "assinaturas": "./images/infinite.svg",
         "freela": "./images/work.svg",
         
         // === CASA E FAMÍLIA ===
@@ -3646,9 +3655,6 @@ body.dark-mode #remove-schedule-btn:hover {
         
         // === ENTRETENIMENTO E LAZER ===
         "lazer": "./images/picture.svg", "beleza": "./images/hairbrush.svg",
-        
-        // === ESPORTES ===
-        "esportes": "./images/football.svg",
         
         // === SAÚDE E BEM-ESTAR ===
         "injeção": "./images/injection.svg",
@@ -3715,6 +3721,22 @@ body.dark-mode #remove-schedule-btn:hover {
     let investmentGoals = [];
     let editingGoalId = null;
     let editingContributionKey = null;
+
+    const disallowedCategoryNames = new Set(["jogos", "esportes", "pizza", "bebidas"]);
+
+    function sanitizeCategoryList(list) {
+        return list.filter(category => {
+            const categoryName = typeof category === 'string' ? category : category.name;
+            return !disallowedCategoryNames.has(categoryName);
+        });
+    }
+
+    function sanitizeAllCategories() {
+        expenseCategories = sanitizeCategoryList(expenseCategories);
+        revenueCategories = sanitizeCategoryList(revenueCategories);
+    }
+
+    sanitizeAllCategories();
     
     // --- NAVEGAÇÃO ENTRE SEÇÕES ---
     let previousSection = 'planner-section'; // Seção padrão
@@ -4249,6 +4271,7 @@ body.dark-mode #remove-schedule-btn:hover {
     // GERENCIAMENTO DE CATEGORIAS
     // ----------------------------------------------------
     function renderCategorySelect(isRevenue = false) {
+        sanitizeAllCategories();
         const categories = isRevenue ? revenueCategories : expenseCategories;
         categoryInput.innerHTML = categories.map(c => {
             const categoryName = typeof c === 'string' ? c : c.name;
@@ -4260,6 +4283,7 @@ body.dark-mode #remove-schedule-btn:hover {
     }
     
     function renderCategoryLimitSelect() {
+        sanitizeAllCategories();
         const categorySelect = document.getElementById('categoryLimitCategory');
         categorySelect.innerHTML = expenseCategories.map(c => {
             const categoryName = typeof c === 'string' ? c : c.name;
@@ -4268,19 +4292,21 @@ body.dark-mode #remove-schedule-btn:hover {
     }
 
     function renderCategoryModalList() {
+        sanitizeAllCategories();
         const renderList = (categories, container, type) => {
             container.innerHTML = categories.length === 0 ? `<p style="color: #777;">nenhuma categoria de ${type} cadastrada.</p>` :
                 categories.map(category => {
                     const categoryName = typeof category === 'string' ? category : category.name;
-                    const categoryIcon = typeof category === 'object' ? category.icon : categoryIcons[categoryName] || categoryIcons.money;
-                    
+                    const categoryIcon = typeof category === 'object' ? category.icon : categoryIcons[categoryName] || './images/money.svg';
+                    const iconMarkup = `<img src="${categoryIcon}" alt="${categoryName}" class="category-icon category-icon-static">`;
+
                     if (editingCategoryId && editingCategoryId.name === categoryName && editingCategoryId.type === type) {
                         return `<div style="padding: 8px; border: 2px solid #3586ff; border-radius: 8px; background: rgba(53, 134, 255, 0.1); margin-bottom: 5px;">
                                     <span style="color: #3586ff; font-weight: bold;">editando: ${categoryName}</span>
                                 </div>`;
                     } else {
                         return `<div style="display: flex; align-items: center; gap: 10px; padding: 8px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 5px;">
-                                    <img src="${categoryIcon}" style="width: 20px; height: 20px;" alt="${categoryName}">
+                                    ${iconMarkup}
                                     <span style="flex-grow: 1;">${categoryName}</span>
                                     <span>
                                         <button class="edit-btn" onclick="editCategory('${categoryName}', '${type}')"><img src="buttons/pencil.svg" alt="Editar"></button>
@@ -4298,7 +4324,8 @@ body.dark-mode #remove-schedule-btn:hover {
         const name = newCategoryNameInput.value.trim().toLowerCase();
         const type = newCategoryTypeInput.value;
         if (!name) return alert('o nome da categoria é obrigatório.');
-        
+        if (disallowedCategoryNames.has(name)) return alert('esta categoria não está disponível.');
+
         let targetArray = type === 'receita' ? revenueCategories : expenseCategories;
         const categoryExists = targetArray.some(cat => {
             const catName = typeof cat === 'string' ? cat : cat.name;
@@ -4339,7 +4366,8 @@ body.dark-mode #remove-schedule-btn:hover {
         const blueOption = categoryColorPicker.querySelector('[data-color="blue"]');
         if (blueOption) blueOption.classList.add('selected');
         categoryIconColorInput.value = 'blue';
-        
+
+        sanitizeAllCategories();
         saveFinancialData();
         renderCategoryModalList();
         updateFinanceDisplay();
@@ -4439,8 +4467,9 @@ body.dark-mode #remove-schedule-btn:hover {
     window.saveCategoryEdit = function() {
         const newName = editCategoryNameInput.value.trim().toLowerCase();
         const newType = editCategoryTypeInput.value;
-        
+
         if (!newName) return alert('o nome da categoria não pode ficar em branco.');
+        if (disallowedCategoryNames.has(newName)) return alert('esta categoria não está disponível.');
 
         const categoryArray = newType === 'despesa' ? expenseCategories : revenueCategories;
         
@@ -4506,6 +4535,7 @@ body.dark-mode #remove-schedule-btn:hover {
             delete categoryLimits[oldName];
         }
 
+        sanitizeAllCategories();
         saveFinancialData();
         editingCategoryId = null;
         renderCategoryModalList();
@@ -4538,9 +4568,10 @@ body.dark-mode #remove-schedule-btn:hover {
     }
     
     function updateCategorySpending() {
+        sanitizeAllCategories();
         const tableEl = document.getElementById('category-spending-list');
         tableEl.innerHTML = '';
-        
+
         const allExpenses = Object.values(dataByMonth).flat().filter(item => item.value < 0);
         const totals = {};
         allExpenses.forEach(item => {
@@ -5571,7 +5602,7 @@ body.dark-mode #remove-schedule-btn:hover {
         
         // Determina a cor e o ícone base do ícone salvo
         const iconPath = taskToEdit.icon;
-        let iconName = 'lista'; // padrão
+        let iconName = 'nenhum'; // padrão
         let iconColor = 'blue'; // padrão
         
         // Extrai o nome do ícone e a cor do caminho
@@ -5858,7 +5889,6 @@ body.dark-mode #remove-schedule-btn:hover {
         // Mapeamento dos nomes do código para os nomes dos arquivos (cores aplicadas via CSS)
         const iconNameMap = {
             "nenhum": "circledashed",
-            "lista": "shopping", 
             "compras": "shopping",
             "médico": "health",
             "medicação": "pills",
@@ -5915,7 +5945,9 @@ body.dark-mode #remove-schedule-btn:hover {
             "lesma": "snail",
             "estrela": "star",
             "dente": "tooth",
-            "escova de dente": "hairbrush"
+            "escova de dente": "hairbrush",
+            "música": "music",
+            "arma": "gun"
         };
         
         // Retorna ícones sem pasta colorida (cores aplicadas via CSS)
