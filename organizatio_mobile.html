@@ -1480,11 +1480,6 @@
         object-fit: contain;
     }
 
-    #category-section .category-icon-static {
-        filter: var(--category-icon-filter);
-        transition: filter 0.3s ease;
-    }
-
     /* Mobile-friendly table styles */
     @media (max-width: 768px) {
         #expense-table {
@@ -3640,6 +3635,52 @@ body.dark-mode #remove-schedule-btn:hover {
 
     const supportedIconColors = ['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'orange'];
 
+    const iconColorHexMap = {
+        blue: '#3586ff',
+        green: '#4caf50',
+        red: '#f44336',
+        yellow: '#ffeb3b',
+        purple: '#9c27b0',
+        pink: '#ff66cc',
+        orange: '#ff9800'
+    };
+
+    const hexToIconColorMap = Object.fromEntries(
+        Object.entries(iconColorHexMap).map(([name, hex]) => [hex.toLowerCase(), name])
+    );
+
+    function getColorHexFromName(colorName) {
+        if (!colorName) return iconColorHexMap.blue;
+        const normalized = colorName.toLowerCase();
+        return iconColorHexMap[normalized] || iconColorHexMap.blue;
+    }
+
+    function getColorNameFromValue(colorValue) {
+        if (!colorValue) return 'blue';
+        const normalized = colorValue.toString().trim().toLowerCase();
+        if (iconColorHexMap[normalized]) {
+            return normalized;
+        }
+        return hexToIconColorMap[normalized] || 'blue';
+    }
+
+    function normalizeGoalColorData(goal) {
+        if (!goal) return false;
+        const colorName = getColorNameFromValue(goal.colorName || goal.color);
+        const colorHex = getColorHexFromName(colorName);
+        let changed = false;
+
+        if (goal.color !== colorHex) {
+            goal.color = colorHex;
+            changed = true;
+        }
+        if (goal.colorName !== colorName) {
+            goal.colorName = colorName;
+            changed = true;
+        }
+        return changed;
+    }
+
     const iconFileNameToKeyMap = Object.entries(taskIcons).reduce((map, [key, path]) => {
         if (!path) return map;
         const cleanPath = path.split('?')[0];
@@ -3927,6 +3968,9 @@ body.dark-mode #remove-schedule-btn:hover {
                     goal.icon = newIconPath;
                     needsSave = true;
                 }
+            }
+            if (normalizeGoalColorData(goal)) {
+                needsSave = true;
             }
             return goal;
         });
@@ -4335,7 +4379,9 @@ body.dark-mode #remove-schedule-btn:hover {
                 categories.map(category => {
                     const categoryName = typeof category === 'string' ? category : category.name;
                     const categoryIcon = typeof category === 'object' ? category.icon : categoryIcons[categoryName] || './images/money.svg';
-                    const iconMarkup = `<img src="${categoryIcon}" alt="${categoryName}" class="category-icon category-icon-static">`;
+                    const categoryColorSource = typeof category === 'object' && category.color ? category.color : getCategoryColor(categoryName);
+                    const iconColorName = getColorNameFromValue(categoryColorSource);
+                    const iconMarkup = `<img src="${categoryIcon}" alt="${categoryName}" class="category-icon icon-color-${iconColorName}">`;
 
                     if (editingCategoryId && editingCategoryId.name === categoryName && editingCategoryId.type === type) {
                         return `<div style="padding: 8px; border: 2px solid #3586ff; border-radius: 8px; background: rgba(53, 134, 255, 0.1); margin-bottom: 5px;">
@@ -4627,34 +4673,23 @@ body.dark-mode #remove-schedule-btn:hover {
             
             // Procura o ícone e cor da categoria personalizada
             let iconPath = categoryIcons[categoryName] || categoryIcons["outros"];
-            let categoryColor = '#3586ff'; // Cor padrão azul
-            
+            let iconColorName = getCategoryColor(categoryName);
+
             const categoryData = expenseCategories.find(cat => {
                 const catName = typeof cat === 'string' ? cat : cat.name;
                 return catName === categoryName;
             });
-            
+
             if (categoryData && typeof categoryData === 'object') {
                 iconPath = categoryData.icon;
-                categoryColor = categoryData.color || '#3586ff';
+                iconColorName = getColorNameFromValue(categoryData.color);
             }
-            
-            // Mapeia a cor para o código hexadecimal
-            const colorMap = {
-                'blue': '#3586ff',
-                'green': '#4caf50',
-                'red': '#f44336',
-                'yellow': '#ffeb3b',
-                'purple': '#9c27b0',
-                'pink': '#ff66cc',
-                'orange': '#ff9800'
-            };
-            const hexColor = colorMap[categoryColor] || categoryColor;
-            
+
+            const hexColor = getColorHexFromName(iconColorName);
+
             const progressBarColor = percentage > 100 ? '#FF5252' : (percentage > 80 ? '#FF9800' : hexColor);
-            
-            const iconColor = categoryData.color || 'blue';
-            const categoryDisplay = `<img src="${iconPath}" alt="${categoryName}" class="category-icon icon-color-${iconColor}">`;
+
+            const categoryDisplay = `<img src="${iconPath}" alt="${categoryName}" class="category-icon icon-color-${iconColorName}">`;
             
             row.innerHTML = `
                 <td title="${categoryName}" style="width: 15%; text-align: center;">${categoryDisplay}</td>
@@ -4800,21 +4835,12 @@ body.dark-mode #remove-schedule-btn:hover {
         const card = document.createElement('div');
         card.className = 'investment-goal-card';
         card.setAttribute('data-goal-id', goal.id);
-        card.style.borderLeftColor = goal.color;
+
+        const goalColorName = getColorNameFromValue(goal.colorName || goal.color);
+        const goalColorHex = getColorHexFromName(goalColorName);
+        card.style.borderLeftColor = goalColorHex;
         
         if (goal.id === editingGoalId) {
-            // Nova paleta de cores
-            const newColorPalette = [
-                { name: 'blue', color: '#42a5f5' },
-                { name: 'green', color: '#7ed957' },
-                { name: 'red', color: '#ff5252' },
-                { name: 'yellow', color: '#ffeb3b' },
-                { name: 'pink', color: '#ff66cc' },
-                { name: 'purple', color: '#9c27b0' },
-                { name: 'orange', color: '#ff9800' }
-            ];
-            
-
             card.innerHTML = `
                 <div style="position: relative;">
                     <button class="close-button back-button" onclick="cancelEditGoal()" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
@@ -4848,7 +4874,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div class="color-option" data-color="pink" style="background-color: #ff66cc;"></div>
                         <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
                     </div>
-                    <input type="hidden" class="editing-goal-color-input" value="${goal.color}">
+                    <input type="hidden" class="editing-goal-color-input" value="${goalColorName}">
                     
                     <div class="actions" style="margin-top: 15px;">
                         <button type="submit" class="edit-btn">salvar</button>
@@ -4861,19 +4887,11 @@ body.dark-mode #remove-schedule-btn:hover {
             const hiddenIconInput = card.querySelector('.editing-goal-icon-input');
             const colorPickerContainer = card.querySelector('.editing-goal-color-picker');
             const hiddenColorInput = card.querySelector('.editing-goal-color-input');
-            
-            // Determina a cor atual do investimento
-            const currentColor = goal.color || '#3586ff';
-            const colorMap = {
-                '#3586ff': 'blue',
-                '#4caf50': 'green', 
-                '#f44336': 'red',
-                '#ffeb3b': 'yellow',
-                '#9c27b0': 'purple',
-                '#ff66cc': 'pink',
-                '#ff9800': 'orange'
-            };
-            const currentColorName = colorMap[currentColor] || 'blue';
+
+            const currentColorName = goalColorName;
+            if (hiddenColorInput) {
+                hiddenColorInput.value = currentColorName;
+            }
             
             // Inicializa o seletor de cor
             colorPickerContainer.querySelectorAll('.color-option').forEach(option => {
@@ -4882,7 +4900,7 @@ body.dark-mode #remove-schedule-btn:hover {
             
             // Renderiza os ícones com a cor atual
             for (const key in taskIcons) {
-                const iconPath = getColoredIcons(key, 'blue');
+                const iconPath = getColoredIcons(key, currentColorName);
                 const optionDiv = document.createElement('div');
                 optionDiv.className = 'task-icon-option';
                 optionDiv.dataset.iconPath = iconPath;
@@ -4890,8 +4908,8 @@ body.dark-mode #remove-schedule-btn:hover {
 
                 const img = document.createElement('img');
                 img.src = iconPath + '?t=' + Date.now() + '&r=' + Math.random();
-                img.className = 'icon-color-blue';
-                img.dataset.color = 'blue';
+                img.className = `icon-color-${currentColorName}`;
+                img.dataset.color = currentColorName;
                 img.style.width = '100%';
                 img.style.height = '100%';
                 img.style.objectFit = 'contain';
@@ -4920,6 +4938,10 @@ body.dark-mode #remove-schedule-btn:hover {
                     });
                     colorOption.classList.add('selected');
                     const selectedColor = colorOption.dataset.color;
+
+                    if (hiddenColorInput) {
+                        hiddenColorInput.value = selectedColor;
+                    }
                     
                     // Atualiza os ícones com a nova cor
                     iconPickerContainer.querySelectorAll('.task-icon-option').forEach(iconOption => {
@@ -5005,11 +5027,11 @@ body.dark-mode #remove-schedule-btn:hover {
             
             const totalSaved = totalAccumulated;
             const percentage = goal.target > 0 ? (totalSaved / goal.target) * 100 : 0;
-            
+
             card.innerHTML = `
               <div class="goal-header">
                 <div class="goal-header-content">
-                    <img src="${goal.icon || taskIcons.money}" class="goal-icon icon-color-${goal.color || 'blue'}" alt="ícone da meta">
+                    <img src="${goal.icon || taskIcons.money}" class="goal-icon icon-color-${goalColorName}" alt="ícone da meta">
                     <h4>${goal.name}</h4>
                 </div>
                 <div class="actions">
@@ -5020,7 +5042,7 @@ body.dark-mode #remove-schedule-btn:hover {
               <div class="goal-details">
                 <p><strong>${formatCurrency(totalSaved)}</strong> / ${formatCurrency(goal.target)}</p>
                 <div class="progress-bar-container" style="cursor: default;">
-                  <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${goal.color};"></div>
+                  <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${goalColorHex};"></div>
                    <span class="progress-bar-text">${percentage.toFixed(1)}%</span>
                 </div>
                  <p style="font-size: 12px; color: #888; margin-top: 8px; margin-bottom: 0;">
@@ -5055,23 +5077,15 @@ body.dark-mode #remove-schedule-btn:hover {
       const selectedColor = goalColor.value || 'blue';
 
       if (name && !isNaN(target) && target > 0) {
-        // Mapeia a cor para o código hexadecimal
-        const colorMap = {
-          'blue': '#3586ff',
-          'green': '#4caf50',
-          'red': '#f44336',
-          'yellow': '#ffeb3b',
-          'purple': '#9c27b0',
-          'pink': '#ff66cc',
-          'orange': '#ff9800'
-        };
-        const color = colorMap[selectedColor] || '#3586ff';
-        
+        const colorName = getColorNameFromValue(selectedColor);
+        const colorHex = getColorHexFromName(colorName);
+
         investmentGoals.push({
           id: Date.now(),
           name: name,
           target: target,
-          color: color,
+          color: colorHex,
+          colorName: colorName,
           icon: iconPath,
           contributions: {},
           interestRate: interestRate,
@@ -5124,25 +5138,16 @@ body.dark-mode #remove-schedule-btn:hover {
             const newDeadline = hasDeadline ? e.target.querySelector('.editing-goal-deadline').value : null;
 
             const newIcon = e.target.querySelector('.editing-goal-icon-input').value;
-            const newColorInput = e.target.querySelector('.editing-goal-color-input');
             const selectedColorOption = e.target.querySelector('.editing-goal-color-picker .color-option.selected');
             const selectedColorName = selectedColorOption ? selectedColorOption.dataset.color : 'blue';
-            
-            const colorMap = {
-                'blue': '#3586ff',
-                'green': '#4caf50',
-                'red': '#f44336',
-                'yellow': '#ffeb3b',
-                'purple': '#9c27b0',
-                'pink': '#ff66cc',
-                'orange': '#ff9800'
-            };
-            const newColor = colorMap[selectedColorName] || '#3586ff';
+            const normalizedColorName = getColorNameFromValue(selectedColorName);
+            const newColorHex = getColorHexFromName(normalizedColorName);
 
             if (newName && !isNaN(newTarget) && newTarget > 0) {
                 goal.name = newName;
                 goal.target = newTarget;
-                goal.color = newColor;
+                goal.color = newColorHex;
+                goal.colorName = normalizedColorName;
                 goal.icon = newIcon;
                 goal.interestRate = newInterest;
                 goal.deadline = newDeadline;
@@ -7381,7 +7386,7 @@ body.dark-mode #remove-schedule-btn:hover {
         
         renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons, null, taskColorPicker);
         renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons, null, document.getElementById('editor-list-color-picker'));
-        renderIconPicker(goalIconPicker, goalIconHiddenInput, taskIcons);
+        renderGoalIconPicker();
         renderIconPicker(listIconPickerGrid, null, taskIcons, selectListIcon, listColorPicker);
         renderIconPicker(categoryIconPicker, categoryIconHiddenInput, taskIcons, null, null);
         
