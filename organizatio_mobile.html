@@ -3638,6 +3638,28 @@ body.dark-mode #remove-schedule-btn:hover {
         "cigarro": "./images/cigarette.svg", "olho": "./images/eye.svg", "arma": "./images/gun.svg"
     };
 
+    const supportedIconColors = ['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'orange'];
+
+    const iconFileNameToKeyMap = Object.entries(taskIcons).reduce((map, [key, path]) => {
+        if (!path) return map;
+        const cleanPath = path.split('?')[0];
+        const fileName = cleanPath.substring(cleanPath.lastIndexOf('/') + 1).replace('.svg', '');
+        if (!map[fileName]) {
+            map[fileName] = key;
+        }
+        return map;
+    }, {});
+
+    const legacyIconNameMap = {
+        'none': 'circledashed', 'hair': 'hairbrush', 'lotion': 'body',
+        'fute': 'football', 'ping': 'football', 'voleyball': 'football',
+        'brain': 'study', 'car': 'plane', 'trip': 'plane', 'food': 'burger',
+        'movie': 'picture', 'art': 'picture', 'leaf': 'plant', 'slug': 'snail',
+        'list': 'shopping', 'assinatura': 'infinite', 'phone': 'computer',
+        'date': 'circledashed', 'person': 'people', 'meeting': 'people',
+        'toothbrush': 'hairbrush', 'dna': 'health', 'judge': 'people'
+    };
+
     // --- ÍCONES DE CATEGORIA (MAPEAMENTO NOME -> CAMINHO) ---
     const categoryIcons = {
         // === CATEGORIAS BÁSICAS ===
@@ -3867,7 +3889,7 @@ body.dark-mode #remove-schedule-btn:hover {
     function fixIconPathsInCalendarTasks() {
         // Função para corrigir apenas ícones que não têm caminho completo (compatibilidade)
         let needsSave = false;
-        
+
         for (const dateKey in calendarTasks) {
             const tasks = calendarTasks[dateKey];
             if (Array.isArray(tasks)) {
@@ -3879,17 +3901,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         const iconName = fileName.replace('.svg', '');
                         
                         // Mapeamento de nomes antigos para novos
-                        const iconMap = {
-                            'none': 'circledashed', 'hair': 'hairbrush', 'lotion': 'body',
-                            'fute': 'football', 'ping': 'football', 'voleyball': 'football',
-                            'brain': 'study', 'car': 'plane', 'trip': 'plane', 'food': 'burger',
-                            'movie': 'picture', 'art': 'picture', 'leaf': 'plant', 'slug': 'snail',
-                            'list': 'shopping', 'assinatura': 'infinite', 'phone': 'computer',
-                            'date': 'circledashed', 'person': 'people', 'meeting': 'people',
-                            'toothbrush': 'hairbrush', 'dna': 'health', 'judge': 'people'
-                        };
-                        
-                        const newIconName = iconMap[iconName] || iconName;
+                        const newIconName = legacyIconNameMap[iconName] || iconName;
                         task.icon = `./images/${newIconName}.svg`;
                         needsSave = true;
                     }
@@ -3901,9 +3913,31 @@ body.dark-mode #remove-schedule-btn:hover {
             saveCalendarTasks();
         }
     }
-    
-    function loadCalendarTasks() { 
-        calendarTasks = JSON.parse(localStorage.getItem('calendarTasks')) || {}; 
+
+    function fixIconPathsInInvestmentGoals() {
+        let needsSave = false;
+
+        investmentGoals = investmentGoals.map(goal => {
+            if (goal && goal.icon && goal.icon.includes('images/colored/')) {
+                const fileName = goal.icon.split('/').pop();
+                const iconName = fileName.replace('.svg', '');
+                const newIconName = legacyIconNameMap[iconName] || iconName;
+                const newIconPath = `./images/${newIconName}.svg`;
+                if (goal.icon !== newIconPath) {
+                    goal.icon = newIconPath;
+                    needsSave = true;
+                }
+            }
+            return goal;
+        });
+
+        if (needsSave) {
+            saveInvestmentGoals();
+        }
+    }
+
+    function loadCalendarTasks() {
+        calendarTasks = JSON.parse(localStorage.getItem('calendarTasks')) || {};
         // Corrige apenas ícones que não têm caminho completo (compatibilidade)
         fixIconPathsInCalendarTasks();
     }
@@ -3986,7 +4020,10 @@ body.dark-mode #remove-schedule-btn:hover {
 
 
     function saveInvestmentGoals() { localStorage.setItem('investmentGoals', JSON.stringify(investmentGoals)); }
-    function loadInvestmentGoals() { investmentGoals = JSON.parse(localStorage.getItem('investmentGoals')) || []; }
+    function loadInvestmentGoals() {
+        investmentGoals = JSON.parse(localStorage.getItem('investmentGoals')) || [];
+        fixIconPathsInInvestmentGoals();
+    }
 
 
     // ----------------------------------------------------
@@ -4715,7 +4752,7 @@ body.dark-mode #remove-schedule-btn:hover {
     function renderGoalIconPicker() {
         // Renderiza ícones com cores
         renderIconPicker(goalIconPicker, goalIconHiddenInput, taskIcons, null, goalColorPicker);
-        
+
         // Seleciona a cor azul por padrão
         if (goalColorPicker) {
             goalColorPicker.querySelectorAll('.color-option').forEach(option => {
@@ -4724,6 +4761,26 @@ body.dark-mode #remove-schedule-btn:hover {
             const blueOption = goalColorPicker.querySelector('[data-color="blue"]');
             if (blueOption) blueOption.classList.add('selected');
             if (goalColor) goalColor.value = 'blue';
+        }
+    }
+
+    function resetGoalIconsToBlue() {
+        const defaultColor = 'blue';
+        if (goalColorPicker) {
+            selectColorOption(goalColorPicker, defaultColor);
+        }
+        if (goalColor) {
+            goalColor.value = defaultColor;
+        }
+        if (goalIconPicker) {
+            applyColorToIconOptions(goalIconPicker, defaultColor);
+            const options = goalIconPicker.querySelectorAll('.task-icon-option');
+            options.forEach(option => option.classList.remove('selected'));
+            const firstOption = options[0];
+            if (firstOption) {
+                firstOption.classList.add('selected');
+                goalIconHiddenInput.value = firstOption.dataset.iconPath;
+            }
         }
     }
 
@@ -4825,12 +4882,22 @@ body.dark-mode #remove-schedule-btn:hover {
             
             // Renderiza os ícones com a cor atual
             for (const key in taskIcons) {
-                const iconPath = getColoredIcons(key, currentColorName);
+                const iconPath = getColoredIcons(key, 'blue');
                 const optionDiv = document.createElement('div');
                 optionDiv.className = 'task-icon-option';
                 optionDiv.dataset.iconPath = iconPath;
                 optionDiv.dataset.iconName = key;
-                optionDiv.innerHTML = `<img src="${iconPath}">`;
+
+                const img = document.createElement('img');
+                img.src = iconPath + '?t=' + Date.now() + '&r=' + Math.random();
+                img.className = 'icon-color-blue';
+                img.dataset.color = 'blue';
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'contain';
+                img.style.borderRadius = '5px';
+                optionDiv.appendChild(img);
+
                 if (goal.icon === iconPath || goal.icon === taskIcons[key]) {
                     optionDiv.classList.add('selected');
                 }
@@ -4838,7 +4905,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 optionDiv.addEventListener('click', () => {
                     iconPickerContainer.querySelector('.selected')?.classList.remove('selected');
                     optionDiv.classList.add('selected');
-                    hiddenIconInput.value = iconPath;
+                    hiddenIconInput.value = optionDiv.dataset.iconPath;
                 });
 
                 iconPickerContainer.appendChild(optionDiv);
@@ -5592,51 +5659,48 @@ body.dark-mode #remove-schedule-btn:hover {
 
         taskTimeInput.value = taskToEdit.time;
         taskDescriptionInput.value = taskToEdit.description;
-        taskPriorityInput.checked = taskToEdit.priority === 'alta'; 
-        
+        taskPriorityInput.checked = taskToEdit.priority === 'alta';
+
         addTaskBtn.textContent = 'salvar';
         addTaskBtn.classList.add('save-edit-btn');
         taskFormModal.setAttribute('data-editing-id', taskId);
         taskFormTitle.textContent = 'editar tarefa';
         taskIconHiddenInput.value = taskToEdit.icon;
-        
-        // Determina a cor e o ícone base do ícone salvo
-        const iconPath = taskToEdit.icon;
-        let iconName = 'nenhum'; // padrão
-        let iconColor = 'blue'; // padrão
-        
-        // Extrai o nome do ícone e a cor do caminho
-        if (iconPath.includes('/colored/')) {
-            const pathParts = iconPath.split('/');
-            const fileName = pathParts[pathParts.length - 1];
-            iconName = fileName.replace('.svg', '');
-            const colorPart = pathParts[pathParts.length - 2];
-            iconColor = colorPart;
-        } else {
-            // Para ícones antigos que não usam a pasta colored, tenta encontrar o nome
-            const iconKey = Object.keys(taskIcons).find(key => taskIcons[key] === iconPath);
-            if (iconKey) {
-                iconName = iconKey;
-                iconColor = 'blue'; // assume azul para ícones antigos
-            }
+
+        if (taskIconPicker && taskIconPicker.children.length === 0) {
+            renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons, null, taskColorPicker);
         }
-        
-        // Reset todos os ícones para azul primeiro
+
+        const iconPath = taskToEdit.icon;
+        const iconName = getIconKeyFromPath(iconPath);
+        const iconColor = normalizeIconColor(taskToEdit.color || taskToEdit.iconColor || getIconColorFromPath(iconPath));
+
+        if (taskColorPicker && taskIconColorInput) {
+            selectColorOption(taskColorPicker, iconColor);
+            taskIconColorInput.value = iconColor;
+        }
+
+        applyColorToIconOptions(taskIconPicker, iconColor);
+
+        let selectedOption = null;
         taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-            const optionIconName = option.dataset.iconName;
-            const bluePath = getColoredIcons(optionIconName, 'blue');
-            const img = option.querySelector('img');
-            img.src = bluePath;
-            img.className = 'icon-color-blue';
-            img.dataset.color = 'blue';
+            const isSelected = option.dataset.iconName === iconName;
+            option.classList.toggle('selected', isSelected);
+            if (isSelected) {
+                selectedOption = option;
+            }
         });
-        
-        // Seleciona o ícone correto
-        taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-            option.classList.toggle('selected', option.dataset.iconName === iconName);
-        });
-        
-        
+
+        if (!selectedOption) {
+            selectedOption = taskIconPicker.querySelector('.task-icon-option');
+            selectedOption?.classList.add('selected');
+        }
+
+        if (selectedOption) {
+            taskIconHiddenInput.value = selectedOption.dataset.iconPath;
+        }
+
+
 
         if (taskToEdit.recurrenceId) {
             recurrenceTypeInput.value = 'none';
@@ -5949,10 +6013,54 @@ body.dark-mode #remove-schedule-btn:hover {
             "música": "music",
             "arma": "gun"
         };
-        
+
         // Retorna ícones sem pasta colorida (cores aplicadas via CSS)
         const fileName = iconNameMap[iconName] || iconName;
         return `./images/${fileName}.svg`;
+    }
+
+    function normalizeIconColor(color) {
+        return supportedIconColors.includes(color) ? color : 'blue';
+    }
+
+    function getIconKeyFromPath(iconPath) {
+        if (!iconPath) return 'nenhum';
+        const cleanPath = iconPath.split('?')[0];
+        const fileName = cleanPath.substring(cleanPath.lastIndexOf('/') + 1).replace('.svg', '');
+        return iconFileNameToKeyMap[fileName] || 'nenhum';
+    }
+
+    function applyColorToIconOptions(pickerElement, color) {
+        if (!pickerElement) return;
+        const normalizedColor = normalizeIconColor(color);
+        pickerElement.querySelectorAll('.task-icon-option').forEach(option => {
+            const iconName = option.dataset.iconName;
+            if (!iconName) return;
+            const coloredPath = getColoredIcons(iconName, normalizedColor);
+            option.dataset.iconPath = coloredPath;
+
+            let img = option.querySelector('img');
+            if (!img) {
+                img = document.createElement('img');
+                option.appendChild(img);
+            }
+
+            img.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
+            img.className = `icon-color-${normalizedColor}`;
+            img.dataset.color = normalizedColor;
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'contain';
+            img.style.borderRadius = '5px';
+        });
+    }
+
+    function selectColorOption(colorPickerElement, color) {
+        if (!colorPickerElement) return;
+        const normalizedColor = normalizeIconColor(color);
+        colorPickerElement.querySelectorAll('.color-option').forEach(option => {
+            option.classList.toggle('selected', option.dataset.color === normalizedColor);
+        });
     }
 
 
