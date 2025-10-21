@@ -93,6 +93,7 @@
       --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
       --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
       --shadow-lg: 0 8px 16px rgba(0,0,0,0.1);
+      --category-icon-filter: grayscale(100%) brightness(0.55);
       
       /* Typography */
       --font-size-xs: 12px;
@@ -124,6 +125,7 @@
       --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
       --shadow-md: 0 4px 8px rgba(0,0,0,0.3);
       --shadow-lg: 0 8px 16px rgba(0,0,0,0.3);
+      --category-icon-filter: grayscale(100%) brightness(1.4);
     }
     /* === BASE STYLES === */
     * {
@@ -2991,10 +2993,9 @@ body.dark-mode #remove-schedule-btn:hover {
                     <button class="close-button back-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
                     <h3 id="task-form-title">adicionar tarefa</h3>
                     <form id="task-form-modal">
-                        <div style="display: grid; grid-template-columns: 1fr 3fr auto; gap: 10px; align-items: center; margin-top: 30px;">
+                        <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 10px; align-items: center; margin-top: 30px;">
                             <input type="time" id="taskTime" value="09:00" style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
                             <input type="text" id="taskDescription" placeholder="descrição da tarefa" required style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
-                            <button type="submit" id="add-task-btn" style="padding: 8px 12px; border-radius: 6px; font-size: 14px;">adicionar</button>
                         </div>
                         <div style="margin: 10px 0; display: flex; align-items: center;">
                             <input type="checkbox" id="taskPriority" style="width: 18px; height: 18px; margin-right: 8px; cursor: pointer;">
@@ -3038,6 +3039,9 @@ body.dark-mode #remove-schedule-btn:hover {
                                 <label><input type="checkbox" name="weekday" value="5"> sex</label>
                                 <label><input type="checkbox" name="weekday" value="6"> sáb</label>
                             </div>
+                        </div>
+                        <div id="task-form-submit-container" style="margin-top: 20px; display: flex; justify-content: flex-end;">
+                            <button type="submit" id="add-task-btn" style="padding: 10px 16px; border-radius: 6px; font-size: 14px;">adicionar</button>
                         </div>
                     </form>
                 </div>
@@ -3587,46 +3591,171 @@ body.dark-mode #remove-schedule-btn:hover {
 
 
     // --- ÍCONES DE TAREFAS (USADOS TAMBÉM PARA LISTAS) ---
-    const taskIcons = {
+    const taskIconEntries = [
         // === ÍCONES CIRCULARES/BÁSICOS ===
-        "nenhum": "./images/circledashed.svg", "coração": "./images/heart.svg", "estrela": "./images/star.svg", "dinheiro": "./images/money.svg",
-        
+        { key: "nenhum", file: "circledashed" },
+        { key: "lista", file: "circledots" },
+        { key: "círculo", file: "circle" },
+        { key: "coração", file: "heart" },
+        { key: "estrela", file: "star" },
+        { key: "dinheiro", file: "money" },
+
         // === SAÚDE E BEM-ESTAR ===
-        "médico": "./images/health.svg", "medicação": "./images/pills.svg", "dentista": "./images/tooth.svg", "escova": "./images/hairbrush.svg", 
-        "injeção": "./images/injection.svg", "unhas": "./images/nails.svg", "pele": "./images/body.svg", "meditação": "./images/meditation.svg",
-        
+        { key: "médico", file: "health" },
+        { key: "medicação", file: "pills" },
+        { key: "dentista", file: "tooth" },
+        { key: "escova", file: "hairbrush" },
+        { key: "injeção", file: "injection" },
+        { key: "unhas", file: "nails" },
+        { key: "pele", file: "body" },
+        { key: "meditação", file: "meditation" },
+
         // === ESPORTES E ATIVIDADES ===
-        "exercício": "./images/gym.svg", "esportes": "./images/football.svg",
-        
+        { key: "exercício", file: "gym" },
+        { key: "esportes", file: "football" },
+        { key: "caminhada", file: "walking" },
+
         // === TRABALHO E ESTUDO ===
-        "trabalho": "./images/work.svg", "estudo": "./images/study.svg", "pessoas": "./images/people.svg", "computador": "./images/computer.svg",
-        "escrever": "./images/write.svg",
-        
+        { key: "trabalho", file: "work" },
+        { key: "estudo", file: "study" },
+        { key: "pessoas", file: "people" },
+        { key: "computador", file: "computer" },
+        { key: "escrever", file: "write" },
+
         // === CASA E FAMÍLIA ===
-        "casa": "./images/house.svg", "pet": "./images/pet.svg", "presente": "./images/gift.svg",
-        "aniversário": "./images/birthday.svg", "festa": "./images/party.svg",
-        
+        { key: "casa", file: "house" },
+        { key: "lar", file: "hearthome" },
+        { key: "pet", file: "pet" },
+        { key: "presente", file: "gift" },
+        { key: "aniversário", file: "birthday" },
+        { key: "festa", file: "party" },
+
         // === TRANSPORTE E VIAGEM ===
-        "viagem": "./images/plane.svg", "férias": "./images/vacation.svg",
-        
+        { key: "viagem", file: "plane" },
+        { key: "férias", file: "vacation" },
+
         // === COMIDA E BEBIDA ===
-        "comida": "./images/burger.svg", "maçã": "./images/apple.svg", "cenoura": "./images/carrot.svg", "sorvete": "./images/icecream.svg",
-        "pipoca": "./images/popcorn.svg", "cogumelo": "./images/mushroom.svg",
-        
+        { key: "comida", file: "burger" },
+        { key: "maçã", file: "apple" },
+        { key: "cenoura", file: "carrot" },
+        { key: "pizza", file: "pizza" },
+        { key: "sorvete", file: "icecream" },
+        { key: "bebida", file: "drink" },
+        { key: "pipoca", file: "popcorn" },
+        { key: "cogumelo", file: "mushroom" },
+
         // === ENTRETENIMENTO E LAZER ===
-        "mídia": "./images/picture.svg",
-        
+        { key: "mídia", file: "picture" },
+        { key: "música", file: "music" },
+        { key: "jogo", file: "game" },
+
         // === NATUREZA E PLANTAS ===
-        "flor": "./images/flower.svg", "planta": "./images/plant.svg", "lesma": "./images/snail.svg",
-        
+        { key: "flor", file: "flower" },
+        { key: "planta", file: "plant" },
+        { key: "lesma", file: "snail" },
+
         // === COMPRAS E FINANÇAS ===
-        "compras": "./images/shopping.svg", "comprar": "./images/buy.svg", "assinaturas": "./images/infinite.svg",
-        
+        { key: "compras", file: "shopping" },
+        { key: "comprar", file: "buy" },
+        { key: "assinaturas", file: "infinite" },
+
         // === ROUPAS E ACESSÓRIOS ===
-        "camisa": "./images/shirt.svg", "caixa": "./images/box.svg",
-        
+        { key: "camisa", file: "shirt" },
+        { key: "caixa", file: "box" },
+
         // === OUTROS/VARIADOS ===
-        "cigarro": "./images/cigarette.svg", "olho": "./images/eye.svg"
+        { key: "cigarro", file: "cigarette" },
+        { key: "olho", file: "eye" },
+        { key: "arma", file: "gun" }
+    ];
+
+    const taskIcons = taskIconEntries.reduce((map, { key, file }) => {
+        map[key] = `./images/${file}.svg`;
+        return map;
+    }, {});
+
+    const availableIconFiles = [
+        'apple', 'birthday', 'body', 'box', 'burger', 'buy', 'carrot', 'cigarette', 'circle', 'circledashed', 'circledots',
+        'computer', 'drink', 'eye', 'flower', 'football', 'game', 'gift', 'gun', 'gym', 'hairbrush', 'health', 'heart',
+        'hearthome', 'house', 'icecream', 'infinite', 'injection', 'meditation', 'money', 'mushroom', 'music', 'nails',
+        'party', 'people', 'pet', 'picture', 'pills', 'pizza', 'plane', 'plant', 'popcorn', 'shirt', 'shopping', 'snail',
+        'star', 'study', 'tooth', 'vacation', 'walking', 'work', 'write'
+    ];
+
+    availableIconFiles.forEach(file => {
+        const iconPath = `./images/${file}.svg`;
+        if (!Object.values(taskIcons).includes(iconPath)) {
+            const defaultKey = file.replace(/[-_]/g, ' ');
+            taskIcons[defaultKey] = iconPath;
+        }
+    });
+
+    const supportedIconColors = ['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'orange'];
+
+    const iconColorHexMap = {
+        blue: '#3586ff',
+        green: '#4caf50',
+        red: '#f44336',
+        yellow: '#ffeb3b',
+        purple: '#9c27b0',
+        pink: '#ff66cc',
+        orange: '#ff9800'
+    };
+
+    const hexToIconColorMap = Object.fromEntries(
+        Object.entries(iconColorHexMap).map(([name, hex]) => [hex.toLowerCase(), name])
+    );
+
+    function getColorHexFromName(colorName) {
+        if (!colorName) return iconColorHexMap.blue;
+        const normalized = colorName.toLowerCase();
+        return iconColorHexMap[normalized] || iconColorHexMap.blue;
+    }
+
+    function getColorNameFromValue(colorValue) {
+        if (!colorValue) return 'blue';
+        const normalized = colorValue.toString().trim().toLowerCase();
+        if (iconColorHexMap[normalized]) {
+            return normalized;
+        }
+        return hexToIconColorMap[normalized] || 'blue';
+    }
+
+    function normalizeGoalColorData(goal) {
+        if (!goal) return false;
+        const colorName = getColorNameFromValue(goal.colorName || goal.color);
+        const colorHex = getColorHexFromName(colorName);
+        let changed = false;
+
+        if (goal.color !== colorHex) {
+            goal.color = colorHex;
+            changed = true;
+        }
+        if (goal.colorName !== colorName) {
+            goal.colorName = colorName;
+            changed = true;
+        }
+        return changed;
+    }
+
+    const iconFileNameToKeyMap = Object.entries(taskIcons).reduce((map, [key, path]) => {
+        if (!path) return map;
+        const cleanPath = path.split('?')[0];
+        const fileName = cleanPath.substring(cleanPath.lastIndexOf('/') + 1).replace('.svg', '');
+        if (!map[fileName]) {
+            map[fileName] = key;
+        }
+        return map;
+    }, {});
+
+    const legacyIconNameMap = {
+        'none': 'circledashed', 'hair': 'hairbrush', 'lotion': 'body',
+        'fute': 'football', 'ping': 'football', 'voleyball': 'football',
+        'brain': 'study', 'car': 'plane', 'trip': 'plane', 'food': 'burger',
+        'movie': 'picture', 'art': 'picture', 'leaf': 'plant', 'slug': 'snail',
+        'list': 'shopping', 'assinatura': 'infinite', 'phone': 'computer',
+        'date': 'circledashed', 'person': 'people', 'meeting': 'people',
+        'toothbrush': 'hairbrush', 'dna': 'health', 'judge': 'people'
     };
 
     // --- ÍCONES DE CATEGORIA (MAPEAMENTO NOME -> CAMINHO) ---
@@ -3635,7 +3764,7 @@ body.dark-mode #remove-schedule-btn:hover {
         "outros": "./images/star.svg", "saúde": "./images/health.svg", "educação": "./images/study.svg",
         
         // === FINANÇAS ===
-        "comida": "./images/burger.svg", "compras": "./images/shopping.svg", "dinheiro": "./images/money.svg", "assinaturas": "./images/infinite.svg",
+        "comida": "./images/burger.svg", "compras": "./images/shopping.svg", "dinheiro": "./images/money.svg", "salário": "./images/money.svg", "assinaturas": "./images/infinite.svg",
         "freela": "./images/work.svg",
         
         // === CASA E FAMÍLIA ===
@@ -3646,9 +3775,6 @@ body.dark-mode #remove-schedule-btn:hover {
         
         // === ENTRETENIMENTO E LAZER ===
         "lazer": "./images/picture.svg", "beleza": "./images/hairbrush.svg",
-        
-        // === ESPORTES ===
-        "esportes": "./images/football.svg",
         
         // === SAÚDE E BEM-ESTAR ===
         "injeção": "./images/injection.svg",
@@ -3715,6 +3841,22 @@ body.dark-mode #remove-schedule-btn:hover {
     let investmentGoals = [];
     let editingGoalId = null;
     let editingContributionKey = null;
+
+    const disallowedCategoryNames = new Set(["jogos", "esportes", "pizza", "bebidas"]);
+
+    function sanitizeCategoryList(list) {
+        return list.filter(category => {
+            const categoryName = typeof category === 'string' ? category : category.name;
+            return !disallowedCategoryNames.has(categoryName);
+        });
+    }
+
+    function sanitizeAllCategories() {
+        expenseCategories = sanitizeCategoryList(expenseCategories);
+        revenueCategories = sanitizeCategoryList(revenueCategories);
+    }
+
+    sanitizeAllCategories();
     
     // --- NAVEGAÇÃO ENTRE SEÇÕES ---
     let previousSection = 'planner-section'; // Seção padrão
@@ -3845,7 +3987,7 @@ body.dark-mode #remove-schedule-btn:hover {
     function fixIconPathsInCalendarTasks() {
         // Função para corrigir apenas ícones que não têm caminho completo (compatibilidade)
         let needsSave = false;
-        
+
         for (const dateKey in calendarTasks) {
             const tasks = calendarTasks[dateKey];
             if (Array.isArray(tasks)) {
@@ -3857,17 +3999,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         const iconName = fileName.replace('.svg', '');
                         
                         // Mapeamento de nomes antigos para novos
-                        const iconMap = {
-                            'none': 'circledashed', 'hair': 'hairbrush', 'lotion': 'body',
-                            'fute': 'football', 'ping': 'football', 'voleyball': 'football',
-                            'brain': 'study', 'car': 'plane', 'trip': 'plane', 'food': 'burger',
-                            'movie': 'picture', 'art': 'picture', 'leaf': 'plant', 'slug': 'snail',
-                            'list': 'shopping', 'assinatura': 'infinite', 'phone': 'computer',
-                            'date': 'circledashed', 'person': 'people', 'meeting': 'people',
-                            'toothbrush': 'hairbrush', 'dna': 'health', 'judge': 'people'
-                        };
-                        
-                        const newIconName = iconMap[iconName] || iconName;
+                        const newIconName = legacyIconNameMap[iconName] || iconName;
                         task.icon = `./images/${newIconName}.svg`;
                         needsSave = true;
                     }
@@ -3879,9 +4011,34 @@ body.dark-mode #remove-schedule-btn:hover {
             saveCalendarTasks();
         }
     }
-    
-    function loadCalendarTasks() { 
-        calendarTasks = JSON.parse(localStorage.getItem('calendarTasks')) || {}; 
+
+    function fixIconPathsInInvestmentGoals() {
+        let needsSave = false;
+
+        investmentGoals = investmentGoals.map(goal => {
+            if (goal && goal.icon && goal.icon.includes('images/colored/')) {
+                const fileName = goal.icon.split('/').pop();
+                const iconName = fileName.replace('.svg', '');
+                const newIconName = legacyIconNameMap[iconName] || iconName;
+                const newIconPath = `./images/${newIconName}.svg`;
+                if (goal.icon !== newIconPath) {
+                    goal.icon = newIconPath;
+                    needsSave = true;
+                }
+            }
+            if (normalizeGoalColorData(goal)) {
+                needsSave = true;
+            }
+            return goal;
+        });
+
+        if (needsSave) {
+            saveInvestmentGoals();
+        }
+    }
+
+    function loadCalendarTasks() {
+        calendarTasks = JSON.parse(localStorage.getItem('calendarTasks')) || {};
         // Corrige apenas ícones que não têm caminho completo (compatibilidade)
         fixIconPathsInCalendarTasks();
     }
@@ -3964,7 +4121,10 @@ body.dark-mode #remove-schedule-btn:hover {
 
 
     function saveInvestmentGoals() { localStorage.setItem('investmentGoals', JSON.stringify(investmentGoals)); }
-    function loadInvestmentGoals() { investmentGoals = JSON.parse(localStorage.getItem('investmentGoals')) || []; }
+    function loadInvestmentGoals() {
+        investmentGoals = JSON.parse(localStorage.getItem('investmentGoals')) || [];
+        fixIconPathsInInvestmentGoals();
+    }
 
 
     // ----------------------------------------------------
@@ -4249,6 +4409,7 @@ body.dark-mode #remove-schedule-btn:hover {
     // GERENCIAMENTO DE CATEGORIAS
     // ----------------------------------------------------
     function renderCategorySelect(isRevenue = false) {
+        sanitizeAllCategories();
         const categories = isRevenue ? revenueCategories : expenseCategories;
         categoryInput.innerHTML = categories.map(c => {
             const categoryName = typeof c === 'string' ? c : c.name;
@@ -4260,6 +4421,7 @@ body.dark-mode #remove-schedule-btn:hover {
     }
     
     function renderCategoryLimitSelect() {
+        sanitizeAllCategories();
         const categorySelect = document.getElementById('categoryLimitCategory');
         categorySelect.innerHTML = expenseCategories.map(c => {
             const categoryName = typeof c === 'string' ? c : c.name;
@@ -4268,19 +4430,23 @@ body.dark-mode #remove-schedule-btn:hover {
     }
 
     function renderCategoryModalList() {
+        sanitizeAllCategories();
         const renderList = (categories, container, type) => {
             container.innerHTML = categories.length === 0 ? `<p style="color: #777;">nenhuma categoria de ${type} cadastrada.</p>` :
                 categories.map(category => {
                     const categoryName = typeof category === 'string' ? category : category.name;
-                    const categoryIcon = typeof category === 'object' ? category.icon : categoryIcons[categoryName] || categoryIcons.money;
-                    
+                    const categoryIcon = typeof category === 'object' ? category.icon : categoryIcons[categoryName] || './images/money.svg';
+                    const categoryColorSource = typeof category === 'object' && category.color ? category.color : getCategoryColor(categoryName);
+                    const iconColorName = getColorNameFromValue(categoryColorSource);
+                    const iconMarkup = `<img src="${categoryIcon}" alt="${categoryName}" class="category-icon icon-color-${iconColorName}">`;
+
                     if (editingCategoryId && editingCategoryId.name === categoryName && editingCategoryId.type === type) {
                         return `<div style="padding: 8px; border: 2px solid #3586ff; border-radius: 8px; background: rgba(53, 134, 255, 0.1); margin-bottom: 5px;">
                                     <span style="color: #3586ff; font-weight: bold;">editando: ${categoryName}</span>
                                 </div>`;
                     } else {
                         return `<div style="display: flex; align-items: center; gap: 10px; padding: 8px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 5px;">
-                                    <img src="${categoryIcon}" style="width: 20px; height: 20px;" alt="${categoryName}">
+                                    ${iconMarkup}
                                     <span style="flex-grow: 1;">${categoryName}</span>
                                     <span>
                                         <button class="edit-btn" onclick="editCategory('${categoryName}', '${type}')"><img src="buttons/pencil.svg" alt="Editar"></button>
@@ -4298,7 +4464,8 @@ body.dark-mode #remove-schedule-btn:hover {
         const name = newCategoryNameInput.value.trim().toLowerCase();
         const type = newCategoryTypeInput.value;
         if (!name) return alert('o nome da categoria é obrigatório.');
-        
+        if (disallowedCategoryNames.has(name)) return alert('esta categoria não está disponível.');
+
         let targetArray = type === 'receita' ? revenueCategories : expenseCategories;
         const categoryExists = targetArray.some(cat => {
             const catName = typeof cat === 'string' ? cat : cat.name;
@@ -4339,7 +4506,8 @@ body.dark-mode #remove-schedule-btn:hover {
         const blueOption = categoryColorPicker.querySelector('[data-color="blue"]');
         if (blueOption) blueOption.classList.add('selected');
         categoryIconColorInput.value = 'blue';
-        
+
+        sanitizeAllCategories();
         saveFinancialData();
         renderCategoryModalList();
         updateFinanceDisplay();
@@ -4439,8 +4607,9 @@ body.dark-mode #remove-schedule-btn:hover {
     window.saveCategoryEdit = function() {
         const newName = editCategoryNameInput.value.trim().toLowerCase();
         const newType = editCategoryTypeInput.value;
-        
+
         if (!newName) return alert('o nome da categoria não pode ficar em branco.');
+        if (disallowedCategoryNames.has(newName)) return alert('esta categoria não está disponível.');
 
         const categoryArray = newType === 'despesa' ? expenseCategories : revenueCategories;
         
@@ -4506,6 +4675,7 @@ body.dark-mode #remove-schedule-btn:hover {
             delete categoryLimits[oldName];
         }
 
+        sanitizeAllCategories();
         saveFinancialData();
         editingCategoryId = null;
         renderCategoryModalList();
@@ -4538,9 +4708,10 @@ body.dark-mode #remove-schedule-btn:hover {
     }
     
     function updateCategorySpending() {
+        sanitizeAllCategories();
         const tableEl = document.getElementById('category-spending-list');
         tableEl.innerHTML = '';
-        
+
         const allExpenses = Object.values(dataByMonth).flat().filter(item => item.value < 0);
         const totals = {};
         allExpenses.forEach(item => {
@@ -4559,34 +4730,23 @@ body.dark-mode #remove-schedule-btn:hover {
             
             // Procura o ícone e cor da categoria personalizada
             let iconPath = categoryIcons[categoryName] || categoryIcons["outros"];
-            let categoryColor = '#3586ff'; // Cor padrão azul
-            
+            let iconColorName = getCategoryColor(categoryName);
+
             const categoryData = expenseCategories.find(cat => {
                 const catName = typeof cat === 'string' ? cat : cat.name;
                 return catName === categoryName;
             });
-            
+
             if (categoryData && typeof categoryData === 'object') {
                 iconPath = categoryData.icon;
-                categoryColor = categoryData.color || '#3586ff';
+                iconColorName = getColorNameFromValue(categoryData.color);
             }
-            
-            // Mapeia a cor para o código hexadecimal
-            const colorMap = {
-                'blue': '#3586ff',
-                'green': '#4caf50',
-                'red': '#f44336',
-                'yellow': '#ffeb3b',
-                'purple': '#9c27b0',
-                'pink': '#ff66cc',
-                'orange': '#ff9800'
-            };
-            const hexColor = colorMap[categoryColor] || categoryColor;
-            
+
+            const hexColor = getColorHexFromName(iconColorName);
+
             const progressBarColor = percentage > 100 ? '#FF5252' : (percentage > 80 ? '#FF9800' : hexColor);
-            
-            const iconColor = categoryData.color || 'blue';
-            const categoryDisplay = `<img src="${iconPath}" alt="${categoryName}" class="category-icon icon-color-${iconColor}">`;
+
+            const categoryDisplay = `<img src="${iconPath}" alt="${categoryName}" class="category-icon icon-color-${iconColorName}">`;
             
             row.innerHTML = `
                 <td title="${categoryName}" style="width: 15%; text-align: center;">${categoryDisplay}</td>
@@ -4684,7 +4844,7 @@ body.dark-mode #remove-schedule-btn:hover {
     function renderGoalIconPicker() {
         // Renderiza ícones com cores
         renderIconPicker(goalIconPicker, goalIconHiddenInput, taskIcons, null, goalColorPicker);
-        
+
         // Seleciona a cor azul por padrão
         if (goalColorPicker) {
             goalColorPicker.querySelectorAll('.color-option').forEach(option => {
@@ -4693,6 +4853,26 @@ body.dark-mode #remove-schedule-btn:hover {
             const blueOption = goalColorPicker.querySelector('[data-color="blue"]');
             if (blueOption) blueOption.classList.add('selected');
             if (goalColor) goalColor.value = 'blue';
+        }
+    }
+
+    function resetGoalIconsToBlue() {
+        const defaultColor = 'blue';
+        if (goalColorPicker) {
+            selectColorOption(goalColorPicker, defaultColor);
+        }
+        if (goalColor) {
+            goalColor.value = defaultColor;
+        }
+        if (goalIconPicker) {
+            applyColorToIconOptions(goalIconPicker, defaultColor);
+            const options = goalIconPicker.querySelectorAll('.task-icon-option');
+            options.forEach(option => option.classList.remove('selected'));
+            const firstOption = options[0];
+            if (firstOption) {
+                firstOption.classList.add('selected');
+                goalIconHiddenInput.value = firstOption.dataset.iconPath;
+            }
         }
     }
 
@@ -4712,21 +4892,12 @@ body.dark-mode #remove-schedule-btn:hover {
         const card = document.createElement('div');
         card.className = 'investment-goal-card';
         card.setAttribute('data-goal-id', goal.id);
-        card.style.borderLeftColor = goal.color;
+
+        const goalColorName = getColorNameFromValue(goal.colorName || goal.color);
+        const goalColorHex = getColorHexFromName(goalColorName);
+        card.style.borderLeftColor = goalColorHex;
         
         if (goal.id === editingGoalId) {
-            // Nova paleta de cores
-            const newColorPalette = [
-                { name: 'blue', color: '#42a5f5' },
-                { name: 'green', color: '#7ed957' },
-                { name: 'red', color: '#ff5252' },
-                { name: 'yellow', color: '#ffeb3b' },
-                { name: 'pink', color: '#ff66cc' },
-                { name: 'purple', color: '#9c27b0' },
-                { name: 'orange', color: '#ff9800' }
-            ];
-            
-
             card.innerHTML = `
                 <div style="position: relative;">
                     <button class="close-button back-button" onclick="cancelEditGoal()" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
@@ -4760,7 +4931,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div class="color-option" data-color="pink" style="background-color: #ff66cc;"></div>
                         <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
                     </div>
-                    <input type="hidden" class="editing-goal-color-input" value="${goal.color}">
+                    <input type="hidden" class="editing-goal-color-input" value="${goalColorName}">
                     
                     <div class="actions" style="margin-top: 15px;">
                         <button type="submit" class="edit-btn">salvar</button>
@@ -4773,19 +4944,11 @@ body.dark-mode #remove-schedule-btn:hover {
             const hiddenIconInput = card.querySelector('.editing-goal-icon-input');
             const colorPickerContainer = card.querySelector('.editing-goal-color-picker');
             const hiddenColorInput = card.querySelector('.editing-goal-color-input');
-            
-            // Determina a cor atual do investimento
-            const currentColor = goal.color || '#3586ff';
-            const colorMap = {
-                '#3586ff': 'blue',
-                '#4caf50': 'green', 
-                '#f44336': 'red',
-                '#ffeb3b': 'yellow',
-                '#9c27b0': 'purple',
-                '#ff66cc': 'pink',
-                '#ff9800': 'orange'
-            };
-            const currentColorName = colorMap[currentColor] || 'blue';
+
+            const currentColorName = goalColorName;
+            if (hiddenColorInput) {
+                hiddenColorInput.value = currentColorName;
+            }
             
             // Inicializa o seletor de cor
             colorPickerContainer.querySelectorAll('.color-option').forEach(option => {
@@ -4799,7 +4962,17 @@ body.dark-mode #remove-schedule-btn:hover {
                 optionDiv.className = 'task-icon-option';
                 optionDiv.dataset.iconPath = iconPath;
                 optionDiv.dataset.iconName = key;
-                optionDiv.innerHTML = `<img src="${iconPath}">`;
+
+                const img = document.createElement('img');
+                img.src = iconPath + '?t=' + Date.now() + '&r=' + Math.random();
+                img.className = `icon-color-${currentColorName}`;
+                img.dataset.color = currentColorName;
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'contain';
+                img.style.borderRadius = '5px';
+                optionDiv.appendChild(img);
+
                 if (goal.icon === iconPath || goal.icon === taskIcons[key]) {
                     optionDiv.classList.add('selected');
                 }
@@ -4807,7 +4980,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 optionDiv.addEventListener('click', () => {
                     iconPickerContainer.querySelector('.selected')?.classList.remove('selected');
                     optionDiv.classList.add('selected');
-                    hiddenIconInput.value = iconPath;
+                    hiddenIconInput.value = optionDiv.dataset.iconPath;
                 });
 
                 iconPickerContainer.appendChild(optionDiv);
@@ -4822,6 +4995,10 @@ body.dark-mode #remove-schedule-btn:hover {
                     });
                     colorOption.classList.add('selected');
                     const selectedColor = colorOption.dataset.color;
+
+                    if (hiddenColorInput) {
+                        hiddenColorInput.value = selectedColor;
+                    }
                     
                     // Atualiza os ícones com a nova cor
                     iconPickerContainer.querySelectorAll('.task-icon-option').forEach(iconOption => {
@@ -4907,11 +5084,11 @@ body.dark-mode #remove-schedule-btn:hover {
             
             const totalSaved = totalAccumulated;
             const percentage = goal.target > 0 ? (totalSaved / goal.target) * 100 : 0;
-            
+
             card.innerHTML = `
               <div class="goal-header">
                 <div class="goal-header-content">
-                    <img src="${goal.icon || taskIcons.money}" class="goal-icon icon-color-${goal.color || 'blue'}" alt="ícone da meta">
+                    <img src="${goal.icon || taskIcons.money}" class="goal-icon icon-color-${goalColorName}" alt="ícone da meta">
                     <h4>${goal.name}</h4>
                 </div>
                 <div class="actions">
@@ -4922,7 +5099,7 @@ body.dark-mode #remove-schedule-btn:hover {
               <div class="goal-details">
                 <p><strong>${formatCurrency(totalSaved)}</strong> / ${formatCurrency(goal.target)}</p>
                 <div class="progress-bar-container" style="cursor: default;">
-                  <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${goal.color};"></div>
+                  <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${goalColorHex};"></div>
                    <span class="progress-bar-text">${percentage.toFixed(1)}%</span>
                 </div>
                  <p style="font-size: 12px; color: #888; margin-top: 8px; margin-bottom: 0;">
@@ -4957,23 +5134,15 @@ body.dark-mode #remove-schedule-btn:hover {
       const selectedColor = goalColor.value || 'blue';
 
       if (name && !isNaN(target) && target > 0) {
-        // Mapeia a cor para o código hexadecimal
-        const colorMap = {
-          'blue': '#3586ff',
-          'green': '#4caf50',
-          'red': '#f44336',
-          'yellow': '#ffeb3b',
-          'purple': '#9c27b0',
-          'pink': '#ff66cc',
-          'orange': '#ff9800'
-        };
-        const color = colorMap[selectedColor] || '#3586ff';
-        
+        const colorName = getColorNameFromValue(selectedColor);
+        const colorHex = getColorHexFromName(colorName);
+
         investmentGoals.push({
           id: Date.now(),
           name: name,
           target: target,
-          color: color,
+          color: colorHex,
+          colorName: colorName,
           icon: iconPath,
           contributions: {},
           interestRate: interestRate,
@@ -5026,25 +5195,16 @@ body.dark-mode #remove-schedule-btn:hover {
             const newDeadline = hasDeadline ? e.target.querySelector('.editing-goal-deadline').value : null;
 
             const newIcon = e.target.querySelector('.editing-goal-icon-input').value;
-            const newColorInput = e.target.querySelector('.editing-goal-color-input');
             const selectedColorOption = e.target.querySelector('.editing-goal-color-picker .color-option.selected');
             const selectedColorName = selectedColorOption ? selectedColorOption.dataset.color : 'blue';
-            
-            const colorMap = {
-                'blue': '#3586ff',
-                'green': '#4caf50',
-                'red': '#f44336',
-                'yellow': '#ffeb3b',
-                'purple': '#9c27b0',
-                'pink': '#ff66cc',
-                'orange': '#ff9800'
-            };
-            const newColor = colorMap[selectedColorName] || '#3586ff';
+            const normalizedColorName = getColorNameFromValue(selectedColorName);
+            const newColorHex = getColorHexFromName(normalizedColorName);
 
             if (newName && !isNaN(newTarget) && newTarget > 0) {
                 goal.name = newName;
                 goal.target = newTarget;
-                goal.color = newColor;
+                goal.color = newColorHex;
+                goal.colorName = normalizedColorName;
                 goal.icon = newIcon;
                 goal.interestRate = newInterest;
                 goal.deadline = newDeadline;
@@ -5561,51 +5721,48 @@ body.dark-mode #remove-schedule-btn:hover {
 
         taskTimeInput.value = taskToEdit.time;
         taskDescriptionInput.value = taskToEdit.description;
-        taskPriorityInput.checked = taskToEdit.priority === 'alta'; 
-        
+        taskPriorityInput.checked = taskToEdit.priority === 'alta';
+
         addTaskBtn.textContent = 'salvar';
         addTaskBtn.classList.add('save-edit-btn');
         taskFormModal.setAttribute('data-editing-id', taskId);
         taskFormTitle.textContent = 'editar tarefa';
         taskIconHiddenInput.value = taskToEdit.icon;
-        
-        // Determina a cor e o ícone base do ícone salvo
-        const iconPath = taskToEdit.icon;
-        let iconName = 'lista'; // padrão
-        let iconColor = 'blue'; // padrão
-        
-        // Extrai o nome do ícone e a cor do caminho
-        if (iconPath.includes('/colored/')) {
-            const pathParts = iconPath.split('/');
-            const fileName = pathParts[pathParts.length - 1];
-            iconName = fileName.replace('.svg', '');
-            const colorPart = pathParts[pathParts.length - 2];
-            iconColor = colorPart;
-        } else {
-            // Para ícones antigos que não usam a pasta colored, tenta encontrar o nome
-            const iconKey = Object.keys(taskIcons).find(key => taskIcons[key] === iconPath);
-            if (iconKey) {
-                iconName = iconKey;
-                iconColor = 'blue'; // assume azul para ícones antigos
-            }
+
+        if (taskIconPicker && taskIconPicker.children.length === 0) {
+            renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons, null, taskColorPicker);
         }
-        
-        // Reset todos os ícones para azul primeiro
+
+        const iconPath = taskToEdit.icon;
+        const iconName = getIconKeyFromPath(iconPath);
+        const iconColor = normalizeIconColor(taskToEdit.color || taskToEdit.iconColor || getIconColorFromPath(iconPath));
+
+        if (taskColorPicker && taskIconColorInput) {
+            selectColorOption(taskColorPicker, iconColor);
+            taskIconColorInput.value = iconColor;
+        }
+
+        applyColorToIconOptions(taskIconPicker, iconColor);
+
+        let selectedOption = null;
         taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-            const optionIconName = option.dataset.iconName;
-            const bluePath = getColoredIcons(optionIconName, 'blue');
-            const img = option.querySelector('img');
-            img.src = bluePath;
-            img.className = 'icon-color-blue';
-            img.dataset.color = 'blue';
+            const isSelected = option.dataset.iconName === iconName;
+            option.classList.toggle('selected', isSelected);
+            if (isSelected) {
+                selectedOption = option;
+            }
         });
-        
-        // Seleciona o ícone correto
-        taskIconPicker.querySelectorAll('.task-icon-option').forEach(option => {
-            option.classList.toggle('selected', option.dataset.iconName === iconName);
-        });
-        
-        
+
+        if (!selectedOption) {
+            selectedOption = taskIconPicker.querySelector('.task-icon-option');
+            selectedOption?.classList.add('selected');
+        }
+
+        if (selectedOption) {
+            taskIconHiddenInput.value = selectedOption.dataset.iconPath;
+        }
+
+
 
         if (taskToEdit.recurrenceId) {
             recurrenceTypeInput.value = 'none';
@@ -5858,30 +6015,40 @@ body.dark-mode #remove-schedule-btn:hover {
         // Mapeamento dos nomes do código para os nomes dos arquivos (cores aplicadas via CSS)
         const iconNameMap = {
             "nenhum": "circledashed",
-            "lista": "shopping", 
+            "lista": "circledots",
             "compras": "shopping",
+            "círculo": "circle",
             "médico": "health",
             "medicação": "pills",
             "dentista": "tooth",
+            "escova": "hairbrush",
             "dinheiro": "money",
             "coração": "heart",
             "pet": "pet",
             "exercício": "gym",
+            "esportes": "football",
+            "caminhada": "walking",
             "meditação": "meditation",
             "trabalho": "work",
             "beleza": "hairbrush",
             "comida": "burger",
+            "bebida": "drink",
+            "pizza": "pizza",
             "presente": "gift",
             "aniversário": "birthday",
             "festa": "party",
             "férias": "vacation",
             "viagem": "plane",
             "reunião": "people",
+            "pessoas": "people",
             "computador": "computer",
             "filme": "picture",
+            "mídia": "picture",
+            "jogo": "game",
             "cogumelo": "mushroom",
             "estudo": "study",
             "casa": "house",
+            "lar": "hearthome",
             "carro": "plane",
             "câmera": "picture",
             "unhas": "nails",
@@ -5915,12 +6082,58 @@ body.dark-mode #remove-schedule-btn:hover {
             "lesma": "snail",
             "estrela": "star",
             "dente": "tooth",
-            "escova de dente": "hairbrush"
+            "escova de dente": "hairbrush",
+            "música": "music",
+            "arma": "gun"
         };
-        
+
         // Retorna ícones sem pasta colorida (cores aplicadas via CSS)
         const fileName = iconNameMap[iconName] || iconName;
         return `./images/${fileName}.svg`;
+    }
+
+    function normalizeIconColor(color) {
+        return supportedIconColors.includes(color) ? color : 'blue';
+    }
+
+    function getIconKeyFromPath(iconPath) {
+        if (!iconPath) return 'nenhum';
+        const cleanPath = iconPath.split('?')[0];
+        const fileName = cleanPath.substring(cleanPath.lastIndexOf('/') + 1).replace('.svg', '');
+        return iconFileNameToKeyMap[fileName] || 'nenhum';
+    }
+
+    function applyColorToIconOptions(pickerElement, color) {
+        if (!pickerElement) return;
+        const normalizedColor = normalizeIconColor(color);
+        pickerElement.querySelectorAll('.task-icon-option').forEach(option => {
+            const iconName = option.dataset.iconName;
+            if (!iconName) return;
+            const coloredPath = getColoredIcons(iconName, normalizedColor);
+            option.dataset.iconPath = coloredPath;
+
+            let img = option.querySelector('img');
+            if (!img) {
+                img = document.createElement('img');
+                option.appendChild(img);
+            }
+
+            img.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
+            img.className = `icon-color-${normalizedColor}`;
+            img.dataset.color = normalizedColor;
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'contain';
+            img.style.borderRadius = '5px';
+        });
+    }
+
+    function selectColorOption(colorPickerElement, color) {
+        if (!colorPickerElement) return;
+        const normalizedColor = normalizeIconColor(color);
+        colorPickerElement.querySelectorAll('.color-option').forEach(option => {
+            option.classList.toggle('selected', option.dataset.color === normalizedColor);
+        });
     }
 
 
@@ -7241,7 +7454,7 @@ body.dark-mode #remove-schedule-btn:hover {
         
         renderIconPicker(taskIconPicker, taskIconHiddenInput, taskIcons, null, taskColorPicker);
         renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons, null, document.getElementById('editor-list-color-picker'));
-        renderIconPicker(goalIconPicker, goalIconHiddenInput, taskIcons);
+        renderGoalIconPicker();
         renderIconPicker(listIconPickerGrid, null, taskIcons, selectListIcon, listColorPicker);
         renderIconPicker(categoryIconPicker, categoryIconHiddenInput, taskIcons, null, null);
         
