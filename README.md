@@ -1,5 +1,3 @@
-OrganizatIO: Planeje. Organize. Controle.
-
 - Planner mensal inteligente — visualize e agende suas tarefas, compromissos e listas diretamente no calendário.
 - Finanças com propósito — acompanhe suas transações mensais, defina metas financeiras e de investimento, e veja sua evolução rumo aos seus objetivos. Gráficos mostram sua evolução e ajudam a controlar seus gastos.
 - Integração total — listas de tarefas ou compras se integram automaticamente ao planner e ao financeiro, refletindo seus hábitos e gastos de forma dinâmica.
