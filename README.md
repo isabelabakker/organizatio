@@ -1,6 +1,6 @@
 # 🗂️ OrganizatIO
 
-Planeje, organize e controle: o **OrganizatIO** é um aplicativo de **organização pessoal** que integra **agenda, controle financeiro e listas** em uma interface prática, intuitiva e elegante. 
+Planeje, organize e controle: **OrganizatIO** é um aplicativo de **organização pessoal** que integra **agenda, controle financeiro e listas** em uma interface prática, intuitiva e elegante. 
 
 ---
 
