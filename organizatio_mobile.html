@@ -3593,7 +3593,7 @@ body.dark-mode #remove-schedule-btn:hover {
     // --- ÍCONES DE TAREFAS (USADOS TAMBÉM PARA LISTAS) ---
     const taskIcons = {
         // === ÍCONES CIRCULARES/BÁSICOS ===
-        "nenhum": "./images/circledashed.svg", "coração": "./images/heart.svg", "estrela": "./images/star.svg", "dinheiro": "./images/money.svg",
+        "nenhum": "./images/circledashed.svg", "lista": "./images/circledashed.svg", "coração": "./images/heart.svg", "estrela": "./images/star.svg", "dinheiro": "./images/money.svg",
         
         // === SAÚDE E BEM-ESTAR ===
         "médico": "./images/health.svg", "medicação": "./images/pills.svg", "dentista": "./images/tooth.svg", "escova": "./images/hairbrush.svg", 
@@ -3658,10 +3658,25 @@ body.dark-mode #remove-schedule-btn:hover {
     function getColorNameFromValue(colorValue) {
         if (!colorValue) return 'blue';
         const normalized = colorValue.toString().trim().toLowerCase();
+
         if (iconColorHexMap[normalized]) {
             return normalized;
         }
-        return hexToIconColorMap[normalized] || 'blue';
+
+        if (hexToIconColorMap[normalized]) {
+            return hexToIconColorMap[normalized];
+        }
+
+        const rgbMatch = normalized.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+        if (rgbMatch) {
+            const [r, g, b] = rgbMatch.slice(1, 4).map(Number);
+            const hex = '#' + [r, g, b]
+                .map(value => value.toString(16).padStart(2, '0'))
+                .join('');
+            return hexToIconColorMap[hex] || 'blue';
+        }
+
+        return 'blue';
     }
 
     function normalizeGoalColorData(goal) {
@@ -3678,6 +3693,68 @@ body.dark-mode #remove-schedule-btn:hover {
             goal.colorName = colorName;
             changed = true;
         }
+        return changed;
+    }
+
+    function sanitizeIconPath(iconSrc) {
+        if (!iconSrc) return '';
+        const withoutQuery = iconSrc.split('?')[0];
+        const imagesIndex = withoutQuery.indexOf('/images/');
+        if (imagesIndex !== -1) {
+            return '.' + withoutQuery.substring(imagesIndex);
+        }
+        const relativeIndex = withoutQuery.indexOf('images/');
+        if (relativeIndex !== -1) {
+            const path = withoutQuery.substring(relativeIndex);
+            return path.startsWith('./') ? path : `./${path}`;
+        }
+        if (withoutQuery.startsWith('/')) {
+            return `.${withoutQuery}`;
+        }
+        return withoutQuery.startsWith('./') ? withoutQuery : `./${withoutQuery}`;
+    }
+
+    function normalizeListData(list) {
+        if (!list) return false;
+        let changed = false;
+        let inferredColorName = null;
+
+        if (list.icon && list.icon.includes('images/colored/')) {
+            inferredColorName = getIconColorFromPath(list.icon);
+            const fileName = list.icon.split('/').pop();
+            const iconName = fileName.replace('.svg', '');
+            const newIconName = legacyIconNameMap[iconName] || iconName;
+            const newIconPath = `./images/${newIconName}.svg`;
+            if (list.icon !== newIconPath) {
+                list.icon = newIconPath;
+                changed = true;
+            }
+        }
+
+        const sanitizedIcon = sanitizeIconPath(list.icon || '');
+        if (sanitizedIcon && sanitizedIcon !== list.icon) {
+            list.icon = sanitizedIcon;
+            changed = true;
+        }
+
+        if (!list.icon) {
+            list.icon = sanitizeIconPath(taskIcons.lista || taskIcons.nenhum || './images/circledashed.svg');
+            changed = true;
+        }
+
+        const resolvedColorName = getColorNameFromValue(list.colorName || list.color || inferredColorName);
+        const resolvedColorHex = getColorHexFromName(resolvedColorName);
+
+        if (list.color !== resolvedColorHex) {
+            list.color = resolvedColorHex;
+            changed = true;
+        }
+
+        if (list.colorName !== resolvedColorName) {
+            list.colorName = resolvedColorName;
+            changed = true;
+        }
+
         return changed;
     }
 
@@ -3989,6 +4066,20 @@ body.dark-mode #remove-schedule-btn:hover {
     function saveLists() {
         const lists = Array.from(listsContainer.querySelectorAll('.list')).map(listDiv => {
             const isShopping = listDiv.dataset.isShopping === 'true';
+            const iconImg = listDiv.querySelector('.list-title-icon');
+            const rawBorderColor = listDiv.style.borderLeftColor || window.getComputedStyle(listDiv).borderLeftColor || null;
+            const colorName = listDiv.dataset.colorName || (iconImg ? iconImg.dataset.color : null) || getColorNameFromValue(rawBorderColor);
+            const colorHex = getColorHexFromName(colorName);
+            const sanitizedIcon = sanitizeIconPath(iconImg ? iconImg.src : '');
+            const iconPath = sanitizedIcon || sanitizeIconPath(taskIcons.lista || taskIcons.nenhum || './images/circledashed.svg');
+
+            if (iconImg) {
+                iconImg.dataset.color = colorName;
+            }
+            listDiv.dataset.colorName = colorName;
+
+            const colorValue = rawBorderColor || colorHex;
+
             const items = Array.from(listDiv.querySelectorAll('ul li')).map(li => {
                 const baseItem = {
                     text: li.querySelector('.list-item-content span').textContent.trim(),
@@ -4011,8 +4102,9 @@ body.dark-mode #remove-schedule-btn:hover {
                 name: listDiv.querySelector('h2').textContent.trim(),
                 items: items,
                 priority: listDiv.querySelector('.list-priority-select').value,
-                icon: listDiv.querySelector('.list-title-icon').src,
-                color: listDiv.style.borderLeftColor || null,
+                icon: iconPath,
+                color: colorValue,
+                colorName: colorName,
                 isShoppingList: isShopping,
                 isFinalized: listDiv.classList.contains('finalized'),
                 isRoutine: isRoutine,
@@ -4029,7 +4121,7 @@ body.dark-mode #remove-schedule-btn:hover {
         const listsData = JSON.parse(localStorage.getItem('todoLists')) || [];
         const todayString = new Date().toISOString().split('T')[0];
 
-        // Lógica de Reset de Rotinas
+        // Lógica de Reset de Rotinas e normalização de dados
         let listsModified = false;
         listsData.forEach(listData => {
             if (listData.isRoutine && listData.lastCompletedDate && listData.lastCompletedDate < todayString) {
@@ -4037,27 +4129,32 @@ body.dark-mode #remove-schedule-btn:hover {
                 listData.lastCompletedDate = null;
                 listsModified = true;
             }
+
+            if (normalizeListData(listData)) {
+                listsModified = true;
+            }
         });
 
-        // Se alguma rotina foi resetada, salva a alteração antes de renderizar
+        // Se alguma rotina foi resetada ou dados normalizados, salva antes de renderizar
         if (listsModified) {
             localStorage.setItem('todoLists', JSON.stringify(listsData));
         }
-        
+
         // Renderização das listas
         listsData.forEach(listData => {
             createList(
-                listData.name, 
-                listData.items, 
-                listData.priority, 
-                listData.id, 
-                listData.icon, 
-                listData.isShoppingList, 
+                listData.name,
+                listData.items,
+                listData.priority,
+                listData.id,
+                listData.icon,
+                listData.isShoppingList,
                 listData.isFinalized,
                 listData.isRoutine,
                 listData.transactionId,
                 listData.transactionMonth,
-                listData.color
+                listData.color,
+                listData.colorName
             );
         });
     }
@@ -4199,22 +4296,30 @@ body.dark-mode #remove-schedule-btn:hover {
                     'orange': '#ff9800'
                 };
                 const color = colorMap[selectedColor] || '#3586ff';
-                
+
                 // Atualiza o ícone da lista
-                listDiv.querySelector('.list-title-icon').src = iconPath;
-                
+                const iconImg = listDiv.querySelector('.list-title-icon');
+                const sanitizedIcon = sanitizeIconPath(iconPath);
+                if (iconImg) {
+                    iconImg.src = sanitizedIcon + '?t=' + Date.now();
+                    iconImg.className = 'list-title-icon icon-color-' + selectedColor;
+                    iconImg.dataset.color = selectedColor;
+                }
+
                 // Atualiza a cor da borda da lista para combinar com o ícone
                 listDiv.style.borderLeftColor = color;
-                
+                listDiv.dataset.colorName = selectedColor;
+
                 // Salva a lista com a nova cor
                 const allLists = JSON.parse(localStorage.getItem('todoLists')) || [];
                 const listIndex = allLists.findIndex(list => list.id === currentListIconBeingEdited);
                 if (listIndex !== -1) {
-                    allLists[listIndex].icon = iconPath;
+                    allLists[listIndex].icon = sanitizedIcon;
                     allLists[listIndex].color = color;
+                    allLists[listIndex].colorName = selectedColor;
                     localStorage.setItem('todoLists', JSON.stringify(allLists));
                 }
-                
+
                 saveLists();
             }
         }
@@ -4252,22 +4357,34 @@ body.dark-mode #remove-schedule-btn:hover {
         const currentPriority = listData.priority || 'baixa';
         editorListPriorityInput.value = currentPriority;
         
-        // Obtém a cor baseada na prioridade
-        const currentColorName = getColorNameFromPriority(currentPriority);
-        
+        // Obtém a cor baseada nos dados salvos ou prioridade
+        const storedColorName = listData.colorName || getColorNameFromValue(listData.color);
+        const currentColorName = storedColorName || getColorNameFromPriority(currentPriority);
+
         // Renderiza o picker de ícones com a cor da prioridade
         renderIconPicker(editorListIconPicker, editorListIconInput, taskIcons, null, null);
-        
+
         // Aplica a cor aos ícones
         editorListIconPicker.querySelectorAll('.task-icon-option img').forEach(img => {
             img.className = 'icon-color-' + currentColorName;
             img.dataset.color = currentColorName;
         });
-        
+
+        const editorListColorInput = document.getElementById('editor-list-color-main');
+        if (editorListColorInput) {
+            editorListColorInput.value = currentColorName;
+        }
+        const editorListColorPicker = document.getElementById('editor-list-color-picker');
+        if (editorListColorPicker) {
+            editorListColorPicker.querySelectorAll('.color-option').forEach(option => {
+                option.classList.toggle('selected', option.dataset.color === currentColorName);
+            });
+        }
+
         // Agora seleciona o ícone atual
-        const currentIconPath = listData.icon;
+        const currentIconPath = sanitizeIconPath(listData.icon);
         editorListIconInput.value = currentIconPath;
-        
+
         // Procura pelo nome do ícone
         const currentIconName = Object.keys(taskIcons).find(key => {
             return currentIconPath.includes(taskIcons[key].split('/').pop().replace('.svg', ''));
@@ -5966,9 +6083,11 @@ body.dark-mode #remove-schedule-btn:hover {
             "coração": "heart",
             "pet": "pet",
             "exercício": "gym",
+            "esportes": "football",
             "meditação": "meditation",
             "trabalho": "work",
             "beleza": "hairbrush",
+            "escova": "hairbrush",
             "comida": "burger",
             "presente": "gift",
             "aniversário": "birthday",
@@ -5976,8 +6095,10 @@ body.dark-mode #remove-schedule-btn:hover {
             "férias": "vacation",
             "viagem": "plane",
             "reunião": "people",
+            "pessoas": "people",
             "computador": "computer",
             "filme": "picture",
+            "mídia": "picture",
             "cogumelo": "mushroom",
             "estudo": "study",
             "casa": "house",
@@ -6301,7 +6422,7 @@ body.dark-mode #remove-schedule-btn:hover {
     }
 
 
-    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = taskIcons.lista, isShoppingList = false, isFinalized = false, isRoutine = false, transactionId = null, transactionMonth = null, borderColor = null) {
+    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = taskIcons.lista, isShoppingList = false, isFinalized = false, isRoutine = false, transactionId = null, transactionMonth = null, borderColor = null, iconColorName = null) {
         if (!listName) return;
 
         const listDiv = document.createElement("div");
@@ -6316,15 +6437,15 @@ body.dark-mode #remove-schedule-btn:hover {
             listDiv.dataset.transactionMonth = transactionMonth;
         }
         
-        // Define a cor da borda baseada na prioridade
+        // Define a cor da borda baseada na prioridade ou na cor informada
         const isDarkMode = document.body.classList.contains('dark-mode');
-        if (borderColor) {
-            listDiv.style.borderLeftColor = borderColor;
-        } else {
-            const color = getPriorityColor(initialPriority, isDarkMode);
-            listDiv.style.borderLeftColor = color;
-        }
-        
+        const normalizedBorderColorName = borderColor ? getColorNameFromValue(borderColor) : null;
+        const resolvedBorderColor = borderColor || getPriorityColor(initialPriority, isDarkMode);
+        listDiv.style.borderLeftColor = resolvedBorderColor;
+
+        const resolvedIconColorName = (iconColorName || normalizedBorderColorName || getColorNameFromValue(resolvedBorderColor) || getColorNameFromPriority(initialPriority) || 'blue');
+        listDiv.dataset.colorName = resolvedIconColorName;
+
         const titleContainer = document.createElement('div');
         titleContainer.className = 'list-title-container';
         titleContainer.style.display = 'flex';
@@ -6332,15 +6453,31 @@ body.dark-mode #remove-schedule-btn:hover {
         titleContainer.style.alignItems = 'center';
         titleContainer.style.marginBottom = '10px';
         const iconImg = document.createElement('img');
-        
-        // Aplica a cor do ícone baseada na prioridade
-        const colorName = getColorNameFromPriority(initialPriority);
-        const iconFileName = (isShoppingList ? (listIcon === taskIcons.lista ? taskIcons.compras : listIcon) : listIcon).split('/').pop().replace('.svg', '');
-        const iconName = Object.keys(taskIcons).find(key => taskIcons[key].includes(iconFileName)) || 'compras';
-        const coloredIconPath = getColoredIcons(iconName, colorName);
-        
-        iconImg.src = coloredIconPath + '?t=' + Date.now();
-        iconImg.className = 'list-title-icon icon-color-' + colorName;
+
+        const defaultIconPath = sanitizeIconPath(taskIcons.lista || taskIcons.nenhum || './images/circledashed.svg');
+        let resolvedIconPath = sanitizeIconPath(listIcon || '');
+
+        if (resolvedIconPath.includes('images/colored/')) {
+            const fileName = resolvedIconPath.split('/').pop();
+            const iconNameFromLegacy = fileName.replace('.svg', '');
+            const newIconName = legacyIconNameMap[iconNameFromLegacy] || iconNameFromLegacy;
+            resolvedIconPath = `./images/${newIconName}.svg`;
+        }
+
+        if (!resolvedIconPath) {
+            resolvedIconPath = defaultIconPath;
+        }
+
+        if (isShoppingList) {
+            const shoppingIconPath = sanitizeIconPath(taskIcons.compras || defaultIconPath);
+            if (!listIcon || resolvedIconPath === defaultIconPath) {
+                resolvedIconPath = shoppingIconPath;
+            }
+        }
+
+        iconImg.src = resolvedIconPath + '?t=' + Date.now();
+        iconImg.className = 'list-title-icon icon-color-' + resolvedIconColorName;
+        iconImg.dataset.color = resolvedIconColorName;
         const title = document.createElement("h2");
         title.textContent = listName;
         title.style.margin = 0;
@@ -6377,7 +6514,7 @@ body.dark-mode #remove-schedule-btn:hover {
             
             // Atualiza a cor da borda
             listDiv.style.borderLeftColor = newColor;
-            
+
             // Atualiza o ícone com a nova cor
             const currentIconSrc = iconImg.src;
             const iconFileName = currentIconSrc.split('/').pop().split('?')[0].replace('.svg', '');
@@ -6385,7 +6522,9 @@ body.dark-mode #remove-schedule-btn:hover {
             const newIconPath = getColoredIcons(iconName, newColorName);
             iconImg.src = newIconPath + '?t=' + Date.now();
             iconImg.className = 'list-title-icon icon-color-' + newColorName;
-            
+            iconImg.dataset.color = newColorName;
+            listDiv.dataset.colorName = newColorName;
+
             saveLists();
         };
 
@@ -6754,12 +6893,13 @@ body.dark-mode #remove-schedule-btn:hover {
 
         const listId = editorListIdInput.value;
         const newName = editorListNameInput.value.trim();
-        const newListIcon = editorListIconInput.value;
+        let newListIcon = sanitizeIconPath(editorListIconInput.value);
         const newPriority = editorListPriorityInput.value;
-        
+
         // Obtém a cor baseada na prioridade
         const isDarkMode = document.body.classList.contains('dark-mode');
         const newColor = getPriorityColor(newPriority, isDarkMode);
+        const newColorName = getColorNameFromValue(newColor);
 
         if (!newName) {
             alert("O nome da lista não pode ficar em branco.");
@@ -6769,10 +6909,22 @@ body.dark-mode #remove-schedule-btn:hover {
         let allLists = JSON.parse(localStorage.getItem('todoLists')) || [];
         const listIndex = allLists.findIndex(list => list.id === listId);
         if (listIndex > -1) {
-            allLists[listIndex].name = newName;
-            allLists[listIndex].icon = newListIcon;
-            allLists[listIndex].priority = newPriority;
-            allLists[listIndex].color = newColor;
+            const existingList = allLists[listIndex];
+            const priorityChanged = existingList.priority !== newPriority;
+            const colorValue = priorityChanged ? newColor : (existingList.color || newColor);
+            const colorNameValue = priorityChanged
+                ? newColorName
+                : (existingList.colorName || getColorNameFromValue(existingList.color) || getColorNameFromPriority(newPriority));
+
+            if (!newListIcon) {
+                newListIcon = sanitizeIconPath(existingList.icon);
+            }
+
+            existingList.name = newName;
+            existingList.icon = newListIcon;
+            existingList.priority = newPriority;
+            existingList.color = colorValue;
+            existingList.colorName = colorNameValue;
         }
         localStorage.setItem('todoLists', JSON.stringify(allLists));
 
