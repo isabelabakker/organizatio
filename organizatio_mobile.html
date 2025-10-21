@@ -96,7 +96,7 @@
       --category-icon-filter: grayscale(100%) brightness(0.55);
       
       /* Typography */
-      --font-size-xs: 12px;
+      --font-size-xs: 13px;
       --font-size-sm: 14px;
       --font-size-md: 16px;
       --font-size-lg: 18px;
@@ -142,6 +142,21 @@
       padding: 0;
       text-transform: lowercase;
       transition: background 0.3s, color 0.3s;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    input,
+    select,
+    textarea {
+      font-size: var(--font-size-md);
+      line-height: var(--line-height-normal);
+    }
+
+    label,
+    button {
+      font-size: var(--font-size-sm);
     }
 
     /* === COMPONENT SYSTEM === */
@@ -280,6 +295,9 @@
       margin: 0 auto;
       padding: var(--space-lg);
       padding-bottom: 20px;
+      flex: 1 0 auto;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .grid {
@@ -305,6 +323,19 @@
 
     .items-center {
       align-items: center;
+    }
+
+    .task-form-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .task-form-input {
+      flex: 1 1 0;
+      width: 100%;
+      box-sizing: border-box;
+      min-width: 0;
     }
 
     .justify-between {
@@ -375,7 +406,7 @@
 
     /* === MOBILE NAVIGATION === */
     .bottom-nav {
-      position: fixed;
+      position: sticky;
       bottom: 0;
       left: 0;
       right: 0;
@@ -386,18 +417,20 @@
       z-index: 1000;
       height: 70px;
       box-sizing: border-box;
+      margin-top: auto;
+      width: 100%;
+      box-shadow: var(--shadow-sm);
     }
 
     /* Add padding to body to prevent content overlap */
     body {
       padding-bottom: 0;
-      min-height: 100vh;
     }
 
     /* Add padding on mobile */
     @media (max-width: 768px) {
       body {
-        padding-bottom: 80px;
+        padding-bottom: 0;
       }
     }
 
@@ -455,7 +488,12 @@
       }
 
       .container {
-        padding-bottom: 90px !important; /* Space for bottom nav */
+        padding-bottom: 20px !important;
+      }
+
+      .task-form-row {
+        flex-direction: column;
+        align-items: stretch;
       }
 
       .btn-full-mobile {
@@ -603,19 +641,15 @@
         transition: background 0.3s, border-color 0.3s;
     }
     
-    #newListForm input[type="text"],
-    #newListForm input[type="date"],
-    #newListForm input[type="time"],
-    #newListForm select,
     #newListForm label,
     #newListForm button[type="submit"] {
-        font-size: 12px !important;
+        font-size: var(--font-size-sm);
     }
     
     #planner-link-options label,
     #routine-options label,
     #list-weekly-recurrence-options label {
-        font-size: 11px !important;
+        font-size: var(--font-size-xs);
     }
 
     
@@ -888,19 +922,22 @@
 
     .lists-container {
       display: none; /* Inicialmente escondido, será mostrado apenas na aba de listas */
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 20px;
-      justify-content: center;
-      align-items: flex-start;
+      align-items: stretch;
       position: relative;
       z-index: 10;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
     }
     .list {
       background: #fff;
       padding: 15px;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      width: 280px; /* Aumentado para acomodar valores */
+      width: 100%;
+      max-width: 100%;
       transition: opacity 0.3s ease, background 0.3s, border-color 0.3s;
       flex-shrink: 0;
       border-left: 5px solid transparent;
@@ -971,7 +1008,7 @@
         border-radius: 5px;
         border: 1px solid #ccc;
         background-color: #f9f9f9;
-        font-size: 9px;
+        font-size: var(--font-size-sm);
     }
 
     .list.priority-baixa { border-left-color: #3586ff; }
@@ -1013,7 +1050,7 @@
     
     .list-item-value {
         color: #888;
-        font-size: 12px;
+        font-size: var(--font-size-xs);
         margin-left: auto;
         padding-left: 10px; /* Espaçamento do texto */
         flex-shrink: 0; /* Não encolher */
@@ -1033,7 +1070,7 @@
 
     .list-item-value-input {
       width: 45px;
-      font-size: 12px;
+      font-size: var(--font-size-xs);
       text-align: right;
       border-color: #ccc;
       padding: 2px 4px;
@@ -1045,7 +1082,7 @@
     }
 
     .list-item-actions button {
-      font-size: 12px;
+      font-size: var(--font-size-xs);
       margin-left: 4px;
     }
     
@@ -1308,7 +1345,7 @@
 
     #taskIconPicker .task-icon-option:first-child,
     #list-event-icon-picker .task-icon-option:first-child {
-        font-size: 10px;
+        font-size: var(--font-size-xs);
         line-height: 1;
         text-align: center;
         font-weight: bold;
@@ -1425,7 +1462,7 @@
     }
     #expense-category-list-container div button,
     #revenue-category-list-container div button {
-      font-size: 12px;
+      font-size: var(--font-size-xs);
       padding: 3px 8px;
       margin-left: 4px;
     }
@@ -1458,7 +1495,7 @@
         top: 0;
         line-height: 20px;
         text-align: center;
-        font-size: 12px;
+        font-size: var(--font-size-xs);
         font-weight: bold;
         color: white;
         mix-blend-mode: difference;
@@ -1483,7 +1520,7 @@
     /* Mobile-friendly table styles */
     @media (max-width: 768px) {
         #expense-table {
-            font-size: 12px;
+            font-size: var(--font-size-xs);
         }
         
         #expense-table th,
@@ -1533,7 +1570,7 @@
       text-align: left;
     }
     .goal-header .actions button {
-      font-size: 12px;
+      font-size: var(--font-size-xs);
       padding: 8px;
       margin-left: 5px;
     }
@@ -1553,7 +1590,7 @@
       list-style: none;
       padding: 0;
       margin-top: 10px;
-      font-size: 12px;
+      font-size: var(--font-size-xs);
       color: #666;
       max-height: 100px;
       overflow-y: auto;
@@ -1571,7 +1608,7 @@
     }
     .contribution-history-list li input {
         width: 80px;
-        font-size: 12px;
+        font-size: var(--font-size-xs);
         padding: 2px 4px;
         margin: 0 5px;
     }
@@ -2008,7 +2045,7 @@
     /* ================================================================ */
     .routine-complete-message {
         text-align: center;
-        font-size: 12px;
+        font-size: var(--font-size-xs);
         font-style: italic;
         color: #4CAF50;
         margin-top: 10px;
@@ -2061,7 +2098,7 @@
       
       .mensal-sub-toggle {
         padding: 8px 6px;
-        font-size: 12px;
+        font-size: var(--font-size-xs);
         min-width: 70px;
       }
       
@@ -2073,7 +2110,7 @@
       }
       
       .calendar-day-number {
-        font-size: 9px;
+        font-size: var(--font-size-sm);
         top: 1px;
         right: 3px;
       }
@@ -2084,7 +2121,7 @@
       }
       
       .calendar-day-name {
-        font-size: 8px;
+        font-size: var(--font-size-xs);
         padding: 4px 1px;
       }
       
@@ -2243,7 +2280,7 @@
 
       /* Ajusta o número do dia para mobile */
       .calendar-day-number {
-        font-size: 10px;
+        font-size: var(--font-size-xs);
         top: 2px;
         right: 4px;
       }
@@ -2267,7 +2304,7 @@
 
       /* Reduz o texto dos dias da semana para economizar espaço */
       .calendar-day-name {
-        font-size: 10px;
+        font-size: var(--font-size-xs);
         padding: 6px 2px;
       }
       
@@ -2430,7 +2467,8 @@
       
       /* Centraliza listas no mobile */
       .lists-container {
-        justify-content: center;
+        justify-content: flex-start;
+        align-items: stretch;
       }
       
       .form-inputs input {
@@ -2993,9 +3031,9 @@ body.dark-mode #remove-schedule-btn:hover {
                     <button class="close-button back-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
                     <h3 id="task-form-title">adicionar tarefa</h3>
                     <form id="task-form-modal">
-                        <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 10px; align-items: center; margin-top: 30px;">
-                            <input type="time" id="taskTime" value="09:00" style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
-                            <input type="text" id="taskDescription" placeholder="descrição da tarefa" required style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                        <div class="task-form-row" style="margin-top: 30px;">
+                            <input type="time" id="taskTime" value="09:00" class="task-form-input" style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                            <input type="text" id="taskDescription" placeholder="descrição da tarefa" required class="task-form-input" style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
                         </div>
                         <div style="margin: 10px 0; display: flex; align-items: center;">
                             <input type="checkbox" id="taskPriority" style="width: 18px; height: 18px; margin-right: 8px; cursor: pointer;">
@@ -3029,7 +3067,7 @@ body.dark-mode #remove-schedule-btn:hover {
                             <input type="date" id="recurrenceEndDate" title="data final da recorrência" style="display:none;">
                         </div>
                         <div id="weekly-recurrence-options" style="display: none; margin-bottom: 10px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
-                            <label style="display: block; margin-bottom: 5px; font-size: 12px; font-weight: bold;">repetir nos dias:</label>
+                            <label style="display: block; margin-bottom: 5px; font-size: var(--font-size-sm); font-weight: bold;">repetir nos dias:</label>
                             <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 5px; font-size: 14px;">
                                 <label><input type="checkbox" name="weekday" value="0"> dom</label>
                                 <label><input type="checkbox" name="weekday" value="1"> seg</label>
@@ -3177,7 +3215,7 @@ body.dark-mode #remove-schedule-btn:hover {
                              <input type="number" id="newGoalInterestRate" placeholder="juros mensais (%)" step="0.01">
                             <div style="text-align: right;">
                                 <input type="checkbox" id="newGoalHasDeadline" style="width: auto; vertical-align: middle;">
-                                <label for="newGoalHasDeadline" style="font-size: 12px; vertical-align: middle; cursor: pointer;">definir prazo</label>
+                                <label for="newGoalHasDeadline" style="font-size: var(--font-size-sm); vertical-align: middle; cursor: pointer;">definir prazo</label>
                             </div>
                         </div>
                         <input type="date" id="newGoalDeadline" style="display: none;">
@@ -3224,7 +3262,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div id="categoryIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;"></div>
                         <input type="hidden" id="categoryIcon" value="">
                         
-                        <p style="font-size: 12px; color: #888; margin-top: 10px; text-align: center;">
+                        <p style="font-size: var(--font-size-xs); color: #888; margin-top: 10px; text-align: center;">
                             💡 A cor do ícone é definida automaticamente pelo nome da categoria
                         </p>
                         
@@ -3250,10 +3288,10 @@ body.dark-mode #remove-schedule-btn:hover {
         <div id="listas-section" class="mensal-content-section" style="display: none;">
             <form id="newListForm">
                 <div id="newListForm-main-line" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                    <input type="text" id="newListName" placeholder="nome da nova lista" required style="flex-grow: 1; min-width: 200px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px;">
+                    <input type="text" id="newListName" placeholder="nome da nova lista" required style="flex-grow: 1; min-width: 200px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: var(--font-size-md);">
                     
                     <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
-                        <select id="newListPriority" style="text-transform: none; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px;">
+                        <select id="newListPriority" style="text-transform: none; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: var(--font-size-md);">
                             <option value="baixa">prioridade: baixa</option>
                             <option value="media">prioridade: média</option>
                             <option value="alta">prioridade: alta</option>
@@ -3298,8 +3336,8 @@ body.dark-mode #remove-schedule-btn:hover {
                         </select>
                         <input type="date" id="list-recurrence-end-date" title="data final da recorrência" style="display: none;">
                         <div id="list-weekly-recurrence-options" style="display: none; margin-top: 5px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
-                            <label style="display: block; margin-bottom: 5px; font-size: 11px; font-weight: bold;">repetir nos dias:</label>
-                            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 5px; font-size: 11px;">
+                            <label style="display: block; margin-bottom: 5px; font-size: var(--font-size-sm); font-weight: bold;">repetir nos dias:</label>
+                            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 5px; font-size: var(--font-size-xs);">
                                 <label><input type="checkbox" name="list-weekday" value="0"> dom</label>
                                 <label><input type="checkbox" name="list-weekday" value="1"> seg</label>
                                 <label><input type="checkbox" name="list-weekday" value="2"> ter</label>
@@ -3383,7 +3421,7 @@ body.dark-mode #remove-schedule-btn:hover {
 
             <div>
                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">Prioridade (define a cor do ícone):</label>
-                <select id="editor-list-priority" style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: 13px;">
+                <select id="editor-list-priority" style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: var(--font-size-md);">
                     <option value="baixa">Baixa (Azul)</option>
                     <option value="media">Média (Amarelo)</option>
                     <option value="alta">Alta (Vermelho)</option>
@@ -3422,7 +3460,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     </select>
                     <input type="date" id="editor-recurrence-end-date" title="data final da recorrência" style="display: none; width: 100%; box-sizing: border-box;">
                     <div id="editor-weekly-recurrence-options" style="display: none; margin-top: 5px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
-                        <label style="display: block; margin-bottom: 5px; font-size: 12px; font-weight: bold;">repetir nos dias:</label>
+                        <label style="display: block; margin-bottom: 5px; font-size: var(--font-size-sm); font-weight: bold;">repetir nos dias:</label>
                         <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 5px; font-size: 14px;">
                             <label><input type="checkbox" name="editor-weekday" value="0"> dom</label>
                             <label><input type="checkbox" name="editor-weekday" value="1"> seg</label>
@@ -3648,6 +3686,20 @@ body.dark-mode #remove-schedule-btn:hover {
     const hexToIconColorMap = Object.fromEntries(
         Object.entries(iconColorHexMap).map(([name, hex]) => [hex.toLowerCase(), name])
     );
+
+    const hexColorAliases = {
+        '#ff5252': 'red',
+        '#ff1744': 'red',
+        '#ffc107': 'yellow',
+        '#ffca28': 'yellow',
+        '#6b9aff': 'blue',
+        '#3d71ff': 'blue',
+        '#45a049': 'green',
+        '#26c6da': 'blue',
+        '#00acc1': 'blue'
+    };
+
+    Object.assign(hexToIconColorMap, hexColorAliases);
 
     function getColorHexFromName(colorName) {
         if (!colorName) return iconColorHexMap.blue;
@@ -4974,14 +5026,14 @@ body.dark-mode #remove-schedule-btn:hover {
                     </div>
                     <div style="text-align: right;">
                         <input type="checkbox" class="editing-goal-has-deadline" id="deadline-check-${goal.id}" ${goal.deadline ? 'checked' : ''} style="width:auto; vertical-align: middle;">
-                        <label for="deadline-check-${goal.id}" style="font-size:12px; vertical-align: middle; cursor: pointer;">definir prazo</label>
+                        <label for="deadline-check-${goal.id}" style="font-size: var(--font-size-sm); vertical-align: middle; cursor: pointer;">definir prazo</label>
                     </div>
                     
-                    <label style="font-size: 12px; font-weight: bold; margin-top: 10px; display: block;">ícone:</label>
+                    <label style="font-size: var(--font-size-sm); font-weight: bold; margin-top: 10px; display: block;">ícone:</label>
                     <div class="goal-icon-picker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div> 
                     <input type="hidden" class="editing-goal-icon-input" value="${goal.icon}">
                     
-                    <label style="font-size: 12px; font-weight: bold; margin-top: 10px; display: block;">cor:</label>
+                    <label style="font-size: var(--font-size-sm); font-weight: bold; margin-top: 10px; display: block;">cor:</label>
                     <div class="editing-goal-color-picker" style="display: flex; gap: 8px; flex-wrap: wrap;">
                         <div class="color-option" data-color="red" style="background-color: #f44336;"></div>
                         <div class="color-option" data-color="blue" style="background-color: #3586ff;"></div>
@@ -5162,7 +5214,7 @@ body.dark-mode #remove-schedule-btn:hover {
                   <div class="progress-bar" style="width: ${Math.min(100, percentage)}%; background-color: ${goalColorHex};"></div>
                    <span class="progress-bar-text">${percentage.toFixed(1)}%</span>
                 </div>
-                 <p style="font-size: 12px; color: #888; margin-top: 8px; margin-bottom: 0;">
+                 <p style="font-size: var(--font-size-xs); color: #888; margin-top: 8px; margin-bottom: 0;">
                     juros: ${goal.interestRate || 0}% a.m. | prazo: ${goal.deadline ? new Date(goal.deadline + 'T12:00:00').toLocaleDateString('pt-BR') : 'indefinido'}
                 </p>
               </div>
@@ -5171,7 +5223,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 <button type="submit" class="add-btn">adicionar</button>
               </form>
               ${historyHtml ? `
-                <button class="show-contributions-btn" onclick="toggleContributions(${goal.id})" style="width: 100%; margin-top: 10px; padding: 8px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                <button class="show-contributions-btn" onclick="toggleContributions(${goal.id})" style="width: 100%; margin-top: 10px; padding: 8px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: var(--font-size-xs);">
                   ver aportes (${Object.keys(goal.contributions).length})
                 </button>
                 <div class="contributions-section" id="contributions-${goal.id}" style="display: none;">
@@ -6072,9 +6124,21 @@ body.dark-mode #remove-schedule-btn:hover {
     }
     
     function getColoredIcons(iconName, color = 'blue') {
+        const normalizedName = typeof iconName === 'string' ? iconName.toLowerCase() : iconName;
+        const availableIcons = getAllAvailableIcons();
+
+        if (availableIcons[iconName]) {
+            return sanitizeIconPath(availableIcons[iconName]);
+        }
+
+        if (normalizedName && availableIcons[normalizedName]) {
+            return sanitizeIconPath(availableIcons[normalizedName]);
+        }
+
         // Mapeamento dos nomes do código para os nomes dos arquivos (cores aplicadas via CSS)
         const iconNameMap = {
             "nenhum": "circledashed",
+            "lista": "circledashed",
             "compras": "shopping",
             "médico": "health",
             "medicação": "pills",
@@ -6141,8 +6205,9 @@ body.dark-mode #remove-schedule-btn:hover {
         };
 
         // Retorna ícones sem pasta colorida (cores aplicadas via CSS)
-        const fileName = iconNameMap[iconName] || iconName;
-        return `./images/${fileName}.svg`;
+        const fallbackKey = normalizedName && iconNameMap[normalizedName] ? iconNameMap[normalizedName] : iconNameMap[iconName];
+        const fileName = fallbackKey || normalizedName || iconName;
+        return sanitizeIconPath(`./images/${fileName}.svg`);
     }
 
     function normalizeIconColor(color) {
@@ -6898,8 +6963,8 @@ body.dark-mode #remove-schedule-btn:hover {
 
         // Obtém a cor baseada na prioridade
         const isDarkMode = document.body.classList.contains('dark-mode');
+        const newColorName = getColorNameFromPriority(newPriority);
         const newColor = getPriorityColor(newPriority, isDarkMode);
-        const newColorName = getColorNameFromValue(newColor);
 
         if (!newName) {
             alert("O nome da lista não pode ficar em branco.");
