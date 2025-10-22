@@ -645,6 +645,26 @@
     #newListForm button[type="submit"] {
         font-size: var(--font-size-sm);
     }
+
+    #newListForm-sublist-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 2px 0;
+        font-size: var(--font-size-sm);
+        color: var(--text-secondary);
+    }
+
+    #newListForm-sublist-toggle input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--primary);
+        cursor: pointer;
+    }
+
+    #newListForm-sublist-toggle label {
+        cursor: pointer;
+    }
     
     #planner-link-options label,
     #routine-options label,
@@ -3627,7 +3647,7 @@ body.dark-mode #remove-schedule-btn:hover {
             <form id="newListForm">
                 <div id="newListForm-main-line" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                     <input type="text" id="newListName" placeholder="nome da nova lista" required style="flex-grow: 1; min-width: 200px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: var(--font-size-md);">
-                    
+
                     <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                         <select id="newListPriority" style="text-transform: none; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: var(--font-size-md);">
                             <option value="baixa">prioridade: baixa</option>
@@ -3649,6 +3669,11 @@ body.dark-mode #remove-schedule-btn:hover {
                             </label>
                         </div>
                     </div>
+                </div>
+
+                <div id="newListForm-sublist-toggle">
+                    <input type="checkbox" id="newListHasSublists">
+                    <label for="newListHasSublists">lista com sublistas</label>
                 </div>
 
                 <div id="planner-link-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
@@ -3924,6 +3949,7 @@ body.dark-mode #remove-schedule-btn:hover {
     const newListForm = document.getElementById('newListForm');
     const newListNameInput = document.getElementById("newListName");
     const newListPriorityInput = document.getElementById("newListPriority");
+    const newListHasSublistsInput = document.getElementById('newListHasSublists');
     const shoppingListContainer = document.getElementById('shopping-list-container');
     const linkToPlannerContainer = document.getElementById('link-to-planner-container');
     const linkToPlannerCheckbox = document.getElementById('link-to-planner-checkbox');
@@ -4264,6 +4290,20 @@ body.dark-mode #remove-schedule-btn:hover {
             }
         }
 
+        let normalizedSupports;
+        if (typeof list.supportsSublists === 'boolean') {
+            normalizedSupports = list.supportsSublists;
+        } else if (typeof list.supportsSublists === 'string') {
+            normalizedSupports = list.supportsSublists === 'true';
+        } else {
+            normalizedSupports = Array.isArray(list.sublists) && list.sublists.length > 0;
+        }
+
+        if (list.supportsSublists !== normalizedSupports) {
+            list.supportsSublists = normalizedSupports;
+            changed = true;
+        }
+
         return changed;
     }
 
@@ -4575,6 +4615,7 @@ body.dark-mode #remove-schedule-btn:hover {
     function saveLists() {
         const lists = Array.from(listsContainer.querySelectorAll('.list')).map(listDiv => {
             const isShopping = listDiv.dataset.isShopping === 'true';
+            const supportsSublists = listDiv.dataset.supportsSublists === 'true';
             const iconImg = listDiv.querySelector('.list-title-icon');
             const rawBorderColor = listDiv.style.borderLeftColor || window.getComputedStyle(listDiv).borderLeftColor || null;
             const colorName = listDiv.dataset.colorName || (iconImg ? iconImg.dataset.color : null) || getColorNameFromValue(rawBorderColor);
@@ -4611,7 +4652,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 return baseItem;
             }).filter(Boolean) : [];
 
-            const sublists = Array.from(listDiv.querySelectorAll('.sublist-block')).map(sublistDiv => {
+            const sublists = supportsSublists ? Array.from(listDiv.querySelectorAll('.sublist-block')).map(sublistDiv => {
                 let sublistId = sublistDiv.dataset.sublistId;
                 if (!sublistId) {
                     sublistId = generateSublistId();
@@ -4636,7 +4677,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     title,
                     items: sublistItems
                 };
-            }).filter(Boolean);
+            }).filter(Boolean) : [];
 
             const isRoutine = listDiv.dataset.isRoutine === 'true';
             let lastCompletedDate = null;
@@ -4658,6 +4699,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 lastCompletedDate: lastCompletedDate,
                 transactionId: listDiv.dataset.transactionId || null,
                 transactionMonth: listDiv.dataset.transactionMonth || null,
+                supportsSublists: supportsSublists,
                 sublists: sublists
             };
         }).filter(Boolean);
@@ -4690,6 +4732,9 @@ body.dark-mode #remove-schedule-btn:hover {
 
         // Renderização das listas
         listsData.forEach(listData => {
+            const supportsSublists = typeof listData.supportsSublists === 'boolean'
+                ? listData.supportsSublists
+                : (Array.isArray(listData.sublists) && listData.sublists.length > 0);
             createList(
                 listData.name,
                 listData.items,
@@ -4703,6 +4748,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 listData.transactionMonth,
                 listData.color,
                 listData.colorName,
+                supportsSublists,
                 listData.sublists || []
             );
         });
@@ -7022,7 +7068,7 @@ body.dark-mode #remove-schedule-btn:hover {
     }
 
 
-    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = taskIcons.lista, isShoppingList = false, isFinalized = false, isRoutine = false, transactionId = null, transactionMonth = null, borderColor = null, iconColorName = null, initialSublists = []) {
+    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = taskIcons.lista, isShoppingList = false, isFinalized = false, isRoutine = false, transactionId = null, transactionMonth = null, borderColor = null, iconColorName = null, supportsSublists = false, initialSublists = []) {
         if (!listName) return;
 
         const listDiv = document.createElement("div");
@@ -7128,316 +7174,329 @@ body.dark-mode #remove-schedule-btn:hover {
             saveLists();
         };
 
-        const sublistControlsContainer = document.createElement('div');
-        sublistControlsContainer.className = 'sublist-controls-container';
+        const hasInitialSublists = Array.isArray(initialSublists) && initialSublists.length > 0;
+        const allowsSublists = supportsSublists === true || supportsSublists === 'true' || hasInitialSublists;
+        listDiv.dataset.supportsSublists = allowsSublists ? 'true' : 'false';
 
-        const createSublistBtn = document.createElement('button');
-        createSublistBtn.type = 'button';
-        createSublistBtn.className = 'create-sublist-btn';
-        createSublistBtn.textContent = 'criar sublista';
+        let sublistControlsContainer = null;
+        let sublistsSection = null;
+        let addSublist = () => {};
 
-        const sublistForm = document.createElement('div');
-        sublistForm.className = 'sublist-form';
+        if (allowsSublists) {
+            sublistControlsContainer = document.createElement('div');
+            sublistControlsContainer.className = 'sublist-controls-container';
 
-        const sublistTitleInput = document.createElement('input');
-        sublistTitleInput.type = 'text';
-        sublistTitleInput.placeholder = 'título da sublista';
+            const createSublistBtn = document.createElement('button');
+            createSublistBtn.type = 'button';
+            createSublistBtn.className = 'create-sublist-btn';
+            createSublistBtn.textContent = 'criar sublista';
 
-        const sublistSaveBtn = document.createElement('button');
-        sublistSaveBtn.type = 'button';
-        sublistSaveBtn.className = 'save-sublist-btn';
-        sublistSaveBtn.textContent = '+';
-        sublistSaveBtn.setAttribute('aria-label', 'salvar sublista');
-        sublistSaveBtn.title = 'salvar sublista';
+            const sublistForm = document.createElement('div');
+            sublistForm.className = 'sublist-form';
 
-        sublistForm.appendChild(sublistTitleInput);
-        sublistForm.appendChild(sublistSaveBtn);
-        sublistControlsContainer.appendChild(createSublistBtn);
-        sublistControlsContainer.appendChild(sublistForm);
+            const sublistTitleInput = document.createElement('input');
+            sublistTitleInput.type = 'text';
+            sublistTitleInput.placeholder = 'título da sublista';
 
-        const sublistsSection = document.createElement('div');
-        sublistsSection.className = 'sublists-section';
+            const sublistSaveBtn = document.createElement('button');
+            sublistSaveBtn.type = 'button';
+            sublistSaveBtn.className = 'save-sublist-btn';
+            sublistSaveBtn.textContent = '+';
+            sublistSaveBtn.setAttribute('aria-label', 'salvar sublista');
+            sublistSaveBtn.title = 'salvar sublista';
 
-        const createSublistBlock = (sublistData) => {
-            const state = {
-                id: (sublistData && sublistData.id) || generateSublistId(),
-                title: sublistData && typeof sublistData.title === 'string' ? sublistData.title.trim() : '',
-                items: Array.isArray(sublistData && sublistData.items)
+            sublistForm.appendChild(sublistTitleInput);
+            sublistForm.appendChild(sublistSaveBtn);
+            sublistControlsContainer.appendChild(createSublistBtn);
+            sublistControlsContainer.appendChild(sublistForm);
+
+            sublistsSection = document.createElement('div');
+            sublistsSection.className = 'sublists-section';
+
+            const createSublistBlock = (sublistData) => {
+                const state = {
+                    id: (sublistData && sublistData.id) || generateSublistId(),
+                    title: sublistData && typeof sublistData.title === 'string' ? sublistData.title.trim() : '',
+                    items: Array.isArray(sublistData && sublistData.items)
+                        ? sublistData.items
+                            .map(item => typeof item === 'string' ? item.trim() : '')
+                            .filter(item => item !== '')
+                        : []
+                };
+
+                if (!state.title) {
+                    return null;
+                }
+
+                const block = document.createElement('div');
+                block.className = 'sublist-block';
+                block.dataset.sublistId = state.id;
+
+                const header = document.createElement('div');
+                header.className = 'sublist-header';
+
+                const controls = document.createElement('div');
+                controls.className = 'sublist-controls';
+
+                const editBtn = document.createElement('button');
+                editBtn.type = 'button';
+                editBtn.className = 'sublist-edit-btn';
+                editBtn.innerHTML = '<img src="buttons/pencil.svg" alt="Editar sublista">';
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.className = 'sublist-delete-btn';
+                deleteBtn.innerHTML = '<img src="buttons/trash.svg" alt="Excluir sublista">';
+
+                const saveBtn = document.createElement('button');
+                saveBtn.type = 'button';
+                saveBtn.className = 'sublist-save-btn';
+                saveBtn.innerHTML = '<img src="buttons/ok.svg" alt="Salvar sublista">';
+                saveBtn.style.display = 'none';
+
+                const cancelBtn = document.createElement('button');
+                cancelBtn.type = 'button';
+                cancelBtn.className = 'sublist-cancel-btn';
+                cancelBtn.innerHTML = '<img src="buttons/close.svg" alt="Cancelar edição">';
+                cancelBtn.style.display = 'none';
+
+                controls.appendChild(editBtn);
+                controls.appendChild(deleteBtn);
+                controls.appendChild(saveBtn);
+                controls.appendChild(cancelBtn);
+
+                const titleWrapper = document.createElement('div');
+                titleWrapper.className = 'sublist-title-wrapper';
+
+                const itemsList = document.createElement('ul');
+                itemsList.className = 'sublist-items';
+
+                const editItemsContainer = document.createElement('div');
+                editItemsContainer.className = 'sublist-edit-items';
+                editItemsContainer.style.display = 'none';
+
+                const addItemRow = document.createElement('div');
+                addItemRow.className = 'sublist-add-item-row';
+                addItemRow.style.display = 'none';
+
+                const newItemInput = document.createElement('input');
+                newItemInput.type = 'text';
+                newItemInput.placeholder = 'novo item';
+
+                const addItemBtn = document.createElement('button');
+                addItemBtn.type = 'button';
+                addItemBtn.className = 'sublist-add-item-btn';
+                addItemBtn.textContent = '+';
+                addItemBtn.setAttribute('aria-label', 'adicionar item na sublista');
+                addItemBtn.title = 'adicionar item';
+
+                addItemRow.appendChild(newItemInput);
+                addItemRow.appendChild(addItemBtn);
+
+                header.appendChild(controls);
+                header.appendChild(titleWrapper);
+
+                block.appendChild(header);
+                block.appendChild(itemsList);
+                block.appendChild(editItemsContainer);
+                block.appendChild(addItemRow);
+
+                const updateTitleDisplay = () => {
+                    titleWrapper.innerHTML = '';
+                    const titleSpan = document.createElement('span');
+                    titleSpan.className = 'sublist-title';
+                    titleSpan.textContent = state.title;
+                    titleWrapper.appendChild(titleSpan);
+                };
+
+                const renderView = () => {
+                    itemsList.innerHTML = '';
+                    if (state.items.length === 0) {
+                        const emptyLi = document.createElement('li');
+                        emptyLi.className = 'sublist-empty';
+                        emptyLi.textContent = 'nenhum item';
+                        itemsList.appendChild(emptyLi);
+                    } else {
+                        state.items.forEach(itemText => {
+                            const li = document.createElement('li');
+                            li.textContent = itemText;
+                            itemsList.appendChild(li);
+                        });
+                    }
+                };
+
+                const createEditRow = (value = '') => {
+                    const row = document.createElement('div');
+                    row.className = 'sublist-edit-row';
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = value;
+                    input.placeholder = 'item da sublista';
+                    const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.className = 'sublist-remove-item-btn';
+                    removeBtn.innerHTML = '<img src="buttons/trash.svg" alt="Remover item">';
+                    removeBtn.addEventListener('click', () => row.remove());
+                    row.appendChild(input);
+                    row.appendChild(removeBtn);
+                    return row;
+                };
+
+                let titleInputRef = null;
+
+                const exitEditMode = () => {
+                    block.classList.remove('editing');
+                    editBtn.style.display = 'inline-flex';
+                    deleteBtn.style.display = 'inline-flex';
+                    saveBtn.style.display = 'none';
+                    cancelBtn.style.display = 'none';
+                    itemsList.style.display = '';
+                    editItemsContainer.style.display = 'none';
+                    editItemsContainer.innerHTML = '';
+                    addItemRow.style.display = 'none';
+                    newItemInput.value = '';
+                    titleInputRef = null;
+                    updateTitleDisplay();
+                };
+
+                const enterEditMode = () => {
+                    block.classList.add('editing');
+                    editBtn.style.display = 'none';
+                    deleteBtn.style.display = 'none';
+                    saveBtn.style.display = 'inline-flex';
+                    cancelBtn.style.display = 'inline-flex';
+                    itemsList.style.display = 'none';
+                    editItemsContainer.style.display = 'flex';
+                    addItemRow.style.display = 'flex';
+                    editItemsContainer.innerHTML = '';
+                    if (state.items.length === 0) {
+                        editItemsContainer.appendChild(createEditRow(''));
+                    } else {
+                        state.items.forEach(itemText => {
+                            editItemsContainer.appendChild(createEditRow(itemText));
+                        });
+                    }
+                    titleWrapper.innerHTML = '';
+                    titleInputRef = document.createElement('input');
+                    titleInputRef.type = 'text';
+                    titleInputRef.className = 'sublist-title-input';
+                    titleInputRef.value = state.title;
+                    titleInputRef.placeholder = 'título da sublista';
+                    titleInputRef.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            saveBtn.click();
+                        }
+                    });
+                    titleWrapper.appendChild(titleInputRef);
+                    requestAnimationFrame(() => titleInputRef && titleInputRef.focus());
+                };
+
+                editBtn.addEventListener('click', () => enterEditMode());
+
+                deleteBtn.addEventListener('click', () => {
+                    if (confirm('tem certeza que deseja excluir esta sublista?')) {
+                        block.remove();
+                        saveLists();
+                    }
+                });
+
+                saveBtn.addEventListener('click', () => {
+                    const newTitle = titleInputRef ? titleInputRef.value.trim() : state.title;
+                    if (!newTitle) {
+                        if (titleInputRef) {
+                            titleInputRef.focus();
+                        }
+                        return;
+                    }
+                    const updatedItems = Array.from(editItemsContainer.querySelectorAll('input'))
+                        .map(input => input.value.trim())
+                        .filter(value => value !== '');
+                    state.title = newTitle;
+                    state.items = updatedItems;
+                    renderView();
+                    exitEditMode();
+                    saveLists();
+                });
+
+                cancelBtn.addEventListener('click', () => {
+                    exitEditMode();
+                    renderView();
+                });
+
+                addItemBtn.addEventListener('click', () => {
+                    const value = newItemInput.value.trim();
+                    if (!value) return;
+                    editItemsContainer.appendChild(createEditRow(value));
+                    newItemInput.value = '';
+                    newItemInput.focus();
+                });
+
+                newItemInput.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        addItemBtn.click();
+                    }
+                });
+
+                updateTitleDisplay();
+                renderView();
+                exitEditMode();
+                if (state.items.length === 0) {
+                    enterEditMode();
+                }
+
+                return block;
+            };
+
+            addSublist = (sublistData, shouldSave = false) => {
+                if (!sublistData) return;
+                const normalizedTitle = typeof sublistData.title === 'string' ? sublistData.title.trim() : '';
+                if (!normalizedTitle) return;
+                const normalizedItems = Array.isArray(sublistData.items)
                     ? sublistData.items
                         .map(item => typeof item === 'string' ? item.trim() : '')
                         .filter(item => item !== '')
-                    : []
-            };
-
-            if (!state.title) {
-                return null;
-            }
-
-            const block = document.createElement('div');
-            block.className = 'sublist-block';
-            block.dataset.sublistId = state.id;
-
-            const header = document.createElement('div');
-            header.className = 'sublist-header';
-
-            const controls = document.createElement('div');
-            controls.className = 'sublist-controls';
-
-            const editBtn = document.createElement('button');
-            editBtn.type = 'button';
-            editBtn.className = 'sublist-edit-btn';
-            editBtn.innerHTML = '<img src="buttons/pencil.svg" alt="Editar sublista">';
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.type = 'button';
-            deleteBtn.className = 'sublist-delete-btn';
-            deleteBtn.innerHTML = '<img src="buttons/trash.svg" alt="Excluir sublista">';
-
-            const saveBtn = document.createElement('button');
-            saveBtn.type = 'button';
-            saveBtn.className = 'sublist-save-btn';
-            saveBtn.innerHTML = '<img src="buttons/ok.svg" alt="Salvar sublista">';
-            saveBtn.style.display = 'none';
-
-            const cancelBtn = document.createElement('button');
-            cancelBtn.type = 'button';
-            cancelBtn.className = 'sublist-cancel-btn';
-            cancelBtn.innerHTML = '<img src="buttons/close.svg" alt="Cancelar edição">';
-            cancelBtn.style.display = 'none';
-
-            controls.appendChild(editBtn);
-            controls.appendChild(deleteBtn);
-            controls.appendChild(saveBtn);
-            controls.appendChild(cancelBtn);
-
-            const titleWrapper = document.createElement('div');
-            titleWrapper.className = 'sublist-title-wrapper';
-
-            const itemsList = document.createElement('ul');
-            itemsList.className = 'sublist-items';
-
-            const editItemsContainer = document.createElement('div');
-            editItemsContainer.className = 'sublist-edit-items';
-            editItemsContainer.style.display = 'none';
-
-            const addItemRow = document.createElement('div');
-            addItemRow.className = 'sublist-add-item-row';
-            addItemRow.style.display = 'none';
-
-            const newItemInput = document.createElement('input');
-            newItemInput.type = 'text';
-            newItemInput.placeholder = 'novo item';
-
-            const addItemBtn = document.createElement('button');
-            addItemBtn.type = 'button';
-            addItemBtn.className = 'sublist-add-item-btn';
-            addItemBtn.textContent = '+';
-            addItemBtn.setAttribute('aria-label', 'adicionar item na sublista');
-            addItemBtn.title = 'adicionar item';
-
-            addItemRow.appendChild(newItemInput);
-            addItemRow.appendChild(addItemBtn);
-
-            header.appendChild(controls);
-            header.appendChild(titleWrapper);
-
-            block.appendChild(header);
-            block.appendChild(itemsList);
-            block.appendChild(editItemsContainer);
-            block.appendChild(addItemRow);
-
-            const updateTitleDisplay = () => {
-                titleWrapper.innerHTML = '';
-                const titleSpan = document.createElement('span');
-                titleSpan.className = 'sublist-title';
-                titleSpan.textContent = state.title;
-                titleWrapper.appendChild(titleSpan);
-            };
-
-            const renderView = () => {
-                itemsList.innerHTML = '';
-                if (state.items.length === 0) {
-                    const emptyLi = document.createElement('li');
-                    emptyLi.className = 'sublist-empty';
-                    emptyLi.textContent = 'nenhum item';
-                    itemsList.appendChild(emptyLi);
-                } else {
-                    state.items.forEach(itemText => {
-                        const li = document.createElement('li');
-                        li.textContent = itemText;
-                        itemsList.appendChild(li);
-                    });
-                }
-            };
-
-            const createEditRow = (value = '') => {
-                const row = document.createElement('div');
-                row.className = 'sublist-edit-row';
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.value = value;
-                input.placeholder = 'item da sublista';
-                const removeBtn = document.createElement('button');
-                removeBtn.type = 'button';
-                removeBtn.className = 'sublist-remove-item-btn';
-                removeBtn.innerHTML = '<img src="buttons/trash.svg" alt="Remover item">';
-                removeBtn.addEventListener('click', () => row.remove());
-                row.appendChild(input);
-                row.appendChild(removeBtn);
-                return row;
-            };
-
-            let titleInputRef = null;
-
-            const exitEditMode = () => {
-                block.classList.remove('editing');
-                editBtn.style.display = 'inline-flex';
-                deleteBtn.style.display = 'inline-flex';
-                saveBtn.style.display = 'none';
-                cancelBtn.style.display = 'none';
-                itemsList.style.display = '';
-                editItemsContainer.style.display = 'none';
-                editItemsContainer.innerHTML = '';
-                addItemRow.style.display = 'none';
-                newItemInput.value = '';
-                titleInputRef = null;
-                updateTitleDisplay();
-            };
-
-            const enterEditMode = () => {
-                block.classList.add('editing');
-                editBtn.style.display = 'none';
-                deleteBtn.style.display = 'none';
-                saveBtn.style.display = 'inline-flex';
-                cancelBtn.style.display = 'inline-flex';
-                itemsList.style.display = 'none';
-                editItemsContainer.style.display = 'flex';
-                addItemRow.style.display = 'flex';
-                editItemsContainer.innerHTML = '';
-                if (state.items.length === 0) {
-                    editItemsContainer.appendChild(createEditRow(''));
-                } else {
-                    state.items.forEach(itemText => {
-                        editItemsContainer.appendChild(createEditRow(itemText));
-                    });
-                }
-                titleWrapper.innerHTML = '';
-                titleInputRef = document.createElement('input');
-                titleInputRef.type = 'text';
-                titleInputRef.className = 'sublist-title-input';
-                titleInputRef.value = state.title;
-                titleInputRef.placeholder = 'título da sublista';
-                titleInputRef.addEventListener('keydown', (event) => {
-                    if (event.key === 'Enter') {
-                        event.preventDefault();
-                        saveBtn.click();
-                    }
+                    : [];
+                const block = createSublistBlock({
+                    id: sublistData.id,
+                    title: normalizedTitle,
+                    items: normalizedItems
                 });
-                titleWrapper.appendChild(titleInputRef);
-                requestAnimationFrame(() => titleInputRef && titleInputRef.focus());
+                if (block) {
+                    sublistsSection.appendChild(block);
+                    if (shouldSave) {
+                        saveLists();
+                    }
+                }
             };
 
-            editBtn.addEventListener('click', () => enterEditMode());
-
-            deleteBtn.addEventListener('click', () => {
-                if (confirm('tem certeza que deseja excluir esta sublista?')) {
-                    block.remove();
-                    saveLists();
+            createSublistBtn.addEventListener('click', () => {
+                const isVisible = sublistForm.style.display === 'flex';
+                sublistForm.style.display = isVisible ? 'none' : 'flex';
+                if (!isVisible) {
+                    sublistTitleInput.focus();
                 }
             });
 
-            saveBtn.addEventListener('click', () => {
-                const newTitle = titleInputRef ? titleInputRef.value.trim() : state.title;
-                if (!newTitle) {
-                    if (titleInputRef) {
-                        titleInputRef.focus();
-                    }
+            sublistSaveBtn.addEventListener('click', () => {
+                const title = sublistTitleInput.value.trim();
+                if (!title) {
+                    sublistTitleInput.focus();
                     return;
                 }
-                const updatedItems = Array.from(editItemsContainer.querySelectorAll('input'))
-                    .map(input => input.value.trim())
-                    .filter(value => value !== '');
-                state.title = newTitle;
-                state.items = updatedItems;
-                renderView();
-                exitEditMode();
-                saveLists();
+                addSublist({ title }, true);
+                sublistTitleInput.value = '';
+                sublistForm.style.display = 'none';
             });
 
-            cancelBtn.addEventListener('click', () => {
-                exitEditMode();
-                renderView();
-            });
-
-            addItemBtn.addEventListener('click', () => {
-                const value = newItemInput.value.trim();
-                if (!value) return;
-                editItemsContainer.appendChild(createEditRow(value));
-                newItemInput.value = '';
-                newItemInput.focus();
-            });
-
-            newItemInput.addEventListener('keydown', (event) => {
+            sublistTitleInput.addEventListener('keydown', (event) => {
                 if (event.key === 'Enter') {
                     event.preventDefault();
-                    addItemBtn.click();
+                    sublistSaveBtn.click();
                 }
             });
-
-            updateTitleDisplay();
-            renderView();
-            exitEditMode();
-
-            return block;
-        };
-
-        const addSublist = (sublistData, shouldSave = false) => {
-            if (!sublistData) return;
-            const normalizedTitle = typeof sublistData.title === 'string' ? sublistData.title.trim() : '';
-            if (!normalizedTitle) return;
-            const normalizedItems = Array.isArray(sublistData.items)
-                ? sublistData.items
-                    .map(item => typeof item === 'string' ? item.trim() : '')
-                    .filter(item => item !== '')
-                : [];
-            const block = createSublistBlock({
-                id: sublistData.id,
-                title: normalizedTitle,
-                items: normalizedItems
-            });
-            if (block) {
-                sublistsSection.appendChild(block);
-                if (shouldSave) {
-                    saveLists();
-                }
-            }
-        };
-
-        createSublistBtn.addEventListener('click', () => {
-            const isVisible = sublistForm.style.display === 'flex';
-            sublistForm.style.display = isVisible ? 'none' : 'flex';
-            if (!isVisible) {
-                sublistTitleInput.focus();
-            }
-        });
-
-        sublistSaveBtn.addEventListener('click', () => {
-            const title = sublistTitleInput.value.trim();
-            if (!title) {
-                sublistTitleInput.focus();
-                return;
-            }
-            addSublist({ title }, true);
-            sublistTitleInput.value = '';
-            sublistForm.style.display = 'none';
-        });
-
-        sublistTitleInput.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                sublistSaveBtn.click();
-            }
-        });
+        }
 
         const inputGroup = document.createElement("div");
         const ul = document.createElement("ul");
@@ -7636,10 +7695,14 @@ body.dark-mode #remove-schedule-btn:hover {
         
         listDiv.appendChild(titleContainer);
         listDiv.appendChild(prioritySelect);
-        listDiv.appendChild(sublistControlsContainer);
+        if (sublistControlsContainer) {
+            listDiv.appendChild(sublistControlsContainer);
+        }
         listDiv.appendChild(inputGroup);
         listDiv.appendChild(ul);
-        listDiv.appendChild(sublistsSection);
+        if (sublistsSection) {
+            listDiv.appendChild(sublistsSection);
+        }
         
         if (isShoppingList) {
             const totalDiv = document.createElement('div');
@@ -7671,7 +7734,7 @@ body.dark-mode #remove-schedule-btn:hover {
             addItem(item.text, isChecked, itemValue, itemType);
         });
 
-        if (Array.isArray(initialSublists)) {
+        if (allowsSublists && Array.isArray(initialSublists)) {
             initialSublists.forEach(sublist => addSublist(sublist));
         }
         checkCompletion(listDiv);
@@ -7768,8 +7831,9 @@ body.dark-mode #remove-schedule-btn:hover {
         const newListId = Date.now().toString();
         const isShopping = shoppingListCheckbox.checked;
         const isRoutine = linkAsRoutineCheckbox.checked;
-        
-        createList(listName, [], listPriority, newListId, taskIcons.lista, isShopping, false, isRoutine);
+        const supportsSublists = newListHasSublistsInput ? newListHasSublistsInput.checked : false;
+
+        createList(listName, [], listPriority, newListId, taskIcons.lista, isShopping, false, isRoutine, null, null, null, null, supportsSublists);
         saveLists(); // Save the new list to localStorage
         
         if (linkToPlannerCheckbox.checked) {
