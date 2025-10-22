@@ -7490,6 +7490,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 const exitEditMode = () => {
                     block.classList.remove('editing');
                     editBtn.style.display = 'inline-flex';
+                    saveBtn.style.display = 'none';
                     itemsList.style.display = '';
                     editItemsContainer.style.display = 'none';
                     editItemsContainer.innerHTML = '';
@@ -7500,6 +7501,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 const enterEditMode = () => {
                     block.classList.add('editing');
                     editBtn.style.display = 'none';
+                    saveBtn.style.display = 'inline-flex';
                     itemsList.style.display = 'none';
                     editItemsContainer.style.display = 'flex';
                     editItemsContainer.innerHTML = '';
