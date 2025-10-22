@@ -1134,6 +1134,14 @@
         gap: 6px;
     }
 
+    .sublist-block:not(.editing) .sublist-save-btn {
+        display: none;
+    }
+
+    .sublist-block.editing .sublist-save-btn {
+        display: inline-flex;
+    }
+
     .sublist-icon-btn {
         background: transparent;
         border: none;
@@ -1201,16 +1209,46 @@
     .sublist-items li {
         background: var(--bg-primary);
         border-radius: var(--radius-md);
-        padding: 6px 10px;
+        border: 1px solid var(--border-light);
         font-size: 13px;
         color: var(--text-secondary);
-        border: 1px solid var(--border-light);
+        display: flex;
+        padding: 0;
+    }
+
+    .sublist-item-content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        width: 100%;
+    }
+
+    .sublist-item-content input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        accent-color: var(--primary);
+    }
+
+    .sublist-item-text {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .sublist-items li.completed .sublist-item-text {
+        text-decoration: line-through;
+        color: var(--text-muted);
     }
 
     .sublist-items li.sublist-empty {
         font-style: italic;
         color: var(--text-muted);
         border-style: dashed;
+        padding: 6px 10px;
+        display: block;
     }
 
     .sublist-edit-items {
@@ -1721,6 +1759,11 @@
         padding-left: 16px;
     }
 
+    #listDetailsItems li.detail-sublist-item.completed {
+        text-decoration: line-through;
+        opacity: 0.7;
+    }
+
     #listDetailsItems li.detail-sublist-item.empty {
         font-style: italic;
         color: var(--text-muted);
@@ -2056,6 +2099,10 @@
 
     body.dark-mode .sublist-items li.sublist-empty {
         color: #888;
+    }
+
+    body.dark-mode #listDetailsItems li.detail-sublist-item.completed {
+        color: var(--text-muted);
     }
 
     body.dark-mode .sublist-icon-btn {
@@ -3639,7 +3686,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div id="shopping-list-container" title="Marcar como lista de compras">
                             <input type="checkbox" id="shopping-list-checkbox">
                             <label for="shopping-list-checkbox" class="icon-toggle-button">
-                                <img src="buttons/lists/compras.svg" alt="Lista de Compras">
+                                <img src="./images/shopping.svg" alt="Lista de Compras">
                             </label>
                         </div>
                         
@@ -4255,10 +4302,40 @@ body.dark-mode #remove-schedule-btn:hover {
                         changed = true;
                     } else {
                         const originalItemsCount = normalized.items.length;
-                        normalized.items = normalized.items
-                            .map(item => typeof item === 'string' ? item.trim() : '')
-                            .filter(item => item !== '');
+                        let itemsChanged = false;
+                        normalized.items = normalized.items.reduce((acc, item) => {
+                            if (typeof item === 'string') {
+                                const text = item.trim();
+                                if (!text) {
+                                    if (text !== item) itemsChanged = true;
+                                    return acc;
+                                }
+                                itemsChanged = true;
+                                acc.push({ text, checked: false });
+                                return acc;
+                            }
+                            if (item && typeof item === 'object') {
+                                const rawText = typeof item.text === 'string' ? item.text : '';
+                                const text = rawText.trim();
+                                const checked = !!item.checked;
+                                if (!text) {
+                                    if (rawText !== text) itemsChanged = true;
+                                    if (item.checked) itemsChanged = true;
+                                    return acc;
+                                }
+                                if (rawText !== text || item.checked !== checked) {
+                                    itemsChanged = true;
+                                }
+                                acc.push({ text, checked });
+                                return acc;
+                            }
+                            itemsChanged = true;
+                            return acc;
+                        }, []);
                         if (normalized.items.length !== originalItemsCount) {
+                            itemsChanged = true;
+                        }
+                        if (itemsChanged) {
                             changed = true;
                         }
                     }
@@ -4646,8 +4723,20 @@ body.dark-mode #remove-schedule-btn:hover {
                 const itemElements = Array.from(sublistDiv.querySelectorAll('.sublist-items li'))
                     .filter(li => !li.classList.contains('sublist-empty'));
                 const sublistItems = itemElements
-                    .map(li => li.textContent.trim())
-                    .filter(text => text !== '');
+                    .map(li => {
+                        const textSpan = li.querySelector('.sublist-item-text');
+                        const checkbox = li.querySelector('input[type="checkbox"]');
+                        const rawText = textSpan ? textSpan.textContent : li.textContent;
+                        const text = typeof rawText === 'string' ? rawText.trim() : '';
+                        if (!text) {
+                            return null;
+                        }
+                        return {
+                            text,
+                            checked: checkbox ? checkbox.checked : false
+                        };
+                    })
+                    .filter(Boolean);
 
                 if (!title) {
                     return null;
@@ -4697,6 +4786,17 @@ body.dark-mode #remove-schedule-btn:hover {
         listsData.forEach(listData => {
             if (listData.isRoutine && listData.lastCompletedDate && listData.lastCompletedDate < todayString) {
                 listData.items.forEach(item => item.checked = false);
+                if (Array.isArray(listData.sublists)) {
+                    listData.sublists.forEach(sublist => {
+                        if (sublist && Array.isArray(sublist.items)) {
+                            sublist.items.forEach(subItem => {
+                                if (subItem && typeof subItem === 'object') {
+                                    subItem.checked = false;
+                                }
+                            });
+                        }
+                    });
+                }
                 listData.lastCompletedDate = null;
                 listsModified = true;
             }
@@ -4837,11 +4937,23 @@ body.dark-mode #remove-schedule-btn:hover {
                         listDetailsItems.appendChild(titleLi);
 
                         if (Array.isArray(sublist.items) && sublist.items.length > 0) {
-                            sublist.items.forEach(text => {
-                                if (typeof text !== 'string') return;
+                            sublist.items.forEach(item => {
+                                let text = '';
+                                let checked = false;
+                                if (typeof item === 'string') {
+                                    text = item;
+                                } else if (item && typeof item === 'object') {
+                                    text = typeof item.text === 'string' ? item.text : '';
+                                    checked = !!item.checked;
+                                }
+                                text = text.trim();
+                                if (!text) return;
                                 const itemLi = document.createElement('li');
                                 itemLi.className = 'detail-sublist-item';
                                 itemLi.textContent = `• ${text}`;
+                                if (checked) {
+                                    itemLi.classList.add('completed');
+                                }
                                 listDetailsItems.appendChild(itemLi);
                             });
                         } else {
@@ -7194,15 +7306,34 @@ body.dark-mode #remove-schedule-btn:hover {
             sublistsSection = document.createElement('div');
             sublistsSection.className = 'sublists-section';
 
+            const normalizeSublistItem = (item) => {
+                if (typeof item === 'string') {
+                    const text = item.trim();
+                    return text ? { text, checked: false } : null;
+                }
+                if (item && typeof item === 'object') {
+                    const text = typeof item.text === 'string' ? item.text.trim() : '';
+                    if (!text) return null;
+                    return {
+                        text,
+                        checked: !!item.checked
+                    };
+                }
+                return null;
+            };
+
+            const normalizeSublistItems = (items) => {
+                if (!Array.isArray(items)) return [];
+                return items
+                    .map(normalizeSublistItem)
+                    .filter(Boolean);
+            };
+
             const createSublistBlock = (sublistData) => {
                 const state = {
                     id: (sublistData && sublistData.id) || generateSublistId(),
                     title: sublistData && typeof sublistData.title === 'string' ? sublistData.title.trim() : '',
-                    items: Array.isArray(sublistData && sublistData.items)
-                        ? sublistData.items
-                            .map(item => typeof item === 'string' ? item.trim() : '')
-                            .filter(item => item !== '')
-                        : []
+                    items: normalizeSublistItems(sublistData && sublistData.items)
                 };
 
                 if (!state.title) {
@@ -7236,7 +7367,6 @@ body.dark-mode #remove-schedule-btn:hover {
                 saveBtn.type = 'button';
                 saveBtn.className = 'sublist-icon-btn sublist-save-btn';
                 saveBtn.innerHTML = '<img src="buttons/ok.svg" alt="Salvar sublista">';
-                saveBtn.style.display = 'none';
 
                 headerActions.appendChild(editBtn);
                 headerActions.appendChild(deleteBtn);
@@ -7272,12 +7402,36 @@ body.dark-mode #remove-schedule-btn:hover {
                         emptyLi.textContent = 'nenhum item';
                         itemsList.appendChild(emptyLi);
                     } else {
-                        state.items.forEach(itemText => {
+                        state.items.forEach((item, index) => {
+                            if (!item || typeof item.text !== 'string') return;
                             const li = document.createElement('li');
-                            li.textContent = itemText;
+                            const itemContent = document.createElement('div');
+                            itemContent.className = 'sublist-item-content';
+
+                            const checkbox = document.createElement('input');
+                            checkbox.type = 'checkbox';
+                            checkbox.checked = !!item.checked;
+
+                            const textSpan = document.createElement('span');
+                            textSpan.className = 'sublist-item-text';
+                            textSpan.textContent = item.text;
+
+                            itemContent.appendChild(checkbox);
+                            itemContent.appendChild(textSpan);
+                            li.appendChild(itemContent);
+                            li.classList.toggle('completed', !!item.checked);
+
+                            checkbox.addEventListener('change', () => {
+                                state.items[index].checked = checkbox.checked;
+                                li.classList.toggle('completed', checkbox.checked);
+                                saveLists();
+                                checkCompletion(listDiv);
+                            });
+
                             itemsList.appendChild(li);
                         });
                     }
+                    checkCompletion(listDiv);
                 };
 
                 const createEditRow = (value = '') => {
@@ -7336,7 +7490,6 @@ body.dark-mode #remove-schedule-btn:hover {
                 const exitEditMode = () => {
                     block.classList.remove('editing');
                     editBtn.style.display = 'inline-flex';
-                    saveBtn.style.display = 'none';
                     itemsList.style.display = '';
                     editItemsContainer.style.display = 'none';
                     editItemsContainer.innerHTML = '';
@@ -7347,15 +7500,14 @@ body.dark-mode #remove-schedule-btn:hover {
                 const enterEditMode = () => {
                     block.classList.add('editing');
                     editBtn.style.display = 'none';
-                    saveBtn.style.display = 'inline-flex';
                     itemsList.style.display = 'none';
                     editItemsContainer.style.display = 'flex';
                     editItemsContainer.innerHTML = '';
                     if (state.items.length === 0) {
                         editItemsContainer.appendChild(createEditRow(''));
                     } else {
-                        state.items.forEach(itemText => {
-                            editItemsContainer.appendChild(createEditRow(itemText));
+                        state.items.forEach(item => {
+                            editItemsContainer.appendChild(createEditRow(item && typeof item.text === 'string' ? item.text : ''));
                         });
                     }
                     titleWrapper.innerHTML = '';
@@ -7379,6 +7531,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 deleteBtn.addEventListener('click', () => {
                     if (confirm('tem certeza que deseja excluir esta sublista?')) {
                         block.remove();
+                        checkCompletion(listDiv);
                         saveLists();
                     }
                 });
@@ -7391,11 +7544,19 @@ body.dark-mode #remove-schedule-btn:hover {
                         }
                         return;
                     }
-                    const updatedItems = Array.from(editItemsContainer.querySelectorAll('input'))
-                        .map(input => input.value.trim())
-                        .filter(value => value !== '');
+                    const updatedItems = Array.from(editItemsContainer.querySelectorAll('input[type="text"]'))
+                        .map((input, index) => {
+                            const value = input.value.trim();
+                            if (!value) return null;
+                            const existing = state.items[index];
+                            return {
+                                text: value,
+                                checked: existing ? !!existing.checked : false
+                            };
+                        })
+                        .filter(Boolean);
                     state.title = newTitle;
-                    state.items = updatedItems;
+                    state.items = normalizeSublistItems(updatedItems);
                     renderView();
                     exitEditMode();
                     saveLists();
@@ -7415,11 +7576,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 if (!sublistData) return;
                 const normalizedTitle = typeof sublistData.title === 'string' ? sublistData.title.trim() : '';
                 if (!normalizedTitle) return;
-                const normalizedItems = Array.isArray(sublistData.items)
-                    ? sublistData.items
-                        .map(item => typeof item === 'string' ? item.trim() : '')
-                        .filter(item => item !== '')
-                    : [];
+                const normalizedItems = normalizeSublistItems(sublistData.items);
                 const block = createSublistBlock({
                     id: sublistData.id,
                     title: normalizedTitle,
@@ -7427,6 +7584,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 });
                 if (block) {
                     sublistsSection.appendChild(block);
+                    checkCompletion(listDiv);
                     if (shouldSave) {
                         saveLists();
                     }
@@ -7988,11 +8146,7 @@ body.dark-mode #remove-schedule-btn:hover {
         }
 
         saveCalendarTasks();
-        // Só renderiza listas se a aba de listas estiver ativa
-        const listasSection = document.getElementById('listas-section');
-        if (listasSection && listasSection.style.display === 'block') {
-            loadAndRenderLists();
-        }
+        loadAndRenderLists();
         renderCalendar(currentCalendarDate);
         closeListEditorSection();
     });
