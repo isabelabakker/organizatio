@@ -1,6 +1,6 @@
 # 🗂️ OrganizatIO
 
-Planeje, organize e controle: **OrganizatIO** é um aplicativo de **organização pessoal** que integra **agenda, controle financeiro e listas** em uma interface prática e intuitiva. 
+Planeje. Organize. Controle: **OrganizatIO** é um aplicativo de **organização pessoal** que integra **agenda, controle financeiro e listas** em uma interface otimizada, prática e intuitiva. 
 
 ---
 
@@ -8,18 +8,19 @@ Planeje, organize e controle: **OrganizatIO** é um aplicativo de **organizaçã
 
 ### 🗓️ Planner
 - Visualização **mensal** e **semanal** de compromissos.  
-- Ícones e cores **personalizáveis** para cada evento.
-- Opção de **repetir** um evento diariamente, semanalmente ou em dias específicos.  
+- Ícones e cores **personalizáveis** para cada evento/tarefa.
+- Criar **rotinas**: repetir um evento/tarefa diariamente, semanalmente ou em dias específicos.  
 
 ### 💰 Controle Financeiro
-- Registro de **despesas e receitas** em categorias.  
+- Registro de **despesas e receitas** organizados por categoria.  
 - Resumo **mês a mês** e **comparativo anual** com gráficos e indicadores visuais.  
-- Acompanhamento de **metas financeiras** e **progresso de investimentos**.  
+- Acompanhamento de **metas** e **progresso de investimentos**.  
 
 ### ✅ Listas Inteligentes
-- Sistema de **prioridades de lista** organizado por cor.  
-- Valores em uma lista de compras refletem automaticamente nas **transações do mês**.  
-- Integração com o planner e rotinas diárias.
+- Sistema de **prioridades de lista** organizado por cor.
+- Criação de sublistas para facilitar a organização em listas mais longas.
+- Valores em uma **lista de compras** refletem automaticamente nas **transações do mês**.  
+- **Agendamento** de listas no planner.
 
 ### 💡 Recursos Extras
 - Tema **claro e escuro** com alternância instantânea.  
