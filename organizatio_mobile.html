@@ -1123,19 +1123,18 @@
 
     .sublist-header {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
+        justify-content: space-between;
         gap: 12px;
     }
 
-    .sublist-actions-row {
+    .sublist-header-actions {
         display: flex;
-        justify-content: flex-end;
+        align-items: center;
         gap: 6px;
-        align-self: flex-end;
     }
 
-    .sublist-actions-row button,
-    .sublist-remove-item-btn {
+    .sublist-icon-btn {
         background: transparent;
         border: none;
         padding: 4px;
@@ -1147,18 +1146,24 @@
         align-items: center;
         justify-content: center;
         transition: background 0.2s ease, transform 0.2s ease;
+        color: var(--text-secondary);
     }
 
-    .sublist-actions-row button:hover,
-    .sublist-remove-item-btn:hover {
+    .sublist-icon-btn:hover {
         background: rgba(0, 0, 0, 0.05);
         transform: translateY(-1px);
     }
 
-    .sublist-actions-row button img,
-    .sublist-remove-item-btn img {
+    .sublist-icon-btn img {
         width: 16px;
         height: 16px;
+    }
+
+    .sublist-inline-add-btn {
+        font-size: 18px;
+        line-height: 1;
+        font-weight: 600;
+        color: var(--primary);
     }
 
     .sublist-title-wrapper {
@@ -1217,7 +1222,7 @@
     .sublist-edit-row {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
     }
 
     .sublist-edit-row input {
@@ -1230,40 +1235,9 @@
         color: var(--text-primary);
     }
 
-    .sublist-add-item-row {
-        display: none;
-        gap: 6px;
-        align-items: center;
-    }
-
-    .sublist-add-item-row input {
-        flex: 1;
-        padding: 6px 8px;
-        border-radius: var(--radius-md);
-        border: 1px solid var(--border-light);
-        font-size: var(--font-size-sm);
-        background: var(--bg-primary);
-        color: var(--text-primary);
-    }
-
-    .sublist-add-item-btn {
-        width: 32px;
-        height: 32px;
-        border-radius: var(--radius-md);
-        background: var(--primary);
-        border: none;
-        color: #fff;
-        font-size: 18px;
-        line-height: 1;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.2s ease;
-    }
-
-    .sublist-add-item-btn:hover {
-        background: var(--primary-hover);
+    .sublist-edit-row-actions {
+        display: flex;
+        gap: 4px;
     }
 
     .list > .list-items {
@@ -2052,15 +2026,13 @@
 
     body.dark-mode .sublist-form input,
     body.dark-mode .sublist-title-input,
-    body.dark-mode .sublist-edit-row input,
-    body.dark-mode .sublist-add-item-row input {
+    body.dark-mode .sublist-edit-row input {
         background: #282828;
         border-color: #555;
         color: #E0E0E0;
     }
 
-    body.dark-mode .sublist-form button,
-    body.dark-mode .sublist-add-item-btn {
+    body.dark-mode .sublist-form button {
         background: var(--primary);
         color: #fff;
         border: none;
@@ -2086,15 +2058,18 @@
         color: #888;
     }
 
-    body.dark-mode .sublist-actions-row button,
-    body.dark-mode .sublist-remove-item-btn {
+    body.dark-mode .sublist-icon-btn {
         background: transparent;
         border: none;
+        color: #cfcfcf;
     }
 
-    body.dark-mode .sublist-actions-row button:hover,
-    body.dark-mode .sublist-remove-item-btn:hover {
+    body.dark-mode .sublist-icon-btn:hover {
         background: rgba(255, 255, 255, 0.08);
+    }
+
+    body.dark-mode .sublist-inline-add-btn {
+        color: #fff;
     }
 
     body.dark-mode .task-icon-option {
@@ -7241,37 +7216,34 @@ body.dark-mode #remove-schedule-btn:hover {
                 const header = document.createElement('div');
                 header.className = 'sublist-header';
 
+                const titleWrapper = document.createElement('div');
+                titleWrapper.className = 'sublist-title-wrapper';
+
+                const headerActions = document.createElement('div');
+                headerActions.className = 'sublist-header-actions';
+
                 const editBtn = document.createElement('button');
                 editBtn.type = 'button';
-                editBtn.className = 'sublist-edit-btn';
+                editBtn.className = 'sublist-icon-btn sublist-edit-btn';
                 editBtn.innerHTML = '<img src="buttons/pencil.svg" alt="Editar sublista">';
 
                 const deleteBtn = document.createElement('button');
                 deleteBtn.type = 'button';
-                deleteBtn.className = 'sublist-delete-btn';
+                deleteBtn.className = 'sublist-icon-btn sublist-delete-btn';
                 deleteBtn.innerHTML = '<img src="buttons/trash.svg" alt="Excluir sublista">';
 
                 const saveBtn = document.createElement('button');
                 saveBtn.type = 'button';
-                saveBtn.className = 'sublist-save-btn';
+                saveBtn.className = 'sublist-icon-btn sublist-save-btn';
                 saveBtn.innerHTML = '<img src="buttons/ok.svg" alt="Salvar sublista">';
                 saveBtn.style.display = 'none';
 
-                const cancelBtn = document.createElement('button');
-                cancelBtn.type = 'button';
-                cancelBtn.className = 'sublist-cancel-btn';
-                cancelBtn.innerHTML = '<img src="buttons/close.svg" alt="Cancelar edição">';
-                cancelBtn.style.display = 'none';
+                headerActions.appendChild(editBtn);
+                headerActions.appendChild(deleteBtn);
+                headerActions.appendChild(saveBtn);
 
-                const actionsRow = document.createElement('div');
-                actionsRow.className = 'sublist-actions-row';
-                actionsRow.appendChild(editBtn);
-                actionsRow.appendChild(deleteBtn);
-                actionsRow.appendChild(saveBtn);
-                actionsRow.appendChild(cancelBtn);
-
-                const titleWrapper = document.createElement('div');
-                titleWrapper.className = 'sublist-title-wrapper';
+                header.appendChild(titleWrapper);
+                header.appendChild(headerActions);
 
                 const itemsList = document.createElement('ul');
                 itemsList.className = 'sublist-items';
@@ -7280,31 +7252,9 @@ body.dark-mode #remove-schedule-btn:hover {
                 editItemsContainer.className = 'sublist-edit-items';
                 editItemsContainer.style.display = 'none';
 
-                const addItemRow = document.createElement('div');
-                addItemRow.className = 'sublist-add-item-row';
-                addItemRow.style.display = 'none';
-
-                const newItemInput = document.createElement('input');
-                newItemInput.type = 'text';
-                newItemInput.placeholder = 'novo item';
-
-                const addItemBtn = document.createElement('button');
-                addItemBtn.type = 'button';
-                addItemBtn.className = 'sublist-add-item-btn';
-                addItemBtn.textContent = '+';
-                addItemBtn.setAttribute('aria-label', 'adicionar item na sublista');
-                addItemBtn.title = 'adicionar item';
-
-                addItemRow.appendChild(newItemInput);
-                addItemRow.appendChild(addItemBtn);
-
-                header.appendChild(titleWrapper);
-
                 block.appendChild(header);
                 block.appendChild(itemsList);
                 block.appendChild(editItemsContainer);
-                block.appendChild(addItemRow);
-                block.appendChild(actionsRow);
 
                 const updateTitleDisplay = () => {
                     titleWrapper.innerHTML = '';
@@ -7333,17 +7283,51 @@ body.dark-mode #remove-schedule-btn:hover {
                 const createEditRow = (value = '') => {
                     const row = document.createElement('div');
                     row.className = 'sublist-edit-row';
+
                     const input = document.createElement('input');
                     input.type = 'text';
                     input.value = value;
-                    input.placeholder = 'item da sublista';
+                    input.placeholder = 'novo item';
+
+                    const rowActions = document.createElement('div');
+                    rowActions.className = 'sublist-edit-row-actions';
+
+                    const addRowBtn = document.createElement('button');
+                    addRowBtn.type = 'button';
+                    addRowBtn.className = 'sublist-icon-btn sublist-inline-add-btn';
+                    addRowBtn.textContent = '+';
+                    addRowBtn.setAttribute('aria-label', 'adicionar novo item na sublista');
+                    addRowBtn.addEventListener('click', () => {
+                        const newRow = createEditRow('');
+                        editItemsContainer.appendChild(newRow);
+                        const newInput = newRow.querySelector('input');
+                        if (newInput) {
+                            requestAnimationFrame(() => newInput.focus());
+                        }
+                    });
+
                     const removeBtn = document.createElement('button');
                     removeBtn.type = 'button';
-                    removeBtn.className = 'sublist-remove-item-btn';
-                    removeBtn.innerHTML = '<img src="buttons/trash.svg" alt="Remover item">';
-                    removeBtn.addEventListener('click', () => row.remove());
+                    removeBtn.className = 'sublist-icon-btn sublist-remove-item-btn';
+                    removeBtn.innerHTML = '<img src="buttons/trash.svg" alt="Remover item da sublista">';
+                    removeBtn.addEventListener('click', () => {
+                        row.remove();
+                        if (!editItemsContainer.querySelector('.sublist-edit-row')) {
+                            const fallbackRow = createEditRow('');
+                            editItemsContainer.appendChild(fallbackRow);
+                            const fallbackInput = fallbackRow.querySelector('input');
+                            if (fallbackInput) {
+                                requestAnimationFrame(() => fallbackInput.focus());
+                            }
+                        }
+                    });
+
+                    rowActions.appendChild(addRowBtn);
+                    rowActions.appendChild(removeBtn);
+
                     row.appendChild(input);
-                    row.appendChild(removeBtn);
+                    row.appendChild(rowActions);
+
                     return row;
                 };
 
@@ -7352,14 +7336,10 @@ body.dark-mode #remove-schedule-btn:hover {
                 const exitEditMode = () => {
                     block.classList.remove('editing');
                     editBtn.style.display = 'inline-flex';
-                    deleteBtn.style.display = 'inline-flex';
                     saveBtn.style.display = 'none';
-                    cancelBtn.style.display = 'none';
                     itemsList.style.display = '';
                     editItemsContainer.style.display = 'none';
                     editItemsContainer.innerHTML = '';
-                    addItemRow.style.display = 'none';
-                    newItemInput.value = '';
                     titleInputRef = null;
                     updateTitleDisplay();
                 };
@@ -7367,12 +7347,9 @@ body.dark-mode #remove-schedule-btn:hover {
                 const enterEditMode = () => {
                     block.classList.add('editing');
                     editBtn.style.display = 'none';
-                    deleteBtn.style.display = 'none';
                     saveBtn.style.display = 'inline-flex';
-                    cancelBtn.style.display = 'inline-flex';
                     itemsList.style.display = 'none';
                     editItemsContainer.style.display = 'flex';
-                    addItemRow.style.display = 'flex';
                     editItemsContainer.innerHTML = '';
                     if (state.items.length === 0) {
                         editItemsContainer.appendChild(createEditRow(''));
@@ -7422,26 +7399,6 @@ body.dark-mode #remove-schedule-btn:hover {
                     renderView();
                     exitEditMode();
                     saveLists();
-                });
-
-                cancelBtn.addEventListener('click', () => {
-                    exitEditMode();
-                    renderView();
-                });
-
-                addItemBtn.addEventListener('click', () => {
-                    const value = newItemInput.value.trim();
-                    if (!value) return;
-                    editItemsContainer.appendChild(createEditRow(value));
-                    newItemInput.value = '';
-                    newItemInput.focus();
-                });
-
-                newItemInput.addEventListener('keydown', (event) => {
-                    if (event.key === 'Enter') {
-                        event.preventDefault();
-                        addItemBtn.click();
-                    }
                 });
 
                 updateTitleDisplay();
