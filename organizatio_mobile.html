@@ -822,6 +822,38 @@
     .add-btn-group button {
         flex: 1;
     }
+
+    .add-subcategory-btn {
+        background: var(--bg-secondary);
+        border: 1px dashed var(--border-medium);
+        color: var(--text-secondary);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--font-size-xs);
+        font-weight: 500;
+        padding: 8px;
+        border-radius: 10px;
+        transition: background 0.2s, border-color 0.2s, color 0.2s;
+        white-space: nowrap;
+    }
+
+    .add-subcategory-btn:hover {
+        background: var(--border-light);
+        color: var(--text-primary);
+    }
+
+    body.dark-mode .add-subcategory-btn {
+        background: #2d2d2d;
+        border-color: #555;
+        color: var(--text-secondary);
+    }
+
+    body.dark-mode .add-subcategory-btn:hover {
+        background: #3a3a3a;
+        color: var(--text-primary);
+    }
     
     button.add-btn {
       background: #3586ff;
@@ -2035,6 +2067,10 @@
         justify-self: flex-start;
         padding-left: 16px;
         padding-right: 16px;
+    }
+
+    .shopping-input-group .add-subcategory-btn {
+        grid-column: 1 / -1;
     }
 
     body.dark-mode .list-total {
