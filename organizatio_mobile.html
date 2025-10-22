@@ -645,6 +645,26 @@
     #newListForm button[type="submit"] {
         font-size: var(--font-size-sm);
     }
+
+    #newListForm-sublist-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 2px 0;
+        font-size: var(--font-size-sm);
+        color: var(--text-secondary);
+    }
+
+    #newListForm-sublist-toggle input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--primary);
+        cursor: pointer;
+    }
+
+    #newListForm-sublist-toggle label {
+        cursor: pointer;
+    }
     
     #planner-link-options label,
     #routine-options label,
@@ -780,38 +800,6 @@
         flex-grow: 1;
     }
 
-    .add-subcategory-btn {
-        background: var(--bg-secondary);
-        border: 1px dashed var(--border-medium);
-        color: var(--text-secondary);
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: var(--font-size-xs);
-        font-weight: 500;
-        padding: 8px;
-        border-radius: 10px;
-        transition: background 0.2s, border-color 0.2s, color 0.2s;
-        white-space: nowrap;
-    }
-
-    .add-subcategory-btn:hover {
-        background: var(--border-light);
-        color: var(--text-primary);
-    }
-
-    body.dark-mode .add-subcategory-btn {
-        background: #2d2d2d;
-        border-color: #555;
-        color: var(--text-secondary);
-    }
-
-    body.dark-mode .add-subcategory-btn:hover {
-        background: #3a3a3a;
-        color: var(--text-primary);
-    }
-    
     button.add-btn {
       background: #3586ff;
       border: none;
@@ -1046,37 +1034,284 @@
     .list.priority-baixa { border-left-color: #3586ff; }
     .list.priority-media { border-left-color: #FFC107; }
     .list.priority-alta { border-left-color: #FF5252; }
-    
-    .list ul {
+
+    .sublist-controls-container {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin: 4px 0 12px;
+    }
+
+    .create-sublist-btn {
+        align-self: flex-start;
+        background: transparent;
+        border: 1px dashed var(--border-medium);
+        color: var(--text-secondary);
+        padding: 6px 12px;
+        border-radius: var(--radius-md);
+        font-size: var(--font-size-sm);
+        text-transform: lowercase;
+        cursor: pointer;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .create-sublist-btn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        background: rgba(53, 134, 255, 0.08);
+    }
+
+    .sublist-form {
+        display: none;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .sublist-form input {
+        flex: 1;
+        padding: 8px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-light);
+        font-size: var(--font-size-sm);
+        background: var(--bg-primary);
+        color: var(--text-primary);
+    }
+
+    .sublist-form button {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-md);
+        background: var(--primary);
+        border: none;
+        color: #fff;
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s ease;
+    }
+
+    .sublist-form button:hover {
+        background: var(--primary-hover);
+    }
+
+    .sublists-section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 12px;
+    }
+
+    .sublist-block {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-md);
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        box-shadow: var(--shadow-sm);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sublist-block.editing {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px rgba(53, 134, 255, 0.15);
+    }
+
+    .sublist-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .sublist-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .sublist-block:not(.editing) .sublist-save-btn {
+        display: none;
+    }
+
+    .sublist-block.editing .sublist-save-btn {
+        display: inline-flex;
+    }
+
+    .sublist-icon-btn {
+        background: transparent;
+        border: none;
+        padding: 4px;
+        width: 28px;
+        height: 28px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s ease, transform 0.2s ease;
+        color: var(--text-secondary);
+    }
+
+    .sublist-icon-btn:hover {
+        background: rgba(0, 0, 0, 0.05);
+        transform: translateY(-1px);
+    }
+
+    .sublist-icon-btn img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .sublist-inline-add-btn {
+        font-size: 18px;
+        line-height: 1;
+        font-weight: 600;
+        color: var(--primary);
+    }
+
+    .sublist-title-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+
+    .sublist-title {
+        font-size: var(--font-size-sm);
+        font-weight: 600;
+        color: var(--text-primary);
+        text-transform: lowercase;
+    }
+
+    .sublist-title-input {
+        flex: 1;
+        padding: 6px 8px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-light);
+        font-size: var(--font-size-sm);
+        background: var(--bg-primary);
+        color: var(--text-primary);
+    }
+
+    .sublist-items {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .sublist-items li {
+        background: var(--bg-primary);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-light);
+        font-size: 13px;
+        color: var(--text-secondary);
+        display: flex;
+        padding: 0;
+    }
+
+    .sublist-item-content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        width: 100%;
+    }
+
+    .sublist-item-content input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        accent-color: var(--primary);
+    }
+
+    .sublist-item-text {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .sublist-items li.completed .sublist-item-text {
+        text-decoration: line-through;
+        color: var(--text-muted);
+    }
+
+    .sublist-items li.sublist-empty {
+        font-style: italic;
+        color: var(--text-muted);
+        border-style: dashed;
+        padding: 6px 10px;
+        display: block;
+    }
+
+    .sublist-edit-items {
+        display: none;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .sublist-edit-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .sublist-edit-row input {
+        flex: 1;
+        padding: 6px 8px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-light);
+        font-size: var(--font-size-sm);
+        background: var(--bg-primary);
+        color: var(--text-primary);
+    }
+
+    .sublist-edit-row-actions {
+        display: flex;
+        gap: 4px;
+    }
+
+    .list > .list-items {
       list-style: none;
       padding: 0;
       margin: 0;
     }
 
-    .list li {
+    .list.has-sublists > .list-items:empty {
+        display: none;
+    }
+
+    .list > .list-items > li {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 6px 0;
       border-bottom: 1px solid #eee;
     }
-    
-    .list li:last-child {
+
+    .list > .list-items > li:last-child {
       border-bottom: none;
     }
 
-    .list li.subcategory-item {
+    .list > .list-items > li.subcategory-item {
       background: var(--bg-secondary);
       border-bottom-color: var(--border-light);
       padding-top: 10px;
       padding-bottom: 6px;
     }
 
-    .list li.subcategory-item .list-item-content {
+    .list > .list-items > li.subcategory-item .list-item-content {
       gap: 4px;
     }
 
-    .list li.subcategory-item .list-item-content span {
+    .list > .list-items > li.subcategory-item .list-item-content span {
       font-weight: 600;
       color: var(--text-secondary);
       letter-spacing: 0.3px;
@@ -1501,6 +1736,38 @@
         border-bottom-color: transparent;
         padding-top: 12px;
     }
+
+    #listDetailsItems li.detail-sublist-label {
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: lowercase;
+        color: var(--text-secondary);
+        border-bottom-color: transparent;
+        margin-top: 10px;
+    }
+
+    #listDetailsItems li.detail-sublist-title {
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: lowercase;
+        color: var(--text-primary);
+    }
+
+    #listDetailsItems li.detail-sublist-item {
+        font-size: 14px;
+        color: var(--text-secondary);
+        padding-left: 16px;
+    }
+
+    #listDetailsItems li.detail-sublist-item.completed {
+        text-decoration: line-through;
+        opacity: 0.7;
+    }
+
+    #listDetailsItems li.detail-sublist-item.empty {
+        font-style: italic;
+        color: var(--text-muted);
+    }
     #modal-date-text {
         font-size: 14px;
         color: #888;
@@ -1758,10 +2025,6 @@
         padding: 8px 12px;
     }
 
-    .shopping-input-group .add-subcategory-btn {
-        grid-column: 1 / -1;
-    }
-
     body.dark-mode .list-total {
         border-top-color: #333;
     }
@@ -1789,10 +2052,73 @@
     }
 
     body.dark-mode .list {
-      background: #1F1F1F; 
+      background: #1F1F1F;
       box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
-    
+
+    body.dark-mode .create-sublist-btn {
+        border-color: var(--border-dark);
+        color: #cfcfcf;
+        background: transparent;
+    }
+
+    body.dark-mode .create-sublist-btn:hover {
+        background: rgba(107, 154, 255, 0.12);
+        color: #fff;
+    }
+
+    body.dark-mode .sublist-form input,
+    body.dark-mode .sublist-title-input,
+    body.dark-mode .sublist-edit-row input {
+        background: #282828;
+        border-color: #555;
+        color: #E0E0E0;
+    }
+
+    body.dark-mode .sublist-form button {
+        background: var(--primary);
+        color: #fff;
+        border: none;
+    }
+
+    body.dark-mode .sublist-block {
+        background: #282828;
+        border-color: #444;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+    }
+
+    body.dark-mode .sublist-block.editing {
+        box-shadow: 0 0 0 2px rgba(107, 154, 255, 0.3);
+    }
+
+    body.dark-mode .sublist-items li {
+        background: #1F1F1F;
+        border-color: #444;
+        color: #ccc;
+    }
+
+    body.dark-mode .sublist-items li.sublist-empty {
+        color: #888;
+    }
+
+    body.dark-mode #listDetailsItems li.detail-sublist-item.completed {
+        color: var(--text-muted);
+    }
+
+    body.dark-mode .sublist-icon-btn {
+        background: transparent;
+        border: none;
+        color: #cfcfcf;
+    }
+
+    body.dark-mode .sublist-icon-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    body.dark-mode .sublist-inline-add-btn {
+        color: #fff;
+    }
+
     body.dark-mode .task-icon-option {
         border: 2px solid #555;
         background: #282828;
@@ -1885,7 +2211,7 @@
     body.dark-mode .task-list-item.priority-alta { border-left-color: #FF1744; }
     body.dark-mode .task-icon-grid-view.priority-icon-alta { border-color: #FF1744; }
 
-    body.dark-mode .list li {
+    body.dark-mode .list > .list-items > li {
       border-bottom: 1px solid #333;
     }
     body.dark-mode .list-item-content input[type="text"] {
@@ -3349,7 +3675,7 @@ body.dark-mode #remove-schedule-btn:hover {
             <form id="newListForm">
                 <div id="newListForm-main-line" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                     <input type="text" id="newListName" placeholder="nome da nova lista" required style="flex-grow: 1; min-width: 200px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: var(--font-size-md);">
-                    
+
                     <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                         <select id="newListPriority" style="text-transform: none; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: var(--font-size-md);">
                             <option value="baixa">prioridade: baixa</option>
@@ -3360,7 +3686,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div id="shopping-list-container" title="Marcar como lista de compras">
                             <input type="checkbox" id="shopping-list-checkbox">
                             <label for="shopping-list-checkbox" class="icon-toggle-button">
-                                <img src="buttons/lists/compras.svg" alt="Lista de Compras">
+                                <img src="./images/shopping.svg" alt="Lista de Compras">
                             </label>
                         </div>
                         
@@ -3371,6 +3697,11 @@ body.dark-mode #remove-schedule-btn:hover {
                             </label>
                         </div>
                     </div>
+                </div>
+
+                <div id="newListForm-sublist-toggle">
+                    <input type="checkbox" id="newListHasSublists">
+                    <label for="newListHasSublists">lista com sublistas</label>
                 </div>
 
                 <div id="planner-link-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
@@ -3646,6 +3977,7 @@ body.dark-mode #remove-schedule-btn:hover {
     const newListForm = document.getElementById('newListForm');
     const newListNameInput = document.getElementById("newListName");
     const newListPriorityInput = document.getElementById("newListPriority");
+    const newListHasSublistsInput = document.getElementById('newListHasSublists');
     const shoppingListContainer = document.getElementById('shopping-list-container');
     const linkToPlannerContainer = document.getElementById('link-to-planner-container');
     const linkToPlannerCheckbox = document.getElementById('link-to-planner-checkbox');
@@ -3826,6 +4158,10 @@ body.dark-mode #remove-schedule-btn:hover {
         return withoutQuery.startsWith('./') ? withoutQuery : `./${withoutQuery}`;
     }
 
+    function generateSublistId() {
+        return 'sublist-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+    }
+
     function normalizeListData(list) {
         if (!list) return false;
         let changed = false;
@@ -3929,9 +4265,101 @@ body.dark-mode #remove-schedule-btn:hover {
                     return normalizedItem;
                 });
 
-            if (list.items.length !== originalLength) {
+        if (list.items.length !== originalLength) {
+            changed = true;
+        }
+    }
+
+        if (!Array.isArray(list.sublists)) {
+            if (list.sublists && typeof list.sublists === 'object') {
+                list.sublists = Object.values(list.sublists);
+            }
+            if (!Array.isArray(list.sublists)) {
+                list.sublists = [];
                 changed = true;
             }
+        }
+
+        if (Array.isArray(list.sublists)) {
+            const originalSublistLength = list.sublists.length;
+            list.sublists = list.sublists
+                .filter(sublist => sublist && typeof sublist.title === 'string')
+                .map(sublist => {
+                    const normalized = { ...sublist };
+                    const trimmedTitle = normalized.title.trim();
+                    if (trimmedTitle !== normalized.title) {
+                        normalized.title = trimmedTitle;
+                        changed = true;
+                    }
+
+                    if (!normalized.id) {
+                        normalized.id = generateSublistId();
+                        changed = true;
+                    }
+
+                    if (!Array.isArray(normalized.items)) {
+                        normalized.items = [];
+                        changed = true;
+                    } else {
+                        const originalItemsCount = normalized.items.length;
+                        let itemsChanged = false;
+                        normalized.items = normalized.items.reduce((acc, item) => {
+                            if (typeof item === 'string') {
+                                const text = item.trim();
+                                if (!text) {
+                                    if (text !== item) itemsChanged = true;
+                                    return acc;
+                                }
+                                itemsChanged = true;
+                                acc.push({ text, checked: false });
+                                return acc;
+                            }
+                            if (item && typeof item === 'object') {
+                                const rawText = typeof item.text === 'string' ? item.text : '';
+                                const text = rawText.trim();
+                                const checked = !!item.checked;
+                                if (!text) {
+                                    if (rawText !== text) itemsChanged = true;
+                                    if (item.checked) itemsChanged = true;
+                                    return acc;
+                                }
+                                if (rawText !== text || item.checked !== checked) {
+                                    itemsChanged = true;
+                                }
+                                acc.push({ text, checked });
+                                return acc;
+                            }
+                            itemsChanged = true;
+                            return acc;
+                        }, []);
+                        if (normalized.items.length !== originalItemsCount) {
+                            itemsChanged = true;
+                        }
+                        if (itemsChanged) {
+                            changed = true;
+                        }
+                    }
+
+                    return normalized;
+                });
+
+            if (list.sublists.length !== originalSublistLength) {
+                changed = true;
+            }
+        }
+
+        let normalizedSupports;
+        if (typeof list.supportsSublists === 'boolean') {
+            normalizedSupports = list.supportsSublists;
+        } else if (typeof list.supportsSublists === 'string') {
+            normalizedSupports = list.supportsSublists === 'true';
+        } else {
+            normalizedSupports = Array.isArray(list.sublists) && list.sublists.length > 0;
+        }
+
+        if (list.supportsSublists !== normalizedSupports) {
+            list.supportsSublists = normalizedSupports;
+            changed = true;
         }
 
         return changed;
@@ -4245,6 +4673,7 @@ body.dark-mode #remove-schedule-btn:hover {
     function saveLists() {
         const lists = Array.from(listsContainer.querySelectorAll('.list')).map(listDiv => {
             const isShopping = listDiv.dataset.isShopping === 'true';
+            const supportsSublists = listDiv.dataset.supportsSublists === 'true';
             const iconImg = listDiv.querySelector('.list-title-icon');
             const rawBorderColor = listDiv.style.borderLeftColor || window.getComputedStyle(listDiv).borderLeftColor || null;
             const colorName = listDiv.dataset.colorName || (iconImg ? iconImg.dataset.color : null) || getColorNameFromValue(rawBorderColor);
@@ -4259,11 +4688,19 @@ body.dark-mode #remove-schedule-btn:hover {
 
             const colorValue = rawBorderColor || colorHex;
 
-            const items = Array.from(listDiv.querySelectorAll('ul li')).map(li => {
+            const mainItemsList = listDiv.querySelector('.list-items');
+            const items = mainItemsList ? Array.from(mainItemsList.children).map(li => {
                 const checkbox = li.querySelector('input[type="checkbox"]');
                 const itemType = li.dataset.itemType === 'subcategory' ? 'subcategory' : 'item';
+                const contentWrapper = li.querySelector('.list-item-content');
+                const textSpan = contentWrapper ? contentWrapper.querySelector('span') : null;
+                const textInput = contentWrapper ? contentWrapper.querySelector('input[type="text"]') : null;
+                const itemText = textSpan ? textSpan.textContent.trim() : (textInput ? textInput.value.trim() : '');
+                if (!itemText) {
+                    return null;
+                }
                 const baseItem = {
-                    text: li.querySelector('.list-item-content span').textContent.trim(),
+                    text: itemText,
                     checked: checkbox ? checkbox.checked : false,
                     type: itemType
                 };
@@ -4271,8 +4708,47 @@ body.dark-mode #remove-schedule-btn:hover {
                     baseItem.value = parseFloat(li.dataset.value) || 0;
                 }
                 return baseItem;
-            });
-            
+            }).filter(Boolean) : [];
+
+            const sublists = supportsSublists ? Array.from(listDiv.querySelectorAll('.sublist-block')).map(sublistDiv => {
+                let sublistId = sublistDiv.dataset.sublistId;
+                if (!sublistId) {
+                    sublistId = generateSublistId();
+                    sublistDiv.dataset.sublistId = sublistId;
+                }
+
+                const titleElement = sublistDiv.querySelector('.sublist-title');
+                const titleInput = sublistDiv.querySelector('.sublist-title-input');
+                const title = titleElement ? titleElement.textContent.trim() : (titleInput ? titleInput.value.trim() : '');
+                const itemElements = Array.from(sublistDiv.querySelectorAll('.sublist-items li'))
+                    .filter(li => !li.classList.contains('sublist-empty'));
+                const sublistItems = itemElements
+                    .map(li => {
+                        const textSpan = li.querySelector('.sublist-item-text');
+                        const checkbox = li.querySelector('input[type="checkbox"]');
+                        const rawText = textSpan ? textSpan.textContent : li.textContent;
+                        const text = typeof rawText === 'string' ? rawText.trim() : '';
+                        if (!text) {
+                            return null;
+                        }
+                        return {
+                            text,
+                            checked: checkbox ? checkbox.checked : false
+                        };
+                    })
+                    .filter(Boolean);
+
+                if (!title) {
+                    return null;
+                }
+
+                return {
+                    id: sublistId,
+                    title,
+                    items: sublistItems
+                };
+            }).filter(Boolean) : [];
+
             const isRoutine = listDiv.dataset.isRoutine === 'true';
             let lastCompletedDate = null;
             if (isRoutine && listDiv.classList.contains('completed')) {
@@ -4292,7 +4768,9 @@ body.dark-mode #remove-schedule-btn:hover {
                 isRoutine: isRoutine,
                 lastCompletedDate: lastCompletedDate,
                 transactionId: listDiv.dataset.transactionId || null,
-                transactionMonth: listDiv.dataset.transactionMonth || null
+                transactionMonth: listDiv.dataset.transactionMonth || null,
+                supportsSublists: supportsSublists,
+                sublists: sublists
             };
         }).filter(Boolean);
         localStorage.setItem('todoLists', JSON.stringify(lists));
@@ -4308,6 +4786,17 @@ body.dark-mode #remove-schedule-btn:hover {
         listsData.forEach(listData => {
             if (listData.isRoutine && listData.lastCompletedDate && listData.lastCompletedDate < todayString) {
                 listData.items.forEach(item => item.checked = false);
+                if (Array.isArray(listData.sublists)) {
+                    listData.sublists.forEach(sublist => {
+                        if (sublist && Array.isArray(sublist.items)) {
+                            sublist.items.forEach(subItem => {
+                                if (subItem && typeof subItem === 'object') {
+                                    subItem.checked = false;
+                                }
+                            });
+                        }
+                    });
+                }
                 listData.lastCompletedDate = null;
                 listsModified = true;
             }
@@ -4324,6 +4813,9 @@ body.dark-mode #remove-schedule-btn:hover {
 
         // Renderização das listas
         listsData.forEach(listData => {
+            const supportsSublists = typeof listData.supportsSublists === 'boolean'
+                ? listData.supportsSublists
+                : (Array.isArray(listData.sublists) && listData.sublists.length > 0);
             createList(
                 listData.name,
                 listData.items,
@@ -4336,7 +4828,9 @@ body.dark-mode #remove-schedule-btn:hover {
                 listData.transactionId,
                 listData.transactionMonth,
                 listData.color,
-                listData.colorName
+                listData.colorName,
+                supportsSublists,
+                listData.sublists || []
             );
         });
     }
@@ -4408,22 +4902,70 @@ body.dark-mode #remove-schedule-btn:hover {
         if (targetList) {
             listDetailsTitle.textContent = targetList.name;
             listDetailsItems.innerHTML = '';
-            if (targetList.items.length === 0) {
+            const hasMainItems = Array.isArray(targetList.items) && targetList.items.length > 0;
+            const hasSublists = Array.isArray(targetList.sublists) && targetList.sublists.length > 0;
+
+            if (!hasMainItems && !hasSublists) {
                 listDetailsItems.innerHTML = '<li>esta lista não tem itens.</li>';
             } else {
-                targetList.items.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = item.text;
-                    if (item.type === 'subcategory') {
-                        li.classList.add('subcategory-detail');
-                    } else if (item.checked) {
-                        li.style.textDecoration = 'line-through';
-                        li.style.opacity = '0.6';
-                    }
-                    listDetailsItems.appendChild(li);
-                });
+                if (hasMainItems) {
+                    targetList.items.forEach(item => {
+                        if (!item || typeof item.text !== 'string') return;
+                        const li = document.createElement('li');
+                        li.textContent = item.text;
+                        if (item.type === 'subcategory') {
+                            li.classList.add('subcategory-detail');
+                        } else if (item.checked) {
+                            li.style.textDecoration = 'line-through';
+                            li.style.opacity = '0.6';
+                        }
+                        listDetailsItems.appendChild(li);
+                    });
+                }
+
+                if (hasSublists) {
+                    const labelLi = document.createElement('li');
+                    labelLi.className = 'detail-sublist-label';
+                    labelLi.textContent = 'sublistas';
+                    listDetailsItems.appendChild(labelLi);
+
+                    targetList.sublists.forEach(sublist => {
+                        if (!sublist || typeof sublist.title !== 'string') return;
+                        const titleLi = document.createElement('li');
+                        titleLi.className = 'detail-sublist-title';
+                        titleLi.textContent = sublist.title;
+                        listDetailsItems.appendChild(titleLi);
+
+                        if (Array.isArray(sublist.items) && sublist.items.length > 0) {
+                            sublist.items.forEach(item => {
+                                let text = '';
+                                let checked = false;
+                                if (typeof item === 'string') {
+                                    text = item;
+                                } else if (item && typeof item === 'object') {
+                                    text = typeof item.text === 'string' ? item.text : '';
+                                    checked = !!item.checked;
+                                }
+                                text = text.trim();
+                                if (!text) return;
+                                const itemLi = document.createElement('li');
+                                itemLi.className = 'detail-sublist-item';
+                                itemLi.textContent = `• ${text}`;
+                                if (checked) {
+                                    itemLi.classList.add('completed');
+                                }
+                                listDetailsItems.appendChild(itemLi);
+                            });
+                        } else {
+                            const emptyLi = document.createElement('li');
+                            emptyLi.className = 'detail-sublist-item empty';
+                            emptyLi.textContent = 'sem itens';
+                            listDetailsItems.appendChild(emptyLi);
+                        }
+                    });
+                }
             }
-            
+
             // Show list details section
             listDetailsSection.style.setProperty('display', 'block', 'important');
         } else {
@@ -6619,7 +7161,7 @@ body.dark-mode #remove-schedule-btn:hover {
     }
 
 
-    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = taskIcons.lista, isShoppingList = false, isFinalized = false, isRoutine = false, transactionId = null, transactionMonth = null, borderColor = null, iconColorName = null) {
+    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = taskIcons.lista, isShoppingList = false, isFinalized = false, isRoutine = false, transactionId = null, transactionMonth = null, borderColor = null, iconColorName = null, supportsSublists = false, initialSublists = []) {
         if (!listName) return;
 
         const listDiv = document.createElement("div");
@@ -6725,8 +7267,362 @@ body.dark-mode #remove-schedule-btn:hover {
             saveLists();
         };
 
+        const hasInitialSublists = Array.isArray(initialSublists) && initialSublists.length > 0;
+        const allowsSublists = supportsSublists === true || supportsSublists === 'true' || hasInitialSublists;
+        listDiv.dataset.supportsSublists = allowsSublists ? 'true' : 'false';
+
+        let sublistControlsContainer = null;
+        let sublistsSection = null;
+        let addSublist = () => {};
+
+        if (allowsSublists) {
+            sublistControlsContainer = document.createElement('div');
+            sublistControlsContainer.className = 'sublist-controls-container';
+
+            const createSublistBtn = document.createElement('button');
+            createSublistBtn.type = 'button';
+            createSublistBtn.className = 'create-sublist-btn';
+            createSublistBtn.textContent = 'criar sublista';
+
+            const sublistForm = document.createElement('div');
+            sublistForm.className = 'sublist-form';
+
+            const sublistTitleInput = document.createElement('input');
+            sublistTitleInput.type = 'text';
+            sublistTitleInput.placeholder = 'título da sublista';
+
+            const sublistSaveBtn = document.createElement('button');
+            sublistSaveBtn.type = 'button';
+            sublistSaveBtn.className = 'save-sublist-btn';
+            sublistSaveBtn.textContent = '+';
+            sublistSaveBtn.setAttribute('aria-label', 'salvar sublista');
+            sublistSaveBtn.title = 'salvar sublista';
+
+            sublistForm.appendChild(sublistTitleInput);
+            sublistForm.appendChild(sublistSaveBtn);
+            sublistControlsContainer.appendChild(createSublistBtn);
+            sublistControlsContainer.appendChild(sublistForm);
+
+            sublistsSection = document.createElement('div');
+            sublistsSection.className = 'sublists-section';
+
+            const normalizeSublistItem = (item) => {
+                if (typeof item === 'string') {
+                    const text = item.trim();
+                    return text ? { text, checked: false } : null;
+                }
+                if (item && typeof item === 'object') {
+                    const text = typeof item.text === 'string' ? item.text.trim() : '';
+                    if (!text) return null;
+                    return {
+                        text,
+                        checked: !!item.checked
+                    };
+                }
+                return null;
+            };
+
+            const normalizeSublistItems = (items) => {
+                if (!Array.isArray(items)) return [];
+                return items
+                    .map(normalizeSublistItem)
+                    .filter(Boolean);
+            };
+
+            const createSublistBlock = (sublistData) => {
+                const state = {
+                    id: (sublistData && sublistData.id) || generateSublistId(),
+                    title: sublistData && typeof sublistData.title === 'string' ? sublistData.title.trim() : '',
+                    items: normalizeSublistItems(sublistData && sublistData.items)
+                };
+
+                if (!state.title) {
+                    return null;
+                }
+
+                const block = document.createElement('div');
+                block.className = 'sublist-block';
+                block.dataset.sublistId = state.id;
+
+                const header = document.createElement('div');
+                header.className = 'sublist-header';
+
+                const titleWrapper = document.createElement('div');
+                titleWrapper.className = 'sublist-title-wrapper';
+
+                const headerActions = document.createElement('div');
+                headerActions.className = 'sublist-header-actions';
+
+                const editBtn = document.createElement('button');
+                editBtn.type = 'button';
+                editBtn.className = 'sublist-icon-btn sublist-edit-btn';
+                editBtn.innerHTML = '<img src="buttons/pencil.svg" alt="Editar sublista">';
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.className = 'sublist-icon-btn sublist-delete-btn';
+                deleteBtn.innerHTML = '<img src="buttons/trash.svg" alt="Excluir sublista">';
+
+                const saveBtn = document.createElement('button');
+                saveBtn.type = 'button';
+                saveBtn.className = 'sublist-icon-btn sublist-save-btn';
+                saveBtn.innerHTML = '<img src="buttons/ok.svg" alt="Salvar sublista">';
+
+                headerActions.appendChild(editBtn);
+                headerActions.appendChild(deleteBtn);
+                headerActions.appendChild(saveBtn);
+
+                header.appendChild(titleWrapper);
+                header.appendChild(headerActions);
+
+                const itemsList = document.createElement('ul');
+                itemsList.className = 'sublist-items';
+
+                const editItemsContainer = document.createElement('div');
+                editItemsContainer.className = 'sublist-edit-items';
+                editItemsContainer.style.display = 'none';
+
+                block.appendChild(header);
+                block.appendChild(itemsList);
+                block.appendChild(editItemsContainer);
+
+                const updateTitleDisplay = () => {
+                    titleWrapper.innerHTML = '';
+                    const titleSpan = document.createElement('span');
+                    titleSpan.className = 'sublist-title';
+                    titleSpan.textContent = state.title;
+                    titleWrapper.appendChild(titleSpan);
+                };
+
+                const renderView = () => {
+                    itemsList.innerHTML = '';
+                    if (state.items.length === 0) {
+                        const emptyLi = document.createElement('li');
+                        emptyLi.className = 'sublist-empty';
+                        emptyLi.textContent = 'nenhum item';
+                        itemsList.appendChild(emptyLi);
+                    } else {
+                        state.items.forEach((item, index) => {
+                            if (!item || typeof item.text !== 'string') return;
+                            const li = document.createElement('li');
+                            const itemContent = document.createElement('div');
+                            itemContent.className = 'sublist-item-content';
+
+                            const checkbox = document.createElement('input');
+                            checkbox.type = 'checkbox';
+                            checkbox.checked = !!item.checked;
+
+                            const textSpan = document.createElement('span');
+                            textSpan.className = 'sublist-item-text';
+                            textSpan.textContent = item.text;
+
+                            itemContent.appendChild(checkbox);
+                            itemContent.appendChild(textSpan);
+                            li.appendChild(itemContent);
+                            li.classList.toggle('completed', !!item.checked);
+
+                            checkbox.addEventListener('change', () => {
+                                state.items[index].checked = checkbox.checked;
+                                li.classList.toggle('completed', checkbox.checked);
+                                saveLists();
+                                checkCompletion(listDiv);
+                            });
+
+                            itemsList.appendChild(li);
+                        });
+                    }
+                    checkCompletion(listDiv);
+                };
+
+                const createEditRow = (value = '') => {
+                    const row = document.createElement('div');
+                    row.className = 'sublist-edit-row';
+
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = value;
+                    input.placeholder = 'novo item';
+
+                    const rowActions = document.createElement('div');
+                    rowActions.className = 'sublist-edit-row-actions';
+
+                    const addRowBtn = document.createElement('button');
+                    addRowBtn.type = 'button';
+                    addRowBtn.className = 'sublist-icon-btn sublist-inline-add-btn';
+                    addRowBtn.textContent = '+';
+                    addRowBtn.setAttribute('aria-label', 'adicionar novo item na sublista');
+                    addRowBtn.addEventListener('click', () => {
+                        const newRow = createEditRow('');
+                        editItemsContainer.appendChild(newRow);
+                        const newInput = newRow.querySelector('input');
+                        if (newInput) {
+                            requestAnimationFrame(() => newInput.focus());
+                        }
+                    });
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.className = 'sublist-icon-btn sublist-remove-item-btn';
+                    removeBtn.innerHTML = '<img src="buttons/trash.svg" alt="Remover item da sublista">';
+                    removeBtn.addEventListener('click', () => {
+                        row.remove();
+                        if (!editItemsContainer.querySelector('.sublist-edit-row')) {
+                            const fallbackRow = createEditRow('');
+                            editItemsContainer.appendChild(fallbackRow);
+                            const fallbackInput = fallbackRow.querySelector('input');
+                            if (fallbackInput) {
+                                requestAnimationFrame(() => fallbackInput.focus());
+                            }
+                        }
+                    });
+
+                    rowActions.appendChild(addRowBtn);
+                    rowActions.appendChild(removeBtn);
+
+                    row.appendChild(input);
+                    row.appendChild(rowActions);
+
+                    return row;
+                };
+
+                let titleInputRef = null;
+
+                const exitEditMode = () => {
+                    block.classList.remove('editing');
+                    editBtn.style.display = 'inline-flex';
+                    saveBtn.style.display = 'none';
+                    itemsList.style.display = '';
+                    editItemsContainer.style.display = 'none';
+                    editItemsContainer.innerHTML = '';
+                    titleInputRef = null;
+                    updateTitleDisplay();
+                };
+
+                const enterEditMode = () => {
+                    block.classList.add('editing');
+                    editBtn.style.display = 'none';
+                    saveBtn.style.display = 'inline-flex';
+                    itemsList.style.display = 'none';
+                    editItemsContainer.style.display = 'flex';
+                    editItemsContainer.innerHTML = '';
+                    if (state.items.length === 0) {
+                        editItemsContainer.appendChild(createEditRow(''));
+                    } else {
+                        state.items.forEach(item => {
+                            editItemsContainer.appendChild(createEditRow(item && typeof item.text === 'string' ? item.text : ''));
+                        });
+                    }
+                    titleWrapper.innerHTML = '';
+                    titleInputRef = document.createElement('input');
+                    titleInputRef.type = 'text';
+                    titleInputRef.className = 'sublist-title-input';
+                    titleInputRef.value = state.title;
+                    titleInputRef.placeholder = 'título da sublista';
+                    titleInputRef.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            saveBtn.click();
+                        }
+                    });
+                    titleWrapper.appendChild(titleInputRef);
+                    requestAnimationFrame(() => titleInputRef && titleInputRef.focus());
+                };
+
+                editBtn.addEventListener('click', () => enterEditMode());
+
+                deleteBtn.addEventListener('click', () => {
+                    if (confirm('tem certeza que deseja excluir esta sublista?')) {
+                        block.remove();
+                        checkCompletion(listDiv);
+                        saveLists();
+                    }
+                });
+
+                saveBtn.addEventListener('click', () => {
+                    const newTitle = titleInputRef ? titleInputRef.value.trim() : state.title;
+                    if (!newTitle) {
+                        if (titleInputRef) {
+                            titleInputRef.focus();
+                        }
+                        return;
+                    }
+                    const updatedItems = Array.from(editItemsContainer.querySelectorAll('input[type="text"]'))
+                        .map((input, index) => {
+                            const value = input.value.trim();
+                            if (!value) return null;
+                            const existing = state.items[index];
+                            return {
+                                text: value,
+                                checked: existing ? !!existing.checked : false
+                            };
+                        })
+                        .filter(Boolean);
+                    state.title = newTitle;
+                    state.items = normalizeSublistItems(updatedItems);
+                    renderView();
+                    exitEditMode();
+                    saveLists();
+                });
+
+                updateTitleDisplay();
+                renderView();
+                exitEditMode();
+                if (state.items.length === 0) {
+                    enterEditMode();
+                }
+
+                return block;
+            };
+
+            addSublist = (sublistData, shouldSave = false) => {
+                if (!sublistData) return;
+                const normalizedTitle = typeof sublistData.title === 'string' ? sublistData.title.trim() : '';
+                if (!normalizedTitle) return;
+                const normalizedItems = normalizeSublistItems(sublistData.items);
+                const block = createSublistBlock({
+                    id: sublistData.id,
+                    title: normalizedTitle,
+                    items: normalizedItems
+                });
+                if (block) {
+                    sublistsSection.appendChild(block);
+                    checkCompletion(listDiv);
+                    if (shouldSave) {
+                        saveLists();
+                    }
+                }
+            };
+
+            createSublistBtn.addEventListener('click', () => {
+                const isVisible = sublistForm.style.display === 'flex';
+                sublistForm.style.display = isVisible ? 'none' : 'flex';
+                if (!isVisible) {
+                    sublistTitleInput.focus();
+                }
+            });
+
+            sublistSaveBtn.addEventListener('click', () => {
+                const title = sublistTitleInput.value.trim();
+                if (!title) {
+                    sublistTitleInput.focus();
+                    return;
+                }
+                addSublist({ title }, true);
+                sublistTitleInput.value = '';
+                sublistForm.style.display = 'none';
+            });
+
+            sublistTitleInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    sublistSaveBtn.click();
+                }
+            });
+        }
+
         const inputGroup = document.createElement("div");
         const ul = document.createElement("ul");
+        ul.className = 'list-items';
         
         if (isShoppingList) {
             inputGroup.className = "shopping-input-group";
@@ -6741,14 +7637,8 @@ body.dark-mode #remove-schedule-btn:hover {
             addBtn.type = "button";
             addBtn.textContent = "+";
             addBtn.className = "add-btn";
-            const addSubcategoryBtn = document.createElement('button');
-            addSubcategoryBtn.type = 'button';
-            addSubcategoryBtn.className = 'add-subcategory-btn';
-            addSubcategoryBtn.textContent = 'subcategoria';
-            addSubcategoryBtn.title = 'adicionar subcategoria';
-            addSubcategoryBtn.setAttribute('aria-label', 'adicionar subcategoria');
-
-            inputGroup.append(itemInput, valueInput, addBtn, addSubcategoryBtn);
+            
+            inputGroup.append(itemInput, valueInput, addBtn);
 
             addBtn.onclick = () => {
                 const text = itemInput.value.trim();
@@ -6756,17 +7646,6 @@ body.dark-mode #remove-schedule-btn:hover {
                 const numericValue = parseFloat(valueInput.value);
                 const safeValue = Number.isFinite(numericValue) ? numericValue : 0;
                 addItem(text, false, safeValue);
-                itemInput.value = "";
-                valueInput.value = "";
-                itemInput.focus();
-                checkCompletion(listDiv);
-                saveLists();
-            };
-
-            addSubcategoryBtn.onclick = () => {
-                const text = itemInput.value.trim();
-                if (!text) return;
-                addItem(text, false, 0, 'subcategory');
                 itemInput.value = "";
                 valueInput.value = "";
                 itemInput.focus();
@@ -6782,16 +7661,9 @@ body.dark-mode #remove-schedule-btn:hover {
             addBtn.type = "button";
             addBtn.textContent = "adicionar";
             addBtn.className = "add-btn";
-            const addSubcategoryBtn = document.createElement('button');
-            addSubcategoryBtn.type = 'button';
-            addSubcategoryBtn.textContent = 'subcategoria';
-            addSubcategoryBtn.title = 'adicionar subcategoria';
-            addSubcategoryBtn.className = 'add-subcategory-btn';
-            addSubcategoryBtn.setAttribute('aria-label', 'adicionar subcategoria');
             const buttonsWrapper = document.createElement('div');
             buttonsWrapper.className = 'add-btn-group';
             buttonsWrapper.appendChild(addBtn);
-            buttonsWrapper.appendChild(addSubcategoryBtn);
             inputGroup.appendChild(input);
             inputGroup.appendChild(buttonsWrapper);
 
@@ -6800,15 +7672,6 @@ body.dark-mode #remove-schedule-btn:hover {
                 if (!text) return;
                 input.value = "";
                 addItem(text);
-                checkCompletion(listDiv);
-                saveLists();
-            };
-
-            addSubcategoryBtn.onclick = () => {
-                const text = input.value.trim();
-                if (!text) return;
-                input.value = "";
-                addItem(text, false, 0, 'subcategory');
                 checkCompletion(listDiv);
                 saveLists();
             };
@@ -6954,8 +7817,18 @@ body.dark-mode #remove-schedule-btn:hover {
         
         listDiv.appendChild(titleContainer);
         listDiv.appendChild(prioritySelect);
-        listDiv.appendChild(inputGroup);
+        if (sublistControlsContainer) {
+            listDiv.appendChild(sublistControlsContainer);
+        }
+        if (allowsSublists) {
+            listDiv.classList.add('has-sublists');
+        } else {
+            listDiv.appendChild(inputGroup);
+        }
         listDiv.appendChild(ul);
+        if (sublistsSection) {
+            listDiv.appendChild(sublistsSection);
+        }
         
         if (isShoppingList) {
             const totalDiv = document.createElement('div');
@@ -6986,8 +7859,12 @@ body.dark-mode #remove-schedule-btn:hover {
             const itemValue = itemType === 'item' ? item.value : 0;
             addItem(item.text, isChecked, itemValue, itemType);
         });
+
+        if (allowsSublists && Array.isArray(initialSublists)) {
+            initialSublists.forEach(sublist => addSublist(sublist));
+        }
         checkCompletion(listDiv);
-        
+
         if (isFinalized) {
             listDiv.classList.add('finalized');
             const finalizeBtn = listDiv.querySelector('.finalize-purchase-btn');
@@ -7080,8 +7957,9 @@ body.dark-mode #remove-schedule-btn:hover {
         const newListId = Date.now().toString();
         const isShopping = shoppingListCheckbox.checked;
         const isRoutine = linkAsRoutineCheckbox.checked;
-        
-        createList(listName, [], listPriority, newListId, taskIcons.lista, isShopping, false, isRoutine);
+        const supportsSublists = newListHasSublistsInput ? newListHasSublistsInput.checked : false;
+
+        createList(listName, [], listPriority, newListId, taskIcons.lista, isShopping, false, isRoutine, null, null, null, null, supportsSublists);
         saveLists(); // Save the new list to localStorage
         
         if (linkToPlannerCheckbox.checked) {
@@ -7270,11 +8148,7 @@ body.dark-mode #remove-schedule-btn:hover {
         }
 
         saveCalendarTasks();
-        // Só renderiza listas se a aba de listas estiver ativa
-        const listasSection = document.getElementById('listas-section');
-        if (listasSection && listasSection.style.display === 'block') {
-            loadAndRenderLists();
-        }
+        loadAndRenderLists();
         renderCalendar(currentCalendarDate);
         closeListEditorSection();
     });
