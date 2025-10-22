@@ -772,12 +772,55 @@
       transition: background 0.3s, border-color 0.3s, color 0.3s;
     }
     
+    .add-subcategory-btn {
+        background: transparent;
+        border: 1px dashed var(--border-medium);
+        color: var(--text-secondary);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-size: var(--font-size-xs);
+        font-weight: 600;
+        padding: 8px 12px;
+        border-radius: var(--radius-md);
+        transition: background 0.2s, border-color 0.2s, color 0.2s;
+        white-space: nowrap;
+        text-transform: lowercase;
+    }
+
+    .add-subcategory-btn:hover {
+        background: var(--border-light);
+        color: var(--text-primary);
+    }
+
+    body.dark-mode .add-subcategory-btn {
+        border-color: var(--border-light);
+        color: var(--text-secondary);
+    }
+
+    body.dark-mode .add-subcategory-btn:hover {
+        background: #3a3a3a;
+        color: var(--text-primary);
+    }
+
+    .add-btn-compact {
+        width: 44px;
+        min-width: 44px;
+        padding: 8px;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1;
+    }
+
     .add-btn-group {
         display: flex;
         gap: 5px;
     }
+
     .add-btn-group button {
-        flex-grow: 1;
+        flex: 1;
     }
     
     button.add-btn {
@@ -987,14 +1030,102 @@
     }
     
     .list-input-group {
-        display: flex;
-        gap: 5px;
-        margin-bottom: 10px;
+        display: grid;
+        grid-template-columns: 1fr minmax(140px, 0.8fr) auto;
+        gap: 6px;
+        align-items: center;
+        margin-bottom: 12px;
     }
-    .list-input-group input {
-        flex-grow: 1;
+    .list-input-group input,
+    .list-input-group select {
         margin-bottom: 0;
         font-size: 14px;
+        padding: 8px;
+        border-radius: var(--radius-md);
+    }
+    .list-input-group select {
+        text-transform: none;
+    }
+    .list-input-group .add-subcategory-btn {
+        grid-column: 1 / -1;
+        justify-self: flex-start;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .new-list-subcategories {
+        margin-top: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .new-list-subcategories-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .new-list-subcategories-header span {
+        font-size: var(--font-size-sm);
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+
+    .new-list-subcategories .add-subcategory-btn {
+        align-self: flex-start;
+    }
+
+    .new-list-subcategories-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .new-list-subcategory-input {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 6px;
+        align-items: center;
+    }
+
+    .new-list-subcategory-input input {
+        padding: 8px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-medium);
+        font-size: var(--font-size-sm);
+        text-transform: lowercase;
+    }
+
+    .new-list-subcategory-input button {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: var(--radius-md);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .new-list-subcategory-input button img {
+        width: 14px;
+        height: 14px;
+    }
+
+    .new-list-subcategory-input button:hover {
+        background: var(--border-light);
+    }
+
+    body.dark-mode .new-list-subcategory-input input {
+        background: var(--bg-secondary);
+        border-color: var(--border-light);
+        color: var(--text-primary);
+    }
+
+    body.dark-mode .new-list-subcategory-input button:hover {
+        background: #3a3a3a;
     }
 
     .list.completed {
@@ -1026,11 +1157,161 @@
       align-items: center;
       justify-content: space-between;
       padding: 6px 0;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--border-light);
     }
-    
+
     .list li:last-child {
       border-bottom: none;
+    }
+
+    .list li.subcategory-block {
+      display: block;
+      border-bottom: none;
+      padding: 0;
+      margin-bottom: 12px;
+    }
+
+    .subcategory-block-container {
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      background: transparent;
+      padding: 14px 16px;
+    }
+
+    .subcategory-block-container.subcategory-block-editing {
+      border-color: var(--primary-light);
+      box-shadow: inset 0 0 0 1px rgba(53, 134, 255, 0.08);
+    }
+
+    body.dark-mode .subcategory-block-container.subcategory-block-editing {
+      border-color: var(--primary);
+      box-shadow: inset 0 0 0 1px rgba(53, 134, 255, 0.2);
+    }
+
+    body.dark-mode .subcategory-block-container {
+      border-color: var(--border-light);
+    }
+
+    .subcategory-header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .subcategory-title {
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-align: center;
+      text-transform: lowercase;
+    }
+
+    .subcategory-header-actions {
+      position: absolute;
+      right: 0;
+      top: 0;
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .subcategory-title-input {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-medium);
+      font-size: var(--font-size-sm);
+      text-align: center;
+      text-transform: lowercase;
+    }
+
+    body.dark-mode .subcategory-title-input {
+      background: var(--bg-secondary);
+      border-color: var(--border-light);
+      color: var(--text-primary);
+    }
+
+    .subcategory-items {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .subcategory-items > li {
+      padding: 4px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .subcategory-items > li:last-child {
+      border-bottom: none;
+    }
+
+    .subcategory-editing-item {
+      align-items: center;
+      gap: 8px;
+    }
+
+    .subcategory-item-input {
+      flex: 1;
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-medium);
+      font-size: var(--font-size-sm);
+      text-transform: lowercase;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    body.dark-mode .subcategory-item-input {
+      background: var(--bg-secondary);
+      border-color: var(--border-light);
+      color: var(--text-primary);
+    }
+
+    .subcategory-item-value-input {
+      width: 70px;
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-medium);
+      font-size: var(--font-size-sm);
+      text-align: right;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+    }
+
+    body.dark-mode .subcategory-item-value-input {
+      background: var(--bg-secondary);
+      border-color: var(--border-light);
+      color: var(--text-primary);
+    }
+
+    .subcategory-item-actions {
+      display: none;
+    }
+
+    .subcategory-add-controls {
+      margin-top: 12px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .subcategory-add-controls .add-btn-inline {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      min-height: 32px;
+      border-radius: var(--radius-full);
+      font-size: 20px;
+      font-weight: 600;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .subcategory-add-controls .add-btn-inline:hover {
+      transform: translateY(-1px);
     }
 
     .list-item-content {
@@ -1439,11 +1720,54 @@
     #listDetailsItems {
         list-style: none;
         padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
-    #listDetailsItems li {
+    #listDetailsItems > li {
         padding: 8px 0;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--border-light);
         font-size: 16px;
+    }
+
+    #listDetailsItems > li:last-child {
+        border-bottom: none;
+    }
+
+    #listDetailsItems li.subcategory-detail {
+        border: 1px solid var(--border-dark);
+        border-radius: var(--radius-md);
+        padding: 14px 16px;
+        color: var(--text-secondary);
+        border-bottom: none;
+        background: transparent;
+    }
+
+    #listDetailsItems li.subcategory-detail > span {
+        display: block;
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 8px;
+        text-transform: lowercase;
+    }
+
+    #listDetailsItems .subcategory-detail-items {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    #listDetailsItems .subcategory-detail-items li {
+        border-bottom: 1px solid var(--border-light);
+        padding: 4px 0;
+        font-weight: normal;
+    }
+
+    #listDetailsItems .subcategory-detail-items li:last-child {
+        border-bottom: none;
     }
     #modal-date-text {
         font-size: 14px;
@@ -1694,12 +2018,23 @@
     }
     .shopping-input-group {
         display: grid;
-        grid-template-columns: 1fr 60px auto;
-        gap: 5px;
+        grid-template-columns: 1fr 90px minmax(140px, 0.8fr) auto;
+        gap: 6px;
         align-items: center;
+        margin-bottom: 12px;
     }
-    .shopping-input-group .add-btn {
-        padding: 8px 12px;
+    .shopping-input-group input,
+    .shopping-input-group select {
+        margin-bottom: 0;
+        padding: 8px;
+        border-radius: var(--radius-md);
+    }
+
+    .shopping-input-group .add-subcategory-btn {
+        grid-column: 1 / -1;
+        justify-self: flex-start;
+        padding-left: 16px;
+        padding-right: 16px;
     }
 
     body.dark-mode .list-total {
@@ -1776,6 +2111,18 @@
     
     body.dark-mode .task-list-item {
       border-bottom: 1px solid #333;
+    }
+
+    body.dark-mode #listDetailsItems > li {
+        border-bottom-color: var(--border-light);
+    }
+
+    body.dark-mode #listDetailsItems li.subcategory-detail {
+        border-color: var(--border-light);
+    }
+
+    body.dark-mode #listDetailsItems .subcategory-detail-items li {
+        border-bottom-color: var(--border-light);
     }
     
     body.dark-mode .task-actions button img {
@@ -3313,6 +3660,14 @@ body.dark-mode #remove-schedule-btn:hover {
                     </div>
                 </div>
 
+                <div id="newListSubcategoriesWrapper" class="new-list-subcategories">
+                    <div class="new-list-subcategories-header">
+                        <span>subcategorias iniciais</span>
+                        <button type="button" id="addNewListSubcategory" class="add-subcategory-btn">+ subcategoria</button>
+                    </div>
+                    <div id="newListSubcategories" class="new-list-subcategories-list"></div>
+                </div>
+
                 <div id="planner-link-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex-grow: 1;">
@@ -3586,6 +3941,8 @@ body.dark-mode #remove-schedule-btn:hover {
     const newListForm = document.getElementById('newListForm');
     const newListNameInput = document.getElementById("newListName");
     const newListPriorityInput = document.getElementById("newListPriority");
+    const newListSubcategoriesContainer = document.getElementById('newListSubcategories');
+    const addNewListSubcategoryBtn = document.getElementById('addNewListSubcategory');
     const shoppingListContainer = document.getElementById('shopping-list-container');
     const linkToPlannerContainer = document.getElementById('link-to-planner-container');
     const linkToPlannerCheckbox = document.getElementById('link-to-planner-checkbox');
@@ -3602,7 +3959,51 @@ body.dark-mode #remove-schedule-btn:hover {
     const listDetailsTitle = document.getElementById('listDetailsTitle');
     const listDetailsItems = document.getElementById('listDetailsItems');
     const shoppingListCheckbox = document.getElementById('shopping-list-checkbox');
-    
+
+    const createNewListSubcategoryInput = (value = '') => {
+        if (!newListSubcategoriesContainer) return;
+        const row = document.createElement('div');
+        row.className = 'new-list-subcategory-input';
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = 'nome da subcategoria';
+        input.value = value;
+        input.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                createNewListSubcategoryInput();
+            }
+        });
+        row.appendChild(input);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.setAttribute('aria-label', 'remover subcategoria');
+        removeBtn.innerHTML = '<img src="buttons/close.svg" alt="remover">';
+        removeBtn.addEventListener('click', () => row.remove());
+        row.appendChild(removeBtn);
+
+        newListSubcategoriesContainer.appendChild(row);
+        input.focus();
+    };
+
+    const getNewListSubcategoryValues = () => {
+        if (!newListSubcategoriesContainer) return [];
+        return Array.from(newListSubcategoriesContainer.querySelectorAll('input'))
+            .map(input => input.value.trim())
+            .filter(value => value.length > 0);
+    };
+
+    const resetNewListSubcategories = () => {
+        if (!newListSubcategoriesContainer) return;
+        newListSubcategoriesContainer.innerHTML = '';
+    };
+
+    if (addNewListSubcategoryBtn) {
+        addNewListSubcategoryBtn.addEventListener('click', () => createNewListSubcategoryInput());
+    }
+
     // --- ELEMENTOS DO MODAL DE ÍCONE DE LISTA ---
     const listIconSection = document.getElementById('list-icon-section');
     const listIconPickerGrid = document.getElementById('list-icon-picker-grid');
@@ -3805,6 +4206,73 @@ body.dark-mode #remove-schedule-btn:hover {
         if (list.colorName !== resolvedColorName) {
             list.colorName = resolvedColorName;
             changed = true;
+        }
+
+        if (!Array.isArray(list.items)) {
+            list.items = [];
+            changed = true;
+        } else {
+            const originalLength = list.items.length;
+            const isShoppingList = !!list.isShoppingList;
+            list.items = list.items
+                .filter(item => {
+                    const isValid = item && typeof item.text === 'string' && item.text.trim() !== '';
+                    if (!isValid) changed = true;
+                    return isValid;
+                })
+                .map(item => {
+                    const normalizedItem = { ...item };
+                    const trimmedText = normalizedItem.text.trim();
+                    if (trimmedText !== normalizedItem.text) {
+                        normalizedItem.text = trimmedText;
+                        changed = true;
+                    }
+
+                    const normalizedType = normalizedItem.type === 'subcategory' ? 'subcategory' : 'item';
+                    if (normalizedType !== normalizedItem.type) {
+                        normalizedItem.type = normalizedType;
+                        changed = true;
+                    }
+
+                    if (normalizedType === 'subcategory') {
+                        if (normalizedItem.checked) {
+                            normalizedItem.checked = false;
+                            changed = true;
+                        }
+                        if ('value' in normalizedItem) {
+                            delete normalizedItem.value;
+                            changed = true;
+                        }
+                    } else {
+                        const checkedValue = !!normalizedItem.checked;
+                        if (checkedValue !== normalizedItem.checked) {
+                            normalizedItem.checked = checkedValue;
+                            changed = true;
+                        }
+
+                        if (isShoppingList) {
+                            const numericValue = parseFloat(normalizedItem.value);
+                            if (!Number.isFinite(numericValue)) {
+                                if (normalizedItem.value !== 0) {
+                                    normalizedItem.value = 0;
+                                    changed = true;
+                                }
+                            } else if (normalizedItem.value !== numericValue) {
+                                normalizedItem.value = numericValue;
+                                changed = true;
+                            }
+                        } else if ('value' in normalizedItem) {
+                            delete normalizedItem.value;
+                            changed = true;
+                        }
+                    }
+
+                    return normalizedItem;
+                });
+
+            if (list.items.length !== originalLength) {
+                changed = true;
+            }
         }
 
         return changed;
@@ -4132,16 +4600,51 @@ body.dark-mode #remove-schedule-btn:hover {
 
             const colorValue = rawBorderColor || colorHex;
 
-            const items = Array.from(listDiv.querySelectorAll('ul li')).map(li => {
-                const baseItem = {
-                    text: li.querySelector('.list-item-content span').textContent.trim(),
-                    checked: li.querySelector('input[type="checkbox"]').checked
-                };
-                if (isShopping) {
-                    baseItem.value = parseFloat(li.dataset.value) || 0;
-                }
-                return baseItem;
-            });
+            const listRoot = listDiv.querySelector('ul.list-items') || listDiv.querySelector('ul');
+            const items = [];
+            if (listRoot) {
+                Array.from(listRoot.children).forEach(li => {
+                    const itemType = li.dataset.itemType === 'subcategory' ? 'subcategory' : 'item';
+                    if (itemType === 'subcategory') {
+                        const titleElement = li.querySelector('.subcategory-title');
+                        const titleText = titleElement ? titleElement.textContent.trim() : '';
+                        if (titleText) {
+                            items.push({ text: titleText, checked: false, type: 'subcategory' });
+                        }
+                        const nestedList = li.querySelector('.subcategory-items');
+                        if (nestedList) {
+                            Array.from(nestedList.children).forEach(itemLi => {
+                                if (itemLi.dataset.itemType !== 'item') return;
+                                const textSpan = itemLi.querySelector('.list-item-content span');
+                                if (!textSpan) return;
+                                const checkbox = itemLi.querySelector('input[type="checkbox"]');
+                                const nestedItem = {
+                                    text: textSpan.textContent.trim(),
+                                    checked: checkbox ? checkbox.checked : false,
+                                    type: 'item'
+                                };
+                                if (isShopping) {
+                                    nestedItem.value = parseFloat(itemLi.dataset.value) || 0;
+                                }
+                                items.push(nestedItem);
+                            });
+                        }
+                    } else {
+                        const textSpan = li.querySelector('.list-item-content span');
+                        if (!textSpan) return;
+                        const checkbox = li.querySelector('input[type="checkbox"]');
+                        const item = {
+                            text: textSpan.textContent.trim(),
+                            checked: checkbox ? checkbox.checked : false,
+                            type: 'item'
+                        };
+                        if (isShopping) {
+                            item.value = parseFloat(li.dataset.value) || 0;
+                        }
+                        items.push(item);
+                    }
+                });
+            }
             
             const isRoutine = listDiv.dataset.isRoutine === 'true';
             let lastCompletedDate = null;
@@ -4281,14 +4784,35 @@ body.dark-mode #remove-schedule-btn:hover {
             if (targetList.items.length === 0) {
                 listDetailsItems.innerHTML = '<li>esta lista não tem itens.</li>';
             } else {
+                let currentSubcategoryList = null;
                 targetList.items.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = item.text;
-                    if (item.checked) {
-                        li.style.textDecoration = 'line-through';
-                        li.style.opacity = '0.6';
+                    if (item.type === 'subcategory') {
+                        const block = document.createElement('li');
+                        block.classList.add('subcategory-detail');
+                        const titleSpan = document.createElement('span');
+                        titleSpan.textContent = item.text;
+                        block.appendChild(titleSpan);
+
+                        const nestedList = document.createElement('ul');
+                        nestedList.className = 'subcategory-detail-items';
+                        block.appendChild(nestedList);
+
+                        listDetailsItems.appendChild(block);
+                        currentSubcategoryList = nestedList;
+                    } else {
+                        const targetContainer = currentSubcategoryList || listDetailsItems;
+                        const li = document.createElement('li');
+                        li.textContent = item.text;
+                        if (item.checked) {
+                            li.style.textDecoration = 'line-through';
+                            li.style.opacity = '0.6';
+                        }
+                        if (targetContainer === listDetailsItems) {
+                            listDetailsItems.appendChild(li);
+                        } else {
+                            targetContainer.appendChild(li);
+                        }
                     }
-                    listDetailsItems.appendChild(li);
                 });
             }
             
@@ -6398,7 +6922,7 @@ body.dark-mode #remove-schedule-btn:hover {
         const totalEl = listDiv.querySelector('.list-total span');
         if (!totalEl) return;
 
-        const items = listDiv.querySelectorAll('ul li');
+        const items = listDiv.querySelectorAll('li[data-item-type="item"]');
         let total = 0;
         items.forEach(item => {
             total += parseFloat(item.dataset.value) || 0;
@@ -6417,7 +6941,7 @@ body.dark-mode #remove-schedule-btn:hover {
         const categoryName = categoryEntry ? categoryEntry[0] : 'compras';
 
         let total = 0;
-        listDiv.querySelectorAll('ul li').forEach(item => {
+        listDiv.querySelectorAll('li[data-item-type="item"]').forEach(item => {
             total += parseFloat(item.dataset.value) || 0;
         });
 
@@ -6447,7 +6971,7 @@ body.dark-mode #remove-schedule-btn:hover {
             listDiv.classList.add('finalized');
             listDiv.querySelector('.finalize-purchase-btn').style.display = 'none';
             listDiv.querySelector('.undo-finalize-btn').style.display = 'block';
-            listDiv.querySelector('.shopping-input-group').querySelectorAll('input, button').forEach(el => el.disabled = true);
+            listDiv.querySelector('.shopping-input-group').querySelectorAll('input, button, select').forEach(el => el.disabled = true);
             
             // Armazena os dados da transação no elemento da lista
             listDiv.dataset.transactionId = transactionId;
@@ -6477,7 +7001,7 @@ body.dark-mode #remove-schedule-btn:hover {
         listDiv.classList.remove('finalized');
         listDiv.querySelector('.finalize-purchase-btn').style.display = 'block';
         listDiv.querySelector('.undo-finalize-btn').style.display = 'none';
-        listDiv.querySelector('.shopping-input-group').querySelectorAll('input, button').forEach(el => el.disabled = false);
+        listDiv.querySelector('.shopping-input-group').querySelectorAll('input, button, select').forEach(el => el.disabled = false);
 
         // Limpa os dados da transação do elemento
         delete listDiv.dataset.transactionId;
@@ -6594,170 +7118,638 @@ body.dark-mode #remove-schedule-btn:hover {
         };
 
         const inputGroup = document.createElement("div");
-        const ul = document.createElement("ul");
-        
-        if (isShoppingList) {
-            inputGroup.className = "shopping-input-group";
-            const itemInput = document.createElement("input");
-            itemInput.type = "text";
-            itemInput.placeholder = "item";
-            const valueInput = document.createElement("input");
-            valueInput.type = "number";
-            valueInput.placeholder = "R$";
-            valueInput.step = "0.01";
-            const addBtn = document.createElement("button");
-            addBtn.textContent = "+";
-            addBtn.className = "add-btn";
+        const itemsRoot = document.createElement("ul");
+        itemsRoot.className = 'list-items';
 
-            inputGroup.append(itemInput, valueInput, addBtn);
-            
-            addBtn.onclick = () => {
-                const text = itemInput.value.trim();
-                const value = parseFloat(valueInput.value) || 0;
-                if (!text) return;
-                addItem(text, false, value);
-                itemInput.value = "";
-                valueInput.value = "";
-                itemInput.focus();
-                saveLists();
-            };
-        } else {
-            inputGroup.className = "list-input-group";
-            const input = document.createElement("input");
-            input.type = "text";
-            input.placeholder = "novo item";
-            const addBtn = document.createElement("button");
-            addBtn.textContent = "adicionar";
-            addBtn.className = "add-btn";
-            inputGroup.appendChild(input);
-            inputGroup.appendChild(addBtn);
-            
-            addBtn.onclick = () => { 
-                const text = input.value.trim(); 
-                if (!text) return; 
-                input.value = ""; 
-                addItem(text); 
-                checkCompletion(listDiv); 
-                saveLists(); 
-            };
-        }
-        
-        const addItem = (text, checked = false, value = 0) => {
-            const li = document.createElement("li");
+        const subcategories = [];
+        let subcategorySequence = 0;
+
+        const findSubcategoryById = (id) => subcategories.find(sub => sub.id === id);
+
+        let subcategorySelect = null;
+        let itemInput = null;
+        let valueInput = null;
+
+        const refreshSubcategorySelect = () => {
+            if (!subcategorySelect) return;
+            const previousValue = subcategorySelect.value;
+            subcategorySelect.innerHTML = '';
+
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'sem subcategoria';
+            subcategorySelect.appendChild(defaultOption);
+
+            subcategories.forEach(sub => {
+                const option = document.createElement('option');
+                option.value = sub.id;
+                option.textContent = sub.titleSpan.textContent;
+                subcategorySelect.appendChild(option);
+            });
+
+            if (subcategories.some(sub => sub.id === previousValue)) {
+                subcategorySelect.value = previousValue;
+            } else {
+                subcategorySelect.value = '';
+            }
+        };
+
+        const createItemElement = (text, { checked = false, value = 0, subcategoryId = null, shouldSave = true } = {}) => {
+            const trimmedText = (text || '').trim();
+            if (!trimmedText) return null;
+
+            const li = document.createElement('li');
+            li.dataset.itemType = 'item';
+            if (subcategoryId) {
+                li.dataset.subcategoryId = subcategoryId;
+                li.classList.add('subcategory-entry');
+            }
+
             const contentDiv = document.createElement('div');
             contentDiv.className = 'list-item-content';
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.checked = checked;
-            checkbox.onchange = () => { checkCompletion(listDiv); saveLists(); };
-            const span = document.createElement("span");
-            span.textContent = text;
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = !!checked;
+            checkbox.addEventListener('change', () => {
+                checkCompletion(listDiv);
+                saveLists();
+            });
             contentDiv.appendChild(checkbox);
+
+            const span = document.createElement('span');
+            span.textContent = trimmedText;
             contentDiv.appendChild(span);
-            
-            if (isShoppingList) {
-                li.dataset.value = value;
+
+            let numericValue = Number.isFinite(value) ? value : parseFloat(value);
+            if (!Number.isFinite(numericValue)) {
+                numericValue = 0;
             }
-            
+
+            if (isShoppingList) {
+                li.dataset.value = numericValue;
+            } else {
+                delete li.dataset.value;
+            }
+
             const actionsDiv = document.createElement('div');
             actionsDiv.className = 'list-item-actions';
-            
-            let valueDiv;
-            if(isShoppingList){
-                 valueDiv = document.createElement('div');
-                 valueDiv.className = 'list-item-value';
-                 valueDiv.textContent = formatCurrency(value);
-            }
-            
-            const createInitialButtons = () => {
-                actionsDiv.innerHTML = '';
-                const editBtnItem = document.createElement('button');
-                editBtnItem.className = 'edit-item-btn';
-                editBtnItem.innerHTML = '<img src="buttons/pencil.svg" alt="Editar">';
-                editBtnItem.onclick = () => toggleEditMode(true, li);
 
-                const deleteBtnItem = document.createElement('button');
-                deleteBtnItem.className = 'delete-item-btn';
-                deleteBtnItem.innerHTML = '<img src="buttons/trash.svg" alt="Remover">';
-                deleteBtnItem.onclick = () => {
+            let valueDiv = null;
+            if (isShoppingList) {
+                valueDiv = document.createElement('div');
+                valueDiv.className = 'list-item-value';
+                valueDiv.textContent = formatCurrency(numericValue);
+            }
+
+            const setDefaultActions = () => {
+                actionsDiv.innerHTML = '';
+
+                if (subcategoryId) {
+                    actionsDiv.classList.add('subcategory-item-actions');
+                    return;
+                }
+
+                actionsDiv.classList.remove('subcategory-item-actions');
+
+                const editBtn = document.createElement('button');
+                editBtn.className = 'edit-item-btn';
+                editBtn.innerHTML = '<img src="buttons/pencil.svg" alt="Editar">';
+                editBtn.addEventListener('click', () => toggleEditMode(true));
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-item-btn';
+                deleteBtn.innerHTML = '<img src="buttons/trash.svg" alt="Remover">';
+                deleteBtn.addEventListener('click', () => {
                     li.remove();
-                    if(isShoppingList) updateShoppingListTotal(listDiv);
+                    if (isShoppingList) updateShoppingListTotal(listDiv);
                     checkCompletion(listDiv);
                     saveLists();
-                };
-                actionsDiv.appendChild(editBtnItem);
-                actionsDiv.appendChild(deleteBtnItem);
+                });
+
+                actionsDiv.append(editBtn, deleteBtn);
             };
 
-            const toggleEditMode = (isEditing, currentLi) => {
-                 if (isEditing) {
-                    const currentText = span.textContent;
+            const toggleEditMode = (isEditing) => {
+                if (isEditing) {
                     const textInputField = document.createElement('input');
                     textInputField.type = 'text';
-                    textInputField.value = currentText;
+                    textInputField.value = span.textContent;
                     contentDiv.replaceChild(textInputField, span);
-                    
-                    if(isShoppingList){
-                        const currentValue = parseFloat(currentLi.dataset.value);
-                        const valueInputField = document.createElement('input');
+
+                    let valueInputField = null;
+                    if (isShoppingList) {
+                        valueInputField = document.createElement('input');
                         valueInputField.type = 'number';
                         valueInputField.step = '0.01';
                         valueInputField.className = 'list-item-value-input';
-                        valueInputField.value = currentValue.toFixed(2);
-                        li.replaceChild(valueInputField, valueDiv);
+                        valueInputField.value = numericValue.toFixed(2);
+                        if (valueDiv) {
+                            li.replaceChild(valueInputField, valueDiv);
+                        }
                     }
 
-                    textInputField.focus();
                     actionsDiv.innerHTML = '';
                     const saveBtn = document.createElement('button');
                     saveBtn.className = 'save-item-btn';
                     saveBtn.innerHTML = '<img src="buttons/ok.svg" alt="Salvar">';
-                    saveBtn.onclick = () => {
-                        span.textContent = textInputField.value;
-                        if(isShoppingList){
-                            const newValue = parseFloat(currentLi.querySelector('.list-item-value-input').value) || 0;
-                            currentLi.dataset.value = newValue;
-                            valueDiv.textContent = formatCurrency(newValue);
+                    saveBtn.addEventListener('click', () => {
+                        const newText = textInputField.value.trim();
+                        if (!newText) {
+                            alert('o item precisa ter um nome.');
+                            return;
+                        }
+                        span.textContent = newText;
+                        contentDiv.replaceChild(span, textInputField);
+
+                        if (isShoppingList) {
+                            const newValueRaw = valueInputField ? parseFloat(valueInputField.value) : 0;
+                            numericValue = Number.isFinite(newValueRaw) ? newValueRaw : 0;
+                            li.dataset.value = numericValue;
+                            if (valueDiv) {
+                                valueDiv.textContent = formatCurrency(numericValue);
+                                li.replaceChild(valueDiv, valueInputField);
+                            }
                             updateShoppingListTotal(listDiv);
                         }
-                        toggleEditMode(false, currentLi);
+                        setDefaultActions();
                         saveLists();
-                    };
+                    });
 
                     const cancelBtn = document.createElement('button');
                     cancelBtn.className = 'cancel-item-btn';
                     cancelBtn.innerHTML = '<img src="buttons/close.svg" alt="Cancelar">';
-                    cancelBtn.onclick = () => toggleEditMode(false, currentLi);
+                    cancelBtn.addEventListener('click', () => {
+                        contentDiv.replaceChild(span, textInputField);
+                        if (isShoppingList && valueDiv && valueInputField) {
+                            li.replaceChild(valueDiv, valueInputField);
+                        }
+                        setDefaultActions();
+                    });
 
-                    actionsDiv.appendChild(saveBtn);
-                    actionsDiv.appendChild(cancelBtn);
-                } else {
-                    const textInputField = contentDiv.querySelector('input[type="text"]');
-                    if (textInputField) contentDiv.replaceChild(span, textInputField);
-                    
-                    if(isShoppingList){
-                        const valueInputField = currentLi.querySelector('.list-item-value-input');
-                        if (valueInputField) currentLi.replaceChild(valueDiv, valueInputField);
-                    }
-                    createInitialButtons();
+                    actionsDiv.append(saveBtn, cancelBtn);
+                    textInputField.focus();
                 }
             };
-            
-            createInitialButtons();
-            
+
+            setDefaultActions();
+
             li.appendChild(contentDiv);
-            if(isShoppingList) {
+            if (isShoppingList && valueDiv) {
                 li.appendChild(valueDiv);
             }
             li.appendChild(actionsDiv);
-            ul.appendChild(li);
-            if(isShoppingList) updateShoppingListTotal(listDiv);
+
+            const parentList = subcategoryId ? (findSubcategoryById(subcategoryId)?.itemsList || itemsRoot) : itemsRoot;
+            parentList.appendChild(li);
+
+            if (shouldSave) {
+                if (isShoppingList) updateShoppingListTotal(listDiv);
+                checkCompletion(listDiv);
+                saveLists();
+            }
+
+            return li;
         };
-        
+
+        const createSubcategoryBlock = (title, { shouldSave = true } = {}) => {
+            const baseTitle = (title || '').trim() || 'subcategoria';
+            const subcategoryId = `${listId}-subcat-${++subcategorySequence}`;
+
+            const li = document.createElement('li');
+            li.className = 'subcategory-block';
+            li.dataset.itemType = 'subcategory';
+            li.dataset.subcategoryId = subcategoryId;
+
+            const container = document.createElement('div');
+            container.className = 'subcategory-block-container';
+
+            const header = document.createElement('div');
+            header.className = 'subcategory-header';
+
+            const titleSpan = document.createElement('span');
+            titleSpan.className = 'subcategory-title';
+            titleSpan.textContent = baseTitle;
+
+            const actions = document.createElement('div');
+            actions.className = 'subcategory-header-actions';
+
+            const itemsList = document.createElement('ul');
+            itemsList.className = 'subcategory-items';
+
+            const subcategoryData = { id: subcategoryId, li, container, header, titleSpan, actions, itemsList, isEditing: false };
+            subcategories.push(subcategoryData);
+
+            let isEditing = false;
+            let titleInput = null;
+            let originalTitle = baseTitle;
+            let editSnapshot = null;
+            let addControls = null;
+
+            const captureItemsSnapshot = () => {
+                return Array.from(itemsList.children).map(itemLi => {
+                    if (itemLi.dataset.itemType !== 'item') return null;
+                    const textSpan = itemLi.querySelector('.list-item-content span');
+                    if (!textSpan) return null;
+                    const checkbox = itemLi.querySelector("input[type='checkbox']");
+                    const snapshotItem = {
+                        text: textSpan.textContent.trim(),
+                        checked: checkbox ? checkbox.checked : false
+                    };
+                    if (isShoppingList) {
+                        snapshotItem.value = parseFloat(itemLi.dataset.value) || 0;
+                    }
+                    return snapshotItem;
+                }).filter(Boolean);
+            };
+
+            const createEditingRow = ({ text = '', checked = false, value = 0 } = {}) => {
+                const editingLi = document.createElement('li');
+                editingLi.dataset.itemType = 'item';
+                editingLi.dataset.subcategoryId = subcategoryId;
+                editingLi.className = 'subcategory-entry subcategory-editing-item';
+
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'list-item-content';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = !!checked;
+                contentDiv.appendChild(checkbox);
+
+                const textInput = document.createElement('input');
+                textInput.type = 'text';
+                textInput.value = text;
+                textInput.placeholder = 'novo item';
+                textInput.className = 'subcategory-item-input';
+                contentDiv.appendChild(textInput);
+
+                editingLi.appendChild(contentDiv);
+
+                let valueInput = null;
+                if (isShoppingList) {
+                    valueInput = document.createElement('input');
+                    valueInput.type = 'number';
+                    valueInput.step = '0.01';
+                    valueInput.placeholder = 'R$';
+                    valueInput.value = Number.isFinite(value) ? value.toFixed(2) : '0.00';
+                    valueInput.className = 'list-item-value-input subcategory-item-value-input';
+                    editingLi.appendChild(valueInput);
+                }
+
+                const itemActions = document.createElement('div');
+                itemActions.className = 'list-item-actions';
+
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'delete-item-btn';
+                removeBtn.innerHTML = '<img src="buttons/trash.svg" alt="Remover item">';
+                removeBtn.addEventListener('click', () => {
+                    editingLi.remove();
+                });
+
+                itemActions.appendChild(removeBtn);
+                editingLi.appendChild(itemActions);
+
+                itemsList.appendChild(editingLi);
+
+                return { li: editingLi, textInput, valueInput };
+            };
+
+            const exitEditMode = () => {
+                if (titleInput && header.contains(titleInput)) {
+                    header.replaceChild(titleSpan, titleInput);
+                }
+                titleInput = null;
+
+                if (addControls && container.contains(addControls)) {
+                    container.removeChild(addControls);
+                }
+                addControls = null;
+
+                li.classList.remove('subcategory-is-editing');
+                container.classList.remove('subcategory-block-editing');
+
+                isEditing = false;
+                subcategoryData.isEditing = false;
+                editSnapshot = null;
+
+                setDefaultActions();
+            };
+
+            const applyEditChanges = () => {
+                const rows = Array.from(itemsList.children);
+                const updatedItems = [];
+
+                for (const row of rows) {
+                    const textInput = row.querySelector('.subcategory-item-input');
+                    if (!textInput) continue;
+                    const text = textInput.value.trim();
+                    if (!text) {
+                        alert('o item precisa ter um nome.');
+                        textInput.focus();
+                        return;
+                    }
+
+                    const checkbox = row.querySelector("input[type='checkbox']");
+                    const itemData = {
+                        text,
+                        checked: checkbox ? checkbox.checked : false
+                    };
+
+                    if (isShoppingList) {
+                        const valueInput = row.querySelector('.subcategory-item-value-input');
+                        const parsedValue = valueInput ? parseFloat(valueInput.value) : 0;
+                        itemData.value = Number.isFinite(parsedValue) ? parsedValue : 0;
+                    }
+
+                    updatedItems.push(itemData);
+                }
+
+                const newTitle = (titleInput && titleInput.value ? titleInput.value.trim() : '') || 'subcategoria';
+
+                itemsList.innerHTML = '';
+                updatedItems.forEach(item => {
+                    createItemElement(item.text, {
+                        checked: item.checked,
+                        value: isShoppingList ? item.value : 0,
+                        subcategoryId,
+                        shouldSave: false
+                    });
+                });
+
+                titleSpan.textContent = newTitle;
+
+                exitEditMode();
+                refreshSubcategorySelect();
+                if (isShoppingList) updateShoppingListTotal(listDiv);
+                checkCompletion(listDiv);
+                saveLists();
+            };
+
+            const cancelEditChanges = () => {
+                itemsList.innerHTML = '';
+                (editSnapshot || []).forEach(item => {
+                    createItemElement(item.text, {
+                        checked: item.checked,
+                        value: isShoppingList ? item.value : 0,
+                        subcategoryId,
+                        shouldSave: false
+                    });
+                });
+
+                titleSpan.textContent = originalTitle;
+
+                exitEditMode();
+                refreshSubcategorySelect();
+                if (isShoppingList) updateShoppingListTotal(listDiv);
+                checkCompletion(listDiv);
+            };
+
+            const enterEditMode = () => {
+                if (isEditing) return;
+                isEditing = true;
+                subcategoryData.isEditing = true;
+
+                originalTitle = titleSpan.textContent;
+                editSnapshot = captureItemsSnapshot();
+
+                titleInput = document.createElement('input');
+                titleInput.type = 'text';
+                titleInput.value = originalTitle;
+                titleInput.className = 'subcategory-title-input';
+                header.replaceChild(titleInput, titleSpan);
+
+                actions.innerHTML = '';
+
+                const saveBtn = document.createElement('button');
+                saveBtn.className = 'save-item-btn';
+                saveBtn.innerHTML = '<img src="buttons/ok.svg" alt="Salvar">';
+                saveBtn.addEventListener('click', applyEditChanges);
+
+                const cancelBtn = document.createElement('button');
+                cancelBtn.className = 'cancel-item-btn';
+                cancelBtn.innerHTML = '<img src="buttons/close.svg" alt="Cancelar">';
+                cancelBtn.addEventListener('click', cancelEditChanges);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-item-btn';
+                deleteBtn.innerHTML = '<img src="buttons/trash.svg" alt="Remover subcategoria">';
+                deleteBtn.addEventListener('click', () => {
+                    if (!confirm('tem certeza que deseja remover esta subcategoria?')) return;
+                    li.remove();
+                    const index = subcategories.findIndex(sub => sub.id === subcategoryId);
+                    if (index > -1) subcategories.splice(index, 1);
+                    refreshSubcategorySelect();
+                    if (isShoppingList) updateShoppingListTotal(listDiv);
+                    checkCompletion(listDiv);
+                    saveLists();
+                });
+
+                actions.append(saveBtn, cancelBtn, deleteBtn);
+
+                itemsList.innerHTML = '';
+                if (editSnapshot.length) {
+                    editSnapshot.forEach(item => createEditingRow(item));
+                } else {
+                    const created = createEditingRow({ text: '', checked: false, value: 0 });
+                    if (created && created.textInput) {
+                        created.textInput.focus();
+                    }
+                }
+
+                addControls = document.createElement('div');
+                addControls.className = 'subcategory-add-controls';
+
+                const addBtn = document.createElement('button');
+                addBtn.type = 'button';
+                addBtn.className = 'add-btn add-btn-inline';
+                addBtn.textContent = '+';
+                addBtn.title = 'adicionar item na subcategoria';
+                addBtn.setAttribute('aria-label', 'adicionar item na subcategoria');
+                addBtn.addEventListener('click', () => {
+                    const created = createEditingRow({ text: '', checked: false, value: 0 });
+                    if (created && created.textInput) {
+                        created.textInput.focus();
+                    }
+                });
+
+                addControls.appendChild(addBtn);
+                container.appendChild(addControls);
+
+                li.classList.add('subcategory-is-editing');
+                container.classList.add('subcategory-block-editing');
+
+                if (titleInput) {
+                    titleInput.focus();
+                    titleInput.select();
+                }
+            };
+
+            const setDefaultActions = () => {
+                actions.innerHTML = '';
+
+                const editBtn = document.createElement('button');
+                editBtn.className = 'edit-item-btn';
+                editBtn.innerHTML = '<img src="buttons/pencil.svg" alt="Editar subcategoria">';
+                editBtn.addEventListener('click', enterEditMode);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-item-btn';
+                deleteBtn.innerHTML = '<img src="buttons/trash.svg" alt="Remover subcategoria">';
+                deleteBtn.addEventListener('click', () => {
+                    if (!confirm('tem certeza que deseja remover esta subcategoria?')) return;
+                    li.remove();
+                    const index = subcategories.findIndex(sub => sub.id === subcategoryId);
+                    if (index > -1) subcategories.splice(index, 1);
+                    refreshSubcategorySelect();
+                    if (isShoppingList) updateShoppingListTotal(listDiv);
+                    checkCompletion(listDiv);
+                    saveLists();
+                });
+
+                actions.append(editBtn, deleteBtn);
+            };
+
+            setDefaultActions();
+
+            header.appendChild(titleSpan);
+            header.appendChild(actions);
+            container.appendChild(header);
+            container.appendChild(itemsList);
+            li.appendChild(container);
+            itemsRoot.appendChild(li);
+
+            refreshSubcategorySelect();
+            if (shouldSave) {
+                saveLists();
+            }
+
+            return subcategoryData;
+        };
+
+        const handleAddSubcategory = () => {
+            const name = prompt('nome da subcategoria:');
+            if (!name) return;
+            const created = createSubcategoryBlock(name, { shouldSave: true });
+            if (created && subcategorySelect) {
+                subcategorySelect.value = created.id;
+            }
+        };
+
+        const handleAddItem = () => {
+            if (!itemInput) return;
+            const text = itemInput.value.trim();
+            if (!text) return;
+
+            let numericValue = 0;
+            if (isShoppingList && valueInput) {
+                const parsed = parseFloat(valueInput.value);
+                numericValue = Number.isFinite(parsed) ? parsed : 0;
+            }
+
+            const targetSubcategoryId = subcategorySelect && subcategorySelect.value ? subcategorySelect.value : null;
+            createItemElement(text, {
+                checked: false,
+                value: numericValue,
+                subcategoryId: targetSubcategoryId,
+                shouldSave: true
+            });
+
+            itemInput.value = '';
+            if (valueInput) valueInput.value = '';
+            itemInput.focus();
+        };
+
+        if (isShoppingList) {
+            inputGroup.className = 'shopping-input-group';
+            itemInput = document.createElement('input');
+            itemInput.type = 'text';
+            itemInput.placeholder = 'item';
+
+            valueInput = document.createElement('input');
+            valueInput.type = 'number';
+            valueInput.placeholder = 'R$';
+            valueInput.step = '0.01';
+
+            subcategorySelect = document.createElement('select');
+            subcategorySelect.className = 'list-subcategory-select';
+            subcategorySelect.setAttribute('aria-label', 'subcategoria do item');
+
+            const addBtn = document.createElement('button');
+            addBtn.type = 'button';
+            addBtn.textContent = '+';
+            addBtn.className = 'add-btn add-btn-compact';
+            addBtn.title = 'adicionar item';
+            addBtn.setAttribute('aria-label', 'adicionar item');
+            addBtn.addEventListener('click', handleAddItem);
+
+            const addSubcategoryBtn = document.createElement('button');
+            addSubcategoryBtn.type = 'button';
+            addSubcategoryBtn.className = 'add-subcategory-btn';
+            addSubcategoryBtn.textContent = '+ subcategoria';
+            addSubcategoryBtn.setAttribute('aria-label', 'adicionar nova subcategoria');
+            addSubcategoryBtn.title = 'adicionar subcategoria';
+            addSubcategoryBtn.addEventListener('click', handleAddSubcategory);
+
+            inputGroup.append(itemInput, valueInput, subcategorySelect, addBtn, addSubcategoryBtn);
+        } else {
+            inputGroup.className = 'list-input-group';
+            itemInput = document.createElement('input');
+            itemInput.type = 'text';
+            itemInput.placeholder = 'novo item';
+
+            subcategorySelect = document.createElement('select');
+            subcategorySelect.className = 'list-subcategory-select';
+            subcategorySelect.setAttribute('aria-label', 'subcategoria do item');
+
+            const addBtn = document.createElement('button');
+            addBtn.type = 'button';
+            addBtn.textContent = '+';
+            addBtn.className = 'add-btn add-btn-compact';
+            addBtn.title = 'adicionar item';
+            addBtn.setAttribute('aria-label', 'adicionar item');
+            addBtn.addEventListener('click', handleAddItem);
+
+            const addSubcategoryBtn = document.createElement('button');
+            addSubcategoryBtn.type = 'button';
+            addSubcategoryBtn.className = 'add-subcategory-btn';
+            addSubcategoryBtn.textContent = '+ subcategoria';
+            addSubcategoryBtn.setAttribute('aria-label', 'adicionar nova subcategoria');
+            addSubcategoryBtn.title = 'adicionar subcategoria';
+            addSubcategoryBtn.addEventListener('click', handleAddSubcategory);
+
+            inputGroup.append(itemInput, subcategorySelect, addBtn, addSubcategoryBtn);
+        }
+
         listDiv.appendChild(titleContainer);
         listDiv.appendChild(prioritySelect);
         listDiv.appendChild(inputGroup);
-        listDiv.appendChild(ul);
+        listDiv.appendChild(itemsRoot);
+
+        const loadInitialItems = () => {
+            if (!Array.isArray(initialItems)) return;
+            let lastSubcategory = null;
+            initialItems.forEach(item => {
+                if (!item || !item.text) return;
+                const itemType = item.type === 'subcategory' ? 'subcategory' : 'item';
+                if (itemType === 'subcategory') {
+                    lastSubcategory = createSubcategoryBlock(item.text, { shouldSave: false });
+                } else {
+                    const targetId = lastSubcategory ? lastSubcategory.id : null;
+                    const itemValue = isShoppingList ? (parseFloat(item.value) || 0) : 0;
+                    createItemElement(item.text, {
+                        checked: !!item.checked,
+                        value: itemValue,
+                        subcategoryId: targetId,
+                        shouldSave: false
+                    });
+                }
+            });
+        };
+
+        loadInitialItems();
+        refreshSubcategorySelect();
+        checkCompletion(listDiv);
         
         if (isShoppingList) {
             const totalDiv = document.createElement('div');
@@ -6780,9 +7772,7 @@ body.dark-mode #remove-schedule-btn:hover {
         }
         
         listsContainer.appendChild(listDiv);
-        
-        initialItems.forEach(item => addItem(item.text, item.checked, item.value));
-        checkCompletion(listDiv);
+        if (isShoppingList) updateShoppingListTotal(listDiv);
         
         if (isFinalized) {
             listDiv.classList.add('finalized');
@@ -6792,7 +7782,7 @@ body.dark-mode #remove-schedule-btn:hover {
             if (undoBtn) undoBtn.style.display = 'block';
             
             if(listDiv.querySelector('.shopping-input-group')) {
-                listDiv.querySelector('.shopping-input-group').querySelectorAll('input, button').forEach(el => el.disabled = true);
+                listDiv.querySelector('.shopping-input-group').querySelectorAll('input, button, select').forEach(el => el.disabled = true);
             }
         }
     }
@@ -6876,8 +7866,10 @@ body.dark-mode #remove-schedule-btn:hover {
         const newListId = Date.now().toString();
         const isShopping = shoppingListCheckbox.checked;
         const isRoutine = linkAsRoutineCheckbox.checked;
-        
-        createList(listName, [], listPriority, newListId, taskIcons.lista, isShopping, false, isRoutine);
+        const initialSubcategories = getNewListSubcategoryValues().map(name => ({ text: name, type: 'subcategory' }));
+
+        createList(listName, initialSubcategories, listPriority, newListId, taskIcons.lista, isShopping, false, isRoutine);
+        resetNewListSubcategories();
         saveLists(); // Save the new list to localStorage
         
         if (linkToPlannerCheckbox.checked) {
@@ -6945,6 +7937,7 @@ body.dark-mode #remove-schedule-btn:hover {
         }
         
         newListForm.reset();
+        resetNewListSubcategories();
         plannerLinkOptions.style.display = 'none';
         routineOptions.style.display = 'none';
         linkToPlannerCheckbox.checked = false;
