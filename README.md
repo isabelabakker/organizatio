@@ -7,9 +7,9 @@ Planeje, organize e controle: **OrganizatIO** é um aplicativo de **organizaçã
 ## 🌟 Funcionalidades Principais
 
 ### 🗓️ Planner
-- Visualização mensal e semanal de compromissos.  
-- Ícones e cores personalizáveis para cada evento.  
-- Opção de vincular listas e rotinas à agenda.  
+- Visualização **mensal** e **semanal** de compromissos.  
+- Ícones e cores **personalizáveis** para cada evento.
+- Opção de **repetir** um evento diariamente, semanalmente ou em dias específicos.  
 
 ### 💰 Controle Financeiro
 - Registro de **despesas e receitas** em categorias.  
