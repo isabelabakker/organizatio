@@ -13,7 +13,7 @@ Planeje, organize e controle: **OrganizatIO** é um aplicativo de **organizaçã
 
 ### 💰 Controle Financeiro
 - Registro de **despesas e receitas** em categorias.  
-- Resumo **mensal e anual** com gráficos e indicadores visuais.  
+- Resumo **mês a mês** e **comparativo anual** com gráficos e indicadores visuais.  
 - Acompanhamento de **metas financeiras** e **progresso de investimentos**.  
 
 ### ✅ Listas Inteligentes
