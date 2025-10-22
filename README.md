@@ -8,27 +8,23 @@ Planeje, organize e controle: **OrganizatIO** é um aplicativo de **organizaçã
 
 ### 🗓️ Planner
 - Visualização mensal e semanal de compromissos.  
-- Ícones personalizáveis e cores para cada evento.  
-- Opção de vincular tarefas e rotinas à agenda.  
-- Interface responsiva, otimizada para uso mobile.
+- Ícones e cores personalizáveis para cada evento.  
+- Opção de vincular listas e rotinas à agenda.  
 
 ### 💰 Controle Financeiro
-- Registro de **despesas e receitas** com categorias personalizadas.  
+- Registro de **despesas e receitas** em categorias.  
 - **Resumo mensal** com gráficos e indicadores visuais.  
 - Acompanhamento de **metas financeiras** e **progresso de investimentos**.  
-- Suporte a **modo escuro**.
 
 ### ✅ Listas Inteligentes
-- Criação de listas com **prioridades** (baixa, média, alta).  
-- Adição de **valores** individuais para cada item (ex: lista de compras).  
-- Opção de **finalizar ou desfazer finalização** de listas.  
+- Sistema de **prioridades de lista* organizado por cor.  
+- Valores em uma lista de compras refletem **automaticamente** nas transações do mês.  
 - Integração com o planner e rotinas diárias.
 
 ### 💡 Recursos Extras
 - Tema **claro e escuro** com alternância instantânea.  
-- Layout **totalmente responsivo** (web e mobile).  
 - Design system modular com tipografia e espaçamento consistentes.  
-- Botões e ícones redesenhados para interação fluida no toque.
+- Botões e ícones projetados para interação fluida ao toque.
 
 ---
 
