@@ -780,38 +780,6 @@
         flex-grow: 1;
     }
 
-    .add-subcategory-btn {
-        background: var(--bg-secondary);
-        border: 1px dashed var(--border-medium);
-        color: var(--text-secondary);
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: var(--font-size-xs);
-        font-weight: 500;
-        padding: 8px;
-        border-radius: 10px;
-        transition: background 0.2s, border-color 0.2s, color 0.2s;
-        white-space: nowrap;
-    }
-
-    .add-subcategory-btn:hover {
-        background: var(--border-light);
-        color: var(--text-primary);
-    }
-
-    body.dark-mode .add-subcategory-btn {
-        background: #2d2d2d;
-        border-color: #555;
-        color: var(--text-secondary);
-    }
-
-    body.dark-mode .add-subcategory-btn:hover {
-        background: #3a3a3a;
-        color: var(--text-primary);
-    }
-    
     button.add-btn {
       background: #3586ff;
       border: none;
@@ -2012,10 +1980,6 @@
     }
     .shopping-input-group .add-btn {
         padding: 8px 12px;
-    }
-
-    .shopping-input-group .add-subcategory-btn {
-        grid-column: 1 / -1;
     }
 
     body.dark-mode .list-total {
@@ -7492,14 +7456,8 @@ body.dark-mode #remove-schedule-btn:hover {
             addBtn.type = "button";
             addBtn.textContent = "+";
             addBtn.className = "add-btn";
-            const addSubcategoryBtn = document.createElement('button');
-            addSubcategoryBtn.type = 'button';
-            addSubcategoryBtn.className = 'add-subcategory-btn';
-            addSubcategoryBtn.textContent = 'subcategoria';
-            addSubcategoryBtn.title = 'adicionar subcategoria';
-            addSubcategoryBtn.setAttribute('aria-label', 'adicionar subcategoria');
-
-            inputGroup.append(itemInput, valueInput, addBtn, addSubcategoryBtn);
+            
+            inputGroup.append(itemInput, valueInput, addBtn);
 
             addBtn.onclick = () => {
                 const text = itemInput.value.trim();
@@ -7507,17 +7465,6 @@ body.dark-mode #remove-schedule-btn:hover {
                 const numericValue = parseFloat(valueInput.value);
                 const safeValue = Number.isFinite(numericValue) ? numericValue : 0;
                 addItem(text, false, safeValue);
-                itemInput.value = "";
-                valueInput.value = "";
-                itemInput.focus();
-                checkCompletion(listDiv);
-                saveLists();
-            };
-
-            addSubcategoryBtn.onclick = () => {
-                const text = itemInput.value.trim();
-                if (!text) return;
-                addItem(text, false, 0, 'subcategory');
                 itemInput.value = "";
                 valueInput.value = "";
                 itemInput.focus();
@@ -7533,16 +7480,9 @@ body.dark-mode #remove-schedule-btn:hover {
             addBtn.type = "button";
             addBtn.textContent = "adicionar";
             addBtn.className = "add-btn";
-            const addSubcategoryBtn = document.createElement('button');
-            addSubcategoryBtn.type = 'button';
-            addSubcategoryBtn.textContent = 'subcategoria';
-            addSubcategoryBtn.title = 'adicionar subcategoria';
-            addSubcategoryBtn.className = 'add-subcategory-btn';
-            addSubcategoryBtn.setAttribute('aria-label', 'adicionar subcategoria');
             const buttonsWrapper = document.createElement('div');
             buttonsWrapper.className = 'add-btn-group';
             buttonsWrapper.appendChild(addBtn);
-            buttonsWrapper.appendChild(addSubcategoryBtn);
             inputGroup.appendChild(input);
             inputGroup.appendChild(buttonsWrapper);
 
@@ -7551,15 +7491,6 @@ body.dark-mode #remove-schedule-btn:hover {
                 if (!text) return;
                 input.value = "";
                 addItem(text);
-                checkCompletion(listDiv);
-                saveLists();
-            };
-
-            addSubcategoryBtn.onclick = () => {
-                const text = input.value.trim();
-                if (!text) return;
-                input.value = "";
-                addItem(text, false, 0, 'subcategory');
                 checkCompletion(listDiv);
                 saveLists();
             };
