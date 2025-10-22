@@ -17,8 +17,8 @@ Planeje, organize e controle: **OrganizatIO** é um aplicativo de **organizaçã
 - Acompanhamento de **metas financeiras** e **progresso de investimentos**.  
 
 ### ✅ Listas Inteligentes
-- Sistema de **prioridades de lista* organizado por cor.  
-- Valores em uma lista de compras refletem **automaticamente** nas transações do mês.  
+- Sistema de **prioridades de lista** organizado por cor.  
+- Valores em uma lista de compras refletem automaticamente nas **transações do mês**.  
 - Integração com o planner e rotinas diárias.
 
 ### 💡 Recursos Extras
