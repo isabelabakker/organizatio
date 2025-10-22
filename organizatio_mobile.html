@@ -779,6 +779,38 @@
     .add-btn-group button {
         flex-grow: 1;
     }
+
+    .add-subcategory-btn {
+        background: var(--bg-secondary);
+        border: 1px dashed var(--border-medium);
+        color: var(--text-secondary);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--font-size-xs);
+        font-weight: 500;
+        padding: 8px;
+        border-radius: 10px;
+        transition: background 0.2s, border-color 0.2s, color 0.2s;
+        white-space: nowrap;
+    }
+
+    .add-subcategory-btn:hover {
+        background: var(--border-light);
+        color: var(--text-primary);
+    }
+
+    body.dark-mode .add-subcategory-btn {
+        background: #2d2d2d;
+        border-color: #555;
+        color: var(--text-secondary);
+    }
+
+    body.dark-mode .add-subcategory-btn:hover {
+        background: #3a3a3a;
+        color: var(--text-primary);
+    }
     
     button.add-btn {
       background: #3586ff;
@@ -1031,6 +1063,23 @@
     
     .list li:last-child {
       border-bottom: none;
+    }
+
+    .list li.subcategory-item {
+      background: var(--bg-secondary);
+      border-bottom-color: var(--border-light);
+      padding-top: 10px;
+      padding-bottom: 6px;
+    }
+
+    .list li.subcategory-item .list-item-content {
+      gap: 4px;
+    }
+
+    .list li.subcategory-item .list-item-content span {
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.3px;
     }
 
     .list-item-content {
@@ -1445,6 +1494,13 @@
         border-bottom: 1px solid #eee;
         font-size: 16px;
     }
+
+    #listDetailsItems li.subcategory-detail {
+        font-weight: 600;
+        color: var(--text-secondary);
+        border-bottom-color: transparent;
+        padding-top: 12px;
+    }
     #modal-date-text {
         font-size: 14px;
         color: #888;
@@ -1694,12 +1750,16 @@
     }
     .shopping-input-group {
         display: grid;
-        grid-template-columns: 1fr 60px auto;
+        grid-template-columns: 1fr 70px auto;
         gap: 5px;
         align-items: center;
     }
     .shopping-input-group .add-btn {
         padding: 8px 12px;
+    }
+
+    .shopping-input-group .add-subcategory-btn {
+        grid-column: 1 / -1;
     }
 
     body.dark-mode .list-total {
@@ -3807,6 +3867,73 @@ body.dark-mode #remove-schedule-btn:hover {
             changed = true;
         }
 
+        if (!Array.isArray(list.items)) {
+            list.items = [];
+            changed = true;
+        } else {
+            const originalLength = list.items.length;
+            const isShoppingList = !!list.isShoppingList;
+            list.items = list.items
+                .filter(item => {
+                    const isValid = item && typeof item.text === 'string' && item.text.trim() !== '';
+                    if (!isValid) changed = true;
+                    return isValid;
+                })
+                .map(item => {
+                    const normalizedItem = { ...item };
+                    const trimmedText = normalizedItem.text.trim();
+                    if (trimmedText !== normalizedItem.text) {
+                        normalizedItem.text = trimmedText;
+                        changed = true;
+                    }
+
+                    const normalizedType = normalizedItem.type === 'subcategory' ? 'subcategory' : 'item';
+                    if (normalizedType !== normalizedItem.type) {
+                        normalizedItem.type = normalizedType;
+                        changed = true;
+                    }
+
+                    if (normalizedType === 'subcategory') {
+                        if (normalizedItem.checked) {
+                            normalizedItem.checked = false;
+                            changed = true;
+                        }
+                        if ('value' in normalizedItem) {
+                            delete normalizedItem.value;
+                            changed = true;
+                        }
+                    } else {
+                        const checkedValue = !!normalizedItem.checked;
+                        if (checkedValue !== normalizedItem.checked) {
+                            normalizedItem.checked = checkedValue;
+                            changed = true;
+                        }
+
+                        if (isShoppingList) {
+                            const numericValue = parseFloat(normalizedItem.value);
+                            if (!Number.isFinite(numericValue)) {
+                                if (normalizedItem.value !== 0) {
+                                    normalizedItem.value = 0;
+                                    changed = true;
+                                }
+                            } else if (normalizedItem.value !== numericValue) {
+                                normalizedItem.value = numericValue;
+                                changed = true;
+                            }
+                        } else if ('value' in normalizedItem) {
+                            delete normalizedItem.value;
+                            changed = true;
+                        }
+                    }
+
+                    return normalizedItem;
+                });
+
+            if (list.items.length !== originalLength) {
+                changed = true;
+            }
+        }
+
         return changed;
     }
 
@@ -4133,11 +4260,14 @@ body.dark-mode #remove-schedule-btn:hover {
             const colorValue = rawBorderColor || colorHex;
 
             const items = Array.from(listDiv.querySelectorAll('ul li')).map(li => {
+                const checkbox = li.querySelector('input[type="checkbox"]');
+                const itemType = li.dataset.itemType === 'subcategory' ? 'subcategory' : 'item';
                 const baseItem = {
                     text: li.querySelector('.list-item-content span').textContent.trim(),
-                    checked: li.querySelector('input[type="checkbox"]').checked
+                    checked: checkbox ? checkbox.checked : false,
+                    type: itemType
                 };
-                if (isShopping) {
+                if (isShopping && itemType === 'item') {
                     baseItem.value = parseFloat(li.dataset.value) || 0;
                 }
                 return baseItem;
@@ -4284,7 +4414,9 @@ body.dark-mode #remove-schedule-btn:hover {
                 targetList.items.forEach(item => {
                     const li = document.createElement('li');
                     li.textContent = item.text;
-                    if (item.checked) {
+                    if (item.type === 'subcategory') {
+                        li.classList.add('subcategory-detail');
+                    } else if (item.checked) {
                         li.style.textDecoration = 'line-through';
                         li.style.opacity = '0.6';
                     }
@@ -6606,19 +6738,39 @@ body.dark-mode #remove-schedule-btn:hover {
             valueInput.placeholder = "R$";
             valueInput.step = "0.01";
             const addBtn = document.createElement("button");
+            addBtn.type = "button";
             addBtn.textContent = "+";
             addBtn.className = "add-btn";
+            const addSubcategoryBtn = document.createElement('button');
+            addSubcategoryBtn.type = 'button';
+            addSubcategoryBtn.className = 'add-subcategory-btn';
+            addSubcategoryBtn.textContent = 'subcategoria';
+            addSubcategoryBtn.title = 'adicionar subcategoria';
+            addSubcategoryBtn.setAttribute('aria-label', 'adicionar subcategoria');
 
-            inputGroup.append(itemInput, valueInput, addBtn);
-            
+            inputGroup.append(itemInput, valueInput, addBtn, addSubcategoryBtn);
+
             addBtn.onclick = () => {
                 const text = itemInput.value.trim();
-                const value = parseFloat(valueInput.value) || 0;
                 if (!text) return;
-                addItem(text, false, value);
+                const numericValue = parseFloat(valueInput.value);
+                const safeValue = Number.isFinite(numericValue) ? numericValue : 0;
+                addItem(text, false, safeValue);
                 itemInput.value = "";
                 valueInput.value = "";
                 itemInput.focus();
+                checkCompletion(listDiv);
+                saveLists();
+            };
+
+            addSubcategoryBtn.onclick = () => {
+                const text = itemInput.value.trim();
+                if (!text) return;
+                addItem(text, false, 0, 'subcategory');
+                itemInput.value = "";
+                valueInput.value = "";
+                itemInput.focus();
+                checkCompletion(listDiv);
                 saveLists();
             };
         } else {
@@ -6627,48 +6779,89 @@ body.dark-mode #remove-schedule-btn:hover {
             input.type = "text";
             input.placeholder = "novo item";
             const addBtn = document.createElement("button");
+            addBtn.type = "button";
             addBtn.textContent = "adicionar";
             addBtn.className = "add-btn";
+            const addSubcategoryBtn = document.createElement('button');
+            addSubcategoryBtn.type = 'button';
+            addSubcategoryBtn.textContent = 'subcategoria';
+            addSubcategoryBtn.title = 'adicionar subcategoria';
+            addSubcategoryBtn.className = 'add-subcategory-btn';
+            addSubcategoryBtn.setAttribute('aria-label', 'adicionar subcategoria');
+            const buttonsWrapper = document.createElement('div');
+            buttonsWrapper.className = 'add-btn-group';
+            buttonsWrapper.appendChild(addBtn);
+            buttonsWrapper.appendChild(addSubcategoryBtn);
             inputGroup.appendChild(input);
-            inputGroup.appendChild(addBtn);
-            
-            addBtn.onclick = () => { 
-                const text = input.value.trim(); 
-                if (!text) return; 
-                input.value = ""; 
-                addItem(text); 
-                checkCompletion(listDiv); 
-                saveLists(); 
+            inputGroup.appendChild(buttonsWrapper);
+
+            addBtn.onclick = () => {
+                const text = input.value.trim();
+                if (!text) return;
+                input.value = "";
+                addItem(text);
+                checkCompletion(listDiv);
+                saveLists();
+            };
+
+            addSubcategoryBtn.onclick = () => {
+                const text = input.value.trim();
+                if (!text) return;
+                input.value = "";
+                addItem(text, false, 0, 'subcategory');
+                checkCompletion(listDiv);
+                saveLists();
             };
         }
-        
-        const addItem = (text, checked = false, value = 0) => {
+
+        const addItem = (text, checked = false, value = 0, type = 'item') => {
+            if (!text) return;
+
             const li = document.createElement("li");
+            const itemType = type === 'subcategory' ? 'subcategory' : 'item';
+            const isSubcategory = itemType === 'subcategory';
+            li.dataset.itemType = itemType;
+            if (isSubcategory) {
+                li.classList.add('subcategory-item');
+            }
+
             const contentDiv = document.createElement('div');
             contentDiv.className = 'list-item-content';
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.checked = checked;
-            checkbox.onchange = () => { checkCompletion(listDiv); saveLists(); };
+
+            let checkbox = null;
+            if (!isSubcategory) {
+                checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.checked = !!checked;
+                checkbox.onchange = () => { checkCompletion(listDiv); saveLists(); };
+                contentDiv.appendChild(checkbox);
+            }
+
             const span = document.createElement("span");
             span.textContent = text;
-            contentDiv.appendChild(checkbox);
             contentDiv.appendChild(span);
-            
-            if (isShoppingList) {
-                li.dataset.value = value;
+
+            let numericValue = Number.isFinite(value) ? value : parseFloat(value);
+            if (!Number.isFinite(numericValue)) {
+                numericValue = 0;
             }
-            
+
+            if (isShoppingList && !isSubcategory) {
+                li.dataset.value = numericValue;
+            } else {
+                delete li.dataset.value;
+            }
+
             const actionsDiv = document.createElement('div');
             actionsDiv.className = 'list-item-actions';
-            
-            let valueDiv;
-            if(isShoppingList){
-                 valueDiv = document.createElement('div');
-                 valueDiv.className = 'list-item-value';
-                 valueDiv.textContent = formatCurrency(value);
+
+            let valueDiv = null;
+            if (isShoppingList && !isSubcategory) {
+                valueDiv = document.createElement('div');
+                valueDiv.className = 'list-item-value';
+                valueDiv.textContent = formatCurrency(numericValue);
             }
-            
+
             const createInitialButtons = () => {
                 actionsDiv.innerHTML = '';
                 const editBtnItem = document.createElement('button');
@@ -6696,10 +6889,11 @@ body.dark-mode #remove-schedule-btn:hover {
                     textInputField.type = 'text';
                     textInputField.value = currentText;
                     contentDiv.replaceChild(textInputField, span);
-                    
-                    if(isShoppingList){
-                        const currentValue = parseFloat(currentLi.dataset.value);
-                        const valueInputField = document.createElement('input');
+
+                    let valueInputField = null;
+                    if(isShoppingList && !isSubcategory){
+                        const currentValue = parseFloat(currentLi.dataset.value) || 0;
+                        valueInputField = document.createElement('input');
                         valueInputField.type = 'number';
                         valueInputField.step = '0.01';
                         valueInputField.className = 'list-item-value-input';
@@ -6714,10 +6908,14 @@ body.dark-mode #remove-schedule-btn:hover {
                     saveBtn.innerHTML = '<img src="buttons/ok.svg" alt="Salvar">';
                     saveBtn.onclick = () => {
                         span.textContent = textInputField.value;
-                        if(isShoppingList){
-                            const newValue = parseFloat(currentLi.querySelector('.list-item-value-input').value) || 0;
+                        if(isShoppingList && !isSubcategory){
+                            const valueInput = currentLi.querySelector('.list-item-value-input');
+                            const newValueRaw = valueInput ? parseFloat(valueInput.value) : 0;
+                            const newValue = Number.isFinite(newValueRaw) ? newValueRaw : 0;
                             currentLi.dataset.value = newValue;
-                            valueDiv.textContent = formatCurrency(newValue);
+                            if (valueDiv) {
+                                valueDiv.textContent = formatCurrency(newValue);
+                            }
                             updateShoppingListTotal(listDiv);
                         }
                         toggleEditMode(false, currentLi);
@@ -6734,19 +6932,19 @@ body.dark-mode #remove-schedule-btn:hover {
                 } else {
                     const textInputField = contentDiv.querySelector('input[type="text"]');
                     if (textInputField) contentDiv.replaceChild(span, textInputField);
-                    
-                    if(isShoppingList){
+
+                    if(isShoppingList && !isSubcategory){
                         const valueInputField = currentLi.querySelector('.list-item-value-input');
-                        if (valueInputField) currentLi.replaceChild(valueDiv, valueInputField);
+                        if (valueInputField && valueDiv) currentLi.replaceChild(valueDiv, valueInputField);
                     }
                     createInitialButtons();
                 }
             };
-            
+
             createInitialButtons();
-            
+
             li.appendChild(contentDiv);
-            if(isShoppingList) {
+            if(isShoppingList && !isSubcategory && valueDiv) {
                 li.appendChild(valueDiv);
             }
             li.appendChild(actionsDiv);
@@ -6781,7 +6979,13 @@ body.dark-mode #remove-schedule-btn:hover {
         
         listsContainer.appendChild(listDiv);
         
-        initialItems.forEach(item => addItem(item.text, item.checked, item.value));
+        initialItems.forEach(item => {
+            if (!item || !item.text) return;
+            const itemType = item.type === 'subcategory' ? 'subcategory' : 'item';
+            const isChecked = itemType === 'item' ? !!item.checked : false;
+            const itemValue = itemType === 'item' ? item.value : 0;
+            addItem(item.text, isChecked, itemValue, itemType);
+        });
         checkCompletion(listDiv);
         
         if (isFinalized) {
