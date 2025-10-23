@@ -2193,10 +2193,68 @@
     /* Removed modal-content styles */
     body.dark-mode .list input[type="text"],
     body.dark-mode .list-item-value-input,
-    body.dark-mode button:not(.add-btn):not(.delete-btn):not(.edit-btn):not(#theme-toggle):not(.mensal-sub-toggle):not(.back-button):not(.delete-list-circular-btn):not(.edit-task-btn):not(.task-list-item button):not(.edit-item-btn):not(.delete-item-btn):not(.edit-list-btn):not(.save-item-btn):not(.cancel-item-btn):not(.close-button) {
+    body.dark-mode button:not(.add-btn):not(.delete-btn):not(.edit-btn):not(.btn):not(.finalize-purchase-btn):not(.undo-finalize-btn):not(#theme-toggle):not(.mensal-sub-toggle):not(.back-button):not(.delete-list-circular-btn):not(.edit-task-btn):not(.task-list-item button):not(.edit-item-btn):not(.delete-item-btn):not(.edit-list-btn):not(.save-item-btn):not(.cancel-item-btn):not(.close-button) {
       background: #282828;
       border: 1px solid #555;
       color: #E0E0E0;
+    }
+
+    body.dark-mode .btn {
+        color: #fff;
+    }
+
+    body.dark-mode .btn-primary,
+    body.dark-mode .btn-primary.btn-full {
+        background: var(--primary);
+    }
+
+    body.dark-mode .btn-primary:hover,
+    body.dark-mode .btn-primary.btn-full:hover {
+        background: var(--primary-hover);
+    }
+
+    body.dark-mode .btn-success {
+        background: var(--success);
+    }
+
+    body.dark-mode .btn-success:hover {
+        background: var(--success-hover);
+    }
+
+    body.dark-mode .btn-danger {
+        background: var(--danger);
+    }
+
+    body.dark-mode .btn-danger:hover {
+        background: var(--danger-hover);
+    }
+
+    body.dark-mode .btn-secondary {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        border: 1px solid var(--border-medium);
+    }
+
+    body.dark-mode .btn-secondary:hover {
+        background: #3a3a3a;
+    }
+
+    body.dark-mode .finalize-purchase-btn {
+        background-color: #4CAF50;
+        color: #fff;
+    }
+
+    body.dark-mode .finalize-purchase-btn:hover {
+        background-color: #45a049;
+    }
+
+    body.dark-mode .undo-finalize-btn {
+        background-color: #FF9800;
+        color: #fff;
+    }
+
+    body.dark-mode .undo-finalize-btn:hover {
+        background-color: #FB8C00;
     }
     
     body.dark-mode .list-priority-select {
