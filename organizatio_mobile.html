@@ -94,6 +94,7 @@
       --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
       --shadow-lg: 0 8px 16px rgba(0,0,0,0.1);
       --category-icon-filter: grayscale(100%) brightness(0.55);
+      --icon-button-filter: brightness(0) invert(0.35);
       
       /* Typography */
       --font-size-xs: 13px;
@@ -126,6 +127,7 @@
       --shadow-md: 0 4px 8px rgba(0,0,0,0.3);
       --shadow-lg: 0 8px 16px rgba(0,0,0,0.3);
       --category-icon-filter: grayscale(100%) brightness(1.4);
+      --icon-button-filter: brightness(0) invert(0.85);
     }
     /* === BASE STYLES === */
     * {
@@ -559,7 +561,6 @@
     .delete-list-circular-btn img {
         width: 14px;
         height: 14px;
-        filter: brightness(0) invert(1);
     }
 
     .edit-item-btn img,
@@ -567,7 +568,7 @@
     .edit-list-btn img {
         width: 14px;
         height: 14px;
-        filter: brightness(0) invert(0.35);
+        filter: var(--icon-button-filter);
         transition: filter 0.3s ease;
     }
 
@@ -593,7 +594,7 @@
     .edit-task-btn, .task-list-item button,
     .edit-item-btn, .delete-item-btn,
     .edit-list-btn, .delete-list-circular-btn {
-     background-color: #f5f5f5; 
+     background-color: transparent;
      border: none;
      transition: background-color 0.2s, border-color 0.2s;
     }
@@ -603,7 +604,7 @@
     .edit-task-btn:hover, .task-list-item button:hover,
     .edit-item-btn:hover, .delete-item-btn:hover,
     .edit-list-btn:hover, .delete-list-circular-btn:hover {
-        background-color: #e5e5e5;
+        background-color: transparent;
     }
 
     /* ÍCONE ESCURO PARA TEMA CLARO */
@@ -616,15 +617,15 @@
     body.dark-mode .edit-task-btn, body.dark-mode .task-list-item button,
     body.dark-mode .edit-item-btn, body.dark-mode .delete-item-btn,
     body.dark-mode .edit-list-btn, body.dark-mode .delete-list-circular-btn {
-    background-color: #1F1F1F; 
-    border: none; 
+    background-color: transparent;
+    border: none;
     }
-    
+
     body.dark-mode .edit-btn:hover, body.dark-mode .delete-btn:hover,
     body.dark-mode .edit-task-btn:hover, body.dark-mode .task-list-item button:hover,
     body.dark-mode .edit-item-btn:hover, body.dark-mode .delete-item-btn:hover,
     body.dark-mode .edit-list-btn:hover, body.dark-mode .delete-list-circular-btn:hover {
-    background-color: #282828;
+    background-color: transparent;
     }
 
     #newListForm {
@@ -878,7 +879,7 @@
     .delete-btn img {
         width: 16px;
         height: 16px;
-        filter: brightness(0) invert(0.35);
+        filter: var(--icon-button-filter);
         transition: filter 0.3s ease;
     }
     
@@ -1388,7 +1389,7 @@
     .cancel-item-btn {
         width: 24px;
         height: 24px;
-        background: #EEEEEE;
+        background: transparent;
         border: none;
         cursor: pointer;
         border-radius: 50%;
@@ -1401,7 +1402,7 @@
 
     .save-item-btn:hover,
     .cancel-item-btn:hover {
-        background: #E0E0E0;
+        background: transparent;
     }
 
     .save-item-btn img,
@@ -1412,7 +1413,7 @@
     }
 
     .save-item-btn img {
-        filter: invert(48%) sepia(71%) saturate(415%) hue-rotate(75deg) brightness(95%) contrast(84%); /* Verde #4CAF50 */
+        filter: var(--icon-button-filter);
     }
 
     .cancel-item-btn img,
@@ -1578,7 +1579,7 @@
     .task-actions button img {
         width: 14px;
         height: 14px;
-        filter: brightness(0) invert(0.35);
+        filter: var(--icon-button-filter);
         transition: filter 0.3s ease;
     }
 
@@ -2165,7 +2166,7 @@
     }
     
     body.dark-mode .task-actions button img {
-        filter: brightness(0) invert(0.8);
+        filter: var(--icon-button-filter);
     }
 
     body.dark-mode .edit-item-btn img,
@@ -2173,7 +2174,7 @@
     body.dark-mode .edit-btn img,
     body.dark-mode .delete-btn img,
     body.dark-mode .edit-list-btn img {
-        filter: brightness(0) invert(0.8);
+        filter: var(--icon-button-filter);
     }
     
     body.dark-mode .task-list-item[data-list-id]:hover {
@@ -2367,15 +2368,19 @@
       border-color: #fff;
     }
     
-    body.dark-mode .close-button,
-    body.dark-mode .save-item-btn,
-    body.dark-mode .cancel-item-btn {
+    body.dark-mode .close-button {
         background: #424242;
     }
-    body.dark-mode .close-button:hover,
+    body.dark-mode .save-item-btn,
+    body.dark-mode .cancel-item-btn {
+        background: transparent;
+    }
+    body.dark-mode .close-button:hover {
+        background: #616161;
+    }
     body.dark-mode .save-item-btn:hover,
     body.dark-mode .cancel-item-btn:hover {
-        background: #616161;
+        background: transparent;
     }
     
     body.dark-mode .edit-goal-form .edit-btn,
@@ -2408,7 +2413,7 @@
         border-radius: 7px;
         cursor: pointer;
         transition: all 0.2s ease-in-out;
-        background-color: #f9f9f9;
+        background-color: transparent;
         flex-shrink: 0;
     }
     
@@ -2425,25 +2430,25 @@
     .icon-toggle-button img {
         width: 100%;
         height: 100%;
-        filter: grayscale(1);
-        opacity: 0.6;
+        filter: var(--icon-button-filter);
+        opacity: 1;
         transition: all 0.2s ease-in-out;
     }
 
     /* 4. Adiciona um efeito ao passar o mouse */
     .icon-toggle-button:hover {
         border-color: #3586ff;
-        background-color: #f0f5ff;
+        background-color: transparent;
     }
 
     /* 5. ESTILO QUANDO O ÍCONE ESTÁ SELECIONADO (a mágica acontece aqui) */
     /* Quando o checkbox invisível está marcado, estiliza a label dele */
     input[type="checkbox"]:checked + .icon-toggle-button {
         border-color: #3586ff;
-        background-color: #e8f0fe;
+        background-color: transparent;
     }
     input[type="checkbox"]:checked + .icon-toggle-button img {
-        filter: grayscale(0);
+        filter: var(--icon-button-filter);
         opacity: 1;
     }
 
@@ -2451,23 +2456,23 @@
     /* --- Ajustes para o Tema Escuro --- */
     body.dark-mode .icon-toggle-button {
         border-color: #555;
-        background-color: #282828;
+        background-color: transparent;
     }
-    
+
     body.dark-mode .icon-toggle-button img {
-        filter: invert(1) grayscale(1);
-        opacity: 0.5;
+        filter: var(--icon-button-filter);
+        opacity: 1;
     }
     body.dark-mode .icon-toggle-button:hover {
         border-color: #6b9aff;
-        background-color: #1F1F1F;
+        background-color: transparent;
     }
     body.dark-mode input[type="checkbox"]:checked + .icon-toggle-button {
         border-color: #6b9aff;
-        background-color: #1F1F1F;
+        background-color: transparent;
     }
     body.dark-mode input[type="checkbox"]:checked + .icon-toggle-button img {
-        filter: invert(1) grayscale(0);
+        filter: var(--icon-button-filter);
         opacity: 1;
     }
 
@@ -3199,7 +3204,7 @@ body.dark-mode #remove-schedule-btn:hover {
 
     body.dark-mode .close-button img,
     body.dark-mode .back-button img {
-      filter: brightness(0) invert(0.8);
+      filter: var(--icon-button-filter);
     }
 
     /* === SPECIFIC CLOSE BUTTON OVERRIDES === */
