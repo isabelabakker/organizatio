@@ -1109,11 +1109,13 @@
         border: 1px solid var(--border-light);
         border-radius: var(--radius-md);
         padding: 12px;
+        padding-bottom: 60px;
         display: flex;
         flex-direction: column;
         gap: 10px;
         box-shadow: var(--shadow-sm);
         transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
     }
 
     .sublist-block.editing {
@@ -1249,15 +1251,50 @@
     }
 
     .sublist-finalize-btn {
-        background-color: var(--success) !important;
+        background-color: transparent !important;
+        border: 2px solid var(--primary) !important;
+        color: var(--primary) !important;
+        position: absolute;
+        bottom: 8px;
+        right: 12px;
+        height: 24px;
+        padding: 0 8px;
     }
 
     .sublist-finalize-btn:hover {
-        background-color: var(--success-hover) !important;
+        background-color: var(--primary) !important;
+        color: white !important;
+    }
+
+    .sublist-finalize-btn img {
+        filter: hue-rotate(45deg) saturate(1.5) brightness(1.2) !important;
+    }
+
+    .sublist-finalize-btn:hover img {
+        filter: brightness(0) invert(1) !important;
     }
 
     .sublist-undo-finalize-btn {
+        background-color: transparent !important;
+        border: 2px solid var(--warning) !important;
+        color: var(--warning) !important;
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        display: none;
+    }
+
+    .sublist-undo-finalize-btn:hover {
         background-color: var(--warning) !important;
+        color: white !important;
+    }
+
+    .sublist-undo-finalize-btn img {
+        filter: none !important;
+    }
+
+    .sublist-undo-finalize-btn:hover img {
+        filter: brightness(0) invert(1) !important;
     }
 
     .sublist-undo-finalize-btn:hover {
@@ -1274,9 +1311,35 @@
         pointer-events: none;
     }
 
+    .sublist-finalized {
+        opacity: 0.7;
+        background-color: var(--background-secondary);
+    }
+
+    .sublist-finalized .sublist-items li .sublist-item-value,
+    .sublist-finalized .sublist-item-value {
+        opacity: 1 !important;
+        color: var(--text-primary) !important;
+        display: inline !important;
+        visibility: visible !important;
+        position: relative !important;
+        z-index: 10 !important;
+        background-color: transparent !important;
+        font-weight: bold !important;
+    }
+
     .sublist-items li.completed .sublist-item-text {
         text-decoration: line-through;
         color: var(--text-muted);
+    }
+
+    /* Garantir que valores sempre apareçam em sublistas finalizadas */
+    .sublist-finalized * .sublist-item-value {
+        opacity: 1 !important;
+        display: inline !important;
+        visibility: visible !important;
+        color: var(--text-primary) !important;
+        font-weight: bold !important;
     }
 
     .sublist-items li.sublist-empty {
@@ -2053,6 +2116,11 @@
         background-color: #4CAF50;
         color: white;
     }
+
+    .list.has-sublists .finalize-purchase-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
     .finalize-purchase-btn:hover {
         background-color: #45a049;
     }
@@ -2297,6 +2365,11 @@
         color: #fff;
     }
 
+    body.dark-mode .list.has-sublists .finalize-purchase-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
     body.dark-mode .finalize-purchase-btn:hover {
         background-color: #45a049;
     }
@@ -2304,6 +2377,11 @@
     body.dark-mode .undo-finalize-btn {
         background-color: #FF9800;
         color: #fff;
+    }
+
+    body.dark-mode .list.has-sublists .undo-finalize-btn {
+        width: 100%;
+        margin-top: 10px;
     }
 
     body.dark-mode .undo-finalize-btn:hover {
@@ -2469,8 +2547,7 @@
 
     /* 1. Esconde os checkboxes originais */
     #shopping-list-checkbox,
-    #link-to-planner-checkbox,
-    #link-as-routine-checkbox {
+    #link-to-planner-checkbox {
         display: none;
     }
 
@@ -2589,6 +2666,11 @@
         background-color: #FF9800; /* Laranja */
         color: white;
         display: none; /* Começa escondido */
+    }
+
+    .list.has-sublists .undo-finalize-btn {
+        width: 100%;
+        margin-top: 10px;
     }
     .undo-finalize-btn:hover {
         background-color: #FB8C00;
@@ -3847,20 +3929,16 @@ body.dark-mode #remove-schedule-btn:hover {
                             <input type="time" id="list-event-time" value="10:00">
                         </div>
                         
-                        <div id="routine-container" title="Marcar como rotina" style="display: none;">
-                             <input type="checkbox" id="link-as-routine-checkbox">
-                             <label for="link-as-routine-checkbox" class="icon-toggle-button">
-                                 <img src="buttons/lists/rotina.svg" alt="Marcar como Rotina">
-                             </label>
+                        <div id="routine-container" title="Repetir" style="display: none;">
+                            <select id="list-recurrence-type">
+                                <option value="none">não repetir</option>
+                                <option value="daily">diariamente</option>
+                                <option value="weekly">semanalmente</option>
+                            </select>
                         </div>
                     </div>
 
                     <div id="routine-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 5px;">
-                        <select id="list-recurrence-type">
-                            <option value="none">não repetir</option>
-                            <option value="daily">diariamente</option>
-                            <option value="weekly">semanalmente</option>
-                        </select>
                         <input type="date" id="list-recurrence-end-date" title="data final da recorrência" style="display: none;">
                         <div id="list-weekly-recurrence-options" style="display: none; margin-top: 5px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
                             <label style="display: block; margin-bottom: 5px; font-size: var(--font-size-sm); font-weight: bold;">repetir nos dias:</label>
@@ -3963,16 +4041,15 @@ body.dark-mode #remove-schedule-btn:hover {
                     <input type="date" id="editor-event-date">
                     <input type="time" id="editor-event-time">
                 </div>
-                 <div id="editor-routine-container" style="display: flex; align-items: center; gap: 8px; font-size: 14px; padding-left: 5px; cursor: pointer; margin-top: 5px;">
-                     <input type="checkbox" id="editor-link-as-routine-checkbox" style="width: 18px; height: 18px; cursor: pointer;">
-                     <label for="editor-link-as-routine-checkbox" style="cursor: pointer;">marcar como rotina</label>
-                </div>
-                <div id="editor-routine-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
-                    <select id="editor-recurrence-type" style="width: 100%;">
+                 <div id="editor-routine-container" style="display: flex; align-items: center; gap: 8px; font-size: 14px; padding-left: 5px; margin-top: 5px;">
+                     <label style="font-weight: bold;">Repetir:</label>
+                     <select id="editor-recurrence-type" style="flex: 1;">
                         <option value="none">não repetir</option>
                         <option value="daily">diariamente</option>
                         <option value="weekly">semanalmente</option>
                     </select>
+                </div>
+                <div id="editor-routine-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
                     <input type="date" id="editor-recurrence-end-date" title="data final da recorrência" style="display: none; width: 100%; box-sizing: border-box;">
                     <div id="editor-weekly-recurrence-options" style="display: none; margin-top: 5px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
                         <label style="display: block; margin-bottom: 5px; font-size: var(--font-size-sm); font-weight: bold;">repetir nos dias:</label>
@@ -4109,7 +4186,7 @@ body.dark-mode #remove-schedule-btn:hover {
     const listEventDateInput = document.getElementById('list-event-date');
     const listEventTimeInput = document.getElementById('list-event-time');
     const routineContainer = document.getElementById('routine-container');
-    const linkAsRoutineCheckbox = document.getElementById('link-as-routine-checkbox');
+    // const linkAsRoutineCheckbox = document.getElementById('link-as-routine-checkbox'); // Removido
     const routineOptions = document.getElementById('routine-options');
     const listRecurrenceTypeInput = document.getElementById('list-recurrence-type');
     const listRecurrenceEndDateInput = document.getElementById('list-recurrence-end-date');
@@ -4137,7 +4214,7 @@ body.dark-mode #remove-schedule-btn:hover {
     const editorEventTimeInput = document.getElementById('editor-event-time');
     const removeScheduleBtn = document.getElementById('remove-schedule-btn');
     const editorRoutineContainer = document.getElementById('editor-routine-container');
-    const editorLinkAsRoutineCheckbox = document.getElementById('editor-link-as-routine-checkbox');
+    // const editorLinkAsRoutineCheckbox = document.getElementById('editor-link-as-routine-checkbox'); // Removido
     const editorRoutineOptions = document.getElementById('editor-routine-options');
     const editorRecurrenceTypeInput = document.getElementById('editor-recurrence-type');
     const editorRecurrenceEndDateInput = document.getElementById('editor-recurrence-end-date');
@@ -4860,16 +4937,12 @@ body.dark-mode #remove-schedule-btn:hover {
                             checked: checkbox ? checkbox.checked : false
                         };
                         
-                        // Adiciona valor se a lista for de compras
-                        if (isShopping) {
-                            const valueSpan = li.querySelector('.sublist-item-value');
-                            if (valueSpan) {
-                                const valueText = valueSpan.textContent.replace(/[^\d,.-]/g, '').replace(',', '.');
-                                const numericValue = parseFloat(valueText) || 0;
-                                item.value = numericValue;
-                            } else {
-                                item.value = 0;
-                            }
+                        // Adiciona valor se o item tiver um campo de valor (independente da flag isShopping)
+                        const valueSpan = li.querySelector('.sublist-item-value');
+                        if (valueSpan) {
+                            const valueText = valueSpan.textContent.replace(/[^\d,.-]/g, '').replace(',', '.');
+                            const numericValue = parseFloat(valueText) || 0;
+                            item.value = numericValue;
                         }
                         
                         return item;
@@ -5217,7 +5290,6 @@ body.dark-mode #remove-schedule-btn:hover {
         const listData = allLists.find(list => list.id === listId);
         if (!listData) return;
 
-        editorLinkAsRoutineCheckbox.checked = false;
         editorRoutineOptions.style.display = 'none';
         editorRecurrenceTypeInput.value = 'none';
         editorRecurrenceEndDateInput.style.display = 'none';
@@ -5281,7 +5353,6 @@ body.dark-mode #remove-schedule-btn:hover {
             editorRoutineContainer.style.display = 'flex';
 
             if (linkedTaskInfo.task.recurrenceId) {
-                editorLinkAsRoutineCheckbox.checked = true;
                 editorRoutineOptions.style.display = 'flex';
                 
                 const recurrenceId = linkedTaskInfo.task.recurrenceId;
@@ -7251,6 +7322,13 @@ body.dark-mode #remove-schedule-btn:hover {
     function finalizePurchase(listId) {
         const listDiv = document.querySelector(`.list[data-list-id="${listId}"]`);
         if (!listDiv || listDiv.classList.contains('finalized')) return;
+        
+        // Não permitir finalizar lista principal se ela tem sublistas
+        const hasSublists = listDiv.dataset.supportsSublists === 'true';
+        if (hasSublists) {
+            alert("Para listas com sublistas, finalize cada sublista individualmente.");
+            return;
+        }
 
         const listName = listDiv.querySelector('h2').textContent;
         const iconSrc = listDiv.querySelector('.list-title-icon').src;
@@ -7288,7 +7366,7 @@ body.dark-mode #remove-schedule-btn:hover {
         `;
         
         modal.innerHTML = `
-            <div style="background: var(--background-primary); padding: 20px; border-radius: 8px; max-width: 400px; width: 90%; border: 1px solid var(--border-color);">
+            <div style="background: var(--background-primary); padding: 20px; border-radius: 8px; max-width: 400px; width: 90%; border: 2px solid var(--border-color); opacity: 1 !important;">
                 <h3 style="margin-top: 0; color: var(--text-primary);">Finalizar Compra</h3>
                 <p style="color: var(--text-primary);">Finalizar a compra "<strong>${listName}</strong>" com o valor total de <strong>${formatCurrency(total)}</strong>?</p>
                 ${categorySelect}
@@ -7387,7 +7465,8 @@ body.dark-mode #remove-schedule-btn:hover {
     function finalizeSublistPurchase(sublistId, sublistBlock) {
         if (!sublistBlock || sublistBlock.classList.contains('sublist-finalized')) return;
 
-        const sublistTitle = sublistBlock.querySelector('.sublist-title').textContent;
+        const sublistTitleElement = sublistBlock.querySelector('.sublist-title');
+        const sublistTitle = sublistTitleElement ? sublistTitleElement.textContent : 'Sublista';
         
         // Calcular total dos itens da sublista
         let total = 0;
@@ -7431,7 +7510,7 @@ body.dark-mode #remove-schedule-btn:hover {
         `;
         
         modal.innerHTML = `
-            <div style="background: var(--background-primary); padding: 20px; border-radius: 8px; max-width: 400px; width: 90%; border: 1px solid var(--border-color);">
+            <div style="background: var(--background-primary); padding: 20px; border-radius: 8px; max-width: 400px; width: 90%; border: 2px solid var(--border-color); opacity: 1 !important;">
                 <h3 style="margin-top: 0; color: var(--text-primary);">Finalizar Sublista</h3>
                 <p style="color: var(--text-primary);">Finalizar a sublista "<strong>${sublistTitle}</strong>" com o valor total de <strong>${formatCurrency(total)}</strong>?</p>
                 ${categorySelect}
@@ -7491,9 +7570,24 @@ body.dark-mode #remove-schedule-btn:hover {
             sublistBlock.dataset.transactionId = transactionId;
             sublistBlock.dataset.transactionMonth = currentMonth;
             
+            // Salvar o estado da sublista finalizada nos dados da lista
+            const listId = sublistBlock.closest('.list').dataset.listId;
+            const lists = JSON.parse(localStorage.getItem('todoLists')) || [];
+            const listIndex = lists.findIndex(list => list.id === listId);
+            
+            if (listIndex !== -1 && lists[listIndex].sublists) {
+                const sublistIndex = lists[listIndex].sublists.findIndex(sublist => sublist.id === sublistId);
+                if (sublistIndex !== -1) {
+                    lists[listIndex].sublists[sublistIndex].finalized = true;
+                    lists[listIndex].sublists[sublistIndex].transactionId = transactionId;
+                    lists[listIndex].sublists[sublistIndex].transactionMonth = currentMonth;
+                }
+            }
+            
             // Atualizar botões e estado visual
             updateSublistFinalizeButtons(sublistBlock);
             
+            // Salvar as listas para preservar o estado da sublista finalizada
             saveLists();
             
             document.body.removeChild(modal);
@@ -7517,6 +7611,20 @@ body.dark-mode #remove-schedule-btn:hover {
         // Reverte o estado visual e funcional da sublista
         sublistBlock.classList.remove('sublist-finalized');
         
+        // Remover o estado da sublista finalizada dos dados da lista
+        const listId = sublistBlock.closest('.list').dataset.listId;
+        const lists = JSON.parse(localStorage.getItem('todoLists')) || [];
+        const listIndex = lists.findIndex(list => list.id === listId);
+        
+        if (listIndex !== -1 && lists[listIndex].sublists) {
+            const sublistIndex = lists[listIndex].sublists.findIndex(sublist => sublist.id === sublistId);
+            if (sublistIndex !== -1) {
+                delete lists[listIndex].sublists[sublistIndex].finalized;
+                delete lists[listIndex].sublists[sublistIndex].transactionId;
+                delete lists[listIndex].sublists[sublistIndex].transactionMonth;
+            }
+        }
+        
         // Atualizar botões e estado visual
         updateSublistFinalizeButtons(sublistBlock);
 
@@ -7529,9 +7637,8 @@ body.dark-mode #remove-schedule-btn:hover {
 
     function updateSublistFinalizeButtons(sublistBlock) {
         const finalizeBtn = sublistBlock.querySelector('.sublist-finalize-btn');
-        const undoFinalizeBtn = sublistBlock.querySelector('.sublist-undo-finalize-btn');
         
-        if (!finalizeBtn || !undoFinalizeBtn) return;
+        if (!finalizeBtn) return;
         
         // Verificar se a lista principal está finalizada
         const listDiv = sublistBlock.closest('.list');
@@ -7539,9 +7646,10 @@ body.dark-mode #remove-schedule-btn:hover {
         const isSublistFinalized = sublistBlock.classList.contains('sublist-finalized');
         
         if (isSublistFinalized) {
-            // Sublista finalizada: mostrar botão de desfazer, ocultar botão de finalizar
-            finalizeBtn.style.display = 'none';
-            undoFinalizeBtn.style.display = 'inline-flex';
+            // Sublista finalizada: mostrar botão para desfazer finalização
+            finalizeBtn.style.display = 'inline-flex';
+            finalizeBtn.title = 'Desfazer finalização desta sublista';
+            finalizeBtn.innerHTML = '<img src="buttons/close.svg" alt="Desfazer finalização">';
             
             // Desabilitar edição dos itens
             sublistBlock.querySelectorAll('.sublist-items li').forEach(li => {
@@ -7549,9 +7657,8 @@ body.dark-mode #remove-schedule-btn:hover {
                 if (checkbox) checkbox.disabled = true;
             });
         } else if (isMainListFinalized) {
-            // Lista principal finalizada: ocultar ambos os botões
+            // Lista principal finalizada: ocultar botão de finalizar
             finalizeBtn.style.display = 'none';
-            undoFinalizeBtn.style.display = 'none';
             
             // Desabilitar edição dos itens
             sublistBlock.querySelectorAll('.sublist-items li').forEach(li => {
@@ -7573,7 +7680,8 @@ body.dark-mode #remove-schedule-btn:hover {
                 });
             
             finalizeBtn.style.display = hasItemsWithValue ? 'inline-flex' : 'none';
-            undoFinalizeBtn.style.display = 'none';
+            finalizeBtn.title = 'Finalizar compra desta sublista';
+            finalizeBtn.innerHTML = '<img src="buttons/ok.svg" alt="Finalizar compra">';
             
             // Reabilitar edição dos itens
             sublistBlock.querySelectorAll('.sublist-items li').forEach(li => {
@@ -7740,7 +7848,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     return {
                         text,
                         checked: !!item.checked,
-                        value: typeof item.value === 'number' ? item.value : 0
+                        value: (typeof item.value === 'number' && !isNaN(item.value)) ? item.value : 0
                     };
                 }
                 return null;
@@ -7819,15 +7927,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     finalizeBtn.title = 'Finalizar compra desta sublista';
                     finalizeBtn.style.display = 'none'; // Inicialmente oculto
                     
-                    const undoFinalizeBtn = document.createElement('button');
-                    undoFinalizeBtn.type = 'button';
-                    undoFinalizeBtn.className = 'sublist-icon-btn sublist-undo-finalize-btn';
-                    undoFinalizeBtn.innerHTML = '<img src="buttons/close.svg" alt="Desfazer finalização">';
-                    undoFinalizeBtn.title = 'Desfazer finalização';
-                    undoFinalizeBtn.style.display = 'none'; // Inicialmente oculto
-                    
-                    headerActions.appendChild(finalizeBtn);
-                    headerActions.appendChild(undoFinalizeBtn);
+                    block.appendChild(finalizeBtn);
                 }
 
                 header.appendChild(titleWrapper);
@@ -8009,7 +8109,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         state.items.forEach(item => {
                             const row = createEditRow(item && typeof item.text === 'string' ? item.text : '');
                             // Se for lista de compras, carrega o valor do item
-                            if (isShoppingList && item && typeof item.value === 'number') {
+                            if (isShoppingList && item && typeof item.value === 'number' && !isNaN(item.value)) {
                                 const valueInput = row.querySelector('input[type="number"]');
                                 if (valueInput) {
                                     valueInput.value = item.value;
@@ -8047,15 +8147,16 @@ body.dark-mode #remove-schedule-btn:hover {
                 // Event listeners para botões de finalizar (se for lista de compras)
                 if (isShoppingList) {
                     const finalizeBtn = block.querySelector('.sublist-finalize-btn');
-                    const undoFinalizeBtn = block.querySelector('.sublist-undo-finalize-btn');
                     
-                    finalizeBtn.addEventListener('click', () => {
-                        finalizeSublistPurchase(state.id, block);
-                    });
-                    
-                    undoFinalizeBtn.addEventListener('click', () => {
-                        undoFinalizeSublistPurchase(state.id, block);
-                    });
+                    if (finalizeBtn) {
+                        finalizeBtn.addEventListener('click', () => {
+                            if (block.classList.contains('sublist-finalized')) {
+                                undoFinalizeSublistPurchase(state.id, block);
+                            } else {
+                                finalizeSublistPurchase(state.id, block);
+                            }
+                        });
+                    }
                 }
 
                 saveBtn.addEventListener('click', () => {
@@ -8091,8 +8192,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         })
                         .filter(Boolean);
                     state.title = newTitle;
-                    state.items = normalizeSublistItems(updatedItems);
-                    renderView();
+                    state.items = updatedItems;
                     
                     // Atualizar botões de finalizar após salvar
                     if (isShoppingList) {
@@ -8100,6 +8200,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     }
                     
                     exitEditMode();
+                    renderView();
                     saveLists();
                 });
 
@@ -8108,6 +8209,11 @@ body.dark-mode #remove-schedule-btn:hover {
                 exitEditMode();
                 if (state.items.length === 0) {
                     enterEditMode();
+                }
+
+                // Atualizar botões de finalizar após criar a sublista
+                if (isShoppingList) {
+                    updateSublistFinalizeButtons(block);
                 }
 
                 return block;
@@ -8121,11 +8227,20 @@ body.dark-mode #remove-schedule-btn:hover {
                 const block = createSublistBlock({
                     id: sublistData.id,
                     title: normalizedTitle,
-                    items: normalizedItems
+                    items: normalizedItems,
+                    finalized: sublistData.finalized || false,
+                    transactionId: sublistData.transactionId || null,
+                    transactionMonth: sublistData.transactionMonth || null
                 });
                 if (block) {
                     sublistsSection.appendChild(block);
                     checkCompletion(listDiv);
+                    
+                    // Atualizar botões de finalização se for uma lista de compras
+                    if (isShoppingList) {
+                        updateSublistFinalizeButtons(block);
+                    }
+                    
                     if (shouldSave) {
                         saveLists();
                     }
@@ -8379,14 +8494,15 @@ body.dark-mode #remove-schedule-btn:hover {
             finalizeBtn.textContent = 'finalizar compra';
             finalizeBtn.onclick = () => finalizePurchase(listId);
             
-            const undoBtn = document.createElement('button');
-            undoBtn.className = 'undo-finalize-btn';
-            undoBtn.textContent = 'desfazer finalização';
-            undoBtn.onclick = () => undoFinalizePurchase(listId);
+            const undoFinalizeBtn = document.createElement('button');
+            undoFinalizeBtn.className = 'undo-finalize-btn';
+            undoFinalizeBtn.textContent = 'desfazer finalização';
+            undoFinalizeBtn.onclick = () => undoFinalizePurchase(listId);
+            undoFinalizeBtn.style.display = 'none'; // Inicialmente oculto
             
             listDiv.appendChild(totalDiv);
             listDiv.appendChild(finalizeBtn);
-            listDiv.appendChild(undoBtn);
+            listDiv.appendChild(undoFinalizeBtn);
         }
         
         listsContainer.appendChild(listDiv);
@@ -8407,12 +8523,12 @@ body.dark-mode #remove-schedule-btn:hover {
         if (isFinalized) {
             listDiv.classList.add('finalized');
             
-            // Só manipula botões se a lista não tem sublistas
+            // Ocultar botão de finalizar compra e mostrar botão de desfazer quando lista está finalizada (apenas para listas sem sublistas)
             if (!allowsSublists) {
                 const finalizeBtn = listDiv.querySelector('.finalize-purchase-btn');
-                const undoBtn = listDiv.querySelector('.undo-finalize-btn');
+                const undoFinalizeBtn = listDiv.querySelector('.undo-finalize-btn');
                 if (finalizeBtn) finalizeBtn.style.display = 'none';
-                if (undoBtn) undoBtn.style.display = 'block';
+                if (undoFinalizeBtn) undoFinalizeBtn.style.display = 'block';
             }
             
             if(listDiv.querySelector('.shopping-input-group')) {
@@ -8499,7 +8615,7 @@ body.dark-mode #remove-schedule-btn:hover {
         const listPriority = newListPriorityInput.value;
         const newListId = Date.now().toString();
         const isShopping = shoppingListCheckbox.checked;
-        const isRoutine = linkAsRoutineCheckbox.checked;
+        const isRoutine = listRecurrenceTypeInput.value !== 'none';
         const supportsSublists = newListHasSublistsInput ? newListHasSublistsInput.checked : false;
 
         createList(listName, [], listPriority, newListId, taskIcons.lista, isShopping, false, isRoutine, null, null, null, null, supportsSublists);
@@ -8574,7 +8690,7 @@ body.dark-mode #remove-schedule-btn:hover {
         plannerLinkOptions.style.display = 'none';
         routineOptions.style.display = 'none';
         linkToPlannerCheckbox.checked = false;
-        linkAsRoutineCheckbox.checked = false;
+        listRecurrenceTypeInput.value = 'none';
         listEventDateInput.required = false;
         listEventTimeInput.required = false;
     });
@@ -8636,7 +8752,7 @@ body.dark-mode #remove-schedule-btn:hover {
 
             const eventDateStr = editorEventDateInput.value;
             const eventTime = editorEventTimeInput.value;
-            const isRoutine = editorLinkAsRoutineCheckbox.checked;
+            const isRoutine = editorRecurrenceTypeInput.value !== 'none';
             const recurrenceType = isRoutine ? editorRecurrenceTypeInput.value : 'none';
 
             if (!eventDateStr || !eventTime) {
@@ -8761,19 +8877,11 @@ body.dark-mode #remove-schedule-btn:hover {
         listEventTimeInput.required = isChecked;
         if (!isChecked) {
             routineOptions.style.display = 'none';
-            linkAsRoutineCheckbox.checked = false;
+            listRecurrenceTypeInput.value = 'none';
         }
     });
 
-    linkAsRoutineCheckbox.addEventListener('change', () => {
-        routineOptions.style.display = linkAsRoutineCheckbox.checked ? 'flex' : 'none';
-        if(linkAsRoutineCheckbox.checked) {
-            plannerLinkOptions.style.display = 'flex'; // Garante que as opções de data/hora apareçam
-            linkToPlannerCheckbox.checked = true;
-        }
-        listRecurrenceTypeInput.value = linkAsRoutineCheckbox.checked ? 'daily' : 'none';
-        listRecurrenceTypeInput.dispatchEvent(new Event('change'));
-    });
+    // Event listener removido - checkbox não existe mais
     
     tasksList.addEventListener('click', (e) => {
         const taskItem = e.target.closest('.task-list-item');
@@ -9092,19 +9200,17 @@ body.dark-mode #remove-schedule-btn:hover {
         listRecurrenceEndDateInput.style.display = isRecurrent ? 'block' : 'none';
         listRecurrenceEndDateInput.required = isRecurrent;
         listWeeklyRecurrenceOptions.style.display = listRecurrenceTypeInput.value === 'weekly' ? 'block' : 'none';
+        routineOptions.style.display = isRecurrent ? 'flex' : 'none';
     });
 
-    editorLinkAsRoutineCheckbox.addEventListener('change', () => {
-        editorRoutineOptions.style.display = editorLinkAsRoutineCheckbox.checked ? 'flex' : 'none';
-        editorRecurrenceTypeInput.value = editorLinkAsRoutineCheckbox.checked ? 'daily' : 'none';
-        editorRecurrenceTypeInput.dispatchEvent(new Event('change'));
-    });
+    // Event listener removido - checkbox não existe mais
 
     editorRecurrenceTypeInput.addEventListener('change', () => {
         const isRecurrent = editorRecurrenceTypeInput.value !== 'none';
         editorRecurrenceEndDateInput.style.display = isRecurrent ? 'block' : 'none';
         editorRecurrenceEndDateInput.required = isRecurrent;
         editorWeeklyRecurrenceOptions.style.display = editorRecurrenceTypeInput.value === 'weekly' ? 'block' : 'none';
+        editorRoutineOptions.style.display = isRecurrent ? 'flex' : 'none';
     });
 
 
