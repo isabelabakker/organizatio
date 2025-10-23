@@ -559,7 +559,7 @@
     .delete-list-circular-btn img {
         width: 14px;
         height: 14px;
-        filter: brightness(0) invert(1);
+        filter: invert(41%) sepia(97%) saturate(1451%) hue-rotate(325deg) brightness(99%) contrast(106%); /* Vermelho #FF5252 */
     }
 
     .edit-item-btn img,
@@ -593,7 +593,7 @@
     .edit-task-btn, .task-list-item button,
     .edit-item-btn, .delete-item-btn,
     .edit-list-btn, .delete-list-circular-btn {
-     background-color: #f5f5f5; 
+     background-color: transparent; 
      border: none;
      transition: background-color 0.2s, border-color 0.2s;
     }
@@ -603,12 +603,12 @@
     .edit-task-btn:hover, .task-list-item button:hover,
     .edit-item-btn:hover, .delete-item-btn:hover,
     .edit-list-btn:hover, .delete-list-circular-btn:hover {
-        background-color: #e5e5e5;
+        background-color: transparent;
     }
 
     /* ÍCONE ESCURO PARA TEMA CLARO */
     .edit-task-btn img, .task-list-item button img {
-        filter: invert(25%);
+        filter: brightness(0) invert(0.3);
     }
 
     /* TEMA ESCURO: Botões quadrados e redondos com fundo da página e borda clara */
@@ -616,7 +616,7 @@
     body.dark-mode .edit-task-btn, body.dark-mode .task-list-item button,
     body.dark-mode .edit-item-btn, body.dark-mode .delete-item-btn,
     body.dark-mode .edit-list-btn, body.dark-mode .delete-list-circular-btn {
-    background-color: #1F1F1F; 
+    background-color: transparent; 
     border: none; 
     }
     
@@ -624,7 +624,7 @@
     body.dark-mode .edit-task-btn:hover, body.dark-mode .task-list-item button:hover,
     body.dark-mode .edit-item-btn:hover, body.dark-mode .delete-item-btn:hover,
     body.dark-mode .edit-list-btn:hover, body.dark-mode .delete-list-circular-btn:hover {
-    background-color: #282828;
+    background-color: transparent;
     }
 
     #newListForm {
@@ -878,7 +878,7 @@
     .delete-btn img {
         width: 16px;
         height: 16px;
-        filter: brightness(0) invert(0.35);
+        filter: brightness(0) invert(0.3);
         transition: filter 0.3s ease;
     }
     
@@ -1043,7 +1043,7 @@
     }
 
     .create-sublist-btn {
-        align-self: flex-start;
+        width: 100%;
         background: transparent;
         border: 1px dashed var(--border-medium);
         color: var(--text-secondary);
@@ -1144,7 +1144,7 @@
 
     .sublist-icon-btn {
         background: transparent;
-        border: none;
+        border: none !important;
         padding: 4px;
         width: 28px;
         height: 28px;
@@ -1165,6 +1165,7 @@
     .sublist-icon-btn img {
         width: 16px;
         height: 16px;
+        filter: brightness(0) invert(0.3);
     }
 
     .sublist-inline-add-btn {
@@ -1195,6 +1196,7 @@
         font-size: var(--font-size-sm);
         background: var(--bg-primary);
         color: var(--text-primary);
+        font-weight: bold;
     }
 
     .sublist-items {
@@ -1388,7 +1390,7 @@
     .cancel-item-btn {
         width: 24px;
         height: 24px;
-        background: #EEEEEE;
+        background: transparent;
         border: none;
         cursor: pointer;
         border-radius: 50%;
@@ -1401,7 +1403,7 @@
 
     .save-item-btn:hover,
     .cancel-item-btn:hover {
-        background: #E0E0E0;
+        background: transparent;
     }
 
     .save-item-btn img,
@@ -1412,11 +1414,10 @@
     }
 
     .save-item-btn img {
-        filter: invert(48%) sepia(71%) saturate(415%) hue-rotate(75deg) brightness(95%) contrast(84%); /* Verde #4CAF50 */
+        filter: brightness(0) invert(0.3);
     }
 
-    .cancel-item-btn img,
-    .delete-list-circular-btn img {
+    .cancel-item-btn img {
         filter: invert(41%) sepia(97%) saturate(1451%) hue-rotate(325deg) brightness(99%) contrast(106%); /* Vermelho #FF5252 */
     }
 
@@ -1530,7 +1531,9 @@
       padding: 1px;
       box-sizing: border-box;
     }
-    .task-icon-grid-view.priority-icon-alta { border-color: #FF5252; }
+    .task-icon-grid-view.priority-icon-alta { 
+        border-color: #FF5252 !important; 
+    }
 
     /* Modal styles removed - now using sections instead */
     
@@ -1600,6 +1603,16 @@
         background: #f0f0f0;
     }
     .task-list-item.priority-alta { border-left-color: #FF5252; }
+    
+    /* Listas agendadas com alta prioridade sempre têm borda vermelha */
+    .task-list-item[data-list-id].priority-alta {
+        border-left-color: #FF5252 !important;
+    }
+    
+    /* Listas agendadas sem alta prioridade: borda transparente */
+    .task-list-item[data-list-id]:not(.priority-alta) {
+        border-left-color: transparent !important;
+    }
 
     .task-list-item button {
       padding: 5px 8px;
@@ -2107,12 +2120,16 @@
 
     body.dark-mode .sublist-icon-btn {
         background: transparent;
-        border: none;
+        border: none !important;
         color: #cfcfcf;
     }
 
     body.dark-mode .sublist-icon-btn:hover {
         background: rgba(255, 255, 255, 0.08);
+    }
+    
+    body.dark-mode .sublist-icon-btn img {
+        filter: brightness(0) invert(0.7) !important;
     }
 
     body.dark-mode .sublist-inline-add-btn {
@@ -2172,8 +2189,10 @@
     body.dark-mode .delete-item-btn img,
     body.dark-mode .edit-btn img,
     body.dark-mode .delete-btn img,
-    body.dark-mode .edit-list-btn img {
-        filter: brightness(0) invert(0.8);
+    body.dark-mode .edit-list-btn img,
+    body.dark-mode .edit-task-btn img,
+    body.dark-mode .task-list-item button img {
+        filter: brightness(0) invert(0.7) !important;
     }
     
     body.dark-mode .task-list-item[data-list-id]:hover {
@@ -2267,7 +2286,19 @@
     body.dark-mode .list.priority-alta { border-left-color: #FF1744; }
     
     body.dark-mode .task-list-item.priority-alta { border-left-color: #FF1744; }
-    body.dark-mode .task-icon-grid-view.priority-icon-alta { border-color: #FF1744; }
+    body.dark-mode .task-icon-grid-view.priority-icon-alta { 
+        border-color: #FF5252 !important; 
+    }
+    
+    /* Listas agendadas com alta prioridade sempre têm borda vermelha no tema escuro */
+    body.dark-mode .task-list-item[data-list-id].priority-alta {
+        border-left-color: #FF1744 !important;
+    }
+    
+    /* Listas agendadas sem alta prioridade: borda transparente no tema escuro */
+    body.dark-mode .task-list-item[data-list-id]:not(.priority-alta) {
+        border-left-color: transparent !important;
+    }
 
     body.dark-mode .list > .list-items > li {
       border-bottom: 1px solid #333;
@@ -2370,17 +2401,30 @@
     body.dark-mode .close-button,
     body.dark-mode .save-item-btn,
     body.dark-mode .cancel-item-btn {
-        background: #424242;
+        background: transparent;
     }
     body.dark-mode .close-button:hover,
     body.dark-mode .save-item-btn:hover,
     body.dark-mode .cancel-item-btn:hover {
-        background: #616161;
+        background: transparent;
     }
     
     body.dark-mode .edit-goal-form .edit-btn,
     body.dark-mode .edit-goal-form .delete-btn {
         color: #9E9E9E; /* Cor do texto igual à da borda */
+    }
+    
+    /* Estilos específicos para ícones dos botões save-item-btn e cancel-item-btn no tema escuro */
+    body.dark-mode .save-item-btn img {
+        filter: brightness(0) invert(0.7) !important;
+    }
+    
+    body.dark-mode .cancel-item-btn img {
+        filter: invert(41%) sepia(97%) saturate(1451%) hue-rotate(325deg) brightness(99%) contrast(106%) !important; /* Vermelho #FF5252 */
+    }
+    
+    body.dark-mode .delete-list-circular-btn img {
+        filter: invert(41%) sepia(97%) saturate(1451%) hue-rotate(325deg) brightness(99%) contrast(106%) !important; /* Vermelho #FF5252 */
     }
     
     /* Removed modal dark mode styles - now using sections */
@@ -2408,7 +2452,7 @@
         border-radius: 7px;
         cursor: pointer;
         transition: all 0.2s ease-in-out;
-        background-color: #f9f9f9;
+        background-color: transparent;
         flex-shrink: 0;
     }
     
@@ -2425,25 +2469,25 @@
     .icon-toggle-button img {
         width: 100%;
         height: 100%;
-        filter: grayscale(1);
-        opacity: 0.6;
+        filter: grayscale(1) brightness(0) invert(0.3);
+        opacity: 1;
         transition: all 0.2s ease-in-out;
     }
 
     /* 4. Adiciona um efeito ao passar o mouse */
     .icon-toggle-button:hover {
         border-color: #3586ff;
-        background-color: #f0f5ff;
+        background-color: transparent;
     }
 
     /* 5. ESTILO QUANDO O ÍCONE ESTÁ SELECIONADO (a mágica acontece aqui) */
     /* Quando o checkbox invisível está marcado, estiliza a label dele */
     input[type="checkbox"]:checked + .icon-toggle-button {
         border-color: #3586ff;
-        background-color: #e8f0fe;
+        background-color: transparent;
     }
     input[type="checkbox"]:checked + .icon-toggle-button img {
-        filter: grayscale(0);
+        filter: grayscale(0) brightness(0) invert(0.3);
         opacity: 1;
     }
 
@@ -2451,23 +2495,23 @@
     /* --- Ajustes para o Tema Escuro --- */
     body.dark-mode .icon-toggle-button {
         border-color: #555;
-        background-color: #282828;
+        background-color: transparent;
     }
     
     body.dark-mode .icon-toggle-button img {
-        filter: invert(1) grayscale(1);
-        opacity: 0.5;
+        filter: invert(1) grayscale(1) brightness(0) invert(0.7) !important;
+        opacity: 1;
     }
     body.dark-mode .icon-toggle-button:hover {
         border-color: #6b9aff;
-        background-color: #1F1F1F;
+        background-color: transparent;
     }
     body.dark-mode input[type="checkbox"]:checked + .icon-toggle-button {
         border-color: #6b9aff;
-        background-color: #1F1F1F;
+        background-color: transparent;
     }
     body.dark-mode input[type="checkbox"]:checked + .icon-toggle-button img {
-        filter: invert(1) grayscale(0);
+        filter: invert(1) grayscale(0) brightness(0) invert(0.7) !important;
         opacity: 1;
     }
 
@@ -3846,12 +3890,6 @@ body.dark-mode #remove-schedule-btn:hover {
             <div id="list-icon-picker-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-height: 300px; overflow-y: auto;">
             </div>
         </div>
-        
-        <!-- Seletor de Cor (oculto - cor baseada em prioridade) -->
-        <div style="display: none;">
-            <div id="list-color-picker"></div>
-            <input type="hidden" id="listColor" value="blue">
-        </div>
     </div>
   </div>
 
@@ -3869,22 +3907,16 @@ body.dark-mode #remove-schedule-btn:hover {
             </div>
 
             <div>
-                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Prioridade (define a cor do ícone):</label>
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Prioridade:</label>
                 <select id="editor-list-priority" style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: var(--font-size-md);">
-                    <option value="baixa">Baixa (Azul)</option>
-                    <option value="media">Média (Amarelo)</option>
-                    <option value="alta">Alta (Vermelho)</option>
+                    <option value="baixa">Baixa</option>
+                    <option value="media">Média</option>
+                    <option value="alta">Alta</option>
                 </select>
                 
                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">Ícone da Lista:</label>
                 <div id="editor-list-icon-picker" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 140px; overflow-y: auto; padding: 5px; border-radius: 8px; background: rgba(0,0,0,0.05);"></div>
                 <input type="hidden" id="editor-list-icon-main">
-                
-                <!-- Seletor de Cor oculto (cor baseada em prioridade) -->
-                <div style="display: none;">
-                    <div id="editor-list-color-picker"></div>
-                    <input type="hidden" id="editor-list-color-main" value="blue">
-                </div>
             </div>
 
             <hr>
@@ -4821,6 +4853,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 icon: iconPath,
                 color: colorValue,
                 colorName: colorName,
+                iconColor: getColorNameFromPriority(listDiv.querySelector('.list-priority-select').value), // Cor do ícone baseada na prioridade
                 isShoppingList: isShopping,
                 isFinalized: listDiv.classList.contains('finalized'),
                 isRoutine: isRoutine,
@@ -4886,7 +4919,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 listData.transactionId,
                 listData.transactionMonth,
                 listData.color,
-                listData.colorName,
+                null, // Não usa cor personalizada, usa baseada na prioridade
                 supportsSublists,
                 listData.sublists || []
             );
@@ -5068,8 +5101,9 @@ body.dark-mode #remove-schedule-btn:hover {
         if (currentListIconBeingEdited) {
             const listDiv = document.querySelector(`.list[data-list-id="${currentListIconBeingEdited}"]`);
             if (listDiv) {
-                // Usa a cor selecionada para o ícone
-                const selectedColor = listColor.value || 'blue';
+                // Usa a cor baseada na prioridade da lista
+                const priority = listDiv.querySelector('.list-priority-select').value;
+                const selectedColor = getColorNameFromPriority(priority);
                 const colorMap = {
                     'blue': '#3586ff',
                     'green': '#4caf50',
@@ -6438,8 +6472,10 @@ body.dark-mode #remove-schedule-btn:hover {
                     if (task.icon) { 
                         const iconEl = document.createElement('img');
                         iconEl.src = task.icon;
-                        const iconColor = task.color || task.iconColor || getIconColorFromPath(task.icon);
+                        // Força cor vermelha para tarefas prioritárias, senão usa a cor original
+                        const iconColor = task.priority === 'alta' ? 'red' : (task.color || task.iconColor || getIconColorFromPath(task.icon));
                         iconEl.className = `task-icon-grid-view icon-color-${iconColor}`;
+                        // Aplica borda vermelha para TODAS as tarefas de alta prioridade
                         if (task.priority === 'alta') {
                             iconEl.classList.add('priority-icon-alta');
                         }
@@ -6634,12 +6670,15 @@ body.dark-mode #remove-schedule-btn:hover {
             if (task.priority === 'alta') {
                 taskItem.classList.add('priority-alta');
             }
-            if (task.linkedListId) {
+            
+            const isLinkedList = task.linkedListId ? true : false;
+            if (isLinkedList) {
                 taskItem.dataset.listId = task.linkedListId;
                 taskItem.style.cursor = 'pointer';
             }
 
-            const iconColor = task.color || task.iconColor || getIconColorFromPath(task.icon);
+            // Força cor vermelha para tarefas prioritárias, senão usa a cor original
+            const iconColor = task.priority === 'alta' ? 'red' : (task.color || task.iconColor || getIconColorFromPath(task.icon));
             const iconHtml = task.icon ? `<img src="${task.icon}" class="task-icon icon-color-${iconColor}" alt="ícone da tarefa">` : '';
             
             // Para listas agendadas, não mostra o botão de editar
@@ -6651,6 +6690,20 @@ body.dark-mode #remove-schedule-btn:hover {
                     ${editButton}
                     <button onclick="removeTask('${task.id}')"><img src="buttons/trash.svg" alt="Remover"></button>
                 </div>`;
+            
+            // Aplica a borda vermelha APENAS para listas agendadas com ALTA PRIORIDADE
+            if (isLinkedList && task.priority === 'alta') {
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                taskItem.style.borderLeftColor = isDarkMode ? '#FF1744' : '#FF5252';
+                taskItem.style.borderLeftWidth = '4px';
+                taskItem.style.borderLeftStyle = 'solid';
+            } else if (isLinkedList) {
+                // Listas agendadas sem alta prioridade: borda transparente
+                taskItem.style.borderLeftColor = 'transparent';
+                taskItem.style.borderLeftWidth = '4px';
+                taskItem.style.borderLeftStyle = 'solid';
+            }
+            
             tasksList.appendChild(taskItem);
         });
     }
@@ -7240,7 +7293,7 @@ body.dark-mode #remove-schedule-btn:hover {
         const resolvedBorderColor = borderColor || getPriorityColor(initialPriority, isDarkMode);
         listDiv.style.borderLeftColor = resolvedBorderColor;
 
-        const resolvedIconColorName = (iconColorName || normalizedBorderColorName || getColorNameFromValue(resolvedBorderColor) || getColorNameFromPriority(initialPriority) || 'blue');
+        const resolvedIconColorName = getColorNameFromPriority(initialPriority);
         listDiv.dataset.colorName = resolvedIconColorName;
 
         const titleContainer = document.createElement('div');
@@ -8058,6 +8111,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     description: listName, 
                     icon: taskIcons.lista,
                     priority: listPriority === 'alta' ? 'alta' : 'nenhuma',
+                    color: listPriority === 'alta' ? 'red' : (listPriority === 'media' ? 'yellow' : 'blue'),
                     recurrenceId: recurrenceId,
                     linkedListId: newListId
                 });
@@ -8121,10 +8175,10 @@ body.dark-mode #remove-schedule-btn:hover {
         let newListIcon = sanitizeIconPath(editorListIconInput.value);
         const newPriority = editorListPriorityInput.value;
 
-        // Obtém a cor baseada na prioridade
+        // Obtém a cor da borda baseada na prioridade
         const isDarkMode = document.body.classList.contains('dark-mode');
-        const newColorName = getColorNameFromPriority(newPriority);
         const newColor = getPriorityColor(newPriority, isDarkMode);
+        const newColorName = getColorNameFromPriority(newPriority);
 
         if (!newName) {
             alert("O nome da lista não pode ficar em branco.");
@@ -8180,12 +8234,14 @@ body.dark-mode #remove-schedule-btn:hover {
 
             const createTask = (dateKey, recurrenceId = null) => {
                  if (!calendarTasks[dateKey]) calendarTasks[dateKey] = [];
+                 const listPriority = allLists[listIndex].priority;
                  calendarTasks[dateKey].push({
                     id: Date.now().toString() + Math.random(),
                     time: eventTime,
                     description: newName, 
                     icon: newListIcon,
-                    priority: allLists[listIndex].priority === 'alta' ? 'alta' : 'nenhuma',
+                    priority: listPriority === 'alta' ? 'alta' : 'nenhuma',
+                    color: listPriority === 'alta' ? 'red' : (listPriority === 'media' ? 'yellow' : 'blue'),
                     recurrenceId: recurrenceId,
                     linkedListId: listId
                 });
@@ -8321,6 +8377,25 @@ body.dark-mode #remove-schedule-btn:hover {
         dayViewSection.style.setProperty('display', 'none', 'important');
         taskFormView.style.setProperty('display', 'block', 'important');
     });
+
+    // Event listener para o checkbox de prioridade - esconde/mostra seletor de cor e aplica cor vermelha aos ícones
+    if (taskPriorityInput) {
+        taskPriorityInput.addEventListener('change', () => {
+            const colorPickerContainer = document.getElementById('task-color-picker-container');
+            if (colorPickerContainer) {
+                if (taskPriorityInput.checked) {
+                    // Tarefa prioritária - esconde seletor de cor e aplica cor vermelha aos ícones
+                    colorPickerContainer.style.display = 'none';
+                    applyColorToIconOptions(taskIconPicker, 'red');
+                } else {
+                    // Tarefa não prioritária - mostra seletor de cor e restaura cor original
+                    colorPickerContainer.style.display = 'block';
+                    const currentColor = taskIconColorInput ? taskIconColorInput.value : 'blue';
+                    applyColorToIconOptions(taskIconPicker, currentColor);
+                }
+            }
+        });
+    }
 
     // Event listener para o seletor de cores das tarefas
     if (taskColorPicker) {
@@ -8583,46 +8658,6 @@ body.dark-mode #remove-schedule-btn:hover {
             }
         });
     }
-
-    // Event listener para o seletor de cores das listas
-    if (listColorPicker) {
-        listColorPicker.addEventListener('click', (e) => {
-            const colorOption = e.target.closest('.color-option');
-            if (colorOption) {
-                // Remove seleção anterior
-                listColorPicker.querySelectorAll('.color-option').forEach(option => {
-                    option.classList.remove('selected');
-                });
-                
-                // Seleciona nova cor
-                colorOption.classList.add('selected');
-                const selectedColor = colorOption.dataset.color;
-                listColor.value = selectedColor;
-                
-                // Atualiza TODOS os ícones com a nova cor
-                listIconPickerGrid.querySelectorAll('.task-icon-option').forEach(iconOption => {
-                    const iconName = iconOption.dataset.iconName;
-                    const coloredPath = getColoredIcons(iconName, selectedColor);
-                    
-                    // Remove a imagem e recria com a nova cor
-                    const img = iconOption.querySelector('img');
-                    img.remove();
-                    
-                    const newImg = document.createElement('img');
-                    newImg.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
-                    newImg.className = `icon-color-${selectedColor}`;
-                    newImg.dataset.color = selectedColor;
-                    newImg.style.width = '100%';
-                    newImg.style.height = '100%';
-                    newImg.style.objectFit = 'contain';
-                    newImg.style.borderRadius = '5px';
-                    
-                    iconOption.appendChild(newImg);
-                    iconOption.dataset.iconPath = coloredPath;
-                });
-            }
-        });
-    }
     calendarMonthSelect.addEventListener('change', (e) => {
         currentCalendarDate.setMonth(parseInt(e.target.value));
         currentCalendarDate.setDate(1); 
@@ -8773,24 +8808,6 @@ body.dark-mode #remove-schedule-btn:hover {
             if (goalColor) goalColor.value = 'blue';
         }
         
-        if (listColorPicker) {
-            listColorPicker.querySelectorAll('.color-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            const blueOption = listColorPicker.querySelector('[data-color="blue"]');
-            if (blueOption) blueOption.classList.add('selected');
-            if (listColor) listColor.value = 'blue';
-        }
-        
-        // Inicializa o seletor de cor do editor de listas
-        const editorListColorPicker = document.getElementById('editor-list-color-picker');
-        if (editorListColorPicker) {
-            editorListColorPicker.querySelectorAll('.color-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            const blueOption = editorListColorPicker.querySelector('[data-color="blue"]');
-            if (blueOption) blueOption.classList.add('selected');
-        }
         
         
         // Verifica se todos os elementos de investimento estão disponíveis
