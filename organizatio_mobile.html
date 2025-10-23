@@ -1240,6 +1240,40 @@
         text-overflow: ellipsis;
     }
 
+    .sublist-item-value {
+        font-size: var(--font-size-sm);
+        color: var(--text-secondary);
+        font-weight: 600;
+        margin-left: auto;
+        flex-shrink: 0;
+    }
+
+    .sublist-finalize-btn {
+        background-color: var(--success) !important;
+    }
+
+    .sublist-finalize-btn:hover {
+        background-color: var(--success-hover) !important;
+    }
+
+    .sublist-undo-finalize-btn {
+        background-color: var(--warning) !important;
+    }
+
+    .sublist-undo-finalize-btn:hover {
+        background-color: var(--warning-hover) !important;
+    }
+
+    .sublist-finalized {
+        opacity: 0.7;
+        background-color: var(--background-secondary);
+    }
+
+    .sublist-finalized .sublist-items li input[type="checkbox"] {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
     .sublist-items li.completed .sublist-item-text {
         text-decoration: line-through;
         color: var(--text-muted);
@@ -4821,10 +4855,24 @@ body.dark-mode #remove-schedule-btn:hover {
                         if (!text) {
                             return null;
                         }
-                        return {
+                        const item = {
                             text,
                             checked: checkbox ? checkbox.checked : false
                         };
+                        
+                        // Adiciona valor se a lista for de compras
+                        if (isShopping) {
+                            const valueSpan = li.querySelector('.sublist-item-value');
+                            if (valueSpan) {
+                                const valueText = valueSpan.textContent.replace(/[^\d,.-]/g, '').replace(',', '.');
+                                const numericValue = parseFloat(valueText) || 0;
+                                item.value = numericValue;
+                            } else {
+                                item.value = 0;
+                            }
+                        }
+                        
+                        return item;
                     })
                     .filter(Boolean);
 
@@ -4832,11 +4880,20 @@ body.dark-mode #remove-schedule-btn:hover {
                     return null;
                 }
 
-                return {
+                const sublistData = {
                     id: sublistId,
                     title,
                     items: sublistItems
                 };
+                
+                // Adiciona estado de finalização se for uma sublista de compras
+                if (sublistDiv.classList.contains('sublist-finalized')) {
+                    sublistData.finalized = true;
+                    sublistData.transactionId = sublistDiv.dataset.transactionId;
+                    sublistData.transactionMonth = sublistDiv.dataset.transactionMonth;
+                }
+                
+                return sublistData;
             }).filter(Boolean) : [];
 
             const isRoutine = listDiv.dataset.isRoutine === 'true';
@@ -7197,9 +7254,6 @@ body.dark-mode #remove-schedule-btn:hover {
 
         const listName = listDiv.querySelector('h2').textContent;
         const iconSrc = listDiv.querySelector('.list-title-icon').src;
-        
-        const categoryEntry = Object.entries(categoryIcons).find(([name, path]) => iconSrc.includes(path.substring(2)));
-        const categoryName = categoryEntry ? categoryEntry[0] : 'compras';
 
         let total = 0;
         listDiv.querySelectorAll('ul li').forEach(item => {
@@ -7211,16 +7265,74 @@ body.dark-mode #remove-schedule-btn:hover {
             return;
         }
 
-        if(confirm(`Finalizar a compra "${listName}" com o valor total de ${formatCurrency(total)}? Uma nova despesa será adicionada na categoria "${categoryName}".`)) {
-            const transactionId = Date.now(); // ID único para a transação
+        // Solicitar categoria ao usuário
+        const categoryOptions = expenseCategories.map(cat => {
+            const categoryName = typeof cat === 'string' ? cat : cat.name;
+            return `<option value="${categoryName}">${categoryName}</option>`;
+        }).join('');
+
+        const categorySelect = `
+            <div style="margin: 10px 0;">
+                <label for="category-select" style="display: block; margin-bottom: 5px; font-weight: bold; color: var(--text-primary);">Categoria da despesa:</label>
+                <select id="category-select" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--background-secondary); color: var(--text-primary);">
+                    ${categoryOptions}
+                </select>
+            </div>
+        `;
+
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--background-overlay, rgba(0,0,0,0.8)); display: flex; align-items: center; 
+            justify-content: center; z-index: 10000;
+        `;
+        
+        modal.innerHTML = `
+            <div style="background: var(--background-primary); padding: 20px; border-radius: 8px; max-width: 400px; width: 90%; border: 1px solid var(--border-color);">
+                <h3 style="margin-top: 0; color: var(--text-primary);">Finalizar Compra</h3>
+                <p style="color: var(--text-primary);">Finalizar a compra "<strong>${listName}</strong>" com o valor total de <strong>${formatCurrency(total)}</strong>?</p>
+                ${categorySelect}
+                <div style="margin-top: 20px; text-align: right;">
+                    <button id="cancel-finalize" style="margin-right: 10px; padding: 8px 16px; border: 1px solid var(--border-color); background: var(--background-secondary); color: var(--text-primary); border-radius: 4px;">Cancelar</button>
+                    <button id="confirm-finalize" style="padding: 8px 16px; background: var(--success); color: white; border: none; border-radius: 4px;">Finalizar</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        const cancelBtn = modal.querySelector('#cancel-finalize');
+        const confirmBtn = modal.querySelector('#confirm-finalize');
+        const select = modal.querySelector('#category-select');
+
+        cancelBtn.onclick = () => {
+            document.body.removeChild(modal);
+        };
+
+        confirmBtn.onclick = () => {
+            const selectedCategory = select.value;
+            if (!selectedCategory) {
+                alert('Por favor, selecione uma categoria.');
+                return;
+            }
+
+            // Obter ícone da categoria
+            const categoryData = expenseCategories.find(cat => {
+                const catName = typeof cat === 'string' ? cat : cat.name;
+                return catName === selectedCategory;
+            });
+            
+            const categoryIcon = categoryData && typeof categoryData === 'object' ? categoryData.icon : categoryIcons[selectedCategory] || categoryIcons["outros"];
+
+            const transactionId = Date.now();
             const newTransaction = {
-                id: transactionId, // Armazena o ID
+                id: transactionId,
                 date: new Date().toISOString().split('T')[0],
                 desc: listName,
-                category: categoryName,
+                category: selectedCategory,
                 type: 'despesa',
                 value: -Math.abs(total),
-                icon: iconSrc
+                icon: categoryIcon
             };
 
             if (!dataByMonth[currentMonth]) dataByMonth[currentMonth] = [];
@@ -7240,8 +7352,9 @@ body.dark-mode #remove-schedule-btn:hover {
             
             saveLists();
             
+            document.body.removeChild(modal);
             alert("Compra finalizada e adicionada às suas finanças!");
-        }
+        };
     }
 
     function undoFinalizePurchase(listId) {
@@ -7269,6 +7382,205 @@ body.dark-mode #remove-schedule-btn:hover {
         delete listDiv.dataset.transactionMonth;
 
         saveLists();
+    }
+
+    function finalizeSublistPurchase(sublistId, sublistBlock) {
+        if (!sublistBlock || sublistBlock.classList.contains('sublist-finalized')) return;
+
+        const sublistTitle = sublistBlock.querySelector('.sublist-title').textContent;
+        
+        // Calcular total dos itens da sublista
+        let total = 0;
+        const items = sublistBlock.querySelectorAll('.sublist-items li');
+        items.forEach(item => {
+            if (!item.classList.contains('sublist-empty')) {
+                const valueSpan = item.querySelector('.sublist-item-value');
+                if (valueSpan) {
+                    const valueText = valueSpan.textContent.replace(/[^\d,.-]/g, '').replace(',', '.');
+                    const numericValue = parseFloat(valueText) || 0;
+                    total += numericValue;
+                }
+            }
+        });
+
+        if (total <= 0) {
+            alert("Adicione itens com valor antes de finalizar a compra desta sublista.");
+            return;
+        }
+
+        // Solicitar categoria ao usuário
+        const categoryOptions = expenseCategories.map(cat => {
+            const categoryName = typeof cat === 'string' ? cat : cat.name;
+            return `<option value="${categoryName}">${categoryName}</option>`;
+        }).join('');
+
+        const categorySelect = `
+            <div style="margin: 10px 0;">
+                <label for="sublist-category-select" style="display: block; margin-bottom: 5px; font-weight: bold; color: var(--text-primary);">Categoria da despesa:</label>
+                <select id="sublist-category-select" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--background-secondary); color: var(--text-primary);">
+                    ${categoryOptions}
+                </select>
+            </div>
+        `;
+
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--background-overlay, rgba(0,0,0,0.8)); display: flex; align-items: center; 
+            justify-content: center; z-index: 10000;
+        `;
+        
+        modal.innerHTML = `
+            <div style="background: var(--background-primary); padding: 20px; border-radius: 8px; max-width: 400px; width: 90%; border: 1px solid var(--border-color);">
+                <h3 style="margin-top: 0; color: var(--text-primary);">Finalizar Sublista</h3>
+                <p style="color: var(--text-primary);">Finalizar a sublista "<strong>${sublistTitle}</strong>" com o valor total de <strong>${formatCurrency(total)}</strong>?</p>
+                ${categorySelect}
+                <div style="margin-top: 20px; text-align: right;">
+                    <button id="cancel-sublist-finalize" style="margin-right: 10px; padding: 8px 16px; border: 1px solid var(--border-color); background: var(--background-secondary); color: var(--text-primary); border-radius: 4px;">Cancelar</button>
+                    <button id="confirm-sublist-finalize" style="padding: 8px 16px; background: var(--success); color: white; border: none; border-radius: 4px;">Finalizar</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        const cancelBtn = modal.querySelector('#cancel-sublist-finalize');
+        const confirmBtn = modal.querySelector('#confirm-sublist-finalize');
+        const select = modal.querySelector('#sublist-category-select');
+
+        cancelBtn.onclick = () => {
+            document.body.removeChild(modal);
+        };
+
+        confirmBtn.onclick = () => {
+            const selectedCategory = select.value;
+            if (!selectedCategory) {
+                alert('Por favor, selecione uma categoria.');
+                return;
+            }
+
+            // Obter ícone da categoria
+            const categoryData = expenseCategories.find(cat => {
+                const catName = typeof cat === 'string' ? cat : cat.name;
+                return catName === selectedCategory;
+            });
+            
+            const categoryIcon = categoryData && typeof categoryData === 'object' ? categoryData.icon : categoryIcons[selectedCategory] || categoryIcons["outros"];
+
+            const transactionId = Date.now();
+            const newTransaction = {
+                id: transactionId,
+                date: new Date().toISOString().split('T')[0],
+                desc: sublistTitle,
+                category: selectedCategory,
+                type: 'despesa',
+                value: -Math.abs(total),
+                icon: categoryIcon
+            };
+
+            if (!dataByMonth[currentMonth]) dataByMonth[currentMonth] = [];
+            dataByMonth[currentMonth].push(newTransaction);
+            
+            saveFinancialData();
+            updateFinanceDisplay();
+            
+            // Marcar sublista como finalizada
+            sublistBlock.classList.add('sublist-finalized');
+            
+            // Armazena os dados da transação no elemento da sublista
+            sublistBlock.dataset.transactionId = transactionId;
+            sublistBlock.dataset.transactionMonth = currentMonth;
+            
+            // Atualizar botões e estado visual
+            updateSublistFinalizeButtons(sublistBlock);
+            
+            saveLists();
+            
+            document.body.removeChild(modal);
+            alert("Sublista finalizada e adicionada às suas finanças!");
+        };
+    }
+
+    function undoFinalizeSublistPurchase(sublistId, sublistBlock) {
+        if (!sublistBlock) return;
+
+        const transactionId = parseInt(sublistBlock.dataset.transactionId);
+        const transactionMonth = sublistBlock.dataset.transactionMonth;
+
+        if (transactionId && transactionMonth && dataByMonth[transactionMonth]) {
+            // Remove a transação financeira correspondente
+            dataByMonth[transactionMonth] = dataByMonth[transactionMonth].filter(t => t.id !== transactionId);
+            saveFinancialData();
+            updateFinanceDisplay();
+        }
+        
+        // Reverte o estado visual e funcional da sublista
+        sublistBlock.classList.remove('sublist-finalized');
+        
+        // Atualizar botões e estado visual
+        updateSublistFinalizeButtons(sublistBlock);
+
+        // Limpa os dados da transação do elemento
+        delete sublistBlock.dataset.transactionId;
+        delete sublistBlock.dataset.transactionMonth;
+
+        saveLists();
+    }
+
+    function updateSublistFinalizeButtons(sublistBlock) {
+        const finalizeBtn = sublistBlock.querySelector('.sublist-finalize-btn');
+        const undoFinalizeBtn = sublistBlock.querySelector('.sublist-undo-finalize-btn');
+        
+        if (!finalizeBtn || !undoFinalizeBtn) return;
+        
+        // Verificar se a lista principal está finalizada
+        const listDiv = sublistBlock.closest('.list');
+        const isMainListFinalized = listDiv && listDiv.classList.contains('finalized');
+        const isSublistFinalized = sublistBlock.classList.contains('sublist-finalized');
+        
+        if (isSublistFinalized) {
+            // Sublista finalizada: mostrar botão de desfazer, ocultar botão de finalizar
+            finalizeBtn.style.display = 'none';
+            undoFinalizeBtn.style.display = 'inline-flex';
+            
+            // Desabilitar edição dos itens
+            sublistBlock.querySelectorAll('.sublist-items li').forEach(li => {
+                const checkbox = li.querySelector('input[type="checkbox"]');
+                if (checkbox) checkbox.disabled = true;
+            });
+        } else if (isMainListFinalized) {
+            // Lista principal finalizada: ocultar ambos os botões
+            finalizeBtn.style.display = 'none';
+            undoFinalizeBtn.style.display = 'none';
+            
+            // Desabilitar edição dos itens
+            sublistBlock.querySelectorAll('.sublist-items li').forEach(li => {
+                const checkbox = li.querySelector('input[type="checkbox"]');
+                if (checkbox) checkbox.disabled = true;
+            });
+        } else {
+            // Lista principal não finalizada e sublista não finalizada: verificar se há itens com valor
+            const hasItemsWithValue = Array.from(sublistBlock.querySelectorAll('.sublist-items li'))
+                .some(li => {
+                    if (li.classList.contains('sublist-empty')) return false;
+                    const valueSpan = li.querySelector('.sublist-item-value');
+                    if (valueSpan) {
+                        const valueText = valueSpan.textContent.replace(/[^\d,.-]/g, '').replace(',', '.');
+                        const numericValue = parseFloat(valueText) || 0;
+                        return numericValue > 0;
+                    }
+                    return false;
+                });
+            
+            finalizeBtn.style.display = hasItemsWithValue ? 'inline-flex' : 'none';
+            undoFinalizeBtn.style.display = 'none';
+            
+            // Reabilitar edição dos itens
+            sublistBlock.querySelectorAll('.sublist-items li').forEach(li => {
+                const checkbox = li.querySelector('input[type="checkbox"]');
+                if (checkbox) checkbox.disabled = false;
+            });
+        }
     }
 
 
@@ -7420,14 +7732,15 @@ body.dark-mode #remove-schedule-btn:hover {
             const normalizeSublistItem = (item) => {
                 if (typeof item === 'string') {
                     const text = item.trim();
-                    return text ? { text, checked: false } : null;
+                    return text ? { text, checked: false, value: 0 } : null;
                 }
                 if (item && typeof item === 'object') {
                     const text = typeof item.text === 'string' ? item.text.trim() : '';
                     if (!text) return null;
                     return {
                         text,
-                        checked: !!item.checked
+                        checked: !!item.checked,
+                        value: typeof item.value === 'number' ? item.value : 0
                     };
                 }
                 return null;
@@ -7454,6 +7767,17 @@ body.dark-mode #remove-schedule-btn:hover {
                 const block = document.createElement('div');
                 block.className = 'sublist-block';
                 block.dataset.sublistId = state.id;
+                
+                // Restaurar estado de finalização se existir
+                if (sublistData && sublistData.finalized) {
+                    block.classList.add('sublist-finalized');
+                    if (sublistData.transactionId) {
+                        block.dataset.transactionId = sublistData.transactionId;
+                    }
+                    if (sublistData.transactionMonth) {
+                        block.dataset.transactionMonth = sublistData.transactionMonth;
+                    }
+                }
 
                 const header = document.createElement('div');
                 header.className = 'sublist-header';
@@ -7485,6 +7809,26 @@ body.dark-mode #remove-schedule-btn:hover {
 
                 headerActions.appendChild(editBtn);
                 headerActions.appendChild(deleteBtn);
+
+                // Adiciona botão de finalizar compra se for lista de compras
+                if (isShoppingList) {
+                    const finalizeBtn = document.createElement('button');
+                    finalizeBtn.type = 'button';
+                    finalizeBtn.className = 'sublist-icon-btn sublist-finalize-btn';
+                    finalizeBtn.innerHTML = '<img src="buttons/ok.svg" alt="Finalizar compra">';
+                    finalizeBtn.title = 'Finalizar compra desta sublista';
+                    finalizeBtn.style.display = 'none'; // Inicialmente oculto
+                    
+                    const undoFinalizeBtn = document.createElement('button');
+                    undoFinalizeBtn.type = 'button';
+                    undoFinalizeBtn.className = 'sublist-icon-btn sublist-undo-finalize-btn';
+                    undoFinalizeBtn.innerHTML = '<img src="buttons/close.svg" alt="Desfazer finalização">';
+                    undoFinalizeBtn.title = 'Desfazer finalização';
+                    undoFinalizeBtn.style.display = 'none'; // Inicialmente oculto
+                    
+                    headerActions.appendChild(finalizeBtn);
+                    headerActions.appendChild(undoFinalizeBtn);
+                }
 
                 header.appendChild(titleWrapper);
                 header.appendChild(headerActions);
@@ -7532,6 +7876,15 @@ body.dark-mode #remove-schedule-btn:hover {
 
                             itemContent.appendChild(checkbox);
                             itemContent.appendChild(textSpan);
+
+                            // Adiciona campo valor se a lista for de compras
+                            if (isShoppingList) {
+                                const valueSpan = document.createElement('span');
+                                valueSpan.className = 'sublist-item-value';
+                                valueSpan.textContent = formatCurrency(item.value || 0);
+                                itemContent.appendChild(valueSpan);
+                            }
+
                             li.appendChild(itemContent);
                             li.classList.toggle('completed', !!item.checked);
 
@@ -7545,6 +7898,12 @@ body.dark-mode #remove-schedule-btn:hover {
                             itemsList.appendChild(li);
                         });
                     }
+                    
+                    // Atualizar botões de finalizar baseado no estado da sublista
+                    if (isShoppingList) {
+                        updateSublistFinalizeButtons(block);
+                    }
+                    
                     checkCompletion(listDiv);
                 };
 
@@ -7560,6 +7919,17 @@ body.dark-mode #remove-schedule-btn:hover {
                     const rowActions = document.createElement('div');
                     rowActions.className = 'sublist-edit-row-actions';
 
+                    // Adiciona campo valor se a lista for de compras
+                    if (isShoppingList) {
+                        const valueInput = document.createElement('input');
+                        valueInput.type = 'number';
+                        valueInput.step = '0.01';
+                        valueInput.placeholder = 'R$ 0,00';
+                        valueInput.style.width = '80px';
+                        valueInput.style.marginRight = '8px';
+                        rowActions.appendChild(valueInput);
+                    }
+
                     const addRowBtn = document.createElement('button');
                     addRowBtn.type = 'button';
                     addRowBtn.className = 'sublist-icon-btn sublist-inline-add-btn';
@@ -7568,7 +7938,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     addRowBtn.addEventListener('click', () => {
                         const newRow = createEditRow('');
                         editItemsContainer.appendChild(newRow);
-                        const newInput = newRow.querySelector('input');
+                        const newInput = newRow.querySelector('input[type="text"]');
                         if (newInput) {
                             requestAnimationFrame(() => newInput.focus());
                         }
@@ -7583,7 +7953,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         if (!editItemsContainer.querySelector('.sublist-edit-row')) {
                             const fallbackRow = createEditRow('');
                             editItemsContainer.appendChild(fallbackRow);
-                            const fallbackInput = fallbackRow.querySelector('input');
+                            const fallbackInput = fallbackRow.querySelector('input[type="text"]');
                             if (fallbackInput) {
                                 requestAnimationFrame(() => fallbackInput.focus());
                             }
@@ -7637,7 +8007,15 @@ body.dark-mode #remove-schedule-btn:hover {
                         editItemsContainer.appendChild(createEditRow(''));
                     } else {
                         state.items.forEach(item => {
-                            editItemsContainer.appendChild(createEditRow(item && typeof item.text === 'string' ? item.text : ''));
+                            const row = createEditRow(item && typeof item.text === 'string' ? item.text : '');
+                            // Se for lista de compras, carrega o valor do item
+                            if (isShoppingList && item && typeof item.value === 'number') {
+                                const valueInput = row.querySelector('input[type="number"]');
+                                if (valueInput) {
+                                    valueInput.value = item.value;
+                                }
+                            }
+                            editItemsContainer.appendChild(row);
                         });
                     }
                     titleWrapper.innerHTML = '';
@@ -7666,6 +8044,20 @@ body.dark-mode #remove-schedule-btn:hover {
                     }
                 });
 
+                // Event listeners para botões de finalizar (se for lista de compras)
+                if (isShoppingList) {
+                    const finalizeBtn = block.querySelector('.sublist-finalize-btn');
+                    const undoFinalizeBtn = block.querySelector('.sublist-undo-finalize-btn');
+                    
+                    finalizeBtn.addEventListener('click', () => {
+                        finalizeSublistPurchase(state.id, block);
+                    });
+                    
+                    undoFinalizeBtn.addEventListener('click', () => {
+                        undoFinalizeSublistPurchase(state.id, block);
+                    });
+                }
+
                 saveBtn.addEventListener('click', () => {
                     if (!block.classList.contains('editing')) {
                         return;
@@ -7682,15 +8074,31 @@ body.dark-mode #remove-schedule-btn:hover {
                             const value = input.value.trim();
                             if (!value) return null;
                             const existing = state.items[index];
-                            return {
+                            const item = {
                                 text: value,
                                 checked: existing ? !!existing.checked : false
                             };
+                            
+                            // Adiciona valor se a lista for de compras
+                            if (isShoppingList) {
+                                const row = input.closest('.sublist-edit-row');
+                                const valueInput = row ? row.querySelector('input[type="number"]') : null;
+                                const numericValue = valueInput ? parseFloat(valueInput.value) || 0 : 0;
+                                item.value = numericValue;
+                            }
+                            
+                            return item;
                         })
                         .filter(Boolean);
                     state.title = newTitle;
                     state.items = normalizeSublistItems(updatedItems);
                     renderView();
+                    
+                    // Atualizar botões de finalizar após salvar
+                    if (isShoppingList) {
+                        updateSublistFinalizeButtons(block);
+                    }
+                    
                     exitEditMode();
                     saveLists();
                 });
@@ -7961,7 +8369,7 @@ body.dark-mode #remove-schedule-btn:hover {
             listDiv.appendChild(sublistsSection);
         }
         
-        if (isShoppingList) {
+        if (isShoppingList && !allowsSublists) {
             const totalDiv = document.createElement('div');
             totalDiv.className = 'list-total';
             totalDiv.innerHTML = 'total: <span>r$ 0,00</span>';
@@ -7998,10 +8406,14 @@ body.dark-mode #remove-schedule-btn:hover {
 
         if (isFinalized) {
             listDiv.classList.add('finalized');
-            const finalizeBtn = listDiv.querySelector('.finalize-purchase-btn');
-            const undoBtn = listDiv.querySelector('.undo-finalize-btn');
-            if (finalizeBtn) finalizeBtn.style.display = 'none';
-            if (undoBtn) undoBtn.style.display = 'block';
+            
+            // Só manipula botões se a lista não tem sublistas
+            if (!allowsSublists) {
+                const finalizeBtn = listDiv.querySelector('.finalize-purchase-btn');
+                const undoBtn = listDiv.querySelector('.undo-finalize-btn');
+                if (finalizeBtn) finalizeBtn.style.display = 'none';
+                if (undoBtn) undoBtn.style.display = 'block';
+            }
             
             if(listDiv.querySelector('.shopping-input-group')) {
                 listDiv.querySelector('.shopping-input-group').querySelectorAll('input, button').forEach(el => el.disabled = true);
