@@ -7367,6 +7367,9 @@ body.dark-mode #remove-schedule-btn:hover {
                 saveBtn.type = 'button';
                 saveBtn.className = 'sublist-icon-btn sublist-save-btn';
                 saveBtn.innerHTML = '<img src="buttons/ok.svg" alt="Salvar sublista">';
+                saveBtn.hidden = true;
+                saveBtn.setAttribute('tabindex', '-1');
+                saveBtn.disabled = true;
 
                 headerActions.appendChild(editBtn);
                 headerActions.appendChild(deleteBtn);
@@ -7491,6 +7494,9 @@ body.dark-mode #remove-schedule-btn:hover {
                     block.classList.remove('editing');
                     editBtn.style.display = 'inline-flex';
                     saveBtn.style.display = 'none';
+                    saveBtn.hidden = true;
+                    saveBtn.setAttribute('tabindex', '-1');
+                    saveBtn.disabled = true;
                     itemsList.style.display = '';
                     editItemsContainer.style.display = 'none';
                     editItemsContainer.innerHTML = '';
@@ -7502,6 +7508,9 @@ body.dark-mode #remove-schedule-btn:hover {
                     block.classList.add('editing');
                     editBtn.style.display = 'none';
                     saveBtn.style.display = 'inline-flex';
+                    saveBtn.hidden = false;
+                    saveBtn.removeAttribute('tabindex');
+                    saveBtn.disabled = false;
                     itemsList.style.display = 'none';
                     editItemsContainer.style.display = 'flex';
                     editItemsContainer.innerHTML = '';
@@ -7539,6 +7548,9 @@ body.dark-mode #remove-schedule-btn:hover {
                 });
 
                 saveBtn.addEventListener('click', () => {
+                    if (!block.classList.contains('editing')) {
+                        return;
+                    }
                     const newTitle = titleInputRef ? titleInputRef.value.trim() : state.title;
                     if (!newTitle) {
                         if (titleInputRef) {
