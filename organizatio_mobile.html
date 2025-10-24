@@ -3603,8 +3603,8 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Cabeçalho Simplificado -->
   <header class="main-header">
     <div class="header-controls">
-      <button id="theme-toggle" class="header-btn theme-btn"><img src="buttons/moon.svg" alt="Modo escuro" id="theme-icon"></button>
-      <button id="settings-btn" class="header-btn settings-btn"><img src="buttons/settings.svg" alt="Configurações"></button>
+      <button id="theme-toggle" class="header-btn theme-btn"><img src="./buttons/moon.svg" alt="Modo escuro" id="theme-icon"></button>
+      <button id="settings-btn" class="header-btn settings-btn"><img src="./buttons/settings.svg" alt="Configurações"></button>
     </div>
   </header>
 
@@ -3625,14 +3625,14 @@ body.dark-mode #remove-schedule-btn:hover {
             <div id="planner-details-container" style="display: none;">
                 
                 <div id="day-view-section" style="display: none; position: relative;">
-                    <button class="close-button" id="close-day-view-btn" style="top: 0; right: 0;"><img src="buttons/close.svg" alt="Fechar"></button>
+                    <button class="close-button" id="close-day-view-btn" style="top: 0; right: 0;"><img src="./buttons/close.svg" alt="Fechar"></button>
                     <h3 id="day-view-title" style="text-align: center; margin-top: 0;"></h3>
                     <div id="tasksList"></div>
                     <button id="open-add-task-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar tarefa</button>
                 </div>
 
                 <div id="task-form-view" style="display: none; position: relative;">
-                    <button class="close-button back-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
+                    <button class="close-button back-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="./buttons/back.svg" alt="Voltar"></button>
                     <h3 id="task-form-title">adicionar tarefa</h3>
                     <form id="task-form-modal">
                         <div class="task-form-row" style="margin-top: 30px;">
@@ -3729,7 +3729,7 @@ body.dark-mode #remove-schedule-btn:hover {
             
             <div id="finance-details-container">
                 <div id="transactions-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
-                    <button class="close-button" id="close-transactions-view"><img src="buttons/close.svg" alt="Fechar"></button>
+                    <button class="close-button" id="close-transactions-view"><img src="./buttons/close.svg" alt="Fechar"></button>
                     
                     <div id="transaction-list-view">
                         <h3 style="margin-top:0;">transações do mês</h3>
@@ -3742,7 +3742,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     </div>
     
                     <div id="add-transaction-container" style="display: none; position: relative; z-index: 5;">
-                        <button class="close-button back-button" id="back-to-transactions-list-btn"><img src="buttons/back.svg" alt="Voltar"></button>
+                        <button class="close-button back-button" id="back-to-transactions-list-btn"><img src="./buttons/back.svg" alt="Voltar"></button>
                         
                         <h3 id="transaction-form-title" style="margin-top: 0;">adicionar transação</h3>
                         <form id="expense-form" style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
@@ -3761,13 +3761,13 @@ body.dark-mode #remove-schedule-btn:hover {
                 </div>
     
                 <div id="budgets-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
-                    <button class="close-button" id="close-budgets-view"><img src="buttons/close.svg" alt="Fechar"></button>
+                    <button class="close-button" id="close-budgets-view"><img src="./buttons/close.svg" alt="Fechar"></button>
                     <h3 style="margin-top:0;">orçamentos</h3>
                     <form id="category-limit-form" style="display: flex; gap: 10px; margin-bottom: 20px;">
                         <select id="categoryLimitCategory" required></select>
                         <input type="number" id="categoryLimitValue" placeholder="limite (R$)" step="0.01" required>
                         <button type="submit" class="add-btn">salvar limite</button>
-                        <button type="button" id="manage-categories-btn-budgets"><img src="buttons/settings.svg" alt="Gerenciar"></button>
+                        <button type="button" id="manage-categories-btn-budgets"><img src="./buttons/settings.svg" alt="Gerenciar"></button>
                     </form>
                     <table style="width: 100%;">
                         <tbody id="category-spending-list"></tbody>
@@ -3775,7 +3775,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 </div>
     
                 <div id="investments-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
-                    <button class="close-button" id="close-investments-view"><img src="buttons/close.svg" alt="Fechar"></button>
+                    <button class="close-button" id="close-investments-view"><img src="./buttons/close.svg" alt="Fechar"></button>
                     <h3 style="margin-top:0;">investimentos</h3>
                     
                     <!-- Lista de metas existentes -->
@@ -3786,7 +3786,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     
                     <!-- Formulário de nova meta (escondido inicialmente) -->
                     <div id="investment-form-view" style="display: none; position: relative;">
-                        <button class="close-button back-button" id="back-to-investments-list-btn" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
+                        <button class="close-button back-button" id="back-to-investments-list-btn" style="right: auto; left: 15px; top: 15px;"><img src="./buttons/back.svg" alt="Voltar"></button>
                         <h3 id="investment-form-title" style="margin-top: 0;">adicionar meta de investimento</h3>
                         
                         <form id="new-goal-form" style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
@@ -3831,8 +3831,8 @@ body.dark-mode #remove-schedule-btn:hover {
                 <!-- Seção de Gerenciamento de Categorias -->
                 <div id="category-section" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <button class="close-button back-button" id="back-from-categories" style="position: relative; left: 0; top: 0;"><img src="buttons/back.svg" alt="Voltar"></button>
-                        <button class="close-button" id="close-category-section"><img src="buttons/close.svg" alt="Fechar"></button>
+                        <button class="close-button back-button" id="back-from-categories" style="position: relative; left: 0; top: 0;"><img src="./buttons/back.svg" alt="Voltar"></button>
+                        <button class="close-button" id="close-category-section"><img src="./buttons/close.svg" alt="Fechar"></button>
                     </div>
                     <h3 style="margin-top:0;">gerenciar categorias</h3>
 
@@ -3911,7 +3911,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div id="link-to-planner-container" title="Agendar no planner">
                             <input type="checkbox" id="link-to-planner-checkbox">
                             <label for="link-to-planner-checkbox" class="icon-toggle-button">
-                                <img src="buttons/lists/agendar.svg" alt="Agendar no Planner">
+                                <img src="./buttons/lists/agendar.svg" alt="Agendar no Planner">
                             </label>
                         </div>
                     </div>
@@ -3970,7 +3970,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Detalhes de Tarefa -->
   <div id="description-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
-      <button class="close-button back-button" onclick="closeDescriptionSection()" style="position: relative; top: 0; left: 0; margin-bottom: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
+      <button class="close-button back-button" onclick="closeDescriptionSection()" style="position: relative; top: 0; left: 0; margin-bottom: 15px;"><img src="./buttons/back.svg" alt="Voltar"></button>
       <h3 style="margin-top: 0; text-align: center; color: var(--text-color, #333); font-size: 24px; font-weight: 600;">detalhes</h3>
       <div style="background: var(--secondary-bg, #f8f9fa); border-radius: 12px; padding: 20px; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         <div style="text-align: center;">
@@ -3984,7 +3984,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Detalhes de Lista -->
   <div id="list-details-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px;">
-      <button class="close-button back-button" onclick="closeListDetailsSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="buttons/back.svg" alt="Voltar"></button>
+      <button class="close-button back-button" onclick="closeListDetailsSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="./buttons/back.svg" alt="Voltar"></button>
       <h3 id="listDetailsTitle" style="margin-top: 0;"></h3>
       <ul id="listDetailsItems"></ul>
     </div>
@@ -3993,7 +3993,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Escolha de Ícone da Lista -->
   <div id="list-icon-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
-        <button class="close-button back-button" onclick="closeListIconSection()"><img src="buttons/back.svg" alt="Voltar"></button>
+        <button class="close-button back-button" onclick="closeListIconSection()"><img src="./buttons/back.svg" alt="Voltar"></button>
         <h3>escolha um ícone para a lista</h3>
         
         <!-- Seletor de Ícone -->
@@ -4008,7 +4008,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Editor de Lista -->
   <div id="list-editor-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px; padding-bottom: 80px; max-width: 450px; margin: 0 auto;">
-        <button class="close-button back-button" onclick="closeListEditorSection()"><img src="buttons/back.svg" alt="Voltar"></button>
+        <button class="close-button back-button" onclick="closeListEditorSection()"><img src="./buttons/back.svg" alt="Voltar"></button>
         <h3>Editar Lista</h3>
         <form id="list-editor-form" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
             <input type="hidden" id="editor-list-id-main">
@@ -4344,6 +4344,12 @@ body.dark-mode #remove-schedule-btn:hover {
     function sanitizeIconPath(iconSrc) {
         if (!iconSrc) return '';
         const withoutQuery = iconSrc.split('?')[0];
+
+        const protocolPattern = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
+        if (protocolPattern.test(withoutQuery) || withoutQuery.startsWith('//')) {
+            return withoutQuery;
+        }
+
         const imagesIndex = withoutQuery.indexOf('/images/');
         if (imagesIndex !== -1) {
             return '.' + withoutQuery.substring(imagesIndex);
@@ -4786,7 +4792,7 @@ body.dark-mode #remove-schedule-btn:hover {
     function applyTheme(theme) {
         document.body.classList.toggle('dark-mode', theme === 'dark');
         const themeIcon = document.getElementById('theme-icon');
-        themeIcon.src = theme === 'dark' ? 'buttons/sun.svg' : 'buttons/moon.svg';
+        themeIcon.src = theme === 'dark' ? './buttons/sun.svg' : './buttons/moon.svg';
         themeIcon.alt = theme === 'dark' ? 'Modo claro' : 'Modo escuro';
         localStorage.setItem('theme', theme);
         if (document.getElementById('financeiro-section').style.display !== 'none') {
@@ -5455,8 +5461,8 @@ body.dark-mode #remove-schedule-btn:hover {
                                     ${iconMarkup}
                                     <span style="flex-grow: 1;">${categoryName}</span>
                                     <span>
-                                        <button class="edit-btn" onclick="editCategory('${categoryName}', '${type}')"><img src="buttons/pencil.svg" alt="Editar"></button>
-                                        <button class="delete-btn" onclick="removeCategory('${categoryName}', '${type}')"><img src="buttons/trash.svg" alt="Remover"></button>
+                                        <button class="edit-btn" onclick="editCategory('${categoryName}', '${type}')"><img src="./buttons/pencil.svg" alt="Editar"></button>
+                                        <button class="delete-btn" onclick="removeCategory('${categoryName}', '${type}')"><img src="./buttons/trash.svg" alt="Remover"></button>
                                     </span>
                                 </div>`;
                     }
@@ -5906,7 +5912,7 @@ body.dark-mode #remove-schedule-btn:hover {
         if (goal.id === editingGoalId) {
             card.innerHTML = `
                 <div style="position: relative;">
-                    <button class="close-button back-button" onclick="cancelEditGoal()" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
+                    <button class="close-button back-button" onclick="cancelEditGoal()" style="right: auto; left: 15px; top: 15px;"><img src="./buttons/back.svg" alt="Voltar"></button>
                     <h4 style="margin-top: 0; text-align: center; padding-top: 10px;">editar meta de investimento</h4>
                 </div>
                 <form class="edit-goal-form">
@@ -6072,16 +6078,16 @@ body.dark-mode #remove-schedule-btn:hover {
                             <li>
                                 <span>${entry.key.replace('-', '/')}: </span>
                                 <input id="contribution-input-${currentKey}" type="number" value="${entry.amount}" step="0.01">
-                                <button class="save-item-btn" onclick="saveContributionEdit(${goal.id}, '${entry.key}')"><img src="buttons/ok.svg" alt="Salvar"></button>
-                                <button class="cancel-item-btn" onclick="cancelContributionEdit()"><img src="buttons/close.svg" alt="Cancelar"></button>
+                                <button class="save-item-btn" onclick="saveContributionEdit(${goal.id}, '${entry.key}')"><img src="./buttons/ok.svg" alt="Salvar"></button>
+                                <button class="cancel-item-btn" onclick="cancelContributionEdit()"><img src="./buttons/close.svg" alt="Cancelar"></button>
                             </li>`;
                     } else {
                          historyHtml += `
                             <li>
                                 <span>${entry.key.replace('-', '/')}: ${formatCurrency(entry.amount)}</span>
                                 <span>
-                                    <button class="edit-btn" onclick="editContribution(${goal.id}, '${entry.key}')"><img src="buttons/pencil.svg" alt="Editar"></button>
-                                    <button class="delete-btn" onclick="deleteContribution(${goal.id}, '${entry.key}')"><img src="buttons/trash.svg" alt="Remover"></button>
+                                    <button class="edit-btn" onclick="editContribution(${goal.id}, '${entry.key}')"><img src="./buttons/pencil.svg" alt="Editar"></button>
+                                    <button class="delete-btn" onclick="deleteContribution(${goal.id}, '${entry.key}')"><img src="./buttons/trash.svg" alt="Remover"></button>
                                 </span>
                             </li>`;
                     }
@@ -6098,8 +6104,8 @@ body.dark-mode #remove-schedule-btn:hover {
                     <h4>${goal.name}</h4>
                 </div>
                 <div class="actions">
-                    <button class="edit-btn"><img src="buttons/pencil.svg" alt="Editar"></button>
-                    <button class="delete-btn"><img src="buttons/trash.svg" alt="Remover"></button>
+                    <button class="edit-btn"><img src="./buttons/pencil.svg" alt="Editar"></button>
+                    <button class="delete-btn"><img src="./buttons/trash.svg" alt="Remover"></button>
                 </div>
               </div>
               <div class="goal-details">
@@ -6371,8 +6377,8 @@ body.dark-mode #remove-schedule-btn:hover {
                 <td style="padding: 12px 8px; font-size: 14px;">${item.desc}</td>
                 <td style="color: ${valueColor}; font-weight: bold; text-align:right; padding: 12px 8px; font-size: 14px;">${formatCurrency(Math.abs(item.value))}</td>
                 <td style="text-align:center; padding: 12px 8px;">
-                    <button class="edit-btn" data-index="${index}" style="margin-right: 5px;"><img src="buttons/pencil.svg" alt="Editar" style="width: 16px; height: 16px;"></button>
-                    <button class="delete-btn" data-index="${index}"><img src="buttons/trash.svg" alt="Remover" style="width: 16px; height: 16px;"></button>
+                    <button class="edit-btn" data-index="${index}" style="margin-right: 5px;"><img src="./buttons/pencil.svg" alt="Editar" style="width: 16px; height: 16px;"></button>
+                    <button class="delete-btn" data-index="${index}"><img src="./buttons/trash.svg" alt="Remover" style="width: 16px; height: 16px;"></button>
                 </td>
             `;
             expenseList.appendChild(row);
@@ -6810,13 +6816,13 @@ body.dark-mode #remove-schedule-btn:hover {
             const iconHtml = task.icon ? `<img src="${task.icon}" class="task-icon icon-color-${iconColor}" alt="ícone da tarefa">` : '';
             
             // Para listas agendadas, não mostra o botão de editar
-            const editButton = task.linkedListId ? '' : `<button class="edit-task-btn" onclick="editTask('${task.id}')"><img src="buttons/pencil.svg" alt="Editar"></button>`;
+            const editButton = task.linkedListId ? '' : `<button class="edit-task-btn" onclick="editTask('${task.id}')"><img src="./buttons/pencil.svg" alt="Editar"></button>`;
             
             taskItem.innerHTML = `
                 <span>${iconHtml}<strong>${task.time}</strong> - ${task.description}</span>
                 <div class="task-actions">
                     ${editButton}
-                    <button onclick="removeTask('${task.id}')"><img src="buttons/trash.svg" alt="Remover"></button>
+                    <button onclick="removeTask('${task.id}')"><img src="./buttons/trash.svg" alt="Remover"></button>
                 </div>`;
             
             // Aplica a borda vermelha APENAS para listas agendadas com ALTA PRIORIDADE
@@ -7649,7 +7655,7 @@ body.dark-mode #remove-schedule-btn:hover {
             // Sublista finalizada: mostrar botão para desfazer finalização
             finalizeBtn.style.display = 'inline-flex';
             finalizeBtn.title = 'Desfazer finalização desta sublista';
-            finalizeBtn.innerHTML = '<img src="buttons/close.svg" alt="Desfazer finalização">';
+            finalizeBtn.innerHTML = '<img src="./buttons/close.svg" alt="Desfazer finalização">';
             
             // Desabilitar edição dos itens
             sublistBlock.querySelectorAll('.sublist-items li').forEach(li => {
@@ -7681,7 +7687,7 @@ body.dark-mode #remove-schedule-btn:hover {
             
             finalizeBtn.style.display = hasItemsWithValue ? 'inline-flex' : 'none';
             finalizeBtn.title = 'Finalizar compra desta sublista';
-            finalizeBtn.innerHTML = '<img src="buttons/ok.svg" alt="Finalizar compra">';
+            finalizeBtn.innerHTML = '<img src="./buttons/ok.svg" alt="Finalizar compra">';
             
             // Reabilitar edição dos itens
             sublistBlock.querySelectorAll('.sublist-items li').forEach(li => {
@@ -7755,11 +7761,11 @@ body.dark-mode #remove-schedule-btn:hover {
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'list-title-actions';
         const editBtn = document.createElement("button");
-        editBtn.innerHTML = '<img src="buttons/pencil.svg" alt="Editar">';
+        editBtn.innerHTML = '<img src="./buttons/pencil.svg" alt="Editar">';
         editBtn.className = "edit-list-btn";
         editBtn.onclick = () => openListEditorSection(listId);
         const removeBtn = document.createElement("button");
-        removeBtn.innerHTML = '<img src="buttons/closelist.svg" alt="Remover Lista">';
+        removeBtn.innerHTML = '<img src="./buttons/closelist.svg" alt="Remover Lista">';
         removeBtn.className = "delete-list-circular-btn";
         removeBtn.onclick = () => deleteListAndLinkedTask(listDiv, listName);
         actionsDiv.appendChild(editBtn);
@@ -7899,17 +7905,17 @@ body.dark-mode #remove-schedule-btn:hover {
                 const editBtn = document.createElement('button');
                 editBtn.type = 'button';
                 editBtn.className = 'sublist-icon-btn sublist-edit-btn';
-                editBtn.innerHTML = '<img src="buttons/pencil.svg" alt="Editar sublista">';
+                editBtn.innerHTML = '<img src="./buttons/pencil.svg" alt="Editar sublista">';
 
                 const deleteBtn = document.createElement('button');
                 deleteBtn.type = 'button';
                 deleteBtn.className = 'sublist-icon-btn sublist-delete-btn';
-                deleteBtn.innerHTML = '<img src="buttons/trash.svg" alt="Excluir sublista">';
+                deleteBtn.innerHTML = '<img src="./buttons/trash.svg" alt="Excluir sublista">';
 
                 const saveBtn = document.createElement('button');
                 saveBtn.type = 'button';
                 saveBtn.className = 'sublist-icon-btn sublist-save-btn';
-                saveBtn.innerHTML = '<img src="buttons/ok.svg" alt="Salvar sublista">';
+                saveBtn.innerHTML = '<img src="./buttons/ok.svg" alt="Salvar sublista">';
                 saveBtn.hidden = true;
                 saveBtn.setAttribute('tabindex', '-1');
                 saveBtn.disabled = true;
@@ -7923,7 +7929,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     const finalizeBtn = document.createElement('button');
                     finalizeBtn.type = 'button';
                     finalizeBtn.className = 'sublist-icon-btn sublist-finalize-btn';
-                    finalizeBtn.innerHTML = '<img src="buttons/ok.svg" alt="Finalizar compra">';
+                    finalizeBtn.innerHTML = '<img src="./buttons/ok.svg" alt="Finalizar compra">';
                     finalizeBtn.title = 'Finalizar compra desta sublista';
                     finalizeBtn.style.display = 'none'; // Inicialmente oculto
                     
@@ -8047,7 +8053,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     const removeBtn = document.createElement('button');
                     removeBtn.type = 'button';
                     removeBtn.className = 'sublist-icon-btn sublist-remove-item-btn';
-                    removeBtn.innerHTML = '<img src="buttons/trash.svg" alt="Remover item da sublista">';
+                    removeBtn.innerHTML = '<img src="./buttons/trash.svg" alt="Remover item da sublista">';
                     removeBtn.addEventListener('click', () => {
                         row.remove();
                         if (!editItemsContainer.querySelector('.sublist-edit-row')) {
@@ -8383,12 +8389,12 @@ body.dark-mode #remove-schedule-btn:hover {
                 actionsDiv.innerHTML = '';
                 const editBtnItem = document.createElement('button');
                 editBtnItem.className = 'edit-item-btn';
-                editBtnItem.innerHTML = '<img src="buttons/pencil.svg" alt="Editar">';
+                editBtnItem.innerHTML = '<img src="./buttons/pencil.svg" alt="Editar">';
                 editBtnItem.onclick = () => toggleEditMode(true, li);
 
                 const deleteBtnItem = document.createElement('button');
                 deleteBtnItem.className = 'delete-item-btn';
-                deleteBtnItem.innerHTML = '<img src="buttons/trash.svg" alt="Remover">';
+                deleteBtnItem.innerHTML = '<img src="./buttons/trash.svg" alt="Remover">';
                 deleteBtnItem.onclick = () => {
                     li.remove();
                     if(isShoppingList) updateShoppingListTotal(listDiv);
@@ -8422,7 +8428,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     actionsDiv.innerHTML = '';
                     const saveBtn = document.createElement('button');
                     saveBtn.className = 'save-item-btn';
-                    saveBtn.innerHTML = '<img src="buttons/ok.svg" alt="Salvar">';
+                    saveBtn.innerHTML = '<img src="./buttons/ok.svg" alt="Salvar">';
                     saveBtn.onclick = () => {
                         span.textContent = textInputField.value;
                         if(isShoppingList && !isSubcategory){
@@ -8441,7 +8447,7 @@ body.dark-mode #remove-schedule-btn:hover {
 
                     const cancelBtn = document.createElement('button');
                     cancelBtn.className = 'cancel-item-btn';
-                    cancelBtn.innerHTML = '<img src="buttons/close.svg" alt="Cancelar">';
+                    cancelBtn.innerHTML = '<img src="./buttons/close.svg" alt="Cancelar">';
                     cancelBtn.onclick = () => toggleEditMode(false, currentLi);
 
                     actionsDiv.appendChild(saveBtn);
@@ -9385,15 +9391,15 @@ body.dark-mode #remove-schedule-btn:hover {
   <nav class="bottom-nav">
     <div class="bottom-nav-items">
       <a href="#" class="bottom-nav-item active" data-section="planner-section">
-        <img src="buttons/calendar.svg" alt="Planner">
+        <img src="./buttons/calendar.svg" alt="Planner">
         <span>planner</span>
       </a>
       <a href="#" class="bottom-nav-item" data-section="financeiro-section">
-        <img src="buttons/finance.svg" alt="Finanças">
+        <img src="./buttons/finance.svg" alt="Finanças">
         <span>finanças</span>
       </a>
       <a href="#" class="bottom-nav-item" data-section="listas-section">
-        <img src="buttons/checklist.svg" alt="Listas">
+        <img src="./buttons/checklist.svg" alt="Listas">
         <span>listas</span>
       </a>
     </div>
