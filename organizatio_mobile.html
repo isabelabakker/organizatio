@@ -4350,19 +4350,28 @@ body.dark-mode #remove-schedule-btn:hover {
             return withoutQuery;
         }
 
-        const imagesIndex = withoutQuery.indexOf('/images/');
-        if (imagesIndex !== -1) {
-            return '.' + withoutQuery.substring(imagesIndex);
+        // Se já começa com ./, retorna como está
+        if (withoutQuery.startsWith('./')) {
+            return withoutQuery;
         }
-        const relativeIndex = withoutQuery.indexOf('images/');
-        if (relativeIndex !== -1) {
-            const path = withoutQuery.substring(relativeIndex);
-            return path.startsWith('./') ? path : `./${path}`;
-        }
+
+        // Se começa com /, adiciona . no início
         if (withoutQuery.startsWith('/')) {
             return `.${withoutQuery}`;
         }
-        return withoutQuery.startsWith('./') ? withoutQuery : `./${withoutQuery}`;
+
+        // Se contém /images/ ou /buttons/, adiciona . no início
+        if (withoutQuery.includes('/images/') || withoutQuery.includes('/buttons/')) {
+            return `./${withoutQuery}`;
+        }
+
+        // Se começa com images/ ou buttons/, adiciona ./
+        if (withoutQuery.startsWith('images/') || withoutQuery.startsWith('buttons/')) {
+            return `./${withoutQuery}`;
+        }
+
+        // Para outros casos, adiciona ./
+        return `./${withoutQuery}`;
     }
 
     function generateSublistId() {
@@ -5982,6 +5991,10 @@ body.dark-mode #remove-schedule-btn:hover {
                 img.style.width = '100%';
                 img.style.height = '100%';
                 img.style.objectFit = 'contain';
+                img.onerror = function() {
+                    console.warn('Erro ao carregar imagem:', iconPath);
+                    this.src = './images/circledashed.svg';
+                };
                 img.style.borderRadius = '5px';
                 optionDiv.appendChild(img);
 
@@ -7210,6 +7223,10 @@ body.dark-mode #remove-schedule-btn:hover {
              img.src = iconPath + '?t=' + Date.now() + '&r=' + Math.random();
              img.className = `icon-color-${currentColor}`;
              img.dataset.color = currentColor;
+             img.onerror = function() {
+                 console.warn('Erro ao carregar imagem:', iconPath);
+                 this.src = './images/circledashed.svg';
+             };
              option.appendChild(img);
             
             option.addEventListener('click', function() {
