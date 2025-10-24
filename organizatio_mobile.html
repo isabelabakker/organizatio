@@ -4073,6 +4073,24 @@ body.dark-mode #remove-schedule-btn:hover {
   </div>
   
   <script>
+    // === CONFIGURAÇÃO DE AMBIENTE ===
+    // Detecta se estamos no GitHub e ajusta caminhos automaticamente
+    (function() {
+        const isGitHub = window.location.hostname.includes('github.io') || 
+                        window.location.hostname.includes('github.com') ||
+                        window.location.pathname.includes('/blob/') ||
+                        window.location.pathname.includes('/raw/');
+        
+        if (isGitHub) {
+            console.log('🌐 Ambiente GitHub detectado - ajustando caminhos das imagens');
+            // Adiciona uma classe ao body para CSS específico do GitHub se necessário
+            document.body.classList.add('github-environment');
+        } else {
+            console.log('💻 Ambiente local detectado');
+            document.body.classList.add('local-environment');
+        }
+    })();
+
     // --- ELEMENTOS DO FORMULÁRIO FINANCEIRO
     const form = document.getElementById('expense-form');
     const expenseList = document.getElementById('expense-list');
@@ -4362,20 +4380,86 @@ body.dark-mode #remove-schedule-btn:hover {
 
         // Se contém /images/ ou /buttons/, adiciona . no início
         if (withoutQuery.includes('/images/') || withoutQuery.includes('/buttons/')) {
-            return `./${withoutQuery}`;
+            return createAbsolutePath(withoutQuery);
         }
 
         // Se começa com images/ ou buttons/, adiciona ./
         if (withoutQuery.startsWith('images/') || withoutQuery.startsWith('buttons/')) {
-            return `./${withoutQuery}`;
+            return createAbsolutePath(withoutQuery);
         }
 
         // Para outros casos, adiciona ./
-        return `./${withoutQuery}`;
+        return createAbsolutePath(withoutQuery);
     }
 
     function generateSublistId() {
         return 'sublist-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+    }
+
+    // Função para criar caminhos absolutos que funcionam no GitHub
+    function createAbsolutePath(relativePath) {
+        // Remove ./ se existir
+        const cleanPath = relativePath.replace(/^\.\//, '');
+        
+        // Detecta ambiente GitHub
+        const isGitHub = window.location.hostname.includes('github.io') || 
+                        window.location.hostname.includes('github.com') ||
+                        window.location.pathname.includes('/blob/') ||
+                        window.location.pathname.includes('/raw/');
+        
+        if (isGitHub) {
+            // Para GitHub Pages, tenta diferentes estratégias
+            const currentPath = window.location.pathname;
+            
+            // Se estamos em GitHub Pages (github.io), usa caminho relativo simples
+            if (window.location.hostname.includes('github.io')) {
+                return './' + cleanPath;
+            }
+            
+            // Se estamos visualizando arquivo no GitHub (github.com), usa caminho raw
+            if (window.location.hostname.includes('github.com')) {
+                // Extrai informações do repositório da URL
+                const pathParts = currentPath.split('/');
+                if (pathParts.length >= 4) {
+                    const user = pathParts[1];
+                    const repo = pathParts[2];
+                    const branch = pathParts[4] || 'main';
+                    return `https://raw.githubusercontent.com/${user}/${repo}/${branch}/${cleanPath}`;
+                }
+            }
+            
+            // Fallback: usa caminho relativo
+            return './' + cleanPath;
+        }
+        
+        // Para uso local, mantém caminho relativo
+        return './' + cleanPath;
+    }
+
+    // Função para forçar recarregamento de imagens com fallback
+    function loadImageWithFallback(imgElement, originalSrc) {
+        const sanitizedSrc = sanitizeIconPath(originalSrc);
+        
+        imgElement.onerror = function() {
+            console.warn('Erro ao carregar imagem:', sanitizedSrc);
+            
+            // Tenta carregar imagem padrão
+            this.src = './images/circledashed.svg';
+            
+            // Se ainda falhar, tenta caminho absoluto
+            this.onerror = function() {
+                console.error('Erro ao carregar imagem padrão, tentando caminho absoluto');
+                this.src = createAbsolutePath('images/circledashed.svg');
+                
+                // Último fallback: remove a imagem
+                this.onerror = function() {
+                    console.error('Não foi possível carregar nenhuma imagem');
+                    this.style.display = 'none';
+                };
+            };
+        };
+        
+        imgElement.src = sanitizedSrc;
     }
 
     function normalizeListData(list) {
