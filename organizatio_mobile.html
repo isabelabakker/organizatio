@@ -4088,26 +4088,21 @@ body.dark-mode #remove-schedule-btn:hover {
             // Força recarregamento de todas as imagens com caminhos corretos
             setTimeout(function() {
                 const allImages = document.querySelectorAll('img');
-                console.log('🔄 Recarregando', allImages.length, 'imagens para GitHub...');
+                console.log('🔄 Verificando', allImages.length, 'imagens para GitHub...');
                 
                 allImages.forEach(function(img) {
-                    if (img.src && !img.src.includes('data:')) {
+                    if (img.src && !img.src.includes('data:') && !img.src.includes('raw.githubusercontent.com')) {
                         const originalSrc = img.src.split('?')[0];
-                        const newSrc = createAbsolutePath(originalSrc) + '?t=' + Date.now();
                         
-                        // Adiciona tratamento de erro específico para GitHub
-                        img.onerror = function() {
-                            console.warn('❌ Erro ao carregar:', newSrc);
-                            // Tenta fallback com caminho relativo
-                            this.src = './' + originalSrc.replace(/^\.\//, '') + '?fallback=' + Date.now();
-                            
-                            this.onerror = function() {
-                                console.error('❌ Fallback também falhou, usando imagem padrão');
-                                this.src = './images/circledashed.svg';
-                            };
-                        };
-                        
-                        img.src = newSrc;
+                        // Só converte se realmente estiver no GitHub.com (não GitHub Pages)
+                        if (window.location.hostname.includes('github.com') && !window.location.hostname.includes('github.io')) {
+                            const newSrc = createAbsolutePath(originalSrc) + '?t=' + Date.now();
+                            console.log('🔄 Convertendo:', originalSrc, '->', newSrc);
+                            img.src = newSrc;
+                        } else {
+                            // Para GitHub Pages, apenas adiciona timestamp para evitar cache
+                            img.src = originalSrc + '?t=' + Date.now();
+                        }
                     }
                 });
             }, 100);
@@ -4437,7 +4432,7 @@ body.dark-mode #remove-schedule-btn:hover {
             const currentPath = window.location.pathname;
             const hostname = window.location.hostname;
             
-            // GitHub Pages (usuario.github.io)
+            // GitHub Pages (usuario.github.io) - usa caminho relativo simples
             if (hostname.includes('github.io')) {
                 return './' + cleanPath;
             }
@@ -4466,32 +4461,6 @@ body.dark-mode #remove-schedule-btn:hover {
         return './' + cleanPath;
     }
 
-    // Função para forçar recarregamento de imagens com fallback
-    function loadImageWithFallback(imgElement, originalSrc) {
-        const sanitizedSrc = sanitizeIconPath(originalSrc);
-        
-        imgElement.onerror = function() {
-            console.warn('Erro ao carregar imagem:', sanitizedSrc);
-            
-            // Tenta carregar imagem padrão
-            this.src = './images/circledashed.svg';
-            
-            // Se ainda falhar, tenta caminho absoluto
-            this.onerror = function() {
-                console.error('Erro ao carregar imagem padrão, tentando caminho absoluto');
-                this.src = createAbsolutePath('images/circledashed.svg');
-                
-                // Último fallback: remove a imagem
-                this.onerror = function() {
-                    console.error('Não foi possível carregar nenhuma imagem');
-                    this.style.display = 'none';
-                };
-            };
-        };
-        
-        imgElement.src = sanitizedSrc;
-    }
-
     // Função para aplicar correções de caminho em imagens dinâmicas
     function fixDynamicImages() {
         const isGitHub = window.location.hostname.includes('github.io') || 
@@ -4499,7 +4468,7 @@ body.dark-mode #remove-schedule-btn:hover {
                         window.location.pathname.includes('/blob/') ||
                         window.location.pathname.includes('/raw/');
         
-        if (isGitHub) {
+        if (isGitHub && window.location.hostname.includes('github.com') && !window.location.hostname.includes('github.io')) {
             // Observa mudanças no DOM para capturar imagens adicionadas dinamicamente
             const observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
@@ -4507,14 +4476,14 @@ body.dark-mode #remove-schedule-btn:hover {
                         if (node.nodeType === 1) { // Element node
                             if (node.tagName === 'IMG') {
                                 const img = node;
-                                if (img.src && !img.src.includes('raw.githubusercontent.com')) {
+                                if (img.src && !img.src.includes('raw.githubusercontent.com') && !img.src.includes('data:')) {
                                     const originalSrc = img.src.split('?')[0];
                                     img.src = createAbsolutePath(originalSrc) + '?dynamic=' + Date.now();
                                 }
                             } else if (node.querySelectorAll) {
                                 const images = node.querySelectorAll('img');
                                 images.forEach(function(img) {
-                                    if (img.src && !img.src.includes('raw.githubusercontent.com')) {
+                                    if (img.src && !img.src.includes('raw.githubusercontent.com') && !img.src.includes('data:')) {
                                         const originalSrc = img.src.split('?')[0];
                                         img.src = createAbsolutePath(originalSrc) + '?dynamic=' + Date.now();
                                     }
@@ -6148,10 +6117,6 @@ body.dark-mode #remove-schedule-btn:hover {
                 img.style.width = '100%';
                 img.style.height = '100%';
                 img.style.objectFit = 'contain';
-                img.onerror = function() {
-                    console.warn('Erro ao carregar imagem:', iconPath);
-                    this.src = './images/circledashed.svg';
-                };
                 img.style.borderRadius = '5px';
                 optionDiv.appendChild(img);
 
@@ -7380,10 +7345,6 @@ body.dark-mode #remove-schedule-btn:hover {
              img.src = iconPath + '?t=' + Date.now() + '&r=' + Math.random();
              img.className = `icon-color-${currentColor}`;
              img.dataset.color = currentColor;
-             img.onerror = function() {
-                 console.warn('Erro ao carregar imagem:', iconPath);
-                 this.src = './images/circledashed.svg';
-             };
              option.appendChild(img);
             
             option.addEventListener('click', function() {
