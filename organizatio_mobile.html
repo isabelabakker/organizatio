@@ -4344,6 +4344,12 @@ body.dark-mode #remove-schedule-btn:hover {
     function sanitizeIconPath(iconSrc) {
         if (!iconSrc) return '';
         const withoutQuery = iconSrc.split('?')[0];
+
+        const protocolPattern = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
+        if (protocolPattern.test(withoutQuery) || withoutQuery.startsWith('//')) {
+            return withoutQuery;
+        }
+
         const imagesIndex = withoutQuery.indexOf('/images/');
         if (imagesIndex !== -1) {
             return '.' + withoutQuery.substring(imagesIndex);
