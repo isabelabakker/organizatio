@@ -4075,7 +4075,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <script>
     // === CONFIGURAÇÃO DE AMBIENTE ===
     // Detecta se estamos no GitHub e ajusta caminhos automaticamente
-    (function() {
+    document.addEventListener('DOMContentLoaded', function() {
         const isGitHub = window.location.hostname.includes('github.io') || 
                         window.location.hostname.includes('github.com') ||
                         window.location.pathname.includes('/blob/') ||
@@ -4083,13 +4083,39 @@ body.dark-mode #remove-schedule-btn:hover {
         
         if (isGitHub) {
             console.log('🌐 Ambiente GitHub detectado - ajustando caminhos das imagens');
-            // Adiciona uma classe ao body para CSS específico do GitHub se necessário
             document.body.classList.add('github-environment');
+            
+            // Força recarregamento de todas as imagens com caminhos corretos
+            setTimeout(function() {
+                const allImages = document.querySelectorAll('img');
+                console.log('🔄 Recarregando', allImages.length, 'imagens para GitHub...');
+                
+                allImages.forEach(function(img) {
+                    if (img.src && !img.src.includes('data:')) {
+                        const originalSrc = img.src.split('?')[0];
+                        const newSrc = createAbsolutePath(originalSrc) + '?t=' + Date.now();
+                        
+                        // Adiciona tratamento de erro específico para GitHub
+                        img.onerror = function() {
+                            console.warn('❌ Erro ao carregar:', newSrc);
+                            // Tenta fallback com caminho relativo
+                            this.src = './' + originalSrc.replace(/^\.\//, '') + '?fallback=' + Date.now();
+                            
+                            this.onerror = function() {
+                                console.error('❌ Fallback também falhou, usando imagem padrão');
+                                this.src = './images/circledashed.svg';
+                            };
+                        };
+                        
+                        img.src = newSrc;
+                    }
+                });
+            }, 100);
         } else {
             console.log('💻 Ambiente local detectado');
             document.body.classList.add('local-environment');
         }
-    })();
+    });
 
     // --- ELEMENTOS DO FORMULÁRIO FINANCEIRO
     const form = document.getElementById('expense-form');
@@ -4408,23 +4434,27 @@ body.dark-mode #remove-schedule-btn:hover {
                         window.location.pathname.includes('/raw/');
         
         if (isGitHub) {
-            // Para GitHub Pages, tenta diferentes estratégias
             const currentPath = window.location.pathname;
+            const hostname = window.location.hostname;
             
-            // Se estamos em GitHub Pages (github.io), usa caminho relativo simples
-            if (window.location.hostname.includes('github.io')) {
+            // GitHub Pages (usuario.github.io)
+            if (hostname.includes('github.io')) {
                 return './' + cleanPath;
             }
             
-            // Se estamos visualizando arquivo no GitHub (github.com), usa caminho raw
-            if (window.location.hostname.includes('github.com')) {
+            // GitHub.com - arquivo sendo visualizado
+            if (hostname.includes('github.com')) {
                 // Extrai informações do repositório da URL
                 const pathParts = currentPath.split('/');
                 if (pathParts.length >= 4) {
                     const user = pathParts[1];
                     const repo = pathParts[2];
                     const branch = pathParts[4] || 'main';
-                    return `https://raw.githubusercontent.com/${user}/${repo}/${branch}/${cleanPath}`;
+                    
+                    // Constrói URL raw do GitHub
+                    const rawUrl = `https://raw.githubusercontent.com/${user}/${repo}/${branch}/${cleanPath}`;
+                    console.log('🔗 Convertendo para URL raw:', rawUrl);
+                    return rawUrl;
                 }
             }
             
@@ -4461,6 +4491,49 @@ body.dark-mode #remove-schedule-btn:hover {
         
         imgElement.src = sanitizedSrc;
     }
+
+    // Função para aplicar correções de caminho em imagens dinâmicas
+    function fixDynamicImages() {
+        const isGitHub = window.location.hostname.includes('github.io') || 
+                        window.location.hostname.includes('github.com') ||
+                        window.location.pathname.includes('/blob/') ||
+                        window.location.pathname.includes('/raw/');
+        
+        if (isGitHub) {
+            // Observa mudanças no DOM para capturar imagens adicionadas dinamicamente
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === 1) { // Element node
+                            if (node.tagName === 'IMG') {
+                                const img = node;
+                                if (img.src && !img.src.includes('raw.githubusercontent.com')) {
+                                    const originalSrc = img.src.split('?')[0];
+                                    img.src = createAbsolutePath(originalSrc) + '?dynamic=' + Date.now();
+                                }
+                            } else if (node.querySelectorAll) {
+                                const images = node.querySelectorAll('img');
+                                images.forEach(function(img) {
+                                    if (img.src && !img.src.includes('raw.githubusercontent.com')) {
+                                        const originalSrc = img.src.split('?')[0];
+                                        img.src = createAbsolutePath(originalSrc) + '?dynamic=' + Date.now();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+            
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }
+    }
+
+    // Inicia a correção de imagens dinâmicas
+    document.addEventListener('DOMContentLoaded', fixDynamicImages);
 
     function normalizeListData(list) {
         if (!list) return false;
