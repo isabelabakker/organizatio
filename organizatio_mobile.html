@@ -559,7 +559,7 @@
     .delete-list-circular-btn img {
         width: 14px;
         height: 14px;
-        filter: invert(41%) sepia(97%) saturate(1451%) hue-rotate(325deg) brightness(99%) contrast(106%); /* Vermelho #FF5252 */
+        filter: brightness(0) invert(1);
     }
 
     .edit-item-btn img,
@@ -593,7 +593,7 @@
     .edit-task-btn, .task-list-item button,
     .edit-item-btn, .delete-item-btn,
     .edit-list-btn, .delete-list-circular-btn {
-     background-color: transparent; 
+     background-color: #f5f5f5; 
      border: none;
      transition: background-color 0.2s, border-color 0.2s;
     }
@@ -603,12 +603,12 @@
     .edit-task-btn:hover, .task-list-item button:hover,
     .edit-item-btn:hover, .delete-item-btn:hover,
     .edit-list-btn:hover, .delete-list-circular-btn:hover {
-        background-color: transparent;
+        background-color: #e5e5e5;
     }
 
     /* ÍCONE ESCURO PARA TEMA CLARO */
     .edit-task-btn img, .task-list-item button img {
-        filter: brightness(0) invert(0.3);
+        filter: invert(25%);
     }
 
     /* TEMA ESCURO: Botões quadrados e redondos com fundo da página e borda clara */
@@ -616,7 +616,7 @@
     body.dark-mode .edit-task-btn, body.dark-mode .task-list-item button,
     body.dark-mode .edit-item-btn, body.dark-mode .delete-item-btn,
     body.dark-mode .edit-list-btn, body.dark-mode .delete-list-circular-btn {
-    background-color: transparent; 
+    background-color: #1F1F1F; 
     border: none; 
     }
     
@@ -624,7 +624,7 @@
     body.dark-mode .edit-task-btn:hover, body.dark-mode .task-list-item button:hover,
     body.dark-mode .edit-item-btn:hover, body.dark-mode .delete-item-btn:hover,
     body.dark-mode .edit-list-btn:hover, body.dark-mode .delete-list-circular-btn:hover {
-    background-color: transparent;
+    background-color: #282828;
     }
 
     #newListForm {
@@ -644,26 +644,6 @@
     #newListForm label,
     #newListForm button[type="submit"] {
         font-size: var(--font-size-sm);
-    }
-
-    #newListForm-sublist-toggle {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 4px 2px 0;
-        font-size: var(--font-size-sm);
-        color: var(--text-secondary);
-    }
-
-    #newListForm-sublist-toggle input {
-        width: 18px;
-        height: 18px;
-        accent-color: var(--primary);
-        cursor: pointer;
-    }
-
-    #newListForm-sublist-toggle label {
-        cursor: pointer;
     }
     
     #planner-link-options label,
@@ -799,7 +779,7 @@
     .add-btn-group button {
         flex-grow: 1;
     }
-
+    
     button.add-btn {
       background: #3586ff;
       border: none;
@@ -878,7 +858,7 @@
     .delete-btn img {
         width: 16px;
         height: 16px;
-        filter: brightness(0) invert(0.3);
+        filter: brightness(0) invert(0.35);
         transition: filter 0.3s ease;
     }
     
@@ -1034,386 +1014,23 @@
     .list.priority-baixa { border-left-color: #3586ff; }
     .list.priority-media { border-left-color: #FFC107; }
     .list.priority-alta { border-left-color: #FF5252; }
-
-    .sublist-controls-container {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin: 4px 0 12px;
-    }
-
-    .create-sublist-btn {
-        width: 100%;
-        background: transparent;
-        border: 1px dashed var(--border-medium);
-        color: var(--text-secondary);
-        padding: 6px 12px;
-        border-radius: var(--radius-md);
-        font-size: var(--font-size-sm);
-        text-transform: lowercase;
-        cursor: pointer;
-        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-    }
-
-    .create-sublist-btn:hover {
-        border-color: var(--primary);
-        color: var(--primary);
-        background: rgba(53, 134, 255, 0.08);
-    }
-
-    .sublist-form {
-        display: none;
-        gap: 8px;
-        align-items: center;
-    }
-
-    .sublist-form input {
-        flex: 1;
-        padding: 8px;
-        border-radius: var(--radius-md);
-        border: 1px solid var(--border-light);
-        font-size: var(--font-size-sm);
-        background: var(--bg-primary);
-        color: var(--text-primary);
-    }
-
-    .sublist-form button {
-        width: 36px;
-        height: 36px;
-        border-radius: var(--radius-md);
-        background: var(--primary);
-        border: none;
-        color: #fff;
-        font-size: 22px;
-        line-height: 1;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.2s ease;
-    }
-
-    .sublist-form button:hover {
-        background: var(--primary-hover);
-    }
-
-    .sublists-section {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-top: 12px;
-    }
-
-    .sublist-block {
-        background: var(--bg-secondary);
-        border: 1px solid var(--border-light);
-        border-radius: var(--radius-md);
-        padding: 12px;
-        padding-bottom: 60px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        box-shadow: var(--shadow-sm);
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        position: relative;
-    }
-
-    .sublist-block.editing {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 2px rgba(53, 134, 255, 0.15);
-    }
-
-    .sublist-header {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 12px;
-    }
-
-    .sublist-header-actions {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .sublist-block:not(.editing) .sublist-save-btn {
-        display: none;
-    }
-
-    .sublist-block.editing .sublist-save-btn {
-        display: inline-flex;
-    }
-
-    .sublist-icon-btn {
-        background: transparent;
-        border: none !important;
-        padding: 4px;
-        width: 28px;
-        height: 28px;
-        border-radius: var(--radius-sm);
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.2s ease, transform 0.2s ease;
-        color: var(--text-secondary);
-    }
-
-    .sublist-icon-btn:hover {
-        background: rgba(0, 0, 0, 0.05);
-        transform: translateY(-1px);
-    }
-
-    .sublist-icon-btn img {
-        width: 16px;
-        height: 16px;
-        filter: brightness(0) invert(0.3);
-    }
-
-    .sublist-inline-add-btn {
-        font-size: 18px;
-        line-height: 1;
-        font-weight: 600;
-        color: var(--primary);
-    }
-
-    .sublist-title-wrapper {
-        flex: 1;
-        display: flex;
-        align-items: center;
-    }
-
-    .sublist-title {
-        font-size: var(--font-size-sm);
-        font-weight: 600;
-        color: var(--text-primary);
-        text-transform: lowercase;
-    }
-
-    .sublist-title-input {
-        flex: 1;
-        padding: 6px 8px;
-        border-radius: var(--radius-md);
-        border: 1px solid var(--border-light);
-        font-size: var(--font-size-sm);
-        background: var(--bg-primary);
-        color: var(--text-primary);
-        font-weight: bold;
-    }
-
-    .sublist-items {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .sublist-items li {
-        background: var(--bg-primary);
-        border-radius: var(--radius-md);
-        border: 1px solid var(--border-light);
-        font-size: 13px;
-        color: var(--text-secondary);
-        display: flex;
-        padding: 0;
-    }
-
-    .sublist-item-content {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 10px;
-        width: 100%;
-    }
-
-    .sublist-item-content input[type="checkbox"] {
-        width: 16px;
-        height: 16px;
-        flex-shrink: 0;
-        accent-color: var(--primary);
-    }
-
-    .sublist-item-text {
-        flex: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .sublist-item-value {
-        font-size: var(--font-size-sm);
-        color: var(--text-secondary);
-        font-weight: 600;
-        margin-left: auto;
-        flex-shrink: 0;
-    }
-
-    .sublist-finalize-btn {
-        background-color: transparent !important;
-        border: 2px solid var(--primary) !important;
-        color: var(--primary) !important;
-        position: absolute;
-        bottom: 8px;
-        right: 12px;
-        height: 24px;
-        padding: 0 8px;
-    }
-
-    .sublist-finalize-btn:hover {
-        background-color: var(--primary) !important;
-        color: white !important;
-    }
-
-    .sublist-finalize-btn img {
-        filter: hue-rotate(45deg) saturate(1.5) brightness(1.2) !important;
-    }
-
-    .sublist-finalize-btn:hover img {
-        filter: brightness(0) invert(1) !important;
-    }
-
-    .sublist-undo-finalize-btn {
-        background-color: transparent !important;
-        border: 2px solid var(--warning) !important;
-        color: var(--warning) !important;
-        position: absolute;
-        bottom: 12px;
-        right: 12px;
-        display: none;
-    }
-
-    .sublist-undo-finalize-btn:hover {
-        background-color: var(--warning) !important;
-        color: white !important;
-    }
-
-    .sublist-undo-finalize-btn img {
-        filter: none !important;
-    }
-
-    .sublist-undo-finalize-btn:hover img {
-        filter: brightness(0) invert(1) !important;
-    }
-
-    .sublist-undo-finalize-btn:hover {
-        background-color: var(--warning-hover) !important;
-    }
-
-    .sublist-finalized {
-        opacity: 0.7;
-        background-color: var(--background-secondary);
-    }
-
-    .sublist-finalized .sublist-items li input[type="checkbox"] {
-        opacity: 0.5;
-        pointer-events: none;
-    }
-
-    .sublist-finalized {
-        opacity: 0.7;
-        background-color: var(--background-secondary);
-    }
-
-    .sublist-finalized .sublist-items li .sublist-item-value,
-    .sublist-finalized .sublist-item-value {
-        opacity: 1 !important;
-        color: var(--text-primary) !important;
-        display: inline !important;
-        visibility: visible !important;
-        position: relative !important;
-        z-index: 10 !important;
-        background-color: transparent !important;
-        font-weight: bold !important;
-    }
-
-    .sublist-items li.completed .sublist-item-text {
-        text-decoration: line-through;
-        color: var(--text-muted);
-    }
-
-    /* Garantir que valores sempre apareçam em sublistas finalizadas */
-    .sublist-finalized * .sublist-item-value {
-        opacity: 1 !important;
-        display: inline !important;
-        visibility: visible !important;
-        color: var(--text-primary) !important;
-        font-weight: bold !important;
-    }
-
-    .sublist-items li.sublist-empty {
-        font-style: italic;
-        color: var(--text-muted);
-        border-style: dashed;
-        padding: 6px 10px;
-        display: block;
-    }
-
-    .sublist-edit-items {
-        display: none;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .sublist-edit-row {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .sublist-edit-row input {
-        flex: 1;
-        padding: 6px 8px;
-        border-radius: var(--radius-md);
-        border: 1px solid var(--border-light);
-        font-size: var(--font-size-sm);
-        background: var(--bg-primary);
-        color: var(--text-primary);
-    }
-
-    .sublist-edit-row-actions {
-        display: flex;
-        gap: 4px;
-    }
-
-    .list > .list-items {
+    
+    .list ul {
       list-style: none;
       padding: 0;
       margin: 0;
     }
 
-    .list.has-sublists > .list-items:empty {
-        display: none;
-    }
-
-    .list > .list-items > li {
+    .list li {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 6px 0;
       border-bottom: 1px solid #eee;
     }
-
-    .list > .list-items > li:last-child {
+    
+    .list li:last-child {
       border-bottom: none;
-    }
-
-    .list > .list-items > li.subcategory-item {
-      background: var(--bg-secondary);
-      border-bottom-color: var(--border-light);
-      padding-top: 10px;
-      padding-bottom: 6px;
-    }
-
-    .list > .list-items > li.subcategory-item .list-item-content {
-      gap: 4px;
-    }
-
-    .list > .list-items > li.subcategory-item .list-item-content span {
-      font-weight: 600;
-      color: var(--text-secondary);
-      letter-spacing: 0.3px;
     }
 
     .list-item-content {
@@ -1487,7 +1104,7 @@
     .cancel-item-btn {
         width: 24px;
         height: 24px;
-        background: transparent;
+        background: #EEEEEE;
         border: none;
         cursor: pointer;
         border-radius: 50%;
@@ -1500,7 +1117,7 @@
 
     .save-item-btn:hover,
     .cancel-item-btn:hover {
-        background: transparent;
+        background: #E0E0E0;
     }
 
     .save-item-btn img,
@@ -1511,10 +1128,11 @@
     }
 
     .save-item-btn img {
-        filter: brightness(0) invert(0.3);
+        filter: invert(48%) sepia(71%) saturate(415%) hue-rotate(75deg) brightness(95%) contrast(84%); /* Verde #4CAF50 */
     }
 
-    .cancel-item-btn img {
+    .cancel-item-btn img,
+    .delete-list-circular-btn img {
         filter: invert(41%) sepia(97%) saturate(1451%) hue-rotate(325deg) brightness(99%) contrast(106%); /* Vermelho #FF5252 */
     }
 
@@ -1628,8 +1246,15 @@
       padding: 1px;
       box-sizing: border-box;
     }
-    .task-icon-grid-view.priority-icon-alta { 
-        border-color: #FF5252 !important; 
+    .task-icon-grid-view.priority-icon-alta,
+    .task-icon-grid-view.priority-icon-alta.icon-color-blue,
+    .task-icon-grid-view.priority-icon-alta.icon-color-green,
+    .task-icon-grid-view.priority-icon-alta.icon-color-yellow,
+    .task-icon-grid-view.priority-icon-alta.icon-color-purple,
+    .task-icon-grid-view.priority-icon-alta.icon-color-pink,
+    .task-icon-grid-view.priority-icon-alta.icon-color-orange,
+    .task-icon-grid-view.priority-icon-alta.icon-color-red { 
+        border-color: #FF5252 !important;
     }
 
     /* Modal styles removed - now using sections instead */
@@ -1700,16 +1325,6 @@
         background: #f0f0f0;
     }
     .task-list-item.priority-alta { border-left-color: #FF5252; }
-    
-    /* Listas agendadas com alta prioridade sempre têm borda vermelha */
-    .task-list-item[data-list-id].priority-alta {
-        border-left-color: #FF5252 !important;
-    }
-    
-    /* Listas agendadas sem alta prioridade: borda transparente */
-    .task-list-item[data-list-id]:not(.priority-alta) {
-        border-left-color: transparent !important;
-    }
 
     .task-list-item button {
       padding: 5px 8px;
@@ -1838,45 +1453,6 @@
         padding: 8px 0;
         border-bottom: 1px solid #eee;
         font-size: 16px;
-    }
-
-    #listDetailsItems li.subcategory-detail {
-        font-weight: 600;
-        color: var(--text-secondary);
-        border-bottom-color: transparent;
-        padding-top: 12px;
-    }
-
-    #listDetailsItems li.detail-sublist-label {
-        font-size: 14px;
-        font-weight: 600;
-        text-transform: lowercase;
-        color: var(--text-secondary);
-        border-bottom-color: transparent;
-        margin-top: 10px;
-    }
-
-    #listDetailsItems li.detail-sublist-title {
-        font-size: 14px;
-        font-weight: 600;
-        text-transform: lowercase;
-        color: var(--text-primary);
-    }
-
-    #listDetailsItems li.detail-sublist-item {
-        font-size: 14px;
-        color: var(--text-secondary);
-        padding-left: 16px;
-    }
-
-    #listDetailsItems li.detail-sublist-item.completed {
-        text-decoration: line-through;
-        opacity: 0.7;
-    }
-
-    #listDetailsItems li.detail-sublist-item.empty {
-        font-style: italic;
-        color: var(--text-muted);
     }
     #modal-date-text {
         font-size: 14px;
@@ -2116,11 +1692,6 @@
         background-color: #4CAF50;
         color: white;
     }
-
-    .list.has-sublists .finalize-purchase-btn {
-        width: 100%;
-        margin-top: 10px;
-    }
     .finalize-purchase-btn:hover {
         background-color: #45a049;
     }
@@ -2132,9 +1703,17 @@
     }
     .shopping-input-group {
         display: grid;
-        grid-template-columns: 1fr 70px auto;
+        grid-template-columns: 1fr 60px auto;
         gap: 5px;
         align-items: center;
+    }
+    .shopping-input-group input[type="number"] {
+        -moz-appearance: textfield;
+    }
+    .shopping-input-group input[type="number"]::-webkit-inner-spin-button,
+    .shopping-input-group input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
     .shopping-input-group .add-btn {
         padding: 8px 12px;
@@ -2167,77 +1746,10 @@
     }
 
     body.dark-mode .list {
-      background: #1F1F1F;
+      background: #1F1F1F; 
       box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
-
-    body.dark-mode .create-sublist-btn {
-        border-color: var(--border-dark);
-        color: #cfcfcf;
-        background: transparent;
-    }
-
-    body.dark-mode .create-sublist-btn:hover {
-        background: rgba(107, 154, 255, 0.12);
-        color: #fff;
-    }
-
-    body.dark-mode .sublist-form input,
-    body.dark-mode .sublist-title-input,
-    body.dark-mode .sublist-edit-row input {
-        background: #282828;
-        border-color: #555;
-        color: #E0E0E0;
-    }
-
-    body.dark-mode .sublist-form button {
-        background: var(--primary);
-        color: #fff;
-        border: none;
-    }
-
-    body.dark-mode .sublist-block {
-        background: #282828;
-        border-color: #444;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.45);
-    }
-
-    body.dark-mode .sublist-block.editing {
-        box-shadow: 0 0 0 2px rgba(107, 154, 255, 0.3);
-    }
-
-    body.dark-mode .sublist-items li {
-        background: #1F1F1F;
-        border-color: #444;
-        color: #ccc;
-    }
-
-    body.dark-mode .sublist-items li.sublist-empty {
-        color: #888;
-    }
-
-    body.dark-mode #listDetailsItems li.detail-sublist-item.completed {
-        color: var(--text-muted);
-    }
-
-    body.dark-mode .sublist-icon-btn {
-        background: transparent;
-        border: none !important;
-        color: #cfcfcf;
-    }
-
-    body.dark-mode .sublist-icon-btn:hover {
-        background: rgba(255, 255, 255, 0.08);
-    }
     
-    body.dark-mode .sublist-icon-btn img {
-        filter: brightness(0) invert(0.7) !important;
-    }
-
-    body.dark-mode .sublist-inline-add-btn {
-        color: #fff;
-    }
-
     body.dark-mode .task-icon-option {
         border: 2px solid #555;
         background: #282828;
@@ -2291,10 +1803,8 @@
     body.dark-mode .delete-item-btn img,
     body.dark-mode .edit-btn img,
     body.dark-mode .delete-btn img,
-    body.dark-mode .edit-list-btn img,
-    body.dark-mode .edit-task-btn img,
-    body.dark-mode .task-list-item button img {
-        filter: brightness(0) invert(0.7) !important;
+    body.dark-mode .edit-list-btn img {
+        filter: brightness(0) invert(0.8);
     }
     
     body.dark-mode .task-list-item[data-list-id]:hover {
@@ -2314,78 +1824,10 @@
     /* Removed modal-content styles */
     body.dark-mode .list input[type="text"],
     body.dark-mode .list-item-value-input,
-    body.dark-mode button:not(.add-btn):not(.delete-btn):not(.edit-btn):not(.btn):not(.finalize-purchase-btn):not(.undo-finalize-btn):not(#theme-toggle):not(.mensal-sub-toggle):not(.back-button):not(.delete-list-circular-btn):not(.edit-task-btn):not(.task-list-item button):not(.edit-item-btn):not(.delete-item-btn):not(.edit-list-btn):not(.save-item-btn):not(.cancel-item-btn):not(.close-button) {
+    body.dark-mode button:not(.add-btn):not(.delete-btn):not(.edit-btn):not(#theme-toggle):not(.mensal-sub-toggle):not(.back-button):not(.delete-list-circular-btn):not(.edit-task-btn):not(.task-list-item button):not(.edit-item-btn):not(.delete-item-btn):not(.edit-list-btn):not(.save-item-btn):not(.cancel-item-btn):not(.close-button) {
       background: #282828;
       border: 1px solid #555;
       color: #E0E0E0;
-    }
-
-    body.dark-mode .btn {
-        color: #fff;
-    }
-
-    body.dark-mode .btn-primary,
-    body.dark-mode .btn-primary.btn-full {
-        background: var(--primary);
-    }
-
-    body.dark-mode .btn-primary:hover,
-    body.dark-mode .btn-primary.btn-full:hover {
-        background: var(--primary-hover);
-    }
-
-    body.dark-mode .btn-success {
-        background: var(--success);
-    }
-
-    body.dark-mode .btn-success:hover {
-        background: var(--success-hover);
-    }
-
-    body.dark-mode .btn-danger {
-        background: var(--danger);
-    }
-
-    body.dark-mode .btn-danger:hover {
-        background: var(--danger-hover);
-    }
-
-    body.dark-mode .btn-secondary {
-        background: var(--bg-secondary);
-        color: var(--text-primary);
-        border: 1px solid var(--border-medium);
-    }
-
-    body.dark-mode .btn-secondary:hover {
-        background: #3a3a3a;
-    }
-
-    body.dark-mode .finalize-purchase-btn {
-        background-color: #4CAF50;
-        color: #fff;
-    }
-
-    body.dark-mode .list.has-sublists .finalize-purchase-btn {
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    body.dark-mode .finalize-purchase-btn:hover {
-        background-color: #45a049;
-    }
-
-    body.dark-mode .undo-finalize-btn {
-        background-color: #FF9800;
-        color: #fff;
-    }
-
-    body.dark-mode .list.has-sublists .undo-finalize-btn {
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    body.dark-mode .undo-finalize-btn:hover {
-        background-color: #FB8C00;
     }
     
     body.dark-mode .list-priority-select {
@@ -2398,21 +1840,18 @@
     body.dark-mode .list.priority-alta { border-left-color: #FF1744; }
     
     body.dark-mode .task-list-item.priority-alta { border-left-color: #FF1744; }
-    body.dark-mode .task-icon-grid-view.priority-icon-alta { 
-        border-color: #FF5252 !important; 
-    }
-    
-    /* Listas agendadas com alta prioridade sempre têm borda vermelha no tema escuro */
-    body.dark-mode .task-list-item[data-list-id].priority-alta {
-        border-left-color: #FF1744 !important;
-    }
-    
-    /* Listas agendadas sem alta prioridade: borda transparente no tema escuro */
-    body.dark-mode .task-list-item[data-list-id]:not(.priority-alta) {
-        border-left-color: transparent !important;
+    body.dark-mode .task-icon-grid-view.priority-icon-alta,
+    body.dark-mode .task-icon-grid-view.priority-icon-alta.icon-color-blue,
+    body.dark-mode .task-icon-grid-view.priority-icon-alta.icon-color-green,
+    body.dark-mode .task-icon-grid-view.priority-icon-alta.icon-color-yellow,
+    body.dark-mode .task-icon-grid-view.priority-icon-alta.icon-color-purple,
+    body.dark-mode .task-icon-grid-view.priority-icon-alta.icon-color-pink,
+    body.dark-mode .task-icon-grid-view.priority-icon-alta.icon-color-orange,
+    body.dark-mode .task-icon-grid-view.priority-icon-alta.icon-color-red { 
+        border-color: #FF1744 !important;
     }
 
-    body.dark-mode .list > .list-items > li {
+    body.dark-mode .list li {
       border-bottom: 1px solid #333;
     }
     body.dark-mode .list-item-content input[type="text"] {
@@ -2506,6 +1945,14 @@
     body.dark-mode .contribution-history-list {
       color: #aaa;
     }
+    body.dark-mode .show-contributions-btn {
+      background: transparent !important;
+      border: 1px solid #fff !important;
+      color: #fff !important;
+    }
+    body.dark-mode .show-contributions-btn:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+    }
     body.dark-mode .color-swatch.selected {
       border-color: #fff;
     }
@@ -2513,30 +1960,17 @@
     body.dark-mode .close-button,
     body.dark-mode .save-item-btn,
     body.dark-mode .cancel-item-btn {
-        background: transparent;
+        background: #424242;
     }
     body.dark-mode .close-button:hover,
     body.dark-mode .save-item-btn:hover,
     body.dark-mode .cancel-item-btn:hover {
-        background: transparent;
+        background: #616161;
     }
     
     body.dark-mode .edit-goal-form .edit-btn,
     body.dark-mode .edit-goal-form .delete-btn {
         color: #9E9E9E; /* Cor do texto igual à da borda */
-    }
-    
-    /* Estilos específicos para ícones dos botões save-item-btn e cancel-item-btn no tema escuro */
-    body.dark-mode .save-item-btn img {
-        filter: brightness(0) invert(0.7) !important;
-    }
-    
-    body.dark-mode .cancel-item-btn img {
-        filter: invert(41%) sepia(97%) saturate(1451%) hue-rotate(325deg) brightness(99%) contrast(106%) !important; /* Vermelho #FF5252 */
-    }
-    
-    body.dark-mode .delete-list-circular-btn img {
-        filter: invert(41%) sepia(97%) saturate(1451%) hue-rotate(325deg) brightness(99%) contrast(106%) !important; /* Vermelho #FF5252 */
     }
     
     /* Removed modal dark mode styles - now using sections */
@@ -2547,7 +1981,8 @@
 
     /* 1. Esconde os checkboxes originais */
     #shopping-list-checkbox,
-    #link-to-planner-checkbox {
+    #link-to-planner-checkbox,
+    #link-as-routine-checkbox {
         display: none;
     }
 
@@ -2563,7 +1998,7 @@
         border-radius: 7px;
         cursor: pointer;
         transition: all 0.2s ease-in-out;
-        background-color: transparent;
+        background-color: #f9f9f9;
         flex-shrink: 0;
     }
     
@@ -2580,25 +2015,25 @@
     .icon-toggle-button img {
         width: 100%;
         height: 100%;
-        filter: grayscale(1) brightness(0) invert(0.3);
-        opacity: 1;
+        filter: grayscale(1);
+        opacity: 0.6;
         transition: all 0.2s ease-in-out;
     }
 
     /* 4. Adiciona um efeito ao passar o mouse */
     .icon-toggle-button:hover {
         border-color: #3586ff;
-        background-color: transparent;
+        background-color: #f0f5ff;
     }
 
     /* 5. ESTILO QUANDO O ÍCONE ESTÁ SELECIONADO (a mágica acontece aqui) */
     /* Quando o checkbox invisível está marcado, estiliza a label dele */
     input[type="checkbox"]:checked + .icon-toggle-button {
         border-color: #3586ff;
-        background-color: transparent;
+        background-color: #e8f0fe;
     }
     input[type="checkbox"]:checked + .icon-toggle-button img {
-        filter: grayscale(0) brightness(0) invert(0.3);
+        filter: grayscale(0);
         opacity: 1;
     }
 
@@ -2606,23 +2041,23 @@
     /* --- Ajustes para o Tema Escuro --- */
     body.dark-mode .icon-toggle-button {
         border-color: #555;
-        background-color: transparent;
+        background-color: #282828;
     }
     
     body.dark-mode .icon-toggle-button img {
-        filter: invert(1) grayscale(1) brightness(0) invert(0.7) !important;
-        opacity: 1;
+        filter: invert(1) grayscale(1);
+        opacity: 0.5;
     }
     body.dark-mode .icon-toggle-button:hover {
         border-color: #6b9aff;
-        background-color: transparent;
+        background-color: #1F1F1F;
     }
     body.dark-mode input[type="checkbox"]:checked + .icon-toggle-button {
         border-color: #6b9aff;
-        background-color: transparent;
+        background-color: #1F1F1F;
     }
     body.dark-mode input[type="checkbox"]:checked + .icon-toggle-button img {
-        filter: invert(1) grayscale(0) brightness(0) invert(0.7) !important;
+        filter: invert(1) grayscale(0);
         opacity: 1;
     }
 
@@ -2666,11 +2101,6 @@
         background-color: #FF9800; /* Laranja */
         color: white;
         display: none; /* Começa escondido */
-    }
-
-    .list.has-sublists .undo-finalize-btn {
-        width: 100%;
-        margin-top: 10px;
     }
     .undo-finalize-btn:hover {
         background-color: #FB8C00;
@@ -3603,8 +3033,8 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Cabeçalho Simplificado -->
   <header class="main-header">
     <div class="header-controls">
-      <button id="theme-toggle" class="header-btn theme-btn"><img src="./buttons/moon.svg" alt="Modo escuro" id="theme-icon"></button>
-      <button id="settings-btn" class="header-btn settings-btn"><img src="./buttons/settings.svg" alt="Configurações"></button>
+      <button id="theme-toggle" class="header-btn theme-btn"><img src="buttons/moon.svg" alt="Modo escuro" id="theme-icon"></button>
+      <button id="settings-btn" class="header-btn settings-btn"><img src="buttons/settings.svg" alt="Configurações"></button>
     </div>
   </header>
 
@@ -3625,14 +3055,14 @@ body.dark-mode #remove-schedule-btn:hover {
             <div id="planner-details-container" style="display: none;">
                 
                 <div id="day-view-section" style="display: none; position: relative;">
-                    <button class="close-button" id="close-day-view-btn" style="top: 0; right: 0;"><img src="./buttons/close.svg" alt="Fechar"></button>
+                    <button class="close-button" id="close-day-view-btn" style="top: 0; right: 0;"><img src="buttons/close.svg" alt="Fechar"></button>
                     <h3 id="day-view-title" style="text-align: center; margin-top: 0;"></h3>
                     <div id="tasksList"></div>
                     <button id="open-add-task-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar tarefa</button>
                 </div>
 
                 <div id="task-form-view" style="display: none; position: relative;">
-                    <button class="close-button back-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="./buttons/back.svg" alt="Voltar"></button>
+                    <button class="close-button back-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
                     <h3 id="task-form-title">adicionar tarefa</h3>
                     <form id="task-form-modal">
                         <div class="task-form-row" style="margin-top: 30px;">
@@ -3729,7 +3159,7 @@ body.dark-mode #remove-schedule-btn:hover {
             
             <div id="finance-details-container">
                 <div id="transactions-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
-                    <button class="close-button" id="close-transactions-view"><img src="./buttons/close.svg" alt="Fechar"></button>
+                    <button class="close-button" id="close-transactions-view"><img src="buttons/close.svg" alt="Fechar"></button>
                     
                     <div id="transaction-list-view">
                         <h3 style="margin-top:0;">transações do mês</h3>
@@ -3742,7 +3172,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     </div>
     
                     <div id="add-transaction-container" style="display: none; position: relative; z-index: 5;">
-                        <button class="close-button back-button" id="back-to-transactions-list-btn"><img src="./buttons/back.svg" alt="Voltar"></button>
+                        <button class="close-button back-button" id="back-to-transactions-list-btn"><img src="buttons/back.svg" alt="Voltar"></button>
                         
                         <h3 id="transaction-form-title" style="margin-top: 0;">adicionar transação</h3>
                         <form id="expense-form" style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
@@ -3761,13 +3191,13 @@ body.dark-mode #remove-schedule-btn:hover {
                 </div>
     
                 <div id="budgets-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
-                    <button class="close-button" id="close-budgets-view"><img src="./buttons/close.svg" alt="Fechar"></button>
+                    <button class="close-button" id="close-budgets-view"><img src="buttons/close.svg" alt="Fechar"></button>
                     <h3 style="margin-top:0;">orçamentos</h3>
                     <form id="category-limit-form" style="display: flex; gap: 10px; margin-bottom: 20px;">
                         <select id="categoryLimitCategory" required></select>
                         <input type="number" id="categoryLimitValue" placeholder="limite (R$)" step="0.01" required>
                         <button type="submit" class="add-btn">salvar limite</button>
-                        <button type="button" id="manage-categories-btn-budgets"><img src="./buttons/settings.svg" alt="Gerenciar"></button>
+                        <button type="button" id="manage-categories-btn-budgets"><img src="buttons/settings.svg" alt="Gerenciar"></button>
                     </form>
                     <table style="width: 100%;">
                         <tbody id="category-spending-list"></tbody>
@@ -3775,7 +3205,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 </div>
     
                 <div id="investments-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
-                    <button class="close-button" id="close-investments-view"><img src="./buttons/close.svg" alt="Fechar"></button>
+                    <button class="close-button" id="close-investments-view"><img src="buttons/close.svg" alt="Fechar"></button>
                     <h3 style="margin-top:0;">investimentos</h3>
                     
                     <!-- Lista de metas existentes -->
@@ -3786,7 +3216,7 @@ body.dark-mode #remove-schedule-btn:hover {
                     
                     <!-- Formulário de nova meta (escondido inicialmente) -->
                     <div id="investment-form-view" style="display: none; position: relative;">
-                        <button class="close-button back-button" id="back-to-investments-list-btn" style="right: auto; left: 15px; top: 15px;"><img src="./buttons/back.svg" alt="Voltar"></button>
+                        <button class="close-button back-button" id="back-to-investments-list-btn" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
                         <h3 id="investment-form-title" style="margin-top: 0;">adicionar meta de investimento</h3>
                         
                         <form id="new-goal-form" style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
@@ -3831,8 +3261,8 @@ body.dark-mode #remove-schedule-btn:hover {
                 <!-- Seção de Gerenciamento de Categorias -->
                 <div id="category-section" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <button class="close-button back-button" id="back-from-categories" style="position: relative; left: 0; top: 0;"><img src="./buttons/back.svg" alt="Voltar"></button>
-                        <button class="close-button" id="close-category-section"><img src="./buttons/close.svg" alt="Fechar"></button>
+                        <button class="close-button back-button" id="back-from-categories" style="position: relative; left: 0; top: 0;"><img src="buttons/back.svg" alt="Voltar"></button>
+                        <button class="close-button" id="close-category-section"><img src="buttons/close.svg" alt="Fechar"></button>
                     </div>
                     <h3 style="margin-top:0;">gerenciar categorias</h3>
 
@@ -3893,7 +3323,7 @@ body.dark-mode #remove-schedule-btn:hover {
             <form id="newListForm">
                 <div id="newListForm-main-line" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                     <input type="text" id="newListName" placeholder="nome da nova lista" required style="flex-grow: 1; min-width: 200px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: var(--font-size-md);">
-
+                    
                     <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                         <select id="newListPriority" style="text-transform: none; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: var(--font-size-md);">
                             <option value="baixa">prioridade: baixa</option>
@@ -3904,22 +3334,17 @@ body.dark-mode #remove-schedule-btn:hover {
                         <div id="shopping-list-container" title="Marcar como lista de compras">
                             <input type="checkbox" id="shopping-list-checkbox">
                             <label for="shopping-list-checkbox" class="icon-toggle-button">
-                                <img src="./images/shopping.svg" alt="Lista de Compras">
+                                <img src="buttons/lists/compras.svg" alt="Lista de Compras">
                             </label>
                         </div>
                         
                         <div id="link-to-planner-container" title="Agendar no planner">
                             <input type="checkbox" id="link-to-planner-checkbox">
                             <label for="link-to-planner-checkbox" class="icon-toggle-button">
-                                <img src="./buttons/lists/agendar.svg" alt="Agendar no Planner">
+                                <img src="buttons/lists/agendar.svg" alt="Agendar no Planner">
                             </label>
                         </div>
                     </div>
-                </div>
-
-                <div id="newListForm-sublist-toggle">
-                    <input type="checkbox" id="newListHasSublists">
-                    <label for="newListHasSublists">lista com sublistas</label>
                 </div>
 
                 <div id="planner-link-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
@@ -3929,16 +3354,20 @@ body.dark-mode #remove-schedule-btn:hover {
                             <input type="time" id="list-event-time" value="10:00">
                         </div>
                         
-                        <div id="routine-container" title="Repetir" style="display: none;">
-                            <select id="list-recurrence-type">
-                                <option value="none">não repetir</option>
-                                <option value="daily">diariamente</option>
-                                <option value="weekly">semanalmente</option>
-                            </select>
+                        <div id="routine-container" title="Marcar como rotina" style="display: none;">
+                             <input type="checkbox" id="link-as-routine-checkbox">
+                             <label for="link-as-routine-checkbox" class="icon-toggle-button">
+                                 <img src="buttons/lists/rotina.svg" alt="Marcar como Rotina">
+                             </label>
                         </div>
                     </div>
 
                     <div id="routine-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 5px;">
+                        <select id="list-recurrence-type">
+                            <option value="none">não repetir</option>
+                            <option value="daily">diariamente</option>
+                            <option value="weekly">semanalmente</option>
+                        </select>
                         <input type="date" id="list-recurrence-end-date" title="data final da recorrência" style="display: none;">
                         <div id="list-weekly-recurrence-options" style="display: none; margin-top: 5px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
                             <label style="display: block; margin-bottom: 5px; font-size: var(--font-size-sm); font-weight: bold;">repetir nos dias:</label>
@@ -3970,7 +3399,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Detalhes de Tarefa -->
   <div id="description-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
-      <button class="close-button back-button" onclick="closeDescriptionSection()" style="position: relative; top: 0; left: 0; margin-bottom: 15px;"><img src="./buttons/back.svg" alt="Voltar"></button>
+      <button class="close-button back-button" onclick="closeDescriptionSection()" style="position: relative; top: 0; left: 0; margin-bottom: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
       <h3 style="margin-top: 0; text-align: center; color: var(--text-color, #333); font-size: 24px; font-weight: 600;">detalhes</h3>
       <div style="background: var(--secondary-bg, #f8f9fa); border-radius: 12px; padding: 20px; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         <div style="text-align: center;">
@@ -3984,7 +3413,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Detalhes de Lista -->
   <div id="list-details-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px;">
-      <button class="close-button back-button" onclick="closeListDetailsSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="./buttons/back.svg" alt="Voltar"></button>
+      <button class="close-button back-button" onclick="closeListDetailsSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="buttons/back.svg" alt="Voltar"></button>
       <h3 id="listDetailsTitle" style="margin-top: 0;"></h3>
       <ul id="listDetailsItems"></ul>
     </div>
@@ -3993,7 +3422,7 @@ body.dark-mode #remove-schedule-btn:hover {
   <!-- Seção de Escolha de Ícone da Lista -->
   <div id="list-icon-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
-        <button class="close-button back-button" onclick="closeListIconSection()"><img src="./buttons/back.svg" alt="Voltar"></button>
+        <button class="close-button back-button" onclick="closeListIconSection()"><img src="buttons/back.svg" alt="Voltar"></button>
         <h3>escolha um ícone para a lista</h3>
         
         <!-- Seletor de Ícone -->
@@ -4002,13 +3431,19 @@ body.dark-mode #remove-schedule-btn:hover {
             <div id="list-icon-picker-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-height: 300px; overflow-y: auto;">
             </div>
         </div>
+        
+        <!-- Seletor de Cor (oculto - cor baseada em prioridade) -->
+        <div style="display: none;">
+            <div id="list-color-picker"></div>
+            <input type="hidden" id="listColor" value="blue">
+        </div>
     </div>
   </div>
 
   <!-- Seção de Editor de Lista -->
   <div id="list-editor-section" class="mensal-content-section" style="display: none;">
     <div style="padding: 20px; padding-bottom: 80px; max-width: 450px; margin: 0 auto;">
-        <button class="close-button back-button" onclick="closeListEditorSection()"><img src="./buttons/back.svg" alt="Voltar"></button>
+        <button class="close-button back-button" onclick="closeListEditorSection()"><img src="buttons/back.svg" alt="Voltar"></button>
         <h3>Editar Lista</h3>
         <form id="list-editor-form" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
             <input type="hidden" id="editor-list-id-main">
@@ -4019,16 +3454,22 @@ body.dark-mode #remove-schedule-btn:hover {
             </div>
 
             <div>
-                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Prioridade:</label>
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Prioridade (define a cor do ícone):</label>
                 <select id="editor-list-priority" style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: var(--font-size-md);">
-                    <option value="baixa">Baixa</option>
-                    <option value="media">Média</option>
-                    <option value="alta">Alta</option>
+                    <option value="baixa">Baixa (Azul)</option>
+                    <option value="media">Média (Amarelo)</option>
+                    <option value="alta">Alta (Vermelho)</option>
                 </select>
                 
                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">Ícone da Lista:</label>
                 <div id="editor-list-icon-picker" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 140px; overflow-y: auto; padding: 5px; border-radius: 8px; background: rgba(0,0,0,0.05);"></div>
                 <input type="hidden" id="editor-list-icon-main">
+                
+                <!-- Seletor de Cor oculto (cor baseada em prioridade) -->
+                <div style="display: none;">
+                    <div id="editor-list-color-picker"></div>
+                    <input type="hidden" id="editor-list-color-main" value="blue">
+                </div>
             </div>
 
             <hr>
@@ -4041,15 +3482,16 @@ body.dark-mode #remove-schedule-btn:hover {
                     <input type="date" id="editor-event-date">
                     <input type="time" id="editor-event-time">
                 </div>
-                 <div id="editor-routine-container" style="display: flex; align-items: center; gap: 8px; font-size: 14px; padding-left: 5px; margin-top: 5px;">
-                     <label style="font-weight: bold;">Repetir:</label>
-                     <select id="editor-recurrence-type" style="flex: 1;">
+                 <div id="editor-routine-container" style="display: flex; align-items: center; gap: 8px; font-size: 14px; padding-left: 5px; cursor: pointer; margin-top: 5px;">
+                     <input type="checkbox" id="editor-link-as-routine-checkbox" style="width: 18px; height: 18px; cursor: pointer;">
+                     <label for="editor-link-as-routine-checkbox" style="cursor: pointer;">marcar como rotina</label>
+                </div>
+                <div id="editor-routine-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
+                    <select id="editor-recurrence-type" style="width: 100%;">
                         <option value="none">não repetir</option>
                         <option value="daily">diariamente</option>
                         <option value="weekly">semanalmente</option>
                     </select>
-                </div>
-                <div id="editor-routine-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
                     <input type="date" id="editor-recurrence-end-date" title="data final da recorrência" style="display: none; width: 100%; box-sizing: border-box;">
                     <div id="editor-weekly-recurrence-options" style="display: none; margin-top: 5px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
                         <label style="display: block; margin-bottom: 5px; font-size: var(--font-size-sm); font-weight: bold;">repetir nos dias:</label>
@@ -4073,45 +3515,6 @@ body.dark-mode #remove-schedule-btn:hover {
   </div>
   
   <script>
-    // === CONFIGURAÇÃO DE AMBIENTE ===
-    // Detecta se estamos no GitHub e ajusta caminhos automaticamente
-    document.addEventListener('DOMContentLoaded', function() {
-        const isGitHub = window.location.hostname.includes('github.io') || 
-                        window.location.hostname.includes('github.com') ||
-                        window.location.pathname.includes('/blob/') ||
-                        window.location.pathname.includes('/raw/');
-        
-        if (isGitHub) {
-            console.log('🌐 Ambiente GitHub detectado - ajustando caminhos das imagens');
-            document.body.classList.add('github-environment');
-            
-            // Força recarregamento de todas as imagens com caminhos corretos
-            setTimeout(function() {
-                const allImages = document.querySelectorAll('img');
-                console.log('🔄 Verificando', allImages.length, 'imagens para GitHub...');
-                
-                allImages.forEach(function(img) {
-                    if (img.src && !img.src.includes('data:') && !img.src.includes('raw.githubusercontent.com')) {
-                        const originalSrc = img.src.split('?')[0];
-                        
-                        // Só converte se realmente estiver no GitHub.com (não GitHub Pages)
-                        if (window.location.hostname.includes('github.com') && !window.location.hostname.includes('github.io')) {
-                            const newSrc = createAbsolutePath(originalSrc) + '?t=' + Date.now();
-                            console.log('🔄 Convertendo:', originalSrc, '->', newSrc);
-                            img.src = newSrc;
-                        } else {
-                            // Para GitHub Pages, apenas adiciona timestamp para evitar cache
-                            img.src = originalSrc + '?t=' + Date.now();
-                        }
-                    }
-                });
-            }, 100);
-        } else {
-            console.log('💻 Ambiente local detectado');
-            document.body.classList.add('local-environment');
-        }
-    });
-
     // --- ELEMENTOS DO FORMULÁRIO FINANCEIRO
     const form = document.getElementById('expense-form');
     const expenseList = document.getElementById('expense-list');
@@ -4217,7 +3620,6 @@ body.dark-mode #remove-schedule-btn:hover {
     const newListForm = document.getElementById('newListForm');
     const newListNameInput = document.getElementById("newListName");
     const newListPriorityInput = document.getElementById("newListPriority");
-    const newListHasSublistsInput = document.getElementById('newListHasSublists');
     const shoppingListContainer = document.getElementById('shopping-list-container');
     const linkToPlannerContainer = document.getElementById('link-to-planner-container');
     const linkToPlannerCheckbox = document.getElementById('link-to-planner-checkbox');
@@ -4225,7 +3627,7 @@ body.dark-mode #remove-schedule-btn:hover {
     const listEventDateInput = document.getElementById('list-event-date');
     const listEventTimeInput = document.getElementById('list-event-time');
     const routineContainer = document.getElementById('routine-container');
-    // const linkAsRoutineCheckbox = document.getElementById('link-as-routine-checkbox'); // Removido
+    const linkAsRoutineCheckbox = document.getElementById('link-as-routine-checkbox');
     const routineOptions = document.getElementById('routine-options');
     const listRecurrenceTypeInput = document.getElementById('list-recurrence-type');
     const listRecurrenceEndDateInput = document.getElementById('list-recurrence-end-date');
@@ -4253,7 +3655,7 @@ body.dark-mode #remove-schedule-btn:hover {
     const editorEventTimeInput = document.getElementById('editor-event-time');
     const removeScheduleBtn = document.getElementById('remove-schedule-btn');
     const editorRoutineContainer = document.getElementById('editor-routine-container');
-    // const editorLinkAsRoutineCheckbox = document.getElementById('editor-link-as-routine-checkbox'); // Removido
+    const editorLinkAsRoutineCheckbox = document.getElementById('editor-link-as-routine-checkbox');
     const editorRoutineOptions = document.getElementById('editor-routine-options');
     const editorRecurrenceTypeInput = document.getElementById('editor-recurrence-type');
     const editorRecurrenceEndDateInput = document.getElementById('editor-recurrence-end-date');
@@ -4263,7 +3665,7 @@ body.dark-mode #remove-schedule-btn:hover {
     // --- ÍCONES DE TAREFAS (USADOS TAMBÉM PARA LISTAS) ---
     const taskIcons = {
         // === ÍCONES CIRCULARES/BÁSICOS ===
-        "nenhum": "./images/circledashed.svg", "lista": "./images/circledashed.svg", "coração": "./images/heart.svg", "estrela": "./images/star.svg", "dinheiro": "./images/money.svg",
+        "nenhum": "./images/circledashed.svg", "lista": "./images/box.svg", "coração": "./images/heart.svg", "estrela": "./images/star.svg", "dinheiro": "./images/money.svg", "círculo": "./images/circle.svg", "pontos": "./images/circledots.svg",
         
         // === SAÚDE E BEM-ESTAR ===
         "médico": "./images/health.svg", "medicação": "./images/pills.svg", "dentista": "./images/tooth.svg", "escova": "./images/hairbrush.svg", 
@@ -4281,7 +3683,7 @@ body.dark-mode #remove-schedule-btn:hover {
         "aniversário": "./images/birthday.svg", "festa": "./images/party.svg",
         
         // === TRANSPORTE E VIAGEM ===
-        "viagem": "./images/plane.svg", "férias": "./images/vacation.svg",
+        "transporte": "./images/car.svg", "viagem": "./images/plane.svg", "férias": "./images/vacation.svg",
         
         // === COMIDA E BEBIDA ===
         "comida": "./images/burger.svg", "maçã": "./images/apple.svg", "cenoura": "./images/carrot.svg", "sorvete": "./images/icecream.svg",
@@ -4297,7 +3699,7 @@ body.dark-mode #remove-schedule-btn:hover {
         "compras": "./images/shopping.svg", "comprar": "./images/buy.svg", "assinaturas": "./images/infinite.svg",
         
         // === ROUPAS E ACESSÓRIOS ===
-        "camisa": "./images/shirt.svg", "caixa": "./images/box.svg",
+        "camisa": "./images/shirt.svg",
         
         // === OUTROS/VARIADOS ===
         "cigarro": "./images/cigarette.svg", "olho": "./images/eye.svg", "arma": "./images/gun.svg"
@@ -4383,126 +3785,20 @@ body.dark-mode #remove-schedule-btn:hover {
     function sanitizeIconPath(iconSrc) {
         if (!iconSrc) return '';
         const withoutQuery = iconSrc.split('?')[0];
-
-        const protocolPattern = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
-        if (protocolPattern.test(withoutQuery) || withoutQuery.startsWith('//')) {
-            return withoutQuery;
+        const imagesIndex = withoutQuery.indexOf('/images/');
+        if (imagesIndex !== -1) {
+            return '.' + withoutQuery.substring(imagesIndex);
         }
-
-        // Se já começa com ./, retorna como está
-        if (withoutQuery.startsWith('./')) {
-            return withoutQuery;
+        const relativeIndex = withoutQuery.indexOf('images/');
+        if (relativeIndex !== -1) {
+            const path = withoutQuery.substring(relativeIndex);
+            return path.startsWith('./') ? path : `./${path}`;
         }
-
-        // Se começa com /, adiciona . no início
         if (withoutQuery.startsWith('/')) {
             return `.${withoutQuery}`;
         }
-
-        // Se contém /images/ ou /buttons/, adiciona . no início
-        if (withoutQuery.includes('/images/') || withoutQuery.includes('/buttons/')) {
-            return createAbsolutePath(withoutQuery);
-        }
-
-        // Se começa com images/ ou buttons/, adiciona ./
-        if (withoutQuery.startsWith('images/') || withoutQuery.startsWith('buttons/')) {
-            return createAbsolutePath(withoutQuery);
-        }
-
-        // Para outros casos, adiciona ./
-        return createAbsolutePath(withoutQuery);
+        return withoutQuery.startsWith('./') ? withoutQuery : `./${withoutQuery}`;
     }
-
-    function generateSublistId() {
-        return 'sublist-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
-    }
-
-    // Função para criar caminhos absolutos que funcionam no GitHub
-    function createAbsolutePath(relativePath) {
-        // Remove ./ se existir
-        const cleanPath = relativePath.replace(/^\.\//, '');
-        
-        // Detecta ambiente GitHub
-        const isGitHub = window.location.hostname.includes('github.io') || 
-                        window.location.hostname.includes('github.com') ||
-                        window.location.pathname.includes('/blob/') ||
-                        window.location.pathname.includes('/raw/');
-        
-        if (isGitHub) {
-            const currentPath = window.location.pathname;
-            const hostname = window.location.hostname;
-            
-            // GitHub Pages (usuario.github.io) - usa caminho relativo simples
-            if (hostname.includes('github.io')) {
-                return './' + cleanPath;
-            }
-            
-            // GitHub.com - arquivo sendo visualizado
-            if (hostname.includes('github.com')) {
-                // Extrai informações do repositório da URL
-                const pathParts = currentPath.split('/');
-                if (pathParts.length >= 4) {
-                    const user = pathParts[1];
-                    const repo = pathParts[2];
-                    const branch = pathParts[4] || 'main';
-                    
-                    // Constrói URL raw do GitHub
-                    const rawUrl = `https://raw.githubusercontent.com/${user}/${repo}/${branch}/${cleanPath}`;
-                    console.log('🔗 Convertendo para URL raw:', rawUrl);
-                    return rawUrl;
-                }
-            }
-            
-            // Fallback: usa caminho relativo
-            return './' + cleanPath;
-        }
-        
-        // Para uso local, mantém caminho relativo
-        return './' + cleanPath;
-    }
-
-    // Função para aplicar correções de caminho em imagens dinâmicas
-    function fixDynamicImages() {
-        const isGitHub = window.location.hostname.includes('github.io') || 
-                        window.location.hostname.includes('github.com') ||
-                        window.location.pathname.includes('/blob/') ||
-                        window.location.pathname.includes('/raw/');
-        
-        if (isGitHub && window.location.hostname.includes('github.com') && !window.location.hostname.includes('github.io')) {
-            // Observa mudanças no DOM para capturar imagens adicionadas dinamicamente
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    mutation.addedNodes.forEach(function(node) {
-                        if (node.nodeType === 1) { // Element node
-                            if (node.tagName === 'IMG') {
-                                const img = node;
-                                if (img.src && !img.src.includes('raw.githubusercontent.com') && !img.src.includes('data:')) {
-                                    const originalSrc = img.src.split('?')[0];
-                                    img.src = createAbsolutePath(originalSrc) + '?dynamic=' + Date.now();
-                                }
-                            } else if (node.querySelectorAll) {
-                                const images = node.querySelectorAll('img');
-                                images.forEach(function(img) {
-                                    if (img.src && !img.src.includes('raw.githubusercontent.com') && !img.src.includes('data:')) {
-                                        const originalSrc = img.src.split('?')[0];
-                                        img.src = createAbsolutePath(originalSrc) + '?dynamic=' + Date.now();
-                                    }
-                                });
-                            }
-                        }
-                    });
-                });
-            });
-            
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-        }
-    }
-
-    // Inicia a correção de imagens dinâmicas
-    document.addEventListener('DOMContentLoaded', fixDynamicImages);
 
     function normalizeListData(list) {
         if (!list) return false;
@@ -4545,165 +3841,6 @@ body.dark-mode #remove-schedule-btn:hover {
             changed = true;
         }
 
-        if (!Array.isArray(list.items)) {
-            list.items = [];
-            changed = true;
-        } else {
-            const originalLength = list.items.length;
-            const isShoppingList = !!list.isShoppingList;
-            list.items = list.items
-                .filter(item => {
-                    const isValid = item && typeof item.text === 'string' && item.text.trim() !== '';
-                    if (!isValid) changed = true;
-                    return isValid;
-                })
-                .map(item => {
-                    const normalizedItem = { ...item };
-                    const trimmedText = normalizedItem.text.trim();
-                    if (trimmedText !== normalizedItem.text) {
-                        normalizedItem.text = trimmedText;
-                        changed = true;
-                    }
-
-                    const normalizedType = normalizedItem.type === 'subcategory' ? 'subcategory' : 'item';
-                    if (normalizedType !== normalizedItem.type) {
-                        normalizedItem.type = normalizedType;
-                        changed = true;
-                    }
-
-                    if (normalizedType === 'subcategory') {
-                        if (normalizedItem.checked) {
-                            normalizedItem.checked = false;
-                            changed = true;
-                        }
-                        if ('value' in normalizedItem) {
-                            delete normalizedItem.value;
-                            changed = true;
-                        }
-                    } else {
-                        const checkedValue = !!normalizedItem.checked;
-                        if (checkedValue !== normalizedItem.checked) {
-                            normalizedItem.checked = checkedValue;
-                            changed = true;
-                        }
-
-                        if (isShoppingList) {
-                            const numericValue = parseFloat(normalizedItem.value);
-                            if (!Number.isFinite(numericValue)) {
-                                if (normalizedItem.value !== 0) {
-                                    normalizedItem.value = 0;
-                                    changed = true;
-                                }
-                            } else if (normalizedItem.value !== numericValue) {
-                                normalizedItem.value = numericValue;
-                                changed = true;
-                            }
-                        } else if ('value' in normalizedItem) {
-                            delete normalizedItem.value;
-                            changed = true;
-                        }
-                    }
-
-                    return normalizedItem;
-                });
-
-        if (list.items.length !== originalLength) {
-            changed = true;
-        }
-    }
-
-        if (!Array.isArray(list.sublists)) {
-            if (list.sublists && typeof list.sublists === 'object') {
-                list.sublists = Object.values(list.sublists);
-            }
-            if (!Array.isArray(list.sublists)) {
-                list.sublists = [];
-                changed = true;
-            }
-        }
-
-        if (Array.isArray(list.sublists)) {
-            const originalSublistLength = list.sublists.length;
-            list.sublists = list.sublists
-                .filter(sublist => sublist && typeof sublist.title === 'string')
-                .map(sublist => {
-                    const normalized = { ...sublist };
-                    const trimmedTitle = normalized.title.trim();
-                    if (trimmedTitle !== normalized.title) {
-                        normalized.title = trimmedTitle;
-                        changed = true;
-                    }
-
-                    if (!normalized.id) {
-                        normalized.id = generateSublistId();
-                        changed = true;
-                    }
-
-                    if (!Array.isArray(normalized.items)) {
-                        normalized.items = [];
-                        changed = true;
-                    } else {
-                        const originalItemsCount = normalized.items.length;
-                        let itemsChanged = false;
-                        normalized.items = normalized.items.reduce((acc, item) => {
-                            if (typeof item === 'string') {
-                                const text = item.trim();
-                                if (!text) {
-                                    if (text !== item) itemsChanged = true;
-                                    return acc;
-                                }
-                                itemsChanged = true;
-                                acc.push({ text, checked: false });
-                                return acc;
-                            }
-                            if (item && typeof item === 'object') {
-                                const rawText = typeof item.text === 'string' ? item.text : '';
-                                const text = rawText.trim();
-                                const checked = !!item.checked;
-                                if (!text) {
-                                    if (rawText !== text) itemsChanged = true;
-                                    if (item.checked) itemsChanged = true;
-                                    return acc;
-                                }
-                                if (rawText !== text || item.checked !== checked) {
-                                    itemsChanged = true;
-                                }
-                                acc.push({ text, checked });
-                                return acc;
-                            }
-                            itemsChanged = true;
-                            return acc;
-                        }, []);
-                        if (normalized.items.length !== originalItemsCount) {
-                            itemsChanged = true;
-                        }
-                        if (itemsChanged) {
-                            changed = true;
-                        }
-                    }
-
-                    return normalized;
-                });
-
-            if (list.sublists.length !== originalSublistLength) {
-                changed = true;
-            }
-        }
-
-        let normalizedSupports;
-        if (typeof list.supportsSublists === 'boolean') {
-            normalizedSupports = list.supportsSublists;
-        } else if (typeof list.supportsSublists === 'string') {
-            normalizedSupports = list.supportsSublists === 'true';
-        } else {
-            normalizedSupports = Array.isArray(list.sublists) && list.sublists.length > 0;
-        }
-
-        if (list.supportsSublists !== normalizedSupports) {
-            list.supportsSublists = normalizedSupports;
-            changed = true;
-        }
-
         return changed;
     }
 
@@ -4740,7 +3877,7 @@ body.dark-mode #remove-schedule-btn:hover {
         "moradia": "./images/house.svg", "pet": "./images/pet.svg", "presente": "./images/gift.svg",
         
         // === TRANSPORTE E VIAGEM ===
-        "transporte": "./images/plane.svg",
+        "transporte": "./images/car.svg",
         
         // === ENTRETENIMENTO E LAZER ===
         "lazer": "./images/picture.svg", "beleza": "./images/hairbrush.svg",
@@ -4778,7 +3915,7 @@ body.dark-mode #remove-schedule-btn:hover {
         },
         {
             name: "transporte",
-            icon: "./images/plane.svg",
+            icon: "./images/car.svg",
             color: "blue"
         },
         {
@@ -4927,7 +4064,7 @@ body.dark-mode #remove-schedule-btn:hover {
     function applyTheme(theme) {
         document.body.classList.toggle('dark-mode', theme === 'dark');
         const themeIcon = document.getElementById('theme-icon');
-        themeIcon.src = theme === 'dark' ? './buttons/sun.svg' : './buttons/moon.svg';
+        themeIcon.src = theme === 'dark' ? 'buttons/sun.svg' : 'buttons/moon.svg';
         themeIcon.alt = theme === 'dark' ? 'Modo claro' : 'Modo escuro';
         localStorage.setItem('theme', theme);
         if (document.getElementById('financeiro-section').style.display !== 'none') {
@@ -5015,7 +4152,6 @@ body.dark-mode #remove-schedule-btn:hover {
     function saveLists() {
         const lists = Array.from(listsContainer.querySelectorAll('.list')).map(listDiv => {
             const isShopping = listDiv.dataset.isShopping === 'true';
-            const supportsSublists = listDiv.dataset.supportsSublists === 'true';
             const iconImg = listDiv.querySelector('.list-title-icon');
             const rawBorderColor = listDiv.style.borderLeftColor || window.getComputedStyle(listDiv).borderLeftColor || null;
             const colorName = listDiv.dataset.colorName || (iconImg ? iconImg.dataset.color : null) || getColorNameFromValue(rawBorderColor);
@@ -5030,86 +4166,17 @@ body.dark-mode #remove-schedule-btn:hover {
 
             const colorValue = rawBorderColor || colorHex;
 
-            const mainItemsList = listDiv.querySelector('.list-items');
-            const items = mainItemsList ? Array.from(mainItemsList.children).map(li => {
-                const checkbox = li.querySelector('input[type="checkbox"]');
-                const itemType = li.dataset.itemType === 'subcategory' ? 'subcategory' : 'item';
-                const contentWrapper = li.querySelector('.list-item-content');
-                const textSpan = contentWrapper ? contentWrapper.querySelector('span') : null;
-                const textInput = contentWrapper ? contentWrapper.querySelector('input[type="text"]') : null;
-                const itemText = textSpan ? textSpan.textContent.trim() : (textInput ? textInput.value.trim() : '');
-                if (!itemText) {
-                    return null;
-                }
+            const items = Array.from(listDiv.querySelectorAll('ul li')).map(li => {
                 const baseItem = {
-                    text: itemText,
-                    checked: checkbox ? checkbox.checked : false,
-                    type: itemType
+                    text: li.querySelector('.list-item-content span').textContent.trim(),
+                    checked: li.querySelector('input[type="checkbox"]').checked
                 };
-                if (isShopping && itemType === 'item') {
+                if (isShopping) {
                     baseItem.value = parseFloat(li.dataset.value) || 0;
                 }
                 return baseItem;
-            }).filter(Boolean) : [];
-
-            const sublists = supportsSublists ? Array.from(listDiv.querySelectorAll('.sublist-block')).map(sublistDiv => {
-                let sublistId = sublistDiv.dataset.sublistId;
-                if (!sublistId) {
-                    sublistId = generateSublistId();
-                    sublistDiv.dataset.sublistId = sublistId;
-                }
-
-                const titleElement = sublistDiv.querySelector('.sublist-title');
-                const titleInput = sublistDiv.querySelector('.sublist-title-input');
-                const title = titleElement ? titleElement.textContent.trim() : (titleInput ? titleInput.value.trim() : '');
-                const itemElements = Array.from(sublistDiv.querySelectorAll('.sublist-items li'))
-                    .filter(li => !li.classList.contains('sublist-empty'));
-                const sublistItems = itemElements
-                    .map(li => {
-                        const textSpan = li.querySelector('.sublist-item-text');
-                        const checkbox = li.querySelector('input[type="checkbox"]');
-                        const rawText = textSpan ? textSpan.textContent : li.textContent;
-                        const text = typeof rawText === 'string' ? rawText.trim() : '';
-                        if (!text) {
-                            return null;
-                        }
-                        const item = {
-                            text,
-                            checked: checkbox ? checkbox.checked : false
-                        };
-                        
-                        // Adiciona valor se o item tiver um campo de valor (independente da flag isShopping)
-                        const valueSpan = li.querySelector('.sublist-item-value');
-                        if (valueSpan) {
-                            const valueText = valueSpan.textContent.replace(/[^\d,.-]/g, '').replace(',', '.');
-                            const numericValue = parseFloat(valueText) || 0;
-                            item.value = numericValue;
-                        }
-                        
-                        return item;
-                    })
-                    .filter(Boolean);
-
-                if (!title) {
-                    return null;
-                }
-
-                const sublistData = {
-                    id: sublistId,
-                    title,
-                    items: sublistItems
-                };
-                
-                // Adiciona estado de finalização se for uma sublista de compras
-                if (sublistDiv.classList.contains('sublist-finalized')) {
-                    sublistData.finalized = true;
-                    sublistData.transactionId = sublistDiv.dataset.transactionId;
-                    sublistData.transactionMonth = sublistDiv.dataset.transactionMonth;
-                }
-                
-                return sublistData;
-            }).filter(Boolean) : [];
-
+            });
+            
             const isRoutine = listDiv.dataset.isRoutine === 'true';
             let lastCompletedDate = null;
             if (isRoutine && listDiv.classList.contains('completed')) {
@@ -5124,15 +4191,12 @@ body.dark-mode #remove-schedule-btn:hover {
                 icon: iconPath,
                 color: colorValue,
                 colorName: colorName,
-                iconColor: getColorNameFromPriority(listDiv.querySelector('.list-priority-select').value), // Cor do ícone baseada na prioridade
                 isShoppingList: isShopping,
                 isFinalized: listDiv.classList.contains('finalized'),
                 isRoutine: isRoutine,
                 lastCompletedDate: lastCompletedDate,
                 transactionId: listDiv.dataset.transactionId || null,
-                transactionMonth: listDiv.dataset.transactionMonth || null,
-                supportsSublists: supportsSublists,
-                sublists: sublists
+                transactionMonth: listDiv.dataset.transactionMonth || null
             };
         }).filter(Boolean);
         localStorage.setItem('todoLists', JSON.stringify(lists));
@@ -5148,17 +4212,6 @@ body.dark-mode #remove-schedule-btn:hover {
         listsData.forEach(listData => {
             if (listData.isRoutine && listData.lastCompletedDate && listData.lastCompletedDate < todayString) {
                 listData.items.forEach(item => item.checked = false);
-                if (Array.isArray(listData.sublists)) {
-                    listData.sublists.forEach(sublist => {
-                        if (sublist && Array.isArray(sublist.items)) {
-                            sublist.items.forEach(subItem => {
-                                if (subItem && typeof subItem === 'object') {
-                                    subItem.checked = false;
-                                }
-                            });
-                        }
-                    });
-                }
                 listData.lastCompletedDate = null;
                 listsModified = true;
             }
@@ -5175,9 +4228,6 @@ body.dark-mode #remove-schedule-btn:hover {
 
         // Renderização das listas
         listsData.forEach(listData => {
-            const supportsSublists = typeof listData.supportsSublists === 'boolean'
-                ? listData.supportsSublists
-                : (Array.isArray(listData.sublists) && listData.sublists.length > 0);
             createList(
                 listData.name,
                 listData.items,
@@ -5190,9 +4240,7 @@ body.dark-mode #remove-schedule-btn:hover {
                 listData.transactionId,
                 listData.transactionMonth,
                 listData.color,
-                null, // Não usa cor personalizada, usa baseada na prioridade
-                supportsSublists,
-                listData.sublists || []
+                listData.colorName
             );
         });
     }
@@ -5264,70 +4312,20 @@ body.dark-mode #remove-schedule-btn:hover {
         if (targetList) {
             listDetailsTitle.textContent = targetList.name;
             listDetailsItems.innerHTML = '';
-            const hasMainItems = Array.isArray(targetList.items) && targetList.items.length > 0;
-            const hasSublists = Array.isArray(targetList.sublists) && targetList.sublists.length > 0;
-
-            if (!hasMainItems && !hasSublists) {
+            if (targetList.items.length === 0) {
                 listDetailsItems.innerHTML = '<li>esta lista não tem itens.</li>';
             } else {
-                if (hasMainItems) {
-                    targetList.items.forEach(item => {
-                        if (!item || typeof item.text !== 'string') return;
-                        const li = document.createElement('li');
-                        li.textContent = item.text;
-                        if (item.type === 'subcategory') {
-                            li.classList.add('subcategory-detail');
-                        } else if (item.checked) {
-                            li.style.textDecoration = 'line-through';
-                            li.style.opacity = '0.6';
-                        }
-                        listDetailsItems.appendChild(li);
-                    });
-                }
-
-                if (hasSublists) {
-                    const labelLi = document.createElement('li');
-                    labelLi.className = 'detail-sublist-label';
-                    labelLi.textContent = 'sublistas';
-                    listDetailsItems.appendChild(labelLi);
-
-                    targetList.sublists.forEach(sublist => {
-                        if (!sublist || typeof sublist.title !== 'string') return;
-                        const titleLi = document.createElement('li');
-                        titleLi.className = 'detail-sublist-title';
-                        titleLi.textContent = sublist.title;
-                        listDetailsItems.appendChild(titleLi);
-
-                        if (Array.isArray(sublist.items) && sublist.items.length > 0) {
-                            sublist.items.forEach(item => {
-                                let text = '';
-                                let checked = false;
-                                if (typeof item === 'string') {
-                                    text = item;
-                                } else if (item && typeof item === 'object') {
-                                    text = typeof item.text === 'string' ? item.text : '';
-                                    checked = !!item.checked;
-                                }
-                                text = text.trim();
-                                if (!text) return;
-                                const itemLi = document.createElement('li');
-                                itemLi.className = 'detail-sublist-item';
-                                itemLi.textContent = `• ${text}`;
-                                if (checked) {
-                                    itemLi.classList.add('completed');
-                                }
-                                listDetailsItems.appendChild(itemLi);
-                            });
-                        } else {
-                            const emptyLi = document.createElement('li');
-                            emptyLi.className = 'detail-sublist-item empty';
-                            emptyLi.textContent = 'sem itens';
-                            listDetailsItems.appendChild(emptyLi);
-                        }
-                    });
-                }
+                targetList.items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item.text;
+                    if (item.checked) {
+                        li.style.textDecoration = 'line-through';
+                        li.style.opacity = '0.6';
+                    }
+                    listDetailsItems.appendChild(li);
+                });
             }
-
+            
             // Show list details section
             listDetailsSection.style.setProperty('display', 'block', 'important');
         } else {
@@ -5372,9 +4370,8 @@ body.dark-mode #remove-schedule-btn:hover {
         if (currentListIconBeingEdited) {
             const listDiv = document.querySelector(`.list[data-list-id="${currentListIconBeingEdited}"]`);
             if (listDiv) {
-                // Usa a cor baseada na prioridade da lista
-                const priority = listDiv.querySelector('.list-priority-select').value;
-                const selectedColor = getColorNameFromPriority(priority);
+                // Usa a cor selecionada para o ícone
+                const selectedColor = listColor.value || 'blue';
                 const colorMap = {
                     'blue': '#3586ff',
                     'green': '#4caf50',
@@ -5431,6 +4428,7 @@ body.dark-mode #remove-schedule-btn:hover {
         const listData = allLists.find(list => list.id === listId);
         if (!listData) return;
 
+        editorLinkAsRoutineCheckbox.checked = false;
         editorRoutineOptions.style.display = 'none';
         editorRecurrenceTypeInput.value = 'none';
         editorRecurrenceEndDateInput.style.display = 'none';
@@ -5494,6 +4492,7 @@ body.dark-mode #remove-schedule-btn:hover {
             editorRoutineContainer.style.display = 'flex';
 
             if (linkedTaskInfo.task.recurrenceId) {
+                editorLinkAsRoutineCheckbox.checked = true;
                 editorRoutineOptions.style.display = 'flex';
                 
                 const recurrenceId = linkedTaskInfo.task.recurrenceId;
@@ -5596,8 +4595,8 @@ body.dark-mode #remove-schedule-btn:hover {
                                     ${iconMarkup}
                                     <span style="flex-grow: 1;">${categoryName}</span>
                                     <span>
-                                        <button class="edit-btn" onclick="editCategory('${categoryName}', '${type}')"><img src="./buttons/pencil.svg" alt="Editar"></button>
-                                        <button class="delete-btn" onclick="removeCategory('${categoryName}', '${type}')"><img src="./buttons/trash.svg" alt="Remover"></button>
+                                        <button class="edit-btn" onclick="editCategory('${categoryName}', '${type}')"><img src="buttons/pencil.svg" alt="Editar"></button>
+                                        <button class="delete-btn" onclick="removeCategory('${categoryName}', '${type}')"><img src="buttons/trash.svg" alt="Remover"></button>
                                     </span>
                                 </div>`;
                     }
@@ -6047,7 +5046,7 @@ body.dark-mode #remove-schedule-btn:hover {
         if (goal.id === editingGoalId) {
             card.innerHTML = `
                 <div style="position: relative;">
-                    <button class="close-button back-button" onclick="cancelEditGoal()" style="right: auto; left: 15px; top: 15px;"><img src="./buttons/back.svg" alt="Voltar"></button>
+                    <button class="close-button back-button" onclick="cancelEditGoal()" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
                     <h4 style="margin-top: 0; text-align: center; padding-top: 10px;">editar meta de investimento</h4>
                 </div>
                 <form class="edit-goal-form">
@@ -6103,7 +5102,47 @@ body.dark-mode #remove-schedule-btn:hover {
             });
             
             // Renderiza os ícones com a cor atual
+            // Ícones que devem aparecer primeiro, na ordem especificada
+            const priorityIcons = ['círculo', 'nenhum', 'pontos', 'estrela', 'dinheiro'];
+            const processedKeys = new Set();
+
+            // Processa primeiro os ícones prioritários na ordem especificada
+            priorityIcons.forEach(key => {
+                if (taskIcons[key]) {
+                    processedKeys.add(key);
+                    const iconPath = getColoredIcons(key, currentColorName);
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'task-icon-option';
+                    optionDiv.dataset.iconPath = iconPath;
+                    optionDiv.dataset.iconName = key;
+
+                    const img = document.createElement('img');
+                    img.src = iconPath + '?t=' + Date.now() + '&r=' + Math.random();
+                    img.className = `icon-color-${currentColorName}`;
+                    img.dataset.color = currentColorName;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'contain';
+                    img.style.borderRadius = '5px';
+                    optionDiv.appendChild(img);
+
+                    if (goal.icon === iconPath || goal.icon === taskIcons[key]) {
+                        optionDiv.classList.add('selected');
+                    }
+
+                    optionDiv.addEventListener('click', () => {
+                        iconPickerContainer.querySelector('.selected')?.classList.remove('selected');
+                        optionDiv.classList.add('selected');
+                        hiddenIconInput.value = optionDiv.dataset.iconPath;
+                    });
+
+                    iconPickerContainer.appendChild(optionDiv);
+                }
+            });
+
+            // Processa os demais ícones
             for (const key in taskIcons) {
+                if (processedKeys.has(key)) continue; // Pula os já processados
                 const iconPath = getColoredIcons(key, currentColorName);
                 const optionDiv = document.createElement('div');
                 optionDiv.className = 'task-icon-option';
@@ -6213,16 +5252,16 @@ body.dark-mode #remove-schedule-btn:hover {
                             <li>
                                 <span>${entry.key.replace('-', '/')}: </span>
                                 <input id="contribution-input-${currentKey}" type="number" value="${entry.amount}" step="0.01">
-                                <button class="save-item-btn" onclick="saveContributionEdit(${goal.id}, '${entry.key}')"><img src="./buttons/ok.svg" alt="Salvar"></button>
-                                <button class="cancel-item-btn" onclick="cancelContributionEdit()"><img src="./buttons/close.svg" alt="Cancelar"></button>
+                                <button class="save-item-btn" onclick="saveContributionEdit(${goal.id}, '${entry.key}')"><img src="buttons/ok.svg" alt="Salvar"></button>
+                                <button class="cancel-item-btn" onclick="cancelContributionEdit()"><img src="buttons/close.svg" alt="Cancelar"></button>
                             </li>`;
                     } else {
                          historyHtml += `
                             <li>
                                 <span>${entry.key.replace('-', '/')}: ${formatCurrency(entry.amount)}</span>
                                 <span>
-                                    <button class="edit-btn" onclick="editContribution(${goal.id}, '${entry.key}')"><img src="./buttons/pencil.svg" alt="Editar"></button>
-                                    <button class="delete-btn" onclick="deleteContribution(${goal.id}, '${entry.key}')"><img src="./buttons/trash.svg" alt="Remover"></button>
+                                    <button class="edit-btn" onclick="editContribution(${goal.id}, '${entry.key}')"><img src="buttons/pencil.svg" alt="Editar"></button>
+                                    <button class="delete-btn" onclick="deleteContribution(${goal.id}, '${entry.key}')"><img src="buttons/trash.svg" alt="Remover"></button>
                                 </span>
                             </li>`;
                     }
@@ -6239,8 +5278,8 @@ body.dark-mode #remove-schedule-btn:hover {
                     <h4>${goal.name}</h4>
                 </div>
                 <div class="actions">
-                    <button class="edit-btn"><img src="./buttons/pencil.svg" alt="Editar"></button>
-                    <button class="delete-btn"><img src="./buttons/trash.svg" alt="Remover"></button>
+                    <button class="edit-btn"><img src="buttons/pencil.svg" alt="Editar"></button>
+                    <button class="delete-btn"><img src="buttons/trash.svg" alt="Remover"></button>
                 </div>
               </div>
               <div class="goal-details">
@@ -6512,8 +5551,8 @@ body.dark-mode #remove-schedule-btn:hover {
                 <td style="padding: 12px 8px; font-size: 14px;">${item.desc}</td>
                 <td style="color: ${valueColor}; font-weight: bold; text-align:right; padding: 12px 8px; font-size: 14px;">${formatCurrency(Math.abs(item.value))}</td>
                 <td style="text-align:center; padding: 12px 8px;">
-                    <button class="edit-btn" data-index="${index}" style="margin-right: 5px;"><img src="./buttons/pencil.svg" alt="Editar" style="width: 16px; height: 16px;"></button>
-                    <button class="delete-btn" data-index="${index}"><img src="./buttons/trash.svg" alt="Remover" style="width: 16px; height: 16px;"></button>
+                    <button class="edit-btn" data-index="${index}" style="margin-right: 5px;"><img src="buttons/pencil.svg" alt="Editar" style="width: 16px; height: 16px;"></button>
+                    <button class="delete-btn" data-index="${index}"><img src="buttons/trash.svg" alt="Remover" style="width: 16px; height: 16px;"></button>
                 </td>
             `;
             expenseList.appendChild(row);
@@ -6741,14 +5780,36 @@ body.dark-mode #remove-schedule-btn:hover {
                     if (task.icon) { 
                         const iconEl = document.createElement('img');
                         iconEl.src = task.icon;
-                        // Força cor vermelha para tarefas prioritárias, senão usa a cor original
-                        const iconColor = task.priority === 'alta' ? 'red' : (task.color || task.iconColor || getIconColorFromPath(task.icon));
-                        iconEl.className = `task-icon-grid-view icon-color-${iconColor}`;
-                        // Aplica borda vermelha para TODAS as tarefas de alta prioridade
-                        if (task.priority === 'alta') {
-                            iconEl.classList.add('priority-icon-alta');
+                        // Se for lista agendada com prioridade alta, ícone e borda vermelhos
+                        // Caso contrário, mantém cor original do ícone, mas borda vermelha se prioritária
+                        let iconColor = task.color || task.iconColor || getIconColorFromPath(task.icon);
+                        if (task.linkedListId && task.priority === 'alta') {
+                            iconColor = 'red';
                         }
-                        iconContainer.appendChild(iconEl);
+                        iconEl.className = `task-icon-grid-view icon-color-${iconColor}`;
+                        
+                        // Se for prioritário, envolve em um wrapper com borda vermelha
+                        if (task.priority === 'alta') {
+                            const wrapper = document.createElement('div');
+                            wrapper.style.width = '18px';
+                            wrapper.style.height = '18px';
+                            wrapper.style.borderRadius = '3px';
+                            wrapper.style.border = '1px solid';
+                            const isDarkMode = document.body.classList.contains('dark-mode');
+                            wrapper.style.borderColor = isDarkMode ? '#FF1744' : '#FF5252';
+                            wrapper.style.padding = '1px';
+                            wrapper.style.boxSizing = 'border-box';
+                            wrapper.style.display = 'inline-flex';
+                            wrapper.style.alignItems = 'center';
+                            wrapper.style.justifyContent = 'center';
+                            iconEl.style.width = '100%';
+                            iconEl.style.height = '100%';
+                            iconEl.style.border = 'none';
+                            wrapper.appendChild(iconEl);
+                            iconContainer.appendChild(wrapper);
+                        } else {
+                            iconContainer.appendChild(iconEl);
+                        }
                     }
                 });
                 dayDiv.appendChild(iconContainer);
@@ -6939,40 +6000,23 @@ body.dark-mode #remove-schedule-btn:hover {
             if (task.priority === 'alta') {
                 taskItem.classList.add('priority-alta');
             }
-            
-            const isLinkedList = task.linkedListId ? true : false;
-            if (isLinkedList) {
+            if (task.linkedListId) {
                 taskItem.dataset.listId = task.linkedListId;
                 taskItem.style.cursor = 'pointer';
             }
 
-            // Força cor vermelha para tarefas prioritárias, senão usa a cor original
-            const iconColor = task.priority === 'alta' ? 'red' : (task.color || task.iconColor || getIconColorFromPath(task.icon));
+            const iconColor = task.color || task.iconColor || getIconColorFromPath(task.icon);
             const iconHtml = task.icon ? `<img src="${task.icon}" class="task-icon icon-color-${iconColor}" alt="ícone da tarefa">` : '';
             
             // Para listas agendadas, não mostra o botão de editar
-            const editButton = task.linkedListId ? '' : `<button class="edit-task-btn" onclick="editTask('${task.id}')"><img src="./buttons/pencil.svg" alt="Editar"></button>`;
+            const editButton = task.linkedListId ? '' : `<button class="edit-task-btn" onclick="editTask('${task.id}')"><img src="buttons/pencil.svg" alt="Editar"></button>`;
             
             taskItem.innerHTML = `
                 <span>${iconHtml}<strong>${task.time}</strong> - ${task.description}</span>
                 <div class="task-actions">
                     ${editButton}
-                    <button onclick="removeTask('${task.id}')"><img src="./buttons/trash.svg" alt="Remover"></button>
+                    <button onclick="removeTask('${task.id}')"><img src="buttons/trash.svg" alt="Remover"></button>
                 </div>`;
-            
-            // Aplica a borda vermelha APENAS para listas agendadas com ALTA PRIORIDADE
-            if (isLinkedList && task.priority === 'alta') {
-                const isDarkMode = document.body.classList.contains('dark-mode');
-                taskItem.style.borderLeftColor = isDarkMode ? '#FF1744' : '#FF5252';
-                taskItem.style.borderLeftWidth = '4px';
-                taskItem.style.borderLeftStyle = 'solid';
-            } else if (isLinkedList) {
-                // Listas agendadas sem alta prioridade: borda transparente
-                taskItem.style.borderLeftColor = 'transparent';
-                taskItem.style.borderLeftWidth = '4px';
-                taskItem.style.borderLeftStyle = 'solid';
-            }
-            
             tasksList.appendChild(taskItem);
         });
     }
@@ -7192,7 +6236,9 @@ body.dark-mode #remove-schedule-btn:hover {
         // Mapeamento dos nomes do código para os nomes dos arquivos (cores aplicadas via CSS)
         const iconNameMap = {
             "nenhum": "circledashed",
-            "lista": "circledashed",
+            "lista": "box",
+            "círculo": "circle",
+            "pontos": "circledots",
             "compras": "shopping",
             "médico": "health",
             "medicação": "pills",
@@ -7211,6 +6257,7 @@ body.dark-mode #remove-schedule-btn:hover {
             "aniversário": "birthday",
             "festa": "party",
             "férias": "vacation",
+            "transporte": "car",
             "viagem": "plane",
             "reunião": "people",
             "pessoas": "people",
@@ -7220,7 +6267,7 @@ body.dark-mode #remove-schedule-btn:hover {
             "cogumelo": "mushroom",
             "estudo": "study",
             "casa": "house",
-            "carro": "plane",
+            "carro": "car",
             "câmera": "picture",
             "unhas": "nails",
             "pele": "body",
@@ -7229,7 +6276,6 @@ body.dark-mode #remove-schedule-btn:hover {
             "flor": "flower",
             "planta": "plant",
             "maçã": "apple",
-            "caixa": "box",
             "cérebro": "study",
             "comprar": "buy",
             "cenoura": "carrot",
@@ -7326,7 +6372,51 @@ body.dark-mode #remove-schedule-btn:hover {
             }
         }
 
+        // Ícones que devem aparecer primeiro, na ordem especificada
+        const priorityIcons = ['círculo', 'nenhum', 'pontos', 'estrela', 'dinheiro'];
+        const processedKeys = new Set();
+
+        // Processa primeiro os ícones prioritários na ordem especificada
+        priorityIcons.forEach(key => {
+            if (icons[key]) {
+                processedKeys.add(key);
+                // Para seletores com colorPickerElement, usa cores dinâmicas
+                let iconPath;
+                if (colorPickerElement) {
+                    iconPath = getColoredIcons(key, currentColor);
+                } else {
+                    iconPath = icons[key];
+                }
+                
+                const option = document.createElement('div');
+                option.className = 'task-icon-option';
+                option.dataset.iconPath = iconPath;
+                option.dataset.iconName = key;
+                
+                // Cria a imagem com timestamp para evitar cache
+                const img = document.createElement('img');
+                img.src = iconPath + '?t=' + Date.now() + '&r=' + Math.random();
+                img.className = `icon-color-${currentColor}`;
+                img.dataset.color = currentColor;
+                option.appendChild(img);
+                
+                option.addEventListener('click', function() {
+                    if (hiddenInputElement) {
+                        pickerElement.querySelector('.selected')?.classList.remove('selected');
+                        this.classList.add('selected');
+                        hiddenInputElement.value = this.getAttribute('data-icon-path');
+                    }
+                    if (onSelectCallback) {
+                        onSelectCallback(iconPath);
+                    }
+                });
+                pickerElement.appendChild(option);
+            }
+        });
+
+        // Processa os demais ícones
         for (const key in icons) {
+            if (processedKeys.has(key)) continue; // Pula os já processados
             // Para seletores com colorPickerElement, usa cores dinâmicas
             let iconPath;
             if (colorPickerElement) {
@@ -7463,16 +6553,12 @@ body.dark-mode #remove-schedule-btn:hover {
     function finalizePurchase(listId) {
         const listDiv = document.querySelector(`.list[data-list-id="${listId}"]`);
         if (!listDiv || listDiv.classList.contains('finalized')) return;
-        
-        // Não permitir finalizar lista principal se ela tem sublistas
-        const hasSublists = listDiv.dataset.supportsSublists === 'true';
-        if (hasSublists) {
-            alert("Para listas com sublistas, finalize cada sublista individualmente.");
-            return;
-        }
 
         const listName = listDiv.querySelector('h2').textContent;
         const iconSrc = listDiv.querySelector('.list-title-icon').src;
+        
+        const categoryEntry = Object.entries(categoryIcons).find(([name, path]) => iconSrc.includes(path.substring(2)));
+        const categoryName = categoryEntry ? categoryEntry[0] : 'compras';
 
         let total = 0;
         listDiv.querySelectorAll('ul li').forEach(item => {
@@ -7484,74 +6570,16 @@ body.dark-mode #remove-schedule-btn:hover {
             return;
         }
 
-        // Solicitar categoria ao usuário
-        const categoryOptions = expenseCategories.map(cat => {
-            const categoryName = typeof cat === 'string' ? cat : cat.name;
-            return `<option value="${categoryName}">${categoryName}</option>`;
-        }).join('');
-
-        const categorySelect = `
-            <div style="margin: 10px 0;">
-                <label for="category-select" style="display: block; margin-bottom: 5px; font-weight: bold; color: var(--text-primary);">Categoria da despesa:</label>
-                <select id="category-select" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--background-secondary); color: var(--text-primary);">
-                    ${categoryOptions}
-                </select>
-            </div>
-        `;
-
-        const modal = document.createElement('div');
-        modal.style.cssText = `
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--background-overlay, rgba(0,0,0,0.8)); display: flex; align-items: center; 
-            justify-content: center; z-index: 10000;
-        `;
-        
-        modal.innerHTML = `
-            <div style="background: var(--background-primary); padding: 20px; border-radius: 8px; max-width: 400px; width: 90%; border: 2px solid var(--border-color); opacity: 1 !important;">
-                <h3 style="margin-top: 0; color: var(--text-primary);">Finalizar Compra</h3>
-                <p style="color: var(--text-primary);">Finalizar a compra "<strong>${listName}</strong>" com o valor total de <strong>${formatCurrency(total)}</strong>?</p>
-                ${categorySelect}
-                <div style="margin-top: 20px; text-align: right;">
-                    <button id="cancel-finalize" style="margin-right: 10px; padding: 8px 16px; border: 1px solid var(--border-color); background: var(--background-secondary); color: var(--text-primary); border-radius: 4px;">Cancelar</button>
-                    <button id="confirm-finalize" style="padding: 8px 16px; background: var(--success); color: white; border: none; border-radius: 4px;">Finalizar</button>
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(modal);
-
-        const cancelBtn = modal.querySelector('#cancel-finalize');
-        const confirmBtn = modal.querySelector('#confirm-finalize');
-        const select = modal.querySelector('#category-select');
-
-        cancelBtn.onclick = () => {
-            document.body.removeChild(modal);
-        };
-
-        confirmBtn.onclick = () => {
-            const selectedCategory = select.value;
-            if (!selectedCategory) {
-                alert('Por favor, selecione uma categoria.');
-                return;
-            }
-
-            // Obter ícone da categoria
-            const categoryData = expenseCategories.find(cat => {
-                const catName = typeof cat === 'string' ? cat : cat.name;
-                return catName === selectedCategory;
-            });
-            
-            const categoryIcon = categoryData && typeof categoryData === 'object' ? categoryData.icon : categoryIcons[selectedCategory] || categoryIcons["outros"];
-
-            const transactionId = Date.now();
+        if(confirm(`Finalizar a compra "${listName}" com o valor total de ${formatCurrency(total)}? Uma nova despesa será adicionada na categoria "${categoryName}".`)) {
+            const transactionId = Date.now(); // ID único para a transação
             const newTransaction = {
-                id: transactionId,
+                id: transactionId, // Armazena o ID
                 date: new Date().toISOString().split('T')[0],
                 desc: listName,
-                category: selectedCategory,
+                category: categoryName,
                 type: 'despesa',
                 value: -Math.abs(total),
-                icon: categoryIcon
+                icon: iconSrc
             };
 
             if (!dataByMonth[currentMonth]) dataByMonth[currentMonth] = [];
@@ -7571,9 +6599,8 @@ body.dark-mode #remove-schedule-btn:hover {
             
             saveLists();
             
-            document.body.removeChild(modal);
             alert("Compra finalizada e adicionada às suas finanças!");
-        };
+        }
     }
 
     function undoFinalizePurchase(listId) {
@@ -7603,237 +6630,8 @@ body.dark-mode #remove-schedule-btn:hover {
         saveLists();
     }
 
-    function finalizeSublistPurchase(sublistId, sublistBlock) {
-        if (!sublistBlock || sublistBlock.classList.contains('sublist-finalized')) return;
 
-        const sublistTitleElement = sublistBlock.querySelector('.sublist-title');
-        const sublistTitle = sublistTitleElement ? sublistTitleElement.textContent : 'Sublista';
-        
-        // Calcular total dos itens da sublista
-        let total = 0;
-        const items = sublistBlock.querySelectorAll('.sublist-items li');
-        items.forEach(item => {
-            if (!item.classList.contains('sublist-empty')) {
-                const valueSpan = item.querySelector('.sublist-item-value');
-                if (valueSpan) {
-                    const valueText = valueSpan.textContent.replace(/[^\d,.-]/g, '').replace(',', '.');
-                    const numericValue = parseFloat(valueText) || 0;
-                    total += numericValue;
-                }
-            }
-        });
-
-        if (total <= 0) {
-            alert("Adicione itens com valor antes de finalizar a compra desta sublista.");
-            return;
-        }
-
-        // Solicitar categoria ao usuário
-        const categoryOptions = expenseCategories.map(cat => {
-            const categoryName = typeof cat === 'string' ? cat : cat.name;
-            return `<option value="${categoryName}">${categoryName}</option>`;
-        }).join('');
-
-        const categorySelect = `
-            <div style="margin: 10px 0;">
-                <label for="sublist-category-select" style="display: block; margin-bottom: 5px; font-weight: bold; color: var(--text-primary);">Categoria da despesa:</label>
-                <select id="sublist-category-select" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--background-secondary); color: var(--text-primary);">
-                    ${categoryOptions}
-                </select>
-            </div>
-        `;
-
-        const modal = document.createElement('div');
-        modal.style.cssText = `
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--background-overlay, rgba(0,0,0,0.8)); display: flex; align-items: center; 
-            justify-content: center; z-index: 10000;
-        `;
-        
-        modal.innerHTML = `
-            <div style="background: var(--background-primary); padding: 20px; border-radius: 8px; max-width: 400px; width: 90%; border: 2px solid var(--border-color); opacity: 1 !important;">
-                <h3 style="margin-top: 0; color: var(--text-primary);">Finalizar Sublista</h3>
-                <p style="color: var(--text-primary);">Finalizar a sublista "<strong>${sublistTitle}</strong>" com o valor total de <strong>${formatCurrency(total)}</strong>?</p>
-                ${categorySelect}
-                <div style="margin-top: 20px; text-align: right;">
-                    <button id="cancel-sublist-finalize" style="margin-right: 10px; padding: 8px 16px; border: 1px solid var(--border-color); background: var(--background-secondary); color: var(--text-primary); border-radius: 4px;">Cancelar</button>
-                    <button id="confirm-sublist-finalize" style="padding: 8px 16px; background: var(--success); color: white; border: none; border-radius: 4px;">Finalizar</button>
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(modal);
-
-        const cancelBtn = modal.querySelector('#cancel-sublist-finalize');
-        const confirmBtn = modal.querySelector('#confirm-sublist-finalize');
-        const select = modal.querySelector('#sublist-category-select');
-
-        cancelBtn.onclick = () => {
-            document.body.removeChild(modal);
-        };
-
-        confirmBtn.onclick = () => {
-            const selectedCategory = select.value;
-            if (!selectedCategory) {
-                alert('Por favor, selecione uma categoria.');
-                return;
-            }
-
-            // Obter ícone da categoria
-            const categoryData = expenseCategories.find(cat => {
-                const catName = typeof cat === 'string' ? cat : cat.name;
-                return catName === selectedCategory;
-            });
-            
-            const categoryIcon = categoryData && typeof categoryData === 'object' ? categoryData.icon : categoryIcons[selectedCategory] || categoryIcons["outros"];
-
-            const transactionId = Date.now();
-            const newTransaction = {
-                id: transactionId,
-                date: new Date().toISOString().split('T')[0],
-                desc: sublistTitle,
-                category: selectedCategory,
-                type: 'despesa',
-                value: -Math.abs(total),
-                icon: categoryIcon
-            };
-
-            if (!dataByMonth[currentMonth]) dataByMonth[currentMonth] = [];
-            dataByMonth[currentMonth].push(newTransaction);
-            
-            saveFinancialData();
-            updateFinanceDisplay();
-            
-            // Marcar sublista como finalizada
-            sublistBlock.classList.add('sublist-finalized');
-            
-            // Armazena os dados da transação no elemento da sublista
-            sublistBlock.dataset.transactionId = transactionId;
-            sublistBlock.dataset.transactionMonth = currentMonth;
-            
-            // Salvar o estado da sublista finalizada nos dados da lista
-            const listId = sublistBlock.closest('.list').dataset.listId;
-            const lists = JSON.parse(localStorage.getItem('todoLists')) || [];
-            const listIndex = lists.findIndex(list => list.id === listId);
-            
-            if (listIndex !== -1 && lists[listIndex].sublists) {
-                const sublistIndex = lists[listIndex].sublists.findIndex(sublist => sublist.id === sublistId);
-                if (sublistIndex !== -1) {
-                    lists[listIndex].sublists[sublistIndex].finalized = true;
-                    lists[listIndex].sublists[sublistIndex].transactionId = transactionId;
-                    lists[listIndex].sublists[sublistIndex].transactionMonth = currentMonth;
-                }
-            }
-            
-            // Atualizar botões e estado visual
-            updateSublistFinalizeButtons(sublistBlock);
-            
-            // Salvar as listas para preservar o estado da sublista finalizada
-            saveLists();
-            
-            document.body.removeChild(modal);
-            alert("Sublista finalizada e adicionada às suas finanças!");
-        };
-    }
-
-    function undoFinalizeSublistPurchase(sublistId, sublistBlock) {
-        if (!sublistBlock) return;
-
-        const transactionId = parseInt(sublistBlock.dataset.transactionId);
-        const transactionMonth = sublistBlock.dataset.transactionMonth;
-
-        if (transactionId && transactionMonth && dataByMonth[transactionMonth]) {
-            // Remove a transação financeira correspondente
-            dataByMonth[transactionMonth] = dataByMonth[transactionMonth].filter(t => t.id !== transactionId);
-            saveFinancialData();
-            updateFinanceDisplay();
-        }
-        
-        // Reverte o estado visual e funcional da sublista
-        sublistBlock.classList.remove('sublist-finalized');
-        
-        // Remover o estado da sublista finalizada dos dados da lista
-        const listId = sublistBlock.closest('.list').dataset.listId;
-        const lists = JSON.parse(localStorage.getItem('todoLists')) || [];
-        const listIndex = lists.findIndex(list => list.id === listId);
-        
-        if (listIndex !== -1 && lists[listIndex].sublists) {
-            const sublistIndex = lists[listIndex].sublists.findIndex(sublist => sublist.id === sublistId);
-            if (sublistIndex !== -1) {
-                delete lists[listIndex].sublists[sublistIndex].finalized;
-                delete lists[listIndex].sublists[sublistIndex].transactionId;
-                delete lists[listIndex].sublists[sublistIndex].transactionMonth;
-            }
-        }
-        
-        // Atualizar botões e estado visual
-        updateSublistFinalizeButtons(sublistBlock);
-
-        // Limpa os dados da transação do elemento
-        delete sublistBlock.dataset.transactionId;
-        delete sublistBlock.dataset.transactionMonth;
-
-        saveLists();
-    }
-
-    function updateSublistFinalizeButtons(sublistBlock) {
-        const finalizeBtn = sublistBlock.querySelector('.sublist-finalize-btn');
-        
-        if (!finalizeBtn) return;
-        
-        // Verificar se a lista principal está finalizada
-        const listDiv = sublistBlock.closest('.list');
-        const isMainListFinalized = listDiv && listDiv.classList.contains('finalized');
-        const isSublistFinalized = sublistBlock.classList.contains('sublist-finalized');
-        
-        if (isSublistFinalized) {
-            // Sublista finalizada: mostrar botão para desfazer finalização
-            finalizeBtn.style.display = 'inline-flex';
-            finalizeBtn.title = 'Desfazer finalização desta sublista';
-            finalizeBtn.innerHTML = '<img src="./buttons/close.svg" alt="Desfazer finalização">';
-            
-            // Desabilitar edição dos itens
-            sublistBlock.querySelectorAll('.sublist-items li').forEach(li => {
-                const checkbox = li.querySelector('input[type="checkbox"]');
-                if (checkbox) checkbox.disabled = true;
-            });
-        } else if (isMainListFinalized) {
-            // Lista principal finalizada: ocultar botão de finalizar
-            finalizeBtn.style.display = 'none';
-            
-            // Desabilitar edição dos itens
-            sublistBlock.querySelectorAll('.sublist-items li').forEach(li => {
-                const checkbox = li.querySelector('input[type="checkbox"]');
-                if (checkbox) checkbox.disabled = true;
-            });
-        } else {
-            // Lista principal não finalizada e sublista não finalizada: verificar se há itens com valor
-            const hasItemsWithValue = Array.from(sublistBlock.querySelectorAll('.sublist-items li'))
-                .some(li => {
-                    if (li.classList.contains('sublist-empty')) return false;
-                    const valueSpan = li.querySelector('.sublist-item-value');
-                    if (valueSpan) {
-                        const valueText = valueSpan.textContent.replace(/[^\d,.-]/g, '').replace(',', '.');
-                        const numericValue = parseFloat(valueText) || 0;
-                        return numericValue > 0;
-                    }
-                    return false;
-                });
-            
-            finalizeBtn.style.display = hasItemsWithValue ? 'inline-flex' : 'none';
-            finalizeBtn.title = 'Finalizar compra desta sublista';
-            finalizeBtn.innerHTML = '<img src="./buttons/ok.svg" alt="Finalizar compra">';
-            
-            // Reabilitar edição dos itens
-            sublistBlock.querySelectorAll('.sublist-items li').forEach(li => {
-                const checkbox = li.querySelector('input[type="checkbox"]');
-                if (checkbox) checkbox.disabled = false;
-            });
-        }
-    }
-
-
-    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = taskIcons.lista, isShoppingList = false, isFinalized = false, isRoutine = false, transactionId = null, transactionMonth = null, borderColor = null, iconColorName = null, supportsSublists = false, initialSublists = []) {
+    window.createList = function(listName, initialItems = [], initialPriority = 'baixa', listId = Date.now().toString(), listIcon = taskIcons.lista, isShoppingList = false, isFinalized = false, isRoutine = false, transactionId = null, transactionMonth = null, borderColor = null, iconColorName = null) {
         if (!listName) return;
 
         const listDiv = document.createElement("div");
@@ -7854,7 +6652,7 @@ body.dark-mode #remove-schedule-btn:hover {
         const resolvedBorderColor = borderColor || getPriorityColor(initialPriority, isDarkMode);
         listDiv.style.borderLeftColor = resolvedBorderColor;
 
-        const resolvedIconColorName = getColorNameFromPriority(initialPriority);
+        const resolvedIconColorName = (iconColorName || normalizedBorderColorName || getColorNameFromValue(resolvedBorderColor) || getColorNameFromPriority(initialPriority) || 'blue');
         listDiv.dataset.colorName = resolvedIconColorName;
 
         const titleContainer = document.createElement('div');
@@ -7896,11 +6694,11 @@ body.dark-mode #remove-schedule-btn:hover {
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'list-title-actions';
         const editBtn = document.createElement("button");
-        editBtn.innerHTML = '<img src="./buttons/pencil.svg" alt="Editar">';
+        editBtn.innerHTML = '<img src="buttons/pencil.svg" alt="Editar">';
         editBtn.className = "edit-list-btn";
         editBtn.onclick = () => openListEditorSection(listId);
         const removeBtn = document.createElement("button");
-        removeBtn.innerHTML = '<img src="./buttons/closelist.svg" alt="Remover Lista">';
+        removeBtn.innerHTML = '<img src="buttons/closelist.svg" alt="Remover Lista">';
         removeBtn.className = "delete-list-circular-btn";
         removeBtn.onclick = () => deleteListAndLinkedTask(listDiv, listName);
         actionsDiv.appendChild(editBtn);
@@ -7939,485 +6737,8 @@ body.dark-mode #remove-schedule-btn:hover {
             saveLists();
         };
 
-        const hasInitialSublists = Array.isArray(initialSublists) && initialSublists.length > 0;
-        const allowsSublists = supportsSublists === true || supportsSublists === 'true' || hasInitialSublists;
-        listDiv.dataset.supportsSublists = allowsSublists ? 'true' : 'false';
-
-        let sublistControlsContainer = null;
-        let sublistsSection = null;
-        let addSublist = () => {};
-
-        if (allowsSublists) {
-            sublistControlsContainer = document.createElement('div');
-            sublistControlsContainer.className = 'sublist-controls-container';
-
-            const createSublistBtn = document.createElement('button');
-            createSublistBtn.type = 'button';
-            createSublistBtn.className = 'create-sublist-btn';
-            createSublistBtn.textContent = 'criar sublista';
-
-            const sublistForm = document.createElement('div');
-            sublistForm.className = 'sublist-form';
-
-            const sublistTitleInput = document.createElement('input');
-            sublistTitleInput.type = 'text';
-            sublistTitleInput.placeholder = 'título da sublista';
-
-            const sublistSaveBtn = document.createElement('button');
-            sublistSaveBtn.type = 'button';
-            sublistSaveBtn.className = 'save-sublist-btn';
-            sublistSaveBtn.textContent = '+';
-            sublistSaveBtn.setAttribute('aria-label', 'salvar sublista');
-            sublistSaveBtn.title = 'salvar sublista';
-
-            sublistForm.appendChild(sublistTitleInput);
-            sublistForm.appendChild(sublistSaveBtn);
-            sublistControlsContainer.appendChild(createSublistBtn);
-            sublistControlsContainer.appendChild(sublistForm);
-
-            sublistsSection = document.createElement('div');
-            sublistsSection.className = 'sublists-section';
-
-            const normalizeSublistItem = (item) => {
-                if (typeof item === 'string') {
-                    const text = item.trim();
-                    return text ? { text, checked: false, value: 0 } : null;
-                }
-                if (item && typeof item === 'object') {
-                    const text = typeof item.text === 'string' ? item.text.trim() : '';
-                    if (!text) return null;
-                    return {
-                        text,
-                        checked: !!item.checked,
-                        value: (typeof item.value === 'number' && !isNaN(item.value)) ? item.value : 0
-                    };
-                }
-                return null;
-            };
-
-            const normalizeSublistItems = (items) => {
-                if (!Array.isArray(items)) return [];
-                return items
-                    .map(normalizeSublistItem)
-                    .filter(Boolean);
-            };
-
-            const createSublistBlock = (sublistData) => {
-                const state = {
-                    id: (sublistData && sublistData.id) || generateSublistId(),
-                    title: sublistData && typeof sublistData.title === 'string' ? sublistData.title.trim() : '',
-                    items: normalizeSublistItems(sublistData && sublistData.items)
-                };
-
-                if (!state.title) {
-                    return null;
-                }
-
-                const block = document.createElement('div');
-                block.className = 'sublist-block';
-                block.dataset.sublistId = state.id;
-                
-                // Restaurar estado de finalização se existir
-                if (sublistData && sublistData.finalized) {
-                    block.classList.add('sublist-finalized');
-                    if (sublistData.transactionId) {
-                        block.dataset.transactionId = sublistData.transactionId;
-                    }
-                    if (sublistData.transactionMonth) {
-                        block.dataset.transactionMonth = sublistData.transactionMonth;
-                    }
-                }
-
-                const header = document.createElement('div');
-                header.className = 'sublist-header';
-
-                const titleWrapper = document.createElement('div');
-                titleWrapper.className = 'sublist-title-wrapper';
-
-                const headerActions = document.createElement('div');
-                headerActions.className = 'sublist-header-actions';
-
-                const editBtn = document.createElement('button');
-                editBtn.type = 'button';
-                editBtn.className = 'sublist-icon-btn sublist-edit-btn';
-                editBtn.innerHTML = '<img src="./buttons/pencil.svg" alt="Editar sublista">';
-
-                const deleteBtn = document.createElement('button');
-                deleteBtn.type = 'button';
-                deleteBtn.className = 'sublist-icon-btn sublist-delete-btn';
-                deleteBtn.innerHTML = '<img src="./buttons/trash.svg" alt="Excluir sublista">';
-
-                const saveBtn = document.createElement('button');
-                saveBtn.type = 'button';
-                saveBtn.className = 'sublist-icon-btn sublist-save-btn';
-                saveBtn.innerHTML = '<img src="./buttons/ok.svg" alt="Salvar sublista">';
-                saveBtn.hidden = true;
-                saveBtn.setAttribute('tabindex', '-1');
-                saveBtn.disabled = true;
-                saveBtn.setAttribute('aria-hidden', 'true');
-
-                headerActions.appendChild(editBtn);
-                headerActions.appendChild(deleteBtn);
-
-                // Adiciona botão de finalizar compra se for lista de compras
-                if (isShoppingList) {
-                    const finalizeBtn = document.createElement('button');
-                    finalizeBtn.type = 'button';
-                    finalizeBtn.className = 'sublist-icon-btn sublist-finalize-btn';
-                    finalizeBtn.innerHTML = '<img src="./buttons/ok.svg" alt="Finalizar compra">';
-                    finalizeBtn.title = 'Finalizar compra desta sublista';
-                    finalizeBtn.style.display = 'none'; // Inicialmente oculto
-                    
-                    block.appendChild(finalizeBtn);
-                }
-
-                header.appendChild(titleWrapper);
-                header.appendChild(headerActions);
-
-                const itemsList = document.createElement('ul');
-                itemsList.className = 'sublist-items';
-
-                const editItemsContainer = document.createElement('div');
-                editItemsContainer.className = 'sublist-edit-items';
-                editItemsContainer.style.display = 'none';
-
-                block.appendChild(header);
-                block.appendChild(itemsList);
-                block.appendChild(editItemsContainer);
-
-                const updateTitleDisplay = () => {
-                    titleWrapper.innerHTML = '';
-                    const titleSpan = document.createElement('span');
-                    titleSpan.className = 'sublist-title';
-                    titleSpan.textContent = state.title;
-                    titleWrapper.appendChild(titleSpan);
-                };
-
-                const renderView = () => {
-                    itemsList.innerHTML = '';
-                    if (state.items.length === 0) {
-                        const emptyLi = document.createElement('li');
-                        emptyLi.className = 'sublist-empty';
-                        emptyLi.textContent = 'nenhum item';
-                        itemsList.appendChild(emptyLi);
-                    } else {
-                        state.items.forEach((item, index) => {
-                            if (!item || typeof item.text !== 'string') return;
-                            const li = document.createElement('li');
-                            const itemContent = document.createElement('div');
-                            itemContent.className = 'sublist-item-content';
-
-                            const checkbox = document.createElement('input');
-                            checkbox.type = 'checkbox';
-                            checkbox.checked = !!item.checked;
-
-                            const textSpan = document.createElement('span');
-                            textSpan.className = 'sublist-item-text';
-                            textSpan.textContent = item.text;
-
-                            itemContent.appendChild(checkbox);
-                            itemContent.appendChild(textSpan);
-
-                            // Adiciona campo valor se a lista for de compras
-                            if (isShoppingList) {
-                                const valueSpan = document.createElement('span');
-                                valueSpan.className = 'sublist-item-value';
-                                valueSpan.textContent = formatCurrency(item.value || 0);
-                                itemContent.appendChild(valueSpan);
-                            }
-
-                            li.appendChild(itemContent);
-                            li.classList.toggle('completed', !!item.checked);
-
-                            checkbox.addEventListener('change', () => {
-                                state.items[index].checked = checkbox.checked;
-                                li.classList.toggle('completed', checkbox.checked);
-                                saveLists();
-                                checkCompletion(listDiv);
-                            });
-
-                            itemsList.appendChild(li);
-                        });
-                    }
-                    
-                    // Atualizar botões de finalizar baseado no estado da sublista
-                    if (isShoppingList) {
-                        updateSublistFinalizeButtons(block);
-                    }
-                    
-                    checkCompletion(listDiv);
-                };
-
-                const createEditRow = (value = '') => {
-                    const row = document.createElement('div');
-                    row.className = 'sublist-edit-row';
-
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.value = value;
-                    input.placeholder = 'novo item';
-
-                    const rowActions = document.createElement('div');
-                    rowActions.className = 'sublist-edit-row-actions';
-
-                    // Adiciona campo valor se a lista for de compras
-                    if (isShoppingList) {
-                        const valueInput = document.createElement('input');
-                        valueInput.type = 'number';
-                        valueInput.step = '0.01';
-                        valueInput.placeholder = 'R$ 0,00';
-                        valueInput.style.width = '80px';
-                        valueInput.style.marginRight = '8px';
-                        rowActions.appendChild(valueInput);
-                    }
-
-                    const addRowBtn = document.createElement('button');
-                    addRowBtn.type = 'button';
-                    addRowBtn.className = 'sublist-icon-btn sublist-inline-add-btn';
-                    addRowBtn.textContent = '+';
-                    addRowBtn.setAttribute('aria-label', 'adicionar novo item na sublista');
-                    addRowBtn.addEventListener('click', () => {
-                        const newRow = createEditRow('');
-                        editItemsContainer.appendChild(newRow);
-                        const newInput = newRow.querySelector('input[type="text"]');
-                        if (newInput) {
-                            requestAnimationFrame(() => newInput.focus());
-                        }
-                    });
-
-                    const removeBtn = document.createElement('button');
-                    removeBtn.type = 'button';
-                    removeBtn.className = 'sublist-icon-btn sublist-remove-item-btn';
-                    removeBtn.innerHTML = '<img src="./buttons/trash.svg" alt="Remover item da sublista">';
-                    removeBtn.addEventListener('click', () => {
-                        row.remove();
-                        if (!editItemsContainer.querySelector('.sublist-edit-row')) {
-                            const fallbackRow = createEditRow('');
-                            editItemsContainer.appendChild(fallbackRow);
-                            const fallbackInput = fallbackRow.querySelector('input[type="text"]');
-                            if (fallbackInput) {
-                                requestAnimationFrame(() => fallbackInput.focus());
-                            }
-                        }
-                    });
-
-                    rowActions.appendChild(addRowBtn);
-                    rowActions.appendChild(removeBtn);
-
-                    row.appendChild(input);
-                    row.appendChild(rowActions);
-
-                    return row;
-                };
-
-                let titleInputRef = null;
-
-                const exitEditMode = () => {
-                    block.classList.remove('editing');
-                    editBtn.style.display = 'inline-flex';
-                    saveBtn.style.display = 'none';
-                    saveBtn.hidden = true;
-                    saveBtn.setAttribute('tabindex', '-1');
-                    saveBtn.disabled = true;
-                    saveBtn.setAttribute('aria-hidden', 'true');
-                    if (headerActions.contains(saveBtn)) {
-                        headerActions.removeChild(saveBtn);
-                    }
-                    itemsList.style.display = '';
-                    editItemsContainer.style.display = 'none';
-                    editItemsContainer.innerHTML = '';
-                    titleInputRef = null;
-                    updateTitleDisplay();
-                };
-
-                const enterEditMode = () => {
-                    block.classList.add('editing');
-                    editBtn.style.display = 'none';
-                    if (!headerActions.contains(saveBtn)) {
-                        headerActions.appendChild(saveBtn);
-                    }
-                    saveBtn.style.display = 'inline-flex';
-                    saveBtn.hidden = false;
-                    saveBtn.removeAttribute('tabindex');
-                    saveBtn.disabled = false;
-                    saveBtn.setAttribute('aria-hidden', 'false');
-                    itemsList.style.display = 'none';
-                    editItemsContainer.style.display = 'flex';
-                    editItemsContainer.innerHTML = '';
-                    if (state.items.length === 0) {
-                        editItemsContainer.appendChild(createEditRow(''));
-                    } else {
-                        state.items.forEach(item => {
-                            const row = createEditRow(item && typeof item.text === 'string' ? item.text : '');
-                            // Se for lista de compras, carrega o valor do item
-                            if (isShoppingList && item && typeof item.value === 'number' && !isNaN(item.value)) {
-                                const valueInput = row.querySelector('input[type="number"]');
-                                if (valueInput) {
-                                    valueInput.value = item.value;
-                                }
-                            }
-                            editItemsContainer.appendChild(row);
-                        });
-                    }
-                    titleWrapper.innerHTML = '';
-                    titleInputRef = document.createElement('input');
-                    titleInputRef.type = 'text';
-                    titleInputRef.className = 'sublist-title-input';
-                    titleInputRef.value = state.title;
-                    titleInputRef.placeholder = 'título da sublista';
-                    titleInputRef.addEventListener('keydown', (event) => {
-                        if (event.key === 'Enter') {
-                            event.preventDefault();
-                            saveBtn.click();
-                        }
-                    });
-                    titleWrapper.appendChild(titleInputRef);
-                    requestAnimationFrame(() => titleInputRef && titleInputRef.focus());
-                };
-
-                editBtn.addEventListener('click', () => enterEditMode());
-
-                deleteBtn.addEventListener('click', () => {
-                    if (confirm('tem certeza que deseja excluir esta sublista?')) {
-                        block.remove();
-                        checkCompletion(listDiv);
-                        saveLists();
-                    }
-                });
-
-                // Event listeners para botões de finalizar (se for lista de compras)
-                if (isShoppingList) {
-                    const finalizeBtn = block.querySelector('.sublist-finalize-btn');
-                    
-                    if (finalizeBtn) {
-                        finalizeBtn.addEventListener('click', () => {
-                            if (block.classList.contains('sublist-finalized')) {
-                                undoFinalizeSublistPurchase(state.id, block);
-                            } else {
-                                finalizeSublistPurchase(state.id, block);
-                            }
-                        });
-                    }
-                }
-
-                saveBtn.addEventListener('click', () => {
-                    if (!block.classList.contains('editing')) {
-                        return;
-                    }
-                    const newTitle = titleInputRef ? titleInputRef.value.trim() : state.title;
-                    if (!newTitle) {
-                        if (titleInputRef) {
-                            titleInputRef.focus();
-                        }
-                        return;
-                    }
-                    const updatedItems = Array.from(editItemsContainer.querySelectorAll('input[type="text"]'))
-                        .map((input, index) => {
-                            const value = input.value.trim();
-                            if (!value) return null;
-                            const existing = state.items[index];
-                            const item = {
-                                text: value,
-                                checked: existing ? !!existing.checked : false
-                            };
-                            
-                            // Adiciona valor se a lista for de compras
-                            if (isShoppingList) {
-                                const row = input.closest('.sublist-edit-row');
-                                const valueInput = row ? row.querySelector('input[type="number"]') : null;
-                                const numericValue = valueInput ? parseFloat(valueInput.value) || 0 : 0;
-                                item.value = numericValue;
-                            }
-                            
-                            return item;
-                        })
-                        .filter(Boolean);
-                    state.title = newTitle;
-                    state.items = updatedItems;
-                    
-                    // Atualizar botões de finalizar após salvar
-                    if (isShoppingList) {
-                        updateSublistFinalizeButtons(block);
-                    }
-                    
-                    exitEditMode();
-                    renderView();
-                    saveLists();
-                });
-
-                updateTitleDisplay();
-                renderView();
-                exitEditMode();
-                if (state.items.length === 0) {
-                    enterEditMode();
-                }
-
-                // Atualizar botões de finalizar após criar a sublista
-                if (isShoppingList) {
-                    updateSublistFinalizeButtons(block);
-                }
-
-                return block;
-            };
-
-            addSublist = (sublistData, shouldSave = false) => {
-                if (!sublistData) return;
-                const normalizedTitle = typeof sublistData.title === 'string' ? sublistData.title.trim() : '';
-                if (!normalizedTitle) return;
-                const normalizedItems = normalizeSublistItems(sublistData.items);
-                const block = createSublistBlock({
-                    id: sublistData.id,
-                    title: normalizedTitle,
-                    items: normalizedItems,
-                    finalized: sublistData.finalized || false,
-                    transactionId: sublistData.transactionId || null,
-                    transactionMonth: sublistData.transactionMonth || null
-                });
-                if (block) {
-                    sublistsSection.appendChild(block);
-                    checkCompletion(listDiv);
-                    
-                    // Atualizar botões de finalização se for uma lista de compras
-                    if (isShoppingList) {
-                        updateSublistFinalizeButtons(block);
-                    }
-                    
-                    if (shouldSave) {
-                        saveLists();
-                    }
-                }
-            };
-
-            createSublistBtn.addEventListener('click', () => {
-                const isVisible = sublistForm.style.display === 'flex';
-                sublistForm.style.display = isVisible ? 'none' : 'flex';
-                if (!isVisible) {
-                    sublistTitleInput.focus();
-                }
-            });
-
-            sublistSaveBtn.addEventListener('click', () => {
-                const title = sublistTitleInput.value.trim();
-                if (!title) {
-                    sublistTitleInput.focus();
-                    return;
-                }
-                addSublist({ title }, true);
-                sublistTitleInput.value = '';
-                sublistForm.style.display = 'none';
-            });
-
-            sublistTitleInput.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    sublistSaveBtn.click();
-                }
-            });
-        }
-
         const inputGroup = document.createElement("div");
         const ul = document.createElement("ul");
-        ul.className = 'list-items';
         
         if (isShoppingList) {
             inputGroup.className = "shopping-input-group";
@@ -8429,22 +6750,19 @@ body.dark-mode #remove-schedule-btn:hover {
             valueInput.placeholder = "R$";
             valueInput.step = "0.01";
             const addBtn = document.createElement("button");
-            addBtn.type = "button";
             addBtn.textContent = "+";
             addBtn.className = "add-btn";
-            
-            inputGroup.append(itemInput, valueInput, addBtn);
 
+            inputGroup.append(itemInput, valueInput, addBtn);
+            
             addBtn.onclick = () => {
                 const text = itemInput.value.trim();
+                const value = parseFloat(valueInput.value) || 0;
                 if (!text) return;
-                const numericValue = parseFloat(valueInput.value);
-                const safeValue = Number.isFinite(numericValue) ? numericValue : 0;
-                addItem(text, false, safeValue);
+                addItem(text, false, value);
                 itemInput.value = "";
                 valueInput.value = "";
                 itemInput.focus();
-                checkCompletion(listDiv);
                 saveLists();
             };
         } else {
@@ -8453,83 +6771,58 @@ body.dark-mode #remove-schedule-btn:hover {
             input.type = "text";
             input.placeholder = "novo item";
             const addBtn = document.createElement("button");
-            addBtn.type = "button";
             addBtn.textContent = "adicionar";
             addBtn.className = "add-btn";
-            const buttonsWrapper = document.createElement('div');
-            buttonsWrapper.className = 'add-btn-group';
-            buttonsWrapper.appendChild(addBtn);
             inputGroup.appendChild(input);
-            inputGroup.appendChild(buttonsWrapper);
-
-            addBtn.onclick = () => {
-                const text = input.value.trim();
-                if (!text) return;
-                input.value = "";
-                addItem(text);
-                checkCompletion(listDiv);
-                saveLists();
+            inputGroup.appendChild(addBtn);
+            
+            addBtn.onclick = () => { 
+                const text = input.value.trim(); 
+                if (!text) return; 
+                input.value = ""; 
+                addItem(text); 
+                checkCompletion(listDiv); 
+                saveLists(); 
             };
         }
-
-        const addItem = (text, checked = false, value = 0, type = 'item') => {
-            if (!text) return;
-
+        
+        const addItem = (text, checked = false, value = 0) => {
             const li = document.createElement("li");
-            const itemType = type === 'subcategory' ? 'subcategory' : 'item';
-            const isSubcategory = itemType === 'subcategory';
-            li.dataset.itemType = itemType;
-            if (isSubcategory) {
-                li.classList.add('subcategory-item');
-            }
-
             const contentDiv = document.createElement('div');
             contentDiv.className = 'list-item-content';
-
-            let checkbox = null;
-            if (!isSubcategory) {
-                checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.checked = !!checked;
-                checkbox.onchange = () => { checkCompletion(listDiv); saveLists(); };
-                contentDiv.appendChild(checkbox);
-            }
-
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = checked;
+            checkbox.onchange = () => { checkCompletion(listDiv); saveLists(); };
             const span = document.createElement("span");
             span.textContent = text;
+            contentDiv.appendChild(checkbox);
             contentDiv.appendChild(span);
-
-            let numericValue = Number.isFinite(value) ? value : parseFloat(value);
-            if (!Number.isFinite(numericValue)) {
-                numericValue = 0;
+            
+            if (isShoppingList) {
+                li.dataset.value = value;
             }
-
-            if (isShoppingList && !isSubcategory) {
-                li.dataset.value = numericValue;
-            } else {
-                delete li.dataset.value;
-            }
-
+            
             const actionsDiv = document.createElement('div');
             actionsDiv.className = 'list-item-actions';
-
-            let valueDiv = null;
-            if (isShoppingList && !isSubcategory) {
-                valueDiv = document.createElement('div');
-                valueDiv.className = 'list-item-value';
-                valueDiv.textContent = formatCurrency(numericValue);
+            
+            let valueDiv;
+            if(isShoppingList){
+                 valueDiv = document.createElement('div');
+                 valueDiv.className = 'list-item-value';
+                 valueDiv.textContent = formatCurrency(value);
             }
-
+            
             const createInitialButtons = () => {
                 actionsDiv.innerHTML = '';
                 const editBtnItem = document.createElement('button');
                 editBtnItem.className = 'edit-item-btn';
-                editBtnItem.innerHTML = '<img src="./buttons/pencil.svg" alt="Editar">';
+                editBtnItem.innerHTML = '<img src="buttons/pencil.svg" alt="Editar">';
                 editBtnItem.onclick = () => toggleEditMode(true, li);
 
                 const deleteBtnItem = document.createElement('button');
                 deleteBtnItem.className = 'delete-item-btn';
-                deleteBtnItem.innerHTML = '<img src="./buttons/trash.svg" alt="Remover">';
+                deleteBtnItem.innerHTML = '<img src="buttons/trash.svg" alt="Remover">';
                 deleteBtnItem.onclick = () => {
                     li.remove();
                     if(isShoppingList) updateShoppingListTotal(listDiv);
@@ -8547,11 +6840,10 @@ body.dark-mode #remove-schedule-btn:hover {
                     textInputField.type = 'text';
                     textInputField.value = currentText;
                     contentDiv.replaceChild(textInputField, span);
-
-                    let valueInputField = null;
-                    if(isShoppingList && !isSubcategory){
-                        const currentValue = parseFloat(currentLi.dataset.value) || 0;
-                        valueInputField = document.createElement('input');
+                    
+                    if(isShoppingList){
+                        const currentValue = parseFloat(currentLi.dataset.value);
+                        const valueInputField = document.createElement('input');
                         valueInputField.type = 'number';
                         valueInputField.step = '0.01';
                         valueInputField.className = 'list-item-value-input';
@@ -8563,17 +6855,13 @@ body.dark-mode #remove-schedule-btn:hover {
                     actionsDiv.innerHTML = '';
                     const saveBtn = document.createElement('button');
                     saveBtn.className = 'save-item-btn';
-                    saveBtn.innerHTML = '<img src="./buttons/ok.svg" alt="Salvar">';
+                    saveBtn.innerHTML = '<img src="buttons/ok.svg" alt="Salvar">';
                     saveBtn.onclick = () => {
                         span.textContent = textInputField.value;
-                        if(isShoppingList && !isSubcategory){
-                            const valueInput = currentLi.querySelector('.list-item-value-input');
-                            const newValueRaw = valueInput ? parseFloat(valueInput.value) : 0;
-                            const newValue = Number.isFinite(newValueRaw) ? newValueRaw : 0;
+                        if(isShoppingList){
+                            const newValue = parseFloat(currentLi.querySelector('.list-item-value-input').value) || 0;
                             currentLi.dataset.value = newValue;
-                            if (valueDiv) {
-                                valueDiv.textContent = formatCurrency(newValue);
-                            }
+                            valueDiv.textContent = formatCurrency(newValue);
                             updateShoppingListTotal(listDiv);
                         }
                         toggleEditMode(false, currentLi);
@@ -8582,7 +6870,7 @@ body.dark-mode #remove-schedule-btn:hover {
 
                     const cancelBtn = document.createElement('button');
                     cancelBtn.className = 'cancel-item-btn';
-                    cancelBtn.innerHTML = '<img src="./buttons/close.svg" alt="Cancelar">';
+                    cancelBtn.innerHTML = '<img src="buttons/close.svg" alt="Cancelar">';
                     cancelBtn.onclick = () => toggleEditMode(false, currentLi);
 
                     actionsDiv.appendChild(saveBtn);
@@ -8590,19 +6878,19 @@ body.dark-mode #remove-schedule-btn:hover {
                 } else {
                     const textInputField = contentDiv.querySelector('input[type="text"]');
                     if (textInputField) contentDiv.replaceChild(span, textInputField);
-
-                    if(isShoppingList && !isSubcategory){
+                    
+                    if(isShoppingList){
                         const valueInputField = currentLi.querySelector('.list-item-value-input');
-                        if (valueInputField && valueDiv) currentLi.replaceChild(valueDiv, valueInputField);
+                        if (valueInputField) currentLi.replaceChild(valueDiv, valueInputField);
                     }
                     createInitialButtons();
                 }
             };
-
+            
             createInitialButtons();
-
+            
             li.appendChild(contentDiv);
-            if(isShoppingList && !isSubcategory && valueDiv) {
+            if(isShoppingList) {
                 li.appendChild(valueDiv);
             }
             li.appendChild(actionsDiv);
@@ -8612,20 +6900,10 @@ body.dark-mode #remove-schedule-btn:hover {
         
         listDiv.appendChild(titleContainer);
         listDiv.appendChild(prioritySelect);
-        if (sublistControlsContainer) {
-            listDiv.appendChild(sublistControlsContainer);
-        }
-        if (allowsSublists) {
-            listDiv.classList.add('has-sublists');
-        } else {
-            listDiv.appendChild(inputGroup);
-        }
+        listDiv.appendChild(inputGroup);
         listDiv.appendChild(ul);
-        if (sublistsSection) {
-            listDiv.appendChild(sublistsSection);
-        }
         
-        if (isShoppingList && !allowsSublists) {
+        if (isShoppingList) {
             const totalDiv = document.createElement('div');
             totalDiv.className = 'list-total';
             totalDiv.innerHTML = 'total: <span>r$ 0,00</span>';
@@ -8635,42 +6913,27 @@ body.dark-mode #remove-schedule-btn:hover {
             finalizeBtn.textContent = 'finalizar compra';
             finalizeBtn.onclick = () => finalizePurchase(listId);
             
-            const undoFinalizeBtn = document.createElement('button');
-            undoFinalizeBtn.className = 'undo-finalize-btn';
-            undoFinalizeBtn.textContent = 'desfazer finalização';
-            undoFinalizeBtn.onclick = () => undoFinalizePurchase(listId);
-            undoFinalizeBtn.style.display = 'none'; // Inicialmente oculto
+            const undoBtn = document.createElement('button');
+            undoBtn.className = 'undo-finalize-btn';
+            undoBtn.textContent = 'desfazer finalização';
+            undoBtn.onclick = () => undoFinalizePurchase(listId);
             
             listDiv.appendChild(totalDiv);
             listDiv.appendChild(finalizeBtn);
-            listDiv.appendChild(undoFinalizeBtn);
+            listDiv.appendChild(undoBtn);
         }
         
         listsContainer.appendChild(listDiv);
         
-        initialItems.forEach(item => {
-            if (!item || !item.text) return;
-            const itemType = item.type === 'subcategory' ? 'subcategory' : 'item';
-            const isChecked = itemType === 'item' ? !!item.checked : false;
-            const itemValue = itemType === 'item' ? item.value : 0;
-            addItem(item.text, isChecked, itemValue, itemType);
-        });
-
-        if (allowsSublists && Array.isArray(initialSublists)) {
-            initialSublists.forEach(sublist => addSublist(sublist));
-        }
+        initialItems.forEach(item => addItem(item.text, item.checked, item.value));
         checkCompletion(listDiv);
-
+        
         if (isFinalized) {
             listDiv.classList.add('finalized');
-            
-            // Ocultar botão de finalizar compra e mostrar botão de desfazer quando lista está finalizada (apenas para listas sem sublistas)
-            if (!allowsSublists) {
-                const finalizeBtn = listDiv.querySelector('.finalize-purchase-btn');
-                const undoFinalizeBtn = listDiv.querySelector('.undo-finalize-btn');
-                if (finalizeBtn) finalizeBtn.style.display = 'none';
-                if (undoFinalizeBtn) undoFinalizeBtn.style.display = 'block';
-            }
+            const finalizeBtn = listDiv.querySelector('.finalize-purchase-btn');
+            const undoBtn = listDiv.querySelector('.undo-finalize-btn');
+            if (finalizeBtn) finalizeBtn.style.display = 'none';
+            if (undoBtn) undoBtn.style.display = 'block';
             
             if(listDiv.querySelector('.shopping-input-group')) {
                 listDiv.querySelector('.shopping-input-group').querySelectorAll('input, button').forEach(el => el.disabled = true);
@@ -8756,10 +7019,9 @@ body.dark-mode #remove-schedule-btn:hover {
         const listPriority = newListPriorityInput.value;
         const newListId = Date.now().toString();
         const isShopping = shoppingListCheckbox.checked;
-        const isRoutine = listRecurrenceTypeInput.value !== 'none';
-        const supportsSublists = newListHasSublistsInput ? newListHasSublistsInput.checked : false;
-
-        createList(listName, [], listPriority, newListId, taskIcons.lista, isShopping, false, isRoutine, null, null, null, null, supportsSublists);
+        const isRoutine = linkAsRoutineCheckbox.checked;
+        
+        createList(listName, [], listPriority, newListId, taskIcons.lista, isShopping, false, isRoutine);
         saveLists(); // Save the new list to localStorage
         
         if (linkToPlannerCheckbox.checked) {
@@ -8780,7 +7042,6 @@ body.dark-mode #remove-schedule-btn:hover {
                     description: listName, 
                     icon: taskIcons.lista,
                     priority: listPriority === 'alta' ? 'alta' : 'nenhuma',
-                    color: listPriority === 'alta' ? 'red' : (listPriority === 'media' ? 'yellow' : 'blue'),
                     recurrenceId: recurrenceId,
                     linkedListId: newListId
                 });
@@ -8831,7 +7092,7 @@ body.dark-mode #remove-schedule-btn:hover {
         plannerLinkOptions.style.display = 'none';
         routineOptions.style.display = 'none';
         linkToPlannerCheckbox.checked = false;
-        listRecurrenceTypeInput.value = 'none';
+        linkAsRoutineCheckbox.checked = false;
         listEventDateInput.required = false;
         listEventTimeInput.required = false;
     });
@@ -8844,10 +7105,10 @@ body.dark-mode #remove-schedule-btn:hover {
         let newListIcon = sanitizeIconPath(editorListIconInput.value);
         const newPriority = editorListPriorityInput.value;
 
-        // Obtém a cor da borda baseada na prioridade
+        // Obtém a cor baseada na prioridade
         const isDarkMode = document.body.classList.contains('dark-mode');
-        const newColor = getPriorityColor(newPriority, isDarkMode);
         const newColorName = getColorNameFromPriority(newPriority);
+        const newColor = getPriorityColor(newPriority, isDarkMode);
 
         if (!newName) {
             alert("O nome da lista não pode ficar em branco.");
@@ -8893,7 +7154,7 @@ body.dark-mode #remove-schedule-btn:hover {
 
             const eventDateStr = editorEventDateInput.value;
             const eventTime = editorEventTimeInput.value;
-            const isRoutine = editorRecurrenceTypeInput.value !== 'none';
+            const isRoutine = editorLinkAsRoutineCheckbox.checked;
             const recurrenceType = isRoutine ? editorRecurrenceTypeInput.value : 'none';
 
             if (!eventDateStr || !eventTime) {
@@ -8903,14 +7164,12 @@ body.dark-mode #remove-schedule-btn:hover {
 
             const createTask = (dateKey, recurrenceId = null) => {
                  if (!calendarTasks[dateKey]) calendarTasks[dateKey] = [];
-                 const listPriority = allLists[listIndex].priority;
                  calendarTasks[dateKey].push({
                     id: Date.now().toString() + Math.random(),
                     time: eventTime,
                     description: newName, 
                     icon: newListIcon,
-                    priority: listPriority === 'alta' ? 'alta' : 'nenhuma',
-                    color: listPriority === 'alta' ? 'red' : (listPriority === 'media' ? 'yellow' : 'blue'),
+                    priority: allLists[listIndex].priority === 'alta' ? 'alta' : 'nenhuma',
                     recurrenceId: recurrenceId,
                     linkedListId: listId
                 });
@@ -8951,7 +7210,11 @@ body.dark-mode #remove-schedule-btn:hover {
         }
 
         saveCalendarTasks();
-        loadAndRenderLists();
+        // Só renderiza listas se a aba de listas estiver ativa
+        const listasSection = document.getElementById('listas-section');
+        if (listasSection && listasSection.style.display === 'block') {
+            loadAndRenderLists();
+        }
         renderCalendar(currentCalendarDate);
         closeListEditorSection();
     });
@@ -9018,11 +7281,19 @@ body.dark-mode #remove-schedule-btn:hover {
         listEventTimeInput.required = isChecked;
         if (!isChecked) {
             routineOptions.style.display = 'none';
-            listRecurrenceTypeInput.value = 'none';
+            linkAsRoutineCheckbox.checked = false;
         }
     });
 
-    // Event listener removido - checkbox não existe mais
+    linkAsRoutineCheckbox.addEventListener('change', () => {
+        routineOptions.style.display = linkAsRoutineCheckbox.checked ? 'flex' : 'none';
+        if(linkAsRoutineCheckbox.checked) {
+            plannerLinkOptions.style.display = 'flex'; // Garante que as opções de data/hora apareçam
+            linkToPlannerCheckbox.checked = true;
+        }
+        listRecurrenceTypeInput.value = linkAsRoutineCheckbox.checked ? 'daily' : 'none';
+        listRecurrenceTypeInput.dispatchEvent(new Event('change'));
+    });
     
     tasksList.addEventListener('click', (e) => {
         const taskItem = e.target.closest('.task-list-item');
@@ -9038,25 +7309,6 @@ body.dark-mode #remove-schedule-btn:hover {
         dayViewSection.style.setProperty('display', 'none', 'important');
         taskFormView.style.setProperty('display', 'block', 'important');
     });
-
-    // Event listener para o checkbox de prioridade - esconde/mostra seletor de cor e aplica cor vermelha aos ícones
-    if (taskPriorityInput) {
-        taskPriorityInput.addEventListener('change', () => {
-            const colorPickerContainer = document.getElementById('task-color-picker-container');
-            if (colorPickerContainer) {
-                if (taskPriorityInput.checked) {
-                    // Tarefa prioritária - esconde seletor de cor e aplica cor vermelha aos ícones
-                    colorPickerContainer.style.display = 'none';
-                    applyColorToIconOptions(taskIconPicker, 'red');
-                } else {
-                    // Tarefa não prioritária - mostra seletor de cor e restaura cor original
-                    colorPickerContainer.style.display = 'block';
-                    const currentColor = taskIconColorInput ? taskIconColorInput.value : 'blue';
-                    applyColorToIconOptions(taskIconPicker, currentColor);
-                }
-            }
-        });
-    }
 
     // Event listener para o seletor de cores das tarefas
     if (taskColorPicker) {
@@ -9319,6 +7571,46 @@ body.dark-mode #remove-schedule-btn:hover {
             }
         });
     }
+
+    // Event listener para o seletor de cores das listas
+    if (listColorPicker) {
+        listColorPicker.addEventListener('click', (e) => {
+            const colorOption = e.target.closest('.color-option');
+            if (colorOption) {
+                // Remove seleção anterior
+                listColorPicker.querySelectorAll('.color-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Seleciona nova cor
+                colorOption.classList.add('selected');
+                const selectedColor = colorOption.dataset.color;
+                listColor.value = selectedColor;
+                
+                // Atualiza TODOS os ícones com a nova cor
+                listIconPickerGrid.querySelectorAll('.task-icon-option').forEach(iconOption => {
+                    const iconName = iconOption.dataset.iconName;
+                    const coloredPath = getColoredIcons(iconName, selectedColor);
+                    
+                    // Remove a imagem e recria com a nova cor
+                    const img = iconOption.querySelector('img');
+                    img.remove();
+                    
+                    const newImg = document.createElement('img');
+                    newImg.src = coloredPath + '?t=' + Date.now() + '&r=' + Math.random();
+                    newImg.className = `icon-color-${selectedColor}`;
+                    newImg.dataset.color = selectedColor;
+                    newImg.style.width = '100%';
+                    newImg.style.height = '100%';
+                    newImg.style.objectFit = 'contain';
+                    newImg.style.borderRadius = '5px';
+                    
+                    iconOption.appendChild(newImg);
+                    iconOption.dataset.iconPath = coloredPath;
+                });
+            }
+        });
+    }
     calendarMonthSelect.addEventListener('change', (e) => {
         currentCalendarDate.setMonth(parseInt(e.target.value));
         currentCalendarDate.setDate(1); 
@@ -9341,17 +7633,19 @@ body.dark-mode #remove-schedule-btn:hover {
         listRecurrenceEndDateInput.style.display = isRecurrent ? 'block' : 'none';
         listRecurrenceEndDateInput.required = isRecurrent;
         listWeeklyRecurrenceOptions.style.display = listRecurrenceTypeInput.value === 'weekly' ? 'block' : 'none';
-        routineOptions.style.display = isRecurrent ? 'flex' : 'none';
     });
 
-    // Event listener removido - checkbox não existe mais
+    editorLinkAsRoutineCheckbox.addEventListener('change', () => {
+        editorRoutineOptions.style.display = editorLinkAsRoutineCheckbox.checked ? 'flex' : 'none';
+        editorRecurrenceTypeInput.value = editorLinkAsRoutineCheckbox.checked ? 'daily' : 'none';
+        editorRecurrenceTypeInput.dispatchEvent(new Event('change'));
+    });
 
     editorRecurrenceTypeInput.addEventListener('change', () => {
         const isRecurrent = editorRecurrenceTypeInput.value !== 'none';
         editorRecurrenceEndDateInput.style.display = isRecurrent ? 'block' : 'none';
         editorRecurrenceEndDateInput.required = isRecurrent;
         editorWeeklyRecurrenceOptions.style.display = editorRecurrenceTypeInput.value === 'weekly' ? 'block' : 'none';
-        editorRoutineOptions.style.display = isRecurrent ? 'flex' : 'none';
     });
 
 
@@ -9467,6 +7761,24 @@ body.dark-mode #remove-schedule-btn:hover {
             if (goalColor) goalColor.value = 'blue';
         }
         
+        if (listColorPicker) {
+            listColorPicker.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            const blueOption = listColorPicker.querySelector('[data-color="blue"]');
+            if (blueOption) blueOption.classList.add('selected');
+            if (listColor) listColor.value = 'blue';
+        }
+        
+        // Inicializa o seletor de cor do editor de listas
+        const editorListColorPicker = document.getElementById('editor-list-color-picker');
+        if (editorListColorPicker) {
+            editorListColorPicker.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            const blueOption = editorListColorPicker.querySelector('[data-color="blue"]');
+            if (blueOption) blueOption.classList.add('selected');
+        }
         
         
         // Verifica se todos os elementos de investimento estão disponíveis
@@ -9526,15 +7838,15 @@ body.dark-mode #remove-schedule-btn:hover {
   <nav class="bottom-nav">
     <div class="bottom-nav-items">
       <a href="#" class="bottom-nav-item active" data-section="planner-section">
-        <img src="./buttons/calendar.svg" alt="Planner">
+        <img src="buttons/calendar.svg" alt="Planner">
         <span>planner</span>
       </a>
       <a href="#" class="bottom-nav-item" data-section="financeiro-section">
-        <img src="./buttons/finance.svg" alt="Finanças">
+        <img src="buttons/finance.svg" alt="Finanças">
         <span>finanças</span>
       </a>
       <a href="#" class="bottom-nav-item" data-section="listas-section">
-        <img src="./buttons/checklist.svg" alt="Listas">
+        <img src="buttons/checklist.svg" alt="Listas">
         <span>listas</span>
       </a>
     </div>
