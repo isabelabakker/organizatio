@@ -1,0 +1,557 @@
+﻿<!--
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⣶⢶⣶⣄⠀⣠⣴⣾⠿⠿⣷⣄⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⣠⣤⣤⣄⣀⡀⠀⠀⠀⠀⢀⣀⣀⣀⣠⣾⠋⠀⠀⠈⠹⣿⡟⠉⠀⠀⠀⠘⣿⡄⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⣾⠟⠉⠉⠉⠛⠻⢿⣶⠿⠿⠟⠛⠛⠛⣿⠇⠀⢠⣶⣶⣶⣿⣷⣦⣤⣀⣠⣤⣿⣷⣄⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢸⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⠀⠀⢸⣿⣼⡿⠁⠀⠀⠙⣿⣯⡁⠀⠈⢿⡇⠀⠀⠀⠀
+⠀⠀⠀⠀⢹⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣄⠀⠀⢙⣿⣷⡀⠀⠀⢠⣿⣿⣿⡆⠀⣾⡇⠀⠀⠀⠀
+⠀⠀⠀⠀⠈⢿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠛⠛⠛⠋⠙⠻⠷⠾⣿⡟⠛⠋⠀⣴⡟⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⣾⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⠷⡶⠿⠛⣿⡄⠀⠀⠀⠀
+⠀⠀⠀⠀⣸⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣹⣷⣤⣤⣤⡄
+⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣄⡀⠀⠀⠀⠘⠋⢹⣿⠀⠀⠀⠀
+⠀⣀⣀⣤⣿⣧⣤⡄⠀⠀⠀⢀⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⡷⠀⠀⠀⠀⢠⣼⣿⣤⣤⡤⠀
+⠈⠛⠉⠉⠹⣿⠀⠀⠀⠀⠀⠸⣿⡿⠀⠀⠀⠀⠀⢀⣠⡤⣤⡀⠀⠀⠀⠀⠈⠉⠀⠀⠀⠀⠀⢀⣾⠏⠀⠀⠀⠀
+⠀⠀⠀⣀⣤⣿⣷⠞⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠷⠤⠼⣃⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢛⣿⡿⢶⣤⣄⠀⠀
+⠀⠀⠀⠉⠁⠀⠹⣷⣤⡴⠆⠀⠀⠀⠀⠀⢀⣤⣤⣤⣤⣤⣼⡟⣻⡇⠀⠀⠀⠀⠀⠀⣀⣴⡿⠋⠀⠀⠀⠉⠀⠀
+⠀⠀⠀⠀⢀⣠⡾⠟⠛⠿⣶⣤⣤⣤⣄⣰⣿⣍⣀⡀⠀⠈⠙⠳⠿⢷⣦⣀⣠⣤⣶⣿⣟⠉⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠘⠋⠀⠀⠀⣰⡟⠉⠀⠀⠙⣿⣅⣉⣿⣁⣀⣠⣶⡀⠀⠀⠈⣿⡏⠁⠀⠀⠹⣷⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠠⣿⠀⠀⠀⠀⠀⣿⣧⡽⠉⠛⢉⣉⣘⣷⣄⣰⣿⣿⠇⠀⠀⠀⠀⣿⡆⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⡄⠀⠀⠀⠀⣻⡷⡄⣞⣳⠘⢦⣇⡈⠙⡿⢿⡇⠀⠀⠀⠀⢠⣿⡀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣴⡟⠉⢿⣦⣄⣠⣴⡿⠛⣡⣌⣿⢳⡞⠧⣿⣀⡙⠚⢿⣦⣄⣤⣴⠟⠙⢿⡄⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢰⡿⠀⠀⠀⠈⠉⠉⢹⣧⠈⠳⠞⡉⢻⡷⢦⠸⢭⣧⣤⡿⠋⠉⠉⠀⠀⠀⠈⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢸⣇⠀⠀⠀⠀⠀⠀⠈⣿⣆⠀⢾⣹⠆⠙⢫⣶⣾⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠘⣿⡀⠀⠀⠀⠀⠀⠀⠘⢿⣶⣤⣤⣴⣾⡿⠻⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⢰⡿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠹⣷⣄⠀⠀⠀⠀⠀⢀⣼⣿⣿⡿⠿⠿⣷⣶⣿⣷⡀⠀⠀⠀⠀⠀⢀⣴⡿⠁⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⢷⣦⣤⣤⣴⡿⠋⠁⠀⠀⠀⠀⠀⠀⠈⠙⢿⣦⣤⣀⣤⣴⡿⠛⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀               
+ _         _       _        _       _   _                         
+|_|___ ___| |_ ___| |___   | |_ ___| |_| |_ ___ ___   
+| |_ -| .'| . | -_| | .'|  | . | .'| '_| '_| -_|  _|   
+|_|___|__,|___|___|_|__,|  |___|__,|_,_|_,_|___|_|                                                   
+♡‧₊˚🎀༺♡༻🎀˚₊‧♡ ♡‧₊˚🎀♡༻🎀˚₊‧♡ ♡‧₊˚🎀༺♡༻🎀˚₊‧♡ 
+--!>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+  <link rel="icon" type="image/png" href="./images/icon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> OrganizatIO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <!-- Cabeçalho Simplificado -->
+  <header class="main-header">
+    <div class="header-controls">
+      <button id="theme-toggle" class="header-btn theme-btn"><img src="buttons/moon.svg" alt="Modo escuro" id="theme-icon"></button>
+      <button id="settings-btn" class="header-btn settings-btn"><img src="buttons/settings.svg" alt="Configurações"></button>
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <div id="mensal-page">
+
+        <div id="mensal-controls" style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+            <select id="calendar-month-select" style="padding: 8px; border-radius: 8px; text-transform: lowercase; font-size: 14px; border-color: #6A8EFE; min-width: 120px;"></select>
+        </div>
+        
+        <hr style="border-top: 1px solid #ddd; margin: 30px 0;">
+
+
+        <div id="planner-section" class="mensal-content-section">
+            <div id="calendar-grid"></div>
+
+            <div id="planner-details-container" style="display: none;">
+                
+                <div id="day-view-section" style="display: none; position: relative;">
+                    <button class="close-button" id="close-day-view-btn" style="top: 0; right: 0;"><img src="buttons/close.svg" alt="Fechar"></button>
+                    <h3 id="day-view-title" style="text-align: center; margin-top: 0;"></h3>
+                    <div id="tasksList"></div>
+                    <button id="open-add-task-form-btn" class="add-btn" style="width: 100%; margin-top: 20px;">adicionar tarefa</button>
+                </div>
+
+                <div id="task-form-view" style="display: none; position: relative;">
+                    <button class="close-button back-button" id="back-to-day-view-btn" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
+                    <h3 id="task-form-title">adicionar tarefa</h3>
+                    <form id="task-form-modal">
+                        <div class="task-form-row" style="margin-top: 30px;">
+                            <input type="time" id="taskTime" value="09:00" class="task-form-input" style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                            <input type="text" id="taskDescription" placeholder="descrição da tarefa" required class="task-form-input" style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                        </div>
+                        <div style="margin: 10px 0; display: flex; align-items: center;">
+                            <input type="checkbox" id="taskPriority" style="width: 18px; height: 18px; margin-right: 8px; cursor: pointer;">
+                            <label for="taskPriority" style="font-size: 14px; font-weight: bold; color: #FF5252; cursor: pointer;">tarefa prioritária</label>
+                        </div>
+                        <div id="task-icon-picker-container" style="padding: 5px 0 15px 0;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
+                            <div id="taskIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+                            <input type="hidden" id="taskIcon" value="">
+                            
+                            <div id="task-color-picker-container" style="margin-top: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">cor:</label>
+                                <div id="taskColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <div class="color-option selected" data-color="blue" style="width: 30px; height: 30px; border-radius: 50%; background-color: #3586ff; border: 2px solid #333; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="green" style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; border: 2px solid #ccc; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="red" style="width: 30px; height: 30px; border-radius: 50%; background-color: #f44336; border: 2px solid #ccc; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="yellow" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ffeb3b; border: 2px solid #ccc; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="purple" style="width: 30px; height: 30px; border-radius: 50%; background-color: #9c27b0; border: 2px solid #ccc; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="pink" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff66cc; border: 2px solid #ccc; cursor: pointer;"></div>
+                                    <div class="color-option" data-color="orange" style="width: 30px; height: 30px; border-radius: 50%; background-color: #ff9800; border: 2px solid #ccc; cursor: pointer;"></div>
+                                </div>
+                                <input type="hidden" id="taskIconColor" value="blue">
+                            </div>
+                        </div>
+                        <div id="recurrence-options" style="margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; align-items: center;">
+                            <select id="recurrenceType">
+                                <option value="none">não repetir</option>
+                                <option value="daily">diariamente</option>
+                                <option value="weekly">semanalmente</option>
+                            </select>
+                            <input type="date" id="recurrenceEndDate" title="data final da recorrência" style="display:none;">
+                        </div>
+                        <div id="weekly-recurrence-options" style="display: none; margin-bottom: 10px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
+                            <label style="display: block; margin-bottom: 5px; font-size: var(--font-size-sm); font-weight: bold;">repetir nos dias:</label>
+                            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 5px; font-size: 14px;">
+                                <label><input type="checkbox" name="weekday" value="0"> dom</label>
+                                <label><input type="checkbox" name="weekday" value="1"> seg</label>
+                                <label><input type="checkbox" name="weekday" value="2"> ter</label>
+                                <label><input type="checkbox" name="weekday" value="3"> qua</label>
+                                <label><input type="checkbox" name="weekday" value="4"> qui</label>
+                                <label><input type="checkbox" name="weekday" value="5"> sex</label>
+                                <label><input type="checkbox" name="weekday" value="6"> sáb</label>
+                            </div>
+                        </div>
+                        <div id="task-form-submit-container" style="margin-top: 20px; display: flex; justify-content: flex-end;">
+                            <button type="submit" id="add-task-btn" style="padding: 10px 16px; border-radius: 6px; font-size: 14px;">adicionar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+
+        <div id="financeiro-section" class="mensal-content-section" style="display: none;">
+            
+            <div id="finance-dashboard-main">
+                <div id="summary-container" style="display: flex; justify-content: space-around; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+                    <div class="summary-card">
+                        <h4>receitas do mês</h4>
+                        <p id="total-revenue" style="color: #4CAF50; font-size: 24px; font-weight: bold;">R$ 0,00</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>despesas do mês</h4>
+                        <p id="total-expense" style="color: #FF5252; font-size: 24px; font-weight: bold;">R$ 0,00</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>saldo do mês</h4>
+                        <p id="month-balance" style="font-size: 24px; font-weight: bold;">R$ 0,00</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; margin-bottom: 20px; display: flex; justify-content: center; gap: 10px;">
+                    <button id="view-details-btn" class="mensal-sub-toggle">transações</button>
+                    <button id="view-category-spending-btn" class="mensal-sub-toggle">orçamentos</button>
+                    <button id="view-investments-btn" class="mensal-sub-toggle">investimentos</button>
+                </div>
+
+                <div id="charts-dual-container">
+                    <div id="month-chart-container">
+                        <h3 style="text-align: center; margin-top: 0;">gastos por categoria</h3>
+                        <canvas id="month-chart"></canvas>
+                    </div>
+                    <div id="annual-chart-container">
+                        <h3 style="text-align: center; margin-top: 0;">comparativo anual</h3>
+                        <canvas id="annual-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="finance-details-container">
+                <div id="transactions-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
+                    <button class="close-button" id="close-transactions-view"><img src="buttons/close.svg" alt="Fechar"></button>
+                    
+                    <div id="transaction-list-view">
+                        <h3 style="margin-top:0;">transações do mês</h3>
+                        <div class="details-table-container" style="margin-top: 20px;">
+                            <table id="expense-table" style="width: 100%; border-collapse: collapse;">
+                                <tbody id="expense-list"></tbody>
+                            </table>
+                        </div>
+                        <button id="show-add-transaction-form-btn" class="btn btn-primary btn-full" style="margin-top: 20px;">adicionar transação</button>
+                    </div>
+    
+                    <div id="add-transaction-container" style="display: none; position: relative; z-index: 5;">
+                        <button class="close-button back-button" id="back-to-transactions-list-btn"><img src="buttons/back.svg" alt="Voltar"></button>
+                        
+                        <h3 id="transaction-form-title" style="margin-top: 0;">adicionar transação</h3>
+                        <form id="expense-form" style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
+                            <input type="text" id="desc" placeholder="descrição" required style="padding: 12px; border-radius: 8px; border: 2px solid #ddd; font-size: 16px;">
+                            <select id="type" style="padding: 12px; border-radius: 8px; border: 2px solid #ddd; font-size: 16px;">
+                                <option value="despesa">despesa</option>
+                                <option value="receita">receita</option>
+                            </select>
+                            <select id="category" placeholder="categoria" style="padding: 12px; border-radius: 8px; border: 2px solid #ddd; font-size: 16px;"></select>
+                            <input type="number" id="value" placeholder="r$" step="0.01" required style="padding: 12px; border-radius: 8px; border: 2px solid #ddd; font-size: 16px;">
+                            <div class="add-btn-group">
+                                <button type="submit" class="add-btn" id="submit-expense-btn" style="padding: 12px 16px; font-size: 16px; min-height: 44px;">adicionar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+    
+                <div id="budgets-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
+                    <button class="close-button" id="close-budgets-view"><img src="buttons/close.svg" alt="Fechar"></button>
+                    <h3 style="margin-top:0;">orçamentos</h3>
+                    <form id="category-limit-form" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <select id="categoryLimitCategory" required></select>
+                        <input type="number" id="categoryLimitValue" placeholder="limite (R$)" step="0.01" required>
+                        <button type="submit" class="add-btn">salvar limite</button>
+                        <button type="button" id="manage-categories-btn-budgets"><img src="buttons/settings.svg" alt="Gerenciar"></button>
+                    </form>
+                    <table style="width: 100%;">
+                        <tbody id="category-spending-list"></tbody>
+                    </table>
+                </div>
+    
+                <div id="investments-view" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
+                    <button class="close-button" id="close-investments-view"><img src="buttons/close.svg" alt="Fechar"></button>
+                    <h3 style="margin-top:0;">investimentos</h3>
+                    
+                    <!-- Lista de metas existentes -->
+                    <div id="goals-container"></div>
+                    
+                    <!-- Botão para adicionar nova meta -->
+                    <button id="open-add-investment-form-btn" class="btn btn-primary btn-full" style="margin-top: 20px;">adicionar investimento</button>
+                    
+                    <!-- Formulário de nova meta (escondido inicialmente) -->
+                    <div id="investment-form-view" style="display: none; position: relative;">
+                        <button class="close-button back-button" id="back-to-investments-list-btn" style="right: auto; left: 15px; top: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
+                        <h3 id="investment-form-title" style="margin-top: 0;">adicionar meta de investimento</h3>
+                        
+                        <form id="new-goal-form" style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+                            <input type="text" id="newGoalName" placeholder="nome da nova meta" required style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                            <input type="number" id="newGoalTarget" placeholder="valor da meta (r$)" step="0.01" required style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px;">
+                        </div>
+                        
+                        <!-- Seletor de Ícone e Cor -->
+                        <div id="goal-icon-picker-container" style="padding: 5px 0 15px 0;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">ícone:</label>
+                            <div id="goalIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+                            <input type="hidden" id="goalIcon" value="">
+                            
+                            <div id="goal-color-picker-container" style="margin-top: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">cor:</label>
+                                <div id="goalColorPicker" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <div class="color-option" data-color="red" style="background-color: #f44336;"></div>
+                                    <div class="color-option" data-color="blue" style="background-color: #3586ff;"></div>
+                                    <div class="color-option" data-color="green" style="background-color: #4caf50;"></div>
+                                    <div class="color-option" data-color="yellow" style="background-color: #ffeb3b;"></div>
+                                    <div class="color-option" data-color="purple" style="background-color: #9c27b0;"></div>
+                                    <div class="color-option" data-color="pink" style="background-color: #ff66cc;"></div>
+                                    <div class="color-option" data-color="orange" style="background-color: #ff9800;"></div>
+                                </div>
+                                <input type="hidden" id="goalColor" value="blue">
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: center;">
+                             <input type="number" id="newGoalInterestRate" placeholder="juros mensais (%)" step="0.01">
+                            <div style="text-align: right;">
+                                <input type="checkbox" id="newGoalHasDeadline" style="width: auto; vertical-align: middle;">
+                                <label for="newGoalHasDeadline" style="font-size: var(--font-size-sm); vertical-align: middle; cursor: pointer;">definir prazo</label>
+                            </div>
+                        </div>
+                        <input type="date" id="newGoalDeadline" style="display: none;">
+                        <button type="submit" class="add-btn">criar meta</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Seção de Gerenciamento de Categorias -->
+                <div id="category-section" style="display: none; position: relative; padding-top: 15px; z-index: 5;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <button class="close-button back-button" id="back-from-categories" style="position: relative; left: 0; top: 0;"><img src="buttons/back.svg" alt="Voltar"></button>
+                        <button class="close-button" id="close-category-section"><img src="buttons/close.svg" alt="Fechar"></button>
+                    </div>
+                    <h3 style="margin-top:0;">gerenciar categorias</h3>
+
+                    <!-- Formulário de Adicionar Categoria -->
+                    <div id="add-category-form" style="display: none; gap: 10px; margin-bottom: 20px; align-items: center;">
+                        <select id="newCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid #ccc;">
+                            <option value="despesa">despesa</option>
+                            <option value="receita">receita</option>
+                        </select>
+                        <input type="text" id="newCategoryName" placeholder="nome da nova categoria" style="flex-grow: 1;">
+                        <button id="addCategoryButton" class="add-btn">adicionar</button>
+                    </div>
+
+                    <!-- Formulário de Editar Categoria -->
+                    <div id="edit-category-form" style="display: none; margin-bottom: 20px; padding: 15px; border: 2px solid #3586ff; border-radius: 10px; background: var(--secondary-bg);">
+                        <h4 style="margin: 0 0 15px 0; color: #3586ff;">editando categoria</h4>
+                        <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center;">
+                            <select id="editCategoryType" style="padding: 8px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color);">
+                                <option value="despesa">despesa</option>
+                                <option value="receita">receita</option>
+                            </select>
+                            <input type="text" id="editCategoryName" placeholder="nome da categoria" style="flex-grow: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color);">
+                            <button id="saveCategoryButton" class="add-btn" style="background: #4CAF50;">salvar</button>
+                            <button id="cancelEditButton" class="add-btn" style="background: #9E9E9E;">cancelar</button>
+                        </div>
+                    </div>
+
+                    <!-- Seletor de Ícone e Cor para Categorias -->
+                    <div id="category-icon-picker-container" style="display: none; padding: 15px 0; border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 20px; background: var(--secondary-bg);">
+                        <label style="display: block; margin-bottom: 10px; font-weight: bold; color: var(--text-color);">ícone da categoria:</label>
+                        <div id="categoryIconPicker" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;"></div>
+                        <input type="hidden" id="categoryIcon" value="">
+                        
+                        <p style="font-size: var(--font-size-xs); color: #888; margin-top: 10px; text-align: center;">
+                            💡 A cor do ícone é definida automaticamente pelo nome da categoria
+                        </p>
+                        
+                        <!-- Seletor de cor oculto (cor baseada no nome da categoria) -->
+                        <div style="display: none;">
+                            <div id="categoryColorPicker"></div>
+                            <input type="hidden" id="categoryIconColor" value="blue">
+                        </div>
+                    </div>
+
+                    <h4>categorias de despesa</h4>
+                    <div id="expense-category-list-container"></div>
+
+                    <hr style="border-top: 1px solid #ddd; margin: 15px 0;">
+
+                    <h4>categorias de receita</h4>
+                    <div id="revenue-category-list-container"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="listas-section" class="mensal-content-section" style="display: none;">
+            <form id="newListForm">
+                <div id="newListForm-main-line" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <input type="text" id="newListName" placeholder="nome da nova lista" required style="flex-grow: 1; min-width: 200px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: var(--font-size-md);">
+                    
+                    <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                        <select id="newListPriority" style="text-transform: none; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: var(--font-size-md);">
+                            <option value="baixa">prioridade: baixa</option>
+                            <option value="media">prioridade: média</option>
+                            <option value="alta">prioridade: alta</option>
+                        </select>
+
+                        <div id="shopping-list-container" title="Marcar como lista de compras">
+                            <input type="checkbox" id="shopping-list-checkbox">
+                            <label for="shopping-list-checkbox" class="icon-toggle-button">
+                                <img src="buttons/lists/compras.svg" alt="Lista de Compras">
+                            </label>
+                        </div>
+                        
+                        <div id="link-to-planner-container" title="Agendar no planner">
+                            <input type="checkbox" id="link-to-planner-checkbox">
+                            <label for="link-to-planner-checkbox" class="icon-toggle-button">
+                                <img src="buttons/lists/agendar.svg" alt="Agendar no Planner">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="planner-link-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex-grow: 1;">
+                            <input type="date" id="list-event-date">
+                            <input type="time" id="list-event-time" value="10:00">
+                        </div>
+                        
+                        <div id="routine-container" title="Marcar como rotina" style="display: none;">
+                             <input type="checkbox" id="link-as-routine-checkbox">
+                             <label for="link-as-routine-checkbox" class="icon-toggle-button">
+                                 <img src="buttons/lists/rotina.svg" alt="Marcar como Rotina">
+                             </label>
+                        </div>
+                    </div>
+
+                    <div id="routine-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 5px;">
+                        <select id="list-recurrence-type">
+                            <option value="none">não repetir</option>
+                            <option value="daily">diariamente</option>
+                            <option value="weekly">semanalmente</option>
+                        </select>
+                        <input type="date" id="list-recurrence-end-date" title="data final da recorrência" style="display: none;">
+                        <div id="list-weekly-recurrence-options" style="display: none; margin-top: 5px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
+                            <label style="display: block; margin-bottom: 5px; font-size: var(--font-size-sm); font-weight: bold;">repetir nos dias:</label>
+                            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 5px; font-size: var(--font-size-xs);">
+                                <label><input type="checkbox" name="list-weekday" value="0"> dom</label>
+                                <label><input type="checkbox" name="list-weekday" value="1"> seg</label>
+                                <label><input type="checkbox" name="list-weekday" value="2"> ter</label>
+                                <label><input type="checkbox" name="list-weekday" value="3"> qua</label>
+                                <label><input type="checkbox" name="list-weekday" value="4"> qui</label>
+                                <label><input type="checkbox" name="list-weekday" value="5"> sex</label>
+                                <label><input type="checkbox" name="list-weekday" value="6"> sáb</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" style="width: 100%; margin-top: 15px;">criar lista</button>
+            </form>
+
+            <hr style="border-top: 1px solid #ddd; margin: 30px 0;">
+
+            <div class="lists-container" id="listsContainer"></div>
+        </div>
+
+    </div>
+    </div>
+
+  
+  <!-- Seção de Detalhes de Tarefa -->
+  <div id="description-section" class="mensal-content-section" style="display: none;">
+    <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
+      <button class="close-button back-button" onclick="closeDescriptionSection()" style="position: relative; top: 0; left: 0; margin-bottom: 15px;"><img src="buttons/back.svg" alt="Voltar"></button>
+      <h3 style="margin-top: 0; text-align: center; color: var(--text-color, #333); font-size: 24px; font-weight: 600;">detalhes</h3>
+      <div style="background: var(--secondary-bg, #f8f9fa); border-radius: 12px; padding: 20px; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <div style="text-align: center;">
+          <p id="modal-description-text" style="font-size: 18px; margin: 15px 0; line-height: 1.6; color: var(--text-color, #333); font-weight: 500;"></p>
+          <p id="modal-date-text" style="font-size: 16px; margin: 10px 0; line-height: 1.5; color: var(--text-color-secondary, #666);"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seção de Detalhes de Lista -->
+  <div id="list-details-section" class="mensal-content-section" style="display: none;">
+    <div style="padding: 20px;">
+      <button class="close-button back-button" onclick="closeListDetailsSection()" style="position: relative; top: 0; left: 0; margin-bottom: 10px;"><img src="buttons/back.svg" alt="Voltar"></button>
+      <h3 id="listDetailsTitle" style="margin-top: 0;"></h3>
+      <ul id="listDetailsItems"></ul>
+    </div>
+  </div>
+
+  <!-- Seção de Escolha de Ícone da Lista -->
+  <div id="list-icon-section" class="mensal-content-section" style="display: none;">
+    <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
+        <button class="close-button back-button" onclick="closeListIconSection()"><img src="buttons/back.svg" alt="Voltar"></button>
+        <h3>escolha um ícone para a lista</h3>
+        
+        <!-- Seletor de Ícone -->
+        <div style="margin-top: 20px;">
+            <label style="display: block; margin-bottom: 10px; font-weight: bold;">ícone:</label>
+            <div id="list-icon-picker-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-height: 300px; overflow-y: auto;">
+            </div>
+        </div>
+        
+        <!-- Seletor de Cor (oculto - cor baseada em prioridade) -->
+        <div style="display: none;">
+            <div id="list-color-picker"></div>
+            <input type="hidden" id="listColor" value="blue">
+        </div>
+    </div>
+  </div>
+
+  <!-- Seção de Editor de Lista -->
+  <div id="list-editor-section" class="mensal-content-section" style="display: none;">
+    <div style="padding: 20px; padding-bottom: 80px; max-width: 450px; margin: 0 auto;">
+        <button class="close-button back-button" onclick="closeListEditorSection()"><img src="buttons/back.svg" alt="Voltar"></button>
+        <h3>Editar Lista</h3>
+        <form id="list-editor-form" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+            <input type="hidden" id="editor-list-id-main">
+
+            <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Nome da Lista:</label>
+                <input type="text" id="editor-list-name" required style="width: 100%; box-sizing: border-box;">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Prioridade (define a cor do ícone):</label>
+                <select id="editor-list-priority" style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: var(--font-size-md);">
+                    <option value="baixa">Baixa (Azul)</option>
+                    <option value="media">Média (Amarelo)</option>
+                    <option value="alta">Alta (Vermelho)</option>
+                </select>
+                
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Ícone da Lista:</label>
+                <div id="editor-list-icon-picker" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 140px; overflow-y: auto; padding: 5px; border-radius: 8px; background: rgba(0,0,0,0.05);"></div>
+                <input type="hidden" id="editor-list-icon-main">
+                
+                <!-- Seletor de Cor oculto (cor baseada em prioridade) -->
+                <div style="display: none;">
+                    <div id="editor-list-color-picker"></div>
+                    <input type="hidden" id="editor-list-color-main" value="blue">
+                </div>
+            </div>
+
+            <hr>
+
+            <button type="button" id="add-schedule-btn" class="add-btn" style="width: 100%;">Adicionar Agendamento</button>
+
+            <div id="editor-scheduling-section" style="display: none;">
+                <h4 style="margin-top: 0; margin-bottom: 10px;">Agendamento no Planner</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                    <input type="date" id="editor-event-date">
+                    <input type="time" id="editor-event-time">
+                </div>
+                 <div id="editor-routine-container" style="display: flex; align-items: center; gap: 8px; font-size: 14px; padding-left: 5px; cursor: pointer; margin-top: 5px;">
+                     <input type="checkbox" id="editor-link-as-routine-checkbox" style="width: 18px; height: 18px; cursor: pointer;">
+                     <label for="editor-link-as-routine-checkbox" style="cursor: pointer;">marcar como rotina</label>
+                </div>
+                <div id="editor-routine-options" style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
+                    <select id="editor-recurrence-type" style="width: 100%;">
+                        <option value="none">não repetir</option>
+                        <option value="daily">diariamente</option>
+                        <option value="weekly">semanalmente</option>
+                    </select>
+                    <input type="date" id="editor-recurrence-end-date" title="data final da recorrência" style="display: none; width: 100%; box-sizing: border-box;">
+                    <div id="editor-weekly-recurrence-options" style="display: none; margin-top: 5px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
+                        <label style="display: block; margin-bottom: 5px; font-size: var(--font-size-sm); font-weight: bold;">repetir nos dias:</label>
+                        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 5px; font-size: 14px;">
+                            <label><input type="checkbox" name="editor-weekday" value="0"> dom</label>
+                            <label><input type="checkbox" name="editor-weekday" value="1"> seg</label>
+                            <label><input type="checkbox" name="editor-weekday" value="2"> ter</label>
+                            <label><input type="checkbox" name="editor-weekday" value="3"> qua</label>
+                            <label><input type="checkbox" name="editor-weekday" value="4"> qui</label>
+                            <label><input type="checkbox" name="editor-weekday" value="5"> sex</label>
+                            <label><input type="checkbox" name="editor-weekday" value="6"> sáb</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" id="remove-schedule-btn" class="delete-btn" style="width: 100%; margin-top: 15px;">Remover Agendamento</button>
+            </div>
+
+            <button type="submit" class="add-btn" style="background-color: #4CAF50; width: 100%; margin-top: 10px;">Salvar Alterações</button>
+        </form>
+    </div>
+  </div>
+  
+  
+
+
+  <!-- Bottom Navigation (Mobile) -->
+  <nav class="bottom-nav">
+    <div class="bottom-nav-items">
+      <a href="#" class="bottom-nav-item active" data-section="planner-section">
+        <img src="buttons/calendar.svg" alt="Planner">
+        <span>planner</span>
+      </a>
+      <a href="#" class="bottom-nav-item" data-section="financeiro-section">
+        <img src="buttons/finance.svg" alt="Finanças">
+        <span>finanças</span>
+      </a>
+      <a href="#" class="bottom-nav-item" data-section="listas-section">
+        <img src="buttons/checklist.svg" alt="Listas">
+        <span>listas</span>
+      </a>
+    </div>
+  </nav>
+
+  <script src="./js/chart.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
