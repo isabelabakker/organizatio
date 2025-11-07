@@ -18,9 +18,9 @@ Planeje. Organize. Controle: **OrganizatIO** é um aplicativo de **organização
 
 ### ✅ Listas Inteligentes
 - Sistema de **prioridades de lista** organizado por cor.
-- Criação de sublistas para facilitar a organização em listas mais longas.
 - Valores em uma **lista de compras** refletem automaticamente nas **transações do mês**.  
 - **Agendamento** de listas no planner.
+- EM CONSTRUÇÃO: Criação de **sublistas** para facilitar a organização de listas mais longas.
 
 ### 💡 Recursos Extras
 - Tema **claro e escuro** com alternância instantânea.  
@@ -37,41 +37,6 @@ Planeje. Organize. Controle: **OrganizatIO** é um aplicativo de **organização
 | **UI/UX** | Design responsivo e mobile-first |
 | **Fonte** | [Inter](https://fonts.google.com/specimen/Inter) |
 | **Estilo visual** | Minimalista, com tema claro/escuro e ícones vetoriais |
-
----
-
-## 📱 Experiência Mobile
-
-O **OrganizatIO** foi projetado com foco no uso móvel:
-- Barra de navegação inferior fixa.  
-- Botões maiores para toque fácil.  
-- Inputs otimizados para evitar zoom automático.  
-- Transições suaves e feedback visual ao toque.
-
----
-
-## 🚀 Instalação
-
-1. Clone o repositório:  
-   ```bash
-   git clone https://github.com/seuusuario/OrganizatIO.git
-   ```
-
-2. Abra o arquivo `organizatio_mobile.html` no navegador.
-
-3. (Opcional) Para usar como PWA (Progressive Web App), adicione-o à tela inicial do seu celular.
-
----
-
-## 🧩 Estrutura do Projeto
-
-```
-OrganizatIO/
-├── images/              # Ícones e imagens do app
-├── organizatio_mobile.html
-├── README.md
-└── LICENSE
-```
 
 ---
 
