@@ -3694,11 +3694,8 @@
         }
 
         saveCalendarTasks();
-        // Só renderiza listas se a aba de listas estiver ativa
-        const listasSection = document.getElementById('listas-section');
-        if (listasSection && listasSection.style.display === 'block') {
-            loadAndRenderLists();
-        }
+        // Re-renderiza as listas independentemente da aba ativa para refletir edições imediatamente
+        loadAndRenderLists();
         renderCalendar(currentCalendarDate);
         closeListEditorSection();
     });
