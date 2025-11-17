@@ -153,10 +153,10 @@
         
         // === SAÚDE E BEM-ESTAR ===
         "médico": "./images/health.svg", "medicação": "./images/pills.svg", "dentista": "./images/tooth.svg", "escova": "./images/hairbrush.svg", 
-        "injeção": "./images/injection.svg", "unhas": "./images/nails.svg", "pele": "./images/body.svg", "meditação": "./images/meditation.svg",
+        "injeção": "./images/injection.svg", "unhas": "./images/nails.svg", "pele": "./images/body.svg", "meditação": "./images/meditation.svg", 
         
         // === ESPORTES E ATIVIDADES ===
-        "exercício": "./images/gym.svg", "esportes": "./images/football.svg",
+        "exercício": "./images/gym.svg", "esportes": "./images/football.svg", "correr": "./images/run.svg",
         
         // === TRABALHO E ESTUDO ===
         "trabalho": "./images/work.svg", "estudo": "./images/study.svg", "pessoas": "./images/people.svg", "computador": "./images/computer.svg",
