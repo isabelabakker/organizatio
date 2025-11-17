@@ -20,7 +20,6 @@ Planeje. Organize. Controle: **OrganizatIO** é um aplicativo de **organização
 - Sistema de **prioridades de lista** organizado por cor.
 - Valores em uma **lista de compras** refletem automaticamente nas **transações do mês**.  
 - **Agendamento** de listas no planner.
-- EM CONSTRUÇÃO: Criação de **sublistas** para facilitar a organização de listas mais longas.
 
 ### 💡 Recursos Extras
 - Tema **claro e escuro** com alternância instantânea.  
